@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canguro's.inc | Portafolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Canguro's<span>.inc</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Inicio</a></li>
+            <li><a href="#portfolio">Proyectos</a></li>
+            <li><a href="#services">Servicios</a></li>
+            <li><a href="#contact">Contacto</a></li>
+        </ul>
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <header id="home" class="hero">
+        <div class="hero-content hidden">
+            <h1>Impulsamos tus ideas</h1>
+            <p>Desarrollo, diseño y creatividad en movimiento.</p>
+            <a href="#portfolio" class="btn">Ver Proyectos</a>
+        </div>
+        <div class="hero-bg"></div>
+    </header>
+
+    <section id="portfolio" class="portfolio">
+        <h2 class="section-title hidden">Nuestro Trabajo</h2>
+        
+        <div class="gallery-grid">
+            <div class="card hidden delay-100">
+                <img src="https://source.unsplash.com/random/800x600?tech" alt="Proyecto Web">
+                <div class="card-overlay">
+                    <h3>E-Commerce Web</h3>
+                    <p>Diseño UI/UX</p>
+                </div>
+            </div>
+
+            <div class="card hidden delay-200">
+                <video autoplay muted loop playsinline>
+                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+                    Tu navegador no soporta video.
+                </video>
+                <div class="card-overlay">
+                    <h3>Campaña Video</h3>
+                    <p>Edición y Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="card tall hidden delay-300">
+                <img src="https://source.unsplash.com/random/600x800?coding" alt="App Móvil">
+                <div class="card-overlay">
+                    <h3>App Móvil</h3>
+                    <p>Desarrollo React Native</p>
+                </div>
+            </div>
+
+            <div class="card hidden delay-100">
+                <img src="https://source.unsplash.com/random/800x600?design" alt="Branding">
+                <div class="card-overlay">
+                    <h3>Rebranding</h3>
+                    <p>Identidad Visual</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="contact-content hidden">
+            <h2>¿Listo para saltar al siguiente nivel?</h2>
+            <p>Contáctanos para empezar tu próximo proyecto.</p>
+            <a href="mailto:hola@canguros.inc" class="btn btn-outline">Hablemos</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Canguro's.inc. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

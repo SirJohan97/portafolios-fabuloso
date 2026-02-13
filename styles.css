@@ -1,0 +1,321 @@
+/* --- Variables Globales --- */
+:root {
+    --primary: #ff6b35; /* Naranja corporativo */
+    --dark: #0a0a0a;    /* Fondo casi negro */
+    --dark-overlay: rgba(10, 10, 10, 0.95);
+    --light: #f4f4f4;
+    --gray: #2d2d2d;
+    --transition: all 0.4s ease;
+}
+
+/* --- Reseteo Básico --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en links */
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--light);
+    overflow-x: hidden; /* Evita scroll horizontal indeseado */
+}
+
+/* --- Barra de Navegación --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: rgba(10, 10, 10, 0.85); /* Fondo semitransparente */
+    backdrop-filter: blur(10px);        /* Efecto vidrio esmerilado */
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--light);
+    font-weight: 500;
+    font-size: 1rem;
+    transition: var(--transition);
+    position: relative;
+}
+
+/* Efecto subrayado animado al pasar el mouse */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--primary);
+    transition: var(--transition);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+/* Icono Hamburguesa (Oculto en PC) */
+.menu-toggle {
+    display: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--light);
+}
+
+/* --- Hero Section (Portada) --- */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 0 1rem;
+    /* Fondo degradado sutil */
+    background: radial-gradient(circle at center, #1a1a1a 0%, var(--dark) 70%);
+}
+
+.hero-content h1 {
+    font-size: 4.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+    background: -webkit-linear-gradient(45deg, #fff, #bbb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+    font-size: 1.3rem;
+    margin-bottom: 2.5rem;
+    color: #ccc;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- Botones --- */
+.btn {
+    padding: 14px 35px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: var(--transition);
+    border: 2px solid var(--primary);
+    display: inline-block;
+}
+
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
+    background: transparent;
+    color: var(--primary);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--light);
+    color: var(--light);
+}
+
+.btn-outline:hover {
+    background: var(--light);
+    color: var(--dark);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+}
+
+/* --- Sección Portafolio --- */
+.portfolio {
+    padding: 6rem 5%;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 4rem;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Línea decorativa bajo el título */
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--primary);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+/* Grid de la Galería */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    grid-auto-flow: dense; /* Ayuda a rellenar huecos */
+}
+
+/* Estilos de las Tarjetas */
+.card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 350px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.card.tall {
+    grid-row: span 2; /* Ocupa 2 filas */
+    height: 725px;    /* Ajuste manual para coincidir con 2 filas + gap */
+}
+
+.card img, .card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover img, .card:hover video {
+    transform: scale(1.1);
+}
+
+/* Overlay de información */
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 25px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: var(--transition);
+}
+
+.card:hover .card-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-overlay h3 {
+    color: var(--primary);
+    margin-bottom: 5px;
+    font-size: 1.4rem;
+}
+
+.card-overlay p {
+    font-size: 0.95rem;
+    color: #e0e0e0;
+}
+
+/* --- Sección Contacto --- */
+.contact {
+    padding: 5rem 5%;
+    text-align: center;
+    background: #111;
+    margin-top: 4rem;
+}
+
+footer {
+    text-align: center;
+    padding: 2rem;
+    background: black;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* --- Clases para Animaciones JS --- */
+.hidden {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 0.8s ease-out;
+}
+
+.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Retrasos escalonados para elementos */
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+
+/* --- RESPONSIVE DESIGN (Móvil) --- */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem 5%;
+    }
+
+    .menu-toggle {
+        display: block; /* Muestra el icono hamburguesa */
+        z-index: 1001;  /* Asegura que esté por encima del menú */
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Oculto a la derecha */
+        width: 70%;
+        height: 100vh;
+        background: var(--dark-overlay);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: right 0.4s ease-in-out;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+    }
+
+    /* Clase que JS añadirá para abrir el menú */
+    .nav-links.active {
+        right: 0;
+    }
+
+    .hero-content h1 { font-size: 2.8rem; }
+    .card.tall { height: 350px; grid-row: span 1; } /* En móvil no usamos vertical largo */
+    .section-title { font-size: 2rem; }
+}
