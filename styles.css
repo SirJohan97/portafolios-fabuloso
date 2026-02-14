@@ -1,6 +1,6 @@
 /* --- Variables Globales --- */
 :root {
-    --primary: #ff6b35; /* Naranja corporativo */
+    --primary: #27ae60; /* Verde corporativo */
     --dark: #0a0a0a;    /* Fondo casi negro */
     --dark-overlay: rgba(10, 10, 10, 0.95);
     --light: #f4f4f4;
@@ -14,13 +14,19 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', system-ui, sans-serif;
-    scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en links */
+    scroll-behavior: smooth;
+    cursor: none; /* Ocultamos cursor por defecto para usar el personalizado en PC */
+}
+
+/* Reactivamos cursor normal en móviles */
+@media (max-width: 991px) {
+    * { cursor: auto; }
 }
 
 body {
     background-color: var(--dark);
     color: var(--light);
-    overflow-x: hidden; /* Evita scroll horizontal indeseado */
+    overflow-x: hidden;
 }
 
 /* --- Barra de Navegación --- */
@@ -32,8 +38,8 @@ body {
     position: fixed;
     width: 100%;
     top: 0;
-    background: rgba(10, 10, 10, 0.85); /* Fondo semitransparente */
-    backdrop-filter: blur(10px);        /* Efecto vidrio esmerilado */
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(10px);
     z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -46,9 +52,7 @@ body {
     letter-spacing: 1px;
 }
 
-.logo span {
-    color: var(--primary);
-}
+.logo span { color: var(--primary); }
 
 .nav-links {
     display: flex;
@@ -65,7 +69,6 @@ body {
     position: relative;
 }
 
-/* Efecto subrayado animado al pasar el mouse */
 .nav-links a::after {
     content: '';
     position: absolute;
@@ -77,15 +80,9 @@ body {
     transition: var(--transition);
 }
 
-.nav-links a:hover::after {
-    width: 100%;
-}
+.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover { color: var(--primary); }
 
-.nav-links a:hover {
-    color: var(--primary);
-}
-
-/* Icono Hamburguesa (Oculto en PC) */
 .menu-toggle {
     display: none;
     font-size: 1.8rem;
@@ -93,7 +90,13 @@ body {
     color: var(--light);
 }
 
-/* --- Hero Section (Portada) --- */
+/* --- Hero Section con Fondo Animado --- */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 .hero {
     height: 100vh;
     display: flex;
@@ -102,17 +105,37 @@ body {
     text-align: center;
     position: relative;
     padding: 0 1rem;
-    /* Fondo degradado sutil */
-    background: radial-gradient(circle at center, #1a1a1a 0%, var(--dark) 70%);
+    /* Nuevo Fondo Animado */
+    background: linear-gradient(-45deg, #050505, #1a1a1a, #0f2e1d, #000000);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
 }
 
 .hero-content h1 {
     font-size: 4.5rem;
     margin-bottom: 1rem;
     line-height: 1.1;
-    background: -webkit-linear-gradient(45deg, #fff, #bbb);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--light);
+}
+
+/* Efecto Typing Text */
+.typing-text {
+    color: var(--primary);
+    position: relative;
+    font-weight: 800;
+}
+
+.typing-text::after {
+    content: "|";
+    position: absolute;
+    right: -10px;
+    color: var(--light);
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 
 .hero-content p {
@@ -141,7 +164,7 @@ body {
 
 .btn:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
+    box-shadow: 0 10px 25px rgba(39, 174, 96, 0.4);
     background: transparent;
     color: var(--primary);
 }
@@ -159,9 +182,7 @@ body {
 }
 
 /* --- Sección Portafolio --- */
-.portfolio {
-    padding: 6rem 5%;
-}
+.portfolio { padding: 6rem 5%; }
 
 .section-title {
     text-align: center;
@@ -174,7 +195,6 @@ body {
     transform: translateX(-50%);
 }
 
-/* Línea decorativa bajo el título */
 .section-title::after {
     content: '';
     display: block;
@@ -185,27 +205,25 @@ body {
     border-radius: 2px;
 }
 
-/* Grid de la Galería */
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 25px;
-    grid-auto-flow: dense; /* Ayuda a rellenar huecos */
+    grid-auto-flow: dense;
 }
 
-/* Estilos de las Tarjetas */
 .card {
     position: relative;
     border-radius: 16px;
     overflow: hidden;
     height: 350px;
-    cursor: pointer;
+    cursor: none; /* Mantener cursor personalizado */
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .card.tall {
-    grid-row: span 2; /* Ocupa 2 filas */
-    height: 725px;    /* Ajuste manual para coincidir con 2 filas + gap */
+    grid-row: span 2;
+    height: 725px;
 }
 
 .card img, .card video {
@@ -215,11 +233,8 @@ body {
     transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.card:hover img, .card:hover video {
-    transform: scale(1.1);
-}
+.card:hover img, .card:hover video { transform: scale(1.1); }
 
-/* Overlay de información */
 .card-overlay {
     position: absolute;
     bottom: 0;
@@ -247,10 +262,7 @@ body {
     font-size: 1.4rem;
 }
 
-.card-overlay p {
-    font-size: 0.95rem;
-    color: #e0e0e0;
-}
+.card-overlay p { font-size: 0.95rem; color: #e0e0e0; }
 
 /* --- Sección Contacto --- */
 .contact {
@@ -268,6 +280,45 @@ footer {
     font-size: 0.9rem;
 }
 
+/* --- Cursor Personalizado --- */
+.cursor {
+    width: 50px;
+    height: 50px;
+    border: 1px solid var(--primary);
+    border-radius: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    transition: all 0.1s ease;
+    transition-property: background, transform;
+    backdrop-filter: blur(2px);
+}
+
+.cursor2 {
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    transition: left 0.1s, top 0.1s;
+}
+
+/* Efecto hover del cursor */
+.cursor.hovered {
+    transform: translate(-50%, -50%) scale(1.5);
+    background-color: rgba(39, 174, 96, 0.1); /* Verde transparente */
+    border-color: transparent;
+}
+
+/* Ocultar cursor personalizado en móviles */
+@media (max-width: 991px) {
+    .cursor, .cursor2 { display: none; }
+}
+
 /* --- Clases para Animaciones JS --- */
 .hidden {
     opacity: 0;
@@ -275,31 +326,21 @@ footer {
     transition: all 0.8s ease-out;
 }
 
-.show {
-    opacity: 1;
-    transform: translateY(0);
-}
+.show { opacity: 1; transform: translateY(0); }
 
-/* Retrasos escalonados para elementos */
 .delay-100 { transition-delay: 100ms; }
 .delay-200 { transition-delay: 200ms; }
 .delay-300 { transition-delay: 300ms; }
 
-/* --- RESPONSIVE DESIGN (Móvil) --- */
+/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
-    .navbar {
-        padding: 1rem 5%;
-    }
-
-    .menu-toggle {
-        display: block; /* Muestra el icono hamburguesa */
-        z-index: 1001;  /* Asegura que esté por encima del menú */
-    }
-
+    .navbar { padding: 1rem 5%; }
+    .menu-toggle { display: block; z-index: 1001; }
+    
     .nav-links {
         position: fixed;
         top: 0;
-        right: -100%; /* Oculto a la derecha */
+        right: -100%;
         width: 70%;
         height: 100vh;
         background: var(--dark-overlay);
@@ -309,13 +350,9 @@ footer {
         transition: right 0.4s ease-in-out;
         box-shadow: -5px 0 15px rgba(0,0,0,0.5);
     }
-
-    /* Clase que JS añadirá para abrir el menú */
-    .nav-links.active {
-        right: 0;
-    }
-
+    .nav-links.active { right: 0; }
+    
     .hero-content h1 { font-size: 2.8rem; }
-    .card.tall { height: 350px; grid-row: span 1; } /* En móvil no usamos vertical largo */
+    .card.tall { height: 350px; grid-row: span 1; }
     .section-title { font-size: 2rem; }
 }
