@@ -105,7 +105,6 @@ body {
     text-align: center;
     position: relative;
     padding: 0 1rem;
-    /* Nuevo Fondo Animado */
     background: linear-gradient(-45deg, #050505, #1a1a1a, #0f2e1d, #000000);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
@@ -212,13 +211,19 @@ body {
     grid-auto-flow: dense;
 }
 
+/* --- TARJETAS (CARDS) --- */
 .card {
     position: relative;
     border-radius: 16px;
     overflow: hidden;
     height: 350px;
-    cursor: none; /* Mantener cursor personalizado */
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    
+    /* Propiedades nuevas para enlaces */
+    display: block;        /* Para que funcione como caja siendo un <a> */
+    text-decoration: none; /* Quita el subrayado feo */
+    color: inherit;        /* Mantiene el color original */
+    cursor: none;          /* Mantiene tu cursor personalizado */
 }
 
 .card.tall {
@@ -307,14 +312,12 @@ footer {
     transition: left 0.1s, top 0.1s;
 }
 
-/* Efecto hover del cursor */
 .cursor.hovered {
     transform: translate(-50%, -50%) scale(1.5);
-    background-color: rgba(39, 174, 96, 0.1); /* Verde transparente */
+    background-color: rgba(39, 174, 96, 0.1);
     border-color: transparent;
 }
 
-/* Ocultar cursor personalizado en móviles */
 @media (max-width: 991px) {
     .cursor, .cursor2 { display: none; }
 }
@@ -332,7 +335,7 @@ footer {
 .delay-200 { transition-delay: 200ms; }
 .delay-300 { transition-delay: 300ms; }
 
-/* --- RESPONSIVE --- */
+/* --- RESPONSIVE GENERAL --- */
 @media (max-width: 768px) {
     .navbar { padding: 1rem 5%; }
     .menu-toggle { display: block; z-index: 1001; }
@@ -355,4 +358,89 @@ footer {
     .hero-content h1 { font-size: 2.8rem; }
     .card.tall { height: 350px; grid-row: span 1; }
     .section-title { font-size: 2rem; }
+}
+
+
+/* --- NUEVO: CARRUSEL DE TECNOLOGÍAS --- */
+.tech-stack {
+    padding: 3rem 0;
+    background: var(--dark);
+    overflow: hidden;
+    position: relative;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-150px * 7)); } /* Mueve 7 slides y se reinicia */
+}
+
+.slider {
+    background: transparent;
+    height: 100px;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.slide-track {
+    display: flex;
+    width: calc(150px * 14); /* 14 iconos totales */
+    animation: scroll 20s linear infinite;
+}
+
+.slide {
+    height: 100px;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: var(--gray);
+    transition: all 0.3s ease;
+}
+
+.slide:hover { 
+    color: var(--primary); 
+    filter: drop-shadow(0 0 10px var(--primary)); 
+    transform: scale(1.1);
+}
+
+/* --- NUEVO: BOTÓN FLOTANTE WHATSAPP --- */
+.whatsapp-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #25d366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 10000;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    cursor: pointer; /* Fuerza cursor de mano */
+}
+
+.whatsapp-btn:hover {
+    transform: scale(1.1) rotate(10deg);
+    background-color: #128c7e;
+    box-shadow: 0 0 20px rgba(37, 211, 102, 0.6);
+}
+
+/* Ajuste WhatsApp móvil */
+@media (max-width: 768px) {
+    .whatsapp-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 28px;
+        bottom: 20px;
+        right: 20px;
+    }
 }

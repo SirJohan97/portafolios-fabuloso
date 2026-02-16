@@ -4,8 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canguro's.inc | Portafolio</title>
+    
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <meta name="description" content="Portafolio de Canguro's.inc. Desarrollo web, aplicaciones móviles y soluciones informáticas a medida.">
+    <meta name="keywords" content="desarrollo web, python, html, css, app, venezuela, programador, iuta">
+    <meta name="author" content="Johan Fernández">
+    
+    <meta property="og:title" content="Canguro's.inc | Soluciones Digitales">
+    <meta property="og:description" content="Echa un vistazo a nuestros últimos proyectos de desarrollo y diseño.">
+    <meta property="og:image" content="img/tu-logo-grande.jpg"> 
+    <meta property="og:url" content="https://tu-url-de-vercel.app">
 </head>
 <body>
     <div class="cursor"></div>
@@ -36,13 +46,17 @@
         <h2 class="section-title hidden">Nuestro Trabajo</h2>
         
         <div class="gallery-grid">
-            <div class="card hidden delay-100">
-                <img src="img/pana-fresco.jpeg" alt="gatillo">
+            
+            <a href="https://biblioteca-ashy-sigma.vercel.app" class="card hidden delay-100" target="_blank">
+                <video autoplay muted loop playsinline>
+                    <source src="videos/cerdiv-video.mp4" type="video/mp4">
+                    Tu navegador no soporta video.
+                </video>
                 <div class="card-overlay">
-                    <h3>Sistema de ventas</h3>
-                    <p>Desarrollo en michipython</p>
+                    <h3>Sistema de gestión bibliotecaria IUTA</h3>
+                    <p>Desarrollo en Python <i class="fas fa-external-link-alt"></i></p>
                 </div>
-            </div>
+            </a>
 
             <div class="card hidden delay-200">
                 <video autoplay muted loop playsinline>
@@ -51,7 +65,7 @@
                 </video>
                 <div class="card-overlay">
                     <h3>Velocidad, soy veloz</h3>
-                    <p>1 ganador, 42 perdedores, yo desayuno perdedores</p>
+                    <p>Edición y Motion Graphics</p>
                 </div>
             </div>
 
@@ -73,17 +87,36 @@
         </div>
     </section>
 
-    <section id="contact" class="contact">
-        <div class="contact-content hidden">
-            <h2>¿Listo para saltar al siguiente nivel?</h2>
-            <p>Contáctanos para empezar tu próximo proyecto.</p>
-            <a href="mailto:hola@canguros.inc" class="btn btn-outline">Hablemos</a>
+
+    <section class="tech-stack">
+        <h3 class="section-title" style="margin-bottom: 2rem; color: white;">Tecnologías que dominamos</h3>
+        <div class="slider">
+            <div class="slide-track">
+                <div class="slide"><i class="fab fa-html5"></i></div>
+                <div class="slide"><i class="fab fa-css3-alt"></i></div>
+                <div class="slide"><i class="fab fa-js"></i></div>
+                <div class="slide"><i class="fab fa-python"></i></div>
+                <div class="slide"><i class="fab fa-react"></i></div>
+                <div class="slide"><i class="fab fa-git-alt"></i></div>
+                <div class="slide"><i class="fab fa-node"></i></div>
+                <div class="slide"><i class="fab fa-html5"></i></div>
+                <div class="slide"><i class="fab fa-css3-alt"></i></div>
+                <div class="slide"><i class="fab fa-js"></i></div>
+                <div class="slide"><i class="fab fa-python"></i></div>
+                <div class="slide"><i class="fab fa-react"></i></div>
+                <div class="slide"><i class="fab fa-git-alt"></i></div>
+                <div class="slide"><i class="fab fa-node"></i></div>
+            </div>
         </div>
     </section>
 
     <footer>
         <p>&copy; 2026 Canguro's.inc. Todos los derechos reservados.</p>
     </footer>
+
+    <a href="https://wa.me/584127121162?text=Hola,%20vengo%20de%20tu%20portafolio%20y%20quiero%20cotizar" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <script src="script.js"></script>
 </body>
