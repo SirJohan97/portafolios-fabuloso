@@ -180,18 +180,29 @@ body {
     box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
 }
 
-/* --- Sección Portafolio --- */
-.portfolio { padding: 6rem 5%; }
+/* =========================================
+   SECCIÓN PORTAFOLIO
+   ========================================= */
+.portfolio { 
+    padding: 6rem 5%; 
+    /* Contenedor flex para centrar el título */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+/* =========================================
+   TÍTULO DE SECCIÓN (CENTRADO)
+   ========================================= */
 .section-title {
     text-align: center;
     margin-bottom: 4rem;
     font-size: 2.5rem;
     text-transform: uppercase;
     position: relative;
-    display: inline-block;
-    left: 50%;
-    transform: translateX(-50%);
+    /* Cambio a block para centrado perfecto */
+    display: block;
+    width: 100%;
 }
 
 .section-title::after {
@@ -204,41 +215,72 @@ body {
     border-radius: 2px;
 }
 
+/* =========================================
+   GRILLA DE PROYECTOS (GALLERY GRID)
+   ========================================= */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    /* Grid con tamaño fijo para tarjetas uniformes */
+    grid-template-columns: repeat(auto-fill, minmax(350px, 350px));
     gap: 25px;
-    grid-auto-flow: dense;
+    /* Centra las tarjetas cuando no llenan toda la fila */
+    justify-content: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-/* --- TARJETAS (CARDS) --- */
+/* =========================================
+   TARJETAS DE PROYECTOS (CARDS)
+   ========================================= */
 .card {
     position: relative;
     border-radius: 16px;
     overflow: hidden;
-    height: 350px;
+    /* Altura uniforme para todas las tarjetas */
+    height: 400px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     
-    /* Propiedades nuevas para enlaces */
+    /* Propiedades para enlaces */
     display: block;        /* Para que funcione como caja siendo un <a> */
     text-decoration: none; /* Quita el subrayado feo */
     color: inherit;        /* Mantiene el color original */
     cursor: none;          /* Mantiene tu cursor personalizado */
+    
+    /* Estado inicial para animación de scroll */
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
+/* Estado visible cuando la tarjeta entra en el viewport */
+.card.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Tarjeta alta - mantiene proporción pero con altura ajustada */
 .card.tall {
     grid-row: span 2;
-    height: 725px;
+    /* Altura proporcional: 2 tarjetas normales + gap */
+    height: calc(400px * 2 + 25px);
 }
 
+/* =========================================
+   IMÁGENES Y VIDEOS DENTRO DE TARJETAS
+   ========================================= */
 .card img, .card video {
     width: 100%;
     height: 100%;
+    /* Mantiene proporción sin deformar */
     object-fit: cover;
     transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.card:hover img, .card:hover video { transform: scale(1.1); }
+/* Efecto zoom al hacer hover */
+.card:hover img, .card:hover video { 
+    transform: scale(1.1); 
+}
 
 .card-overlay {
     position: absolute;
@@ -335,7 +377,20 @@ footer {
 .delay-200 { transition-delay: 200ms; }
 .delay-300 { transition-delay: 300ms; }
 
-/* --- RESPONSIVE GENERAL --- */
+/* =========================================
+   RESPONSIVE PARA TABLETS
+   ========================================= */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .gallery-grid {
+        /* En tablets, 2 columnas con tamaño estándar */
+        grid-template-columns: repeat(2, 350px);
+        justify-content: center;
+    }
+}
+
+/* =========================================
+   RESPONSIVE GENERAL PARA MÓVIL
+   ========================================= */
 @media (max-width: 768px) {
     .navbar { padding: 1rem 5%; }
     .menu-toggle { display: block; z-index: 1001; }
@@ -356,7 +411,26 @@ footer {
     .nav-links.active { right: 0; }
     
     .hero-content h1 { font-size: 2.8rem; }
-    .card.tall { height: 350px; grid-row: span 1; }
+    
+    /* =========================================
+       GRID RESPONSIVE PARA MÓVIL
+       ========================================= */
+    .gallery-grid {
+        /* En móvil, una sola columna con ancho completo */
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    /* En móvil, las tarjetas altas vuelven a tamaño normal */
+    .card.tall { 
+        height: 400px; 
+        grid-row: span 1; 
+    }
+    /* Todas las tarjetas tienen la misma altura en móvil */
+    .card {
+        height: 400px;
+        width: 100%;
+    }
     .section-title { font-size: 2rem; }
 }
 
