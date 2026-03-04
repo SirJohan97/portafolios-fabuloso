@@ -184,4 +184,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* Inicia el efecto typing */
     typeEffect();
+
+    /* =========================================
+       6. FORMULARIO A WHATSAPP
+       ========================================= */
+    const formContacto = document.getElementById('formContactoWa');
+    
+    if (formContacto) {
+        formContacto.addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita que la página se recargue
+
+            // Capturamos los valores de los inputs
+            const nombre = document.getElementById('waNombre').value;
+            const email = document.getElementById('waEmail').value;
+            const mensaje = document.getElementById('waMensaje').value;
+
+            // Formateamos el mensaje para que se vea ordenado en WhatsApp
+            const textoMensaje = `¡Hola! Vengo del portafolio y quiero cotizar un proyecto.%0A%0A*Nombre:* ${nombre}%0A*Correo:* ${email}%0A*Requerimiento:* ${mensaje}`;
+
+            // Número de destino (el mismo que ya usas en tu botón flotante)
+            const numeroWa = "584127121162";
+
+            // Creamos el enlace final
+            const urlWa = `https://wa.me/${numeroWa}?text=${textoMensaje}`;
+
+            // Abrimos WhatsApp en una pestaña nueva
+            window.open(urlWa, '_blank', 'noopener,noreferrer');
+        });
+    }
 });

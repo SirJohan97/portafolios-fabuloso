@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canguro's.inc | Portafolio</title>
     
-    <!-- ?v=2 evita que el navegador use la versión en caché kajskaj-->
     <link rel="stylesheet" href="styles.css?v=2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -48,7 +47,7 @@
         
         <div class="gallery-grid">
             
-            <a href="https://biblioteca-ashy-sigma.vercel.app" class="card hidden delay-100" target="_blank">
+            <a href="https://biblioteca-ashy-sigma.vercel.app" class="card hidden delay-100" target="_blank" rel="noopener noreferrer">
                 <video autoplay muted loop playsinline>
                     <source src="videos/cerdiv-video.mp4" type="video/mp4">
                     Tu navegador no soporta video.
@@ -71,23 +70,43 @@
             </div>
 
             <div class="card hidden delay-300">
-                <img src="https://source.unsplash.com/random/600x800?coding" alt="App Móvil">
+                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800&auto=format&fit=crop" alt="App Móvil Comercial">
                 <div class="card-overlay">
-                    <h3>App Móvil</h3>
-                    <p>Desarrollo React Native</p>
+                    <h3>App Móvil Comercial</h3>
+                    <p>Desarrollo y diseño de interfaz pensada para escalabilidad y venta.</p>
                 </div>
             </div>
 
             <div class="card hidden delay-100">
-                <img src="https://source.unsplash.com/random/800x600?design" alt="Branding">
+                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=800&auto=format&fit=crop" alt="Topología de Red">
                 <div class="card-overlay">
-                    <h3>Rebranding</h3>
-                    <p>Identidad Visual</p>
+                    <h3>Diseño de Red Corporativa</h3>
+                    <p>Proyecto TechSoluciones: Subnetting, VLANs y configuración en Cisco Packet Tracer.</p>
                 </div>
+            </div>
+
+        </div> 
+    </section>
+
+    <section id="services" class="portfolio" style="background-color: var(--dark-overlay);">
+        <h2 class="section-title hidden">Nuestros Servicios</h2>
+        <div class="gallery-grid">
+            <div class="card hidden delay-100" style="height: auto; padding: 30px; background: #1a1a1a;">
+                <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-code"></i> Desarrollo de Software</h3>
+                <p>Creación de aplicaciones web full-stack, sistemas de gestión de bases de datos e integración de APIs. Soluciones escalables desplegadas en plataformas modernas.</p>
+            </div>
+            
+            <div class="card hidden delay-200" style="height: auto; padding: 30px; background: #1a1a1a;">
+                <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-robot"></i> Integración de IA y Automatización</h3>
+                <p>Implementación de agentes de inteligencia artificial y automatización de procesos mediante código para optimizar flujos de trabajo y potenciar las herramientas de productividad de tu negocio.</p>
+            </div>
+
+            <div class="card hidden delay-300" style="height: auto; padding: 30px; background: #1a1a1a;">
+                <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-network-wired"></i> Infraestructura y Redes</h3>
+                <p>Diseño, simulación y configuración de topologías de red, estructuración de VLANs y optimización de conectividad para entornos corporativos.</p>
             </div>
         </div>
     </section>
-
 
     <section class="tech-stack">
         <h3 class="section-title" style="margin-bottom: 2rem; color: white;">Tecnologías que dominamos</h3>
@@ -111,12 +130,98 @@
         </div>
     </section>
 
+    <section id="team" class="contact" style="background: var(--dark);">
+        <h2 class="section-title hidden">El Equipo</h2>
+        <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 2rem;">
+            
+            <div class="hidden delay-100" style="text-align: center; max-width: 250px;">
+                <div style="width: 150px; height: 150px; border-radius: 50%; background: #333; margin: 0 auto 15px; border: 3px solid var(--primary);">
+                    </div>
+                <h3 style="color: var(--light);">Andrés Morales</h3>
+                <p style="color: var(--primary); font-size: 0.9rem; margin-bottom: 10px;">Desarrollo & Lógica</p>
+                <p style="font-size: 0.85rem; color: #aaa;">Arquitectura de software, bases de datos y despliegue técnico.</p>
+            </div>
+
+            <div class="hidden delay-200" style="text-align: center; max-width: 250px;">
+                <div style="width: 150px; height: 150px; border-radius: 50%; background: #333; margin: 0 auto 15px; border: 3px solid var(--primary);">
+                    </div>
+                <h3 style="color: var(--light);">Johan Fernández</h3>
+                <p style="color: var(--primary); font-size: 0.9rem; margin-bottom: 10px;">Socio / UI & UX</p>
+                <p style="font-size: 0.85rem; color: #aaa;">Identidad corporativa, paletas de colores y experiencia de usuario.</p>
+            </div>
+
+            <div class="hidden delay-300" style="text-align: center; max-width: 250px;">
+                <img src="img/pana-fresco.jpeg" alt="Mascota de la empresa" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin: 0 auto 15px; border: 3px solid var(--gray);">
+                <h3 style="color: var(--light);">El Pana Fresco</h3>
+                <p style="color: var(--primary); font-size: 0.9rem; margin-bottom: 10px;">Gerente de Estrés</p>
+                <p style="font-size: 0.85rem; color: #aaa;">Se encarga de dormir mientras los servidores compilan.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="metodologia" class="portfolio" style="background-color: var(--dark);">
+        <h2 class="section-title hidden">Cómo Trabajamos</h2>
+        
+        <div class="gallery-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1200px;">
+            
+            <div class="hidden delay-100" style="text-align: center; padding: 20px;">
+                <div style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"><i class="fas fa-search"></i></div>
+                <h3 style="color: white; margin-bottom: 10px;">1. Análisis</h3>
+                <p style="color: #aaa; font-size: 0.95rem;">Entendemos los requerimientos de tu negocio, estructuramos la lógica y diseñamos la arquitectura ideal para el proyecto.</p>
+            </div>
+
+            <div class="hidden delay-200" style="text-align: center; padding: 20px;">
+                <div style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"><i class="fas fa-laptop-code"></i></div>
+                <h3 style="color: white; margin-bottom: 10px;">2. Desarrollo</h3>
+                <p style="color: #aaa; font-size: 0.95rem;">Escribimos código limpio y escalable. Desde la creación de bases de datos sólidas hasta interfaces de usuario atractivas.</p>
+            </div>
+
+            <div class="hidden delay-300" style="text-align: center; padding: 20px;">
+                <div style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"><i class="fas fa-cloud-upload-alt"></i></div>
+                <h3 style="color: white; margin-bottom: 10px;">3. Despliegue</h3>
+                <p style="color: #aaa; font-size: 0.95rem;">Configuramos los entornos y subimos el proyecto a plataformas en la nube de alta disponibilidad para un rendimiento óptimo.</p>
+            </div>
+
+            <div class="hidden delay-100" style="text-align: center; padding: 20px;">
+                <div style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"><i class="fas fa-check-circle"></i></div>
+                <h3 style="color: white; margin-bottom: 10px;">4. Entrega</h3>
+                <p style="color: #aaa; font-size: 0.95rem;">Realizamos pruebas finales, entregamos el producto funcionando al 100% y ofrecemos soporte técnico continuo mediante una subscripcion mensual.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="contact" class="contact" style="padding: 5rem 5%; background: #111; text-align: center;">
+        <h2 class="section-title hidden">Contacto</h2>
+        
+        <div class="hidden delay-100" style="max-width: 850px; width: 90%; margin: 0 auto; background: #1a1a1a; padding: 50px; border-radius: 16px; text-align: left;">
+            <h3 style="color: var(--primary); margin-bottom: 20px; text-align: center;">Cuéntanos sobre tu proyecto</h3>
+            
+            <form id="formContactoWa">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #ccc;">Nombre o Empresa</label>
+                    <input type="text" id="waNombre" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #2d2d2d; color: white;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #ccc;">Correo Electrónico</label>
+                    <input type="email" id="waEmail" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #2d2d2d; color: white;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; color: #ccc;">¿Qué necesitas?</label>
+                    <textarea id="waMensaje" rows="4" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #2d2d2d; color: white; resize: vertical;"></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%; cursor: none;">Enviar por WhatsApp <i class="fab fa-whatsapp"></i></button>
+            </form>
+        </div>
+    </section>
+
     <footer>
         <p>&copy; 2026 Canguro's.inc. Todos los derechos reservados.</p>
     </footer>
 
-    <a href="https://wa.me/584127121162?text=Hola,%20vengo%20de%20tu%20portafolio%20y%20quiero%20cotizar" class="whatsapp-btn" target="_blank">
-        <i class="fab fa-whatsapp"></i>
+    <a href="https://wa.me/584127121162?text=Hola,%20vengo%20de%20tu%20portafolio%20y%20quiero%20cotizar" class="whatsapp-btn" target="_blank" rel="noopener noreferrer">
+    <i class="fab fa-whatsapp"></i>
     </a>
 
     <script src="script.js"></script>
