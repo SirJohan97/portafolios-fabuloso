@@ -1,215 +1,211 @@
 /* =========================================
-   INICIO DEL SCRIPT - ESPERA A QUE EL DOM ESTÉ LISTO
+   INICIO DEL SCRIPT
    ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
 
     /* =========================================
        1. MENÚ MÓVIL (HAMBURGUESA)
        ========================================= */
-    
-    /* Selección de elementos del menú móvil */
-    const menuToggle = document.querySelector('.menu-toggle');  // Botón hamburguesa
-    const navLinks = document.querySelector('.nav-links');       // Contenedor del menú
-    const links = document.querySelectorAll('.nav-links a');    // Todos los enlaces del menú
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks   = document.querySelector('.nav-links');
+    const links      = document.querySelectorAll('.nav-links a');
 
-    /* Evento click en el botón hamburguesa para abrir/cerrar menú */
     if (menuToggle) {
         menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');              // Muestra/oculta el menú
-            menuToggle.classList.toggle('fa-times');         // Cambia el icono a X
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
         });
     }
 
-    /* Cierra el menú cuando se hace click en cualquier enlace */
     links.forEach(link => {
         link.addEventListener('click', () => {
-            navLinks.classList.remove('active');             // Oculta el menú
-            menuToggle.classList.remove('fa-times');        // Restaura el icono hamburguesa
+            navLinks.classList.remove('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-times');
         });
     });
 
     /* =========================================
-       2. ANIMACIONES AL HACER SCROLL
+       2. ANIMACIONES AL HACER SCROLL (.hidden)
        ========================================= */
-    
-    /* Configuración del Intersection Observer para elementos generales */
     const observerOptions = {
-        root: null,           // Usa el viewport como contenedor
-        threshold: 0.15,      // Se activa cuando el 15% del elemento es visible
-        rootMargin: "0px"     // Sin margen adicional
+        root: null,
+        threshold: 0.12,
+        rootMargin: "0px"
     };
 
-    /* Observer para elementos con clase .hidden (títulos, textos, etc.) */
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('show');
-                observer.unobserve(entry.target);
+                obs.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    const hiddenElements = document.querySelectorAll('.hidden');
-    hiddenElements.forEach((el) => observer.observe(el));
+    document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 
     /* =========================================
-       2.1. ANIMACIONES ESPECÍFICAS PARA TARJETAS DE PROYECTOS
+       2.1. ANIMACIONES PARA TARJETAS
        ========================================= */
-    
-    /* Configuración específica para tarjetas con umbral más bajo */
     const cardObserverOptions = {
         root: null,
-        threshold: 0.1,        // Se activa más temprano (10% visible)
-        rootMargin: "50px"    // Margen para activar antes de entrar completamente
+        threshold: 0.1,
+        rootMargin: "50px"
     };
 
-    /* Observer dedicado para las tarjetas de proyectos */
-    const cardObserver = new IntersectionObserver((entries, observer) => {
+    const cardObserver = new IntersectionObserver((entries, obs) => {
         entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
-                // Agrega un pequeño delay escalonado para efecto cascada
                 setTimeout(() => {
                     entry.target.classList.add('visible');
-                }, index * 100); // 100ms de diferencia entre cada tarjeta
-                observer.unobserve(entry.target);
+                }, index * 100);
+                obs.unobserve(entry.target);
             }
         });
     }, cardObserverOptions);
 
-    /* Observa todas las tarjetas de proyectos */
-    const projectCards = document.querySelectorAll('.gallery-grid .card');
-    projectCards.forEach((card) => {
+    document.querySelectorAll('.gallery-grid .card').forEach(card => {
         cardObserver.observe(card);
     });
 
     /* =========================================
-       3. EFECTO PARALLAX SUAVE EN EL HERO
+       3. CONTADOR ANIMADO DE ESTADÍSTICAS
        ========================================= */
-    
-    /* Selección del contenido del hero */
-    const heroContent = document.querySelector('.hero-content');
-    
-    /* Evento de scroll para crear efecto parallax */
-    window.addEventListener('scroll', () => {
-        const scrollPosition = window.scrollY;  // Posición actual del scroll
-        
-        /* Solo aplica el efecto en los primeros 800px de scroll */
-        if (scrollPosition < 800 && heroContent) {
-            /* Mueve el contenido hacia abajo con velocidad reducida (0.4x) */
-            heroContent.style.transform = `translateY(${scrollPosition * 0.4}px)`;
-            /* Reduce la opacidad gradualmente hasta desaparecer */
-            heroContent.style.opacity = 1 - scrollPosition / 600;
-        }
-    });
+    function animateCounter(el) {
+        const target   = parseInt(el.getAttribute('data-target'), 10);
+        const duration = 1800; // ms
+        const step     = target / (duration / 16); // ~60fps
+        let current    = 0;
+
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            el.textContent = Math.floor(current);
+        }, 16);
+    }
+
+    const statsObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counters = entry.target.querySelectorAll('.stat-number');
+                counters.forEach(c => animateCounter(c));
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) statsObserver.observe(statsSection);
 
     /* =========================================
-       4. CURSOR PERSONALIZADO
+       4. EFECTO PARALLAX SUAVE EN EL HERO
        ========================================= */
-    
-    /* Selección de los elementos del cursor personalizado */
-    const cursor = document.querySelector('.cursor');   // Cursor grande (anillo)
-    const cursor2 = document.querySelector('.cursor2'); // Cursor pequeño (punto)
-    
-    /* Solo activar en pantallas grandes (para no molestar en móviles) */
-    if (window.innerWidth > 991) {
-        /* Evento de movimiento del mouse para seguir el cursor */
-        document.addEventListener('mousemove', function(e){
-            /* Actualiza la posición del cursor pequeño (punto) */
+    const heroContent = document.querySelector('.hero-content');
+
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        if (scrollY < 800 && heroContent) {
+            heroContent.style.transform = `translateY(${scrollY * 0.35}px)`;
+            heroContent.style.opacity   = 1 - scrollY / 650;
+        }
+    }, { passive: true });
+
+    /* =========================================
+       5. CURSOR PERSONALIZADO
+       ========================================= */
+    const cursor  = document.querySelector('.cursor');
+    const cursor2 = document.querySelector('.cursor2');
+
+    if (window.innerWidth > 991 && cursor) {
+        document.addEventListener('mousemove', e => {
             cursor2.style.left = e.clientX + "px";
-            cursor2.style.top = e.clientY + "px";
-            /* Actualiza la posición del cursor grande (anillo) */
-            cursor.style.left = e.clientX + "px";
-            cursor.style.top = e.clientY + "px";
+            cursor2.style.top  = e.clientY + "px";
+            cursor.style.left  = e.clientX + "px";
+            cursor.style.top   = e.clientY + "px";
         });
 
-        /* Efecto hover en elementos interactivos */
-        const linksAndButtons = document.querySelectorAll('a, button, .card, .logo');
-        linksAndButtons.forEach(item => {
-            /* Agrega clase 'hovered' cuando el mouse entra al elemento */
-            item.addEventListener('mouseover', () => cursor.classList.add('hovered'));
-            /* Remueve clase 'hovered' cuando el mouse sale del elemento */
+        document.querySelectorAll('a, button, .card, .logo, .service-card, .team-card, .method-step, .testimonial-card, .pricing-card').forEach(item => {
+            item.addEventListener('mouseover',  () => cursor.classList.add('hovered'));
             item.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
     }
 
     /* =========================================
-       5. EFECTO MÁQUINA DE ESCRIBIR (Typing)
+       6. EFECTO MÁQUINA DE ESCRIBIR
        ========================================= */
-    
-    /* Selección del elemento donde se mostrará el texto animado */
     const textElement = document.querySelector('.typing-text');
-    
-    /* Array de palabras que se mostrarán en el efecto typing */
-    const words = ["Experiencias.", "Innovación.", "Tecnología.", "Tu Futuro."];
-    
-    /* Variables de control del efecto typing */
-    let wordIndex = 0;      // Índice de la palabra actual
-    let charIndex = 0;      // Índice del carácter actual
-    let isDeleting = false; // Indica si está borrando o escribiendo
+    const words       = ["Experiencias.", "Innovación.", "Tecnología.", "Tu Futuro."];
+    let wordIndex   = 0;
+    let charIndex   = 0;
+    let isDeleting  = false;
 
-    /* Función recursiva que crea el efecto de máquina de escribir */
     function typeEffect() {
-        /* Verifica que el elemento exista antes de continuar */
         if (!textElement) return;
-
-        /* Obtiene la palabra actual del array */
         const currentWord = words[wordIndex];
-        
-        /* Modo borrado: elimina caracteres uno por uno */
+
         if (isDeleting) {
             textElement.textContent = currentWord.substring(0, charIndex--);
-            /* Cuando termina de borrar, pasa a la siguiente palabra */
             if (charIndex < 0) {
-                isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length;  // Cicla al inicio si llega al final
-                setTimeout(typeEffect, 500);  // Espera 500ms antes de empezar a escribir
+                isDeleting  = false;
+                wordIndex   = (wordIndex + 1) % words.length;
+                setTimeout(typeEffect, 500);
                 return;
             }
-        } 
-        /* Modo escritura: agrega caracteres uno por uno */
-        else {
+        } else {
             textElement.textContent = currentWord.substring(0, charIndex++);
-            /* Cuando termina de escribir, espera y luego borra */
             if (charIndex > currentWord.length) {
                 isDeleting = true;
-                setTimeout(typeEffect, 2000); // Espera 2 segundos antes de borrar
+                setTimeout(typeEffect, 2200);
                 return;
             }
         }
-        
-        /* Velocidad de escritura/borrado (más rápido al borrar) */
-        const speed = isDeleting ? 100 : 150;
-        setTimeout(typeEffect, speed);
+
+        setTimeout(typeEffect, isDeleting ? 80 : 140);
     }
 
-    /* Inicia el efecto typing */
     typeEffect();
 
     /* =========================================
-       6. FORMULARIO A WHATSAPP
+       7. FORMULARIO A WHATSAPP
        ========================================= */
     const formContacto = document.getElementById('formContactoWa');
-    
+
     if (formContacto) {
-        formContacto.addEventListener('submit', function(event) {
-            event.preventDefault(); // Evita que la página se recargue
+        formContacto.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-            // Capturamos los valores de los inputs
-            const nombre = document.getElementById('waNombre').value;
-            const email = document.getElementById('waEmail').value;
-            const mensaje = document.getElementById('waMensaje').value;
+            const nombre  = document.getElementById('waNombre').value.trim();
+            const email   = document.getElementById('waEmail').value.trim();
+            const mensaje = document.getElementById('waMensaje').value.trim();
 
-            // Formateamos el mensaje para que se vea ordenado en WhatsApp
-            const textoMensaje = `¡Hola! Vengo del portafolio y quiero cotizar un proyecto.%0A%0A*Nombre:* ${nombre}%0A*Correo:* ${email}%0A*Requerimiento:* ${mensaje}`;
+            if (!nombre || !email || !mensaje) return;
 
-            // Número de destino (el mismo que ya usas en tu botón flotante)
-            const numeroWa = "584127121162";
+            const textoMensaje = `¡Hola! Vengo del portafolio y quiero cotizar un proyecto.%0A%0A*Nombre:* ${encodeURIComponent(nombre)}%0A*Correo:* ${encodeURIComponent(email)}%0A*Requerimiento:* ${encodeURIComponent(mensaje)}`;
+            const numeroWa     = "584127121162";
+            const urlWa        = `https://wa.me/${numeroWa}?text=${textoMensaje}`;
 
-            // Creamos el enlace final
-            const urlWa = `https://wa.me/${numeroWa}?text=${textoMensaje}`;
-
-            // Abrimos WhatsApp en una pestaña nueva
             window.open(urlWa, '_blank', 'noopener,noreferrer');
         });
     }
+
+    /* =========================================
+       8. NAVBAR SCROLL ACTIVO
+       ========================================= */
+    const navbar = document.querySelector('.navbar');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.style.background = 'rgba(10, 10, 10, 0.97)';
+        } else {
+            navbar.style.background = 'rgba(10, 10, 10, 0.85)';
+        }
+    }, { passive: true });
+
 });

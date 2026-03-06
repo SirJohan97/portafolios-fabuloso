@@ -4,20 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canguro's.inc | Portafolio</title>
+    <title>Canguro's.inc | Soluciones Digitales</title>
 
-    <link rel="stylesheet" href="styles.css?v=2">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Google Fonts: Inter + Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css?v=3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <meta name="description"
-        content="Portafolio de Canguro's.inc. Desarrollo web, aplicaciones móviles y soluciones informáticas a medida.">
-    <meta name="keywords" content="desarrollo web, python, html, css, app, venezuela, programador, iuta">
-    <meta name="author" content="Johan Fernández">
+        content="Canguro's.inc — Desarrollo web, automatización con IA, apps móviles e infraestructura de redes a medida. Soluciones digitales profesionales en Venezuela.">
+    <meta name="keywords"
+        content="desarrollo web, python, html, css, app, venezuela, programador, automatización, inteligencia artificial">
+    <meta name="author" content="Johan Fernández & Andrés Morales">
 
-    <meta property="og:title" content="Canguro's.inc | Soluciones Digitales">
-    <meta property="og:description" content="Echa un vistazo a nuestros últimos proyectos de desarrollo y diseño.">
-    <meta property="og:image" content="img/tu-logo-grande.jpg">
-    <meta property="og:url" content="https://tu-url-de-vercel.app">
+    <meta property="og:title" content="Canguro's.inc | Soluciones Digitales Profesionales">
+    <meta property="og:description"
+        content="Desarrollamos software, integramos IA y diseñamos infraestructura de redes. Mira nuestros proyectos.">
+    <meta property="og:image" content="img/pana-fresco.jpeg">
+    <meta property="og:url" content="https://canguros-inc.vercel.app">
+    <meta property="og:type" content="website">
 </head>
 
 <body>
@@ -31,21 +44,53 @@
             <li><a href="#portfolio">Proyectos</a></li>
             <li><a href="#services">Servicios</a></li>
             <li><a href="#pricing">Planes</a></li>
-            <li><a href="#contact">Contacto</a></li>
+            <li><a href="#contact" class="nav-cta">Contacto</a></li>
         </ul>
         <div class="menu-toggle">
             <i class="fas fa-bars"></i>
         </div>
     </nav>
 
+    <!-- ===== HERO ===== -->
     <header id="home" class="hero">
         <div class="hero-content hidden">
+            <div class="hero-badge">🚀 Disponibles para nuevos proyectos</div>
             <h1>Impulsamos <span class="typing-text"></span></h1>
-            <p>Desarrollo, diseño y creatividad en movimiento.</p>
-            <a href="#portfolio" class="btn">Ver Proyectos</a>
+            <p>Desarrollamos software, integramos inteligencia artificial y diseñamos infraestructura tecnológica para
+                llevar tu negocio al siguiente nivel.</p>
+            <div class="hero-btns">
+                <a href="#portfolio" class="btn">Ver Proyectos</a>
+                <a href="#contact" class="btn btn-outline">Habla con nosotros</a>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <span></span>
         </div>
     </header>
 
+    <!-- ===== STATS ===== -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item hidden">
+                <span class="stat-number" data-target="8">0</span><span class="stat-suffix">+</span>
+                <p>Proyectos entregados</p>
+            </div>
+            <div class="stat-item hidden delay-100">
+                <span class="stat-number" data-target="6">0</span><span class="stat-suffix">+</span>
+                <p>Clientes satisfechos</p>
+            </div>
+            <div class="stat-item hidden delay-200">
+                <span class="stat-number" data-target="12">0</span><span class="stat-suffix">+</span>
+                <p>Tecnologías dominadas</p>
+            </div>
+            <div class="stat-item hidden delay-300">
+                <span class="stat-number" data-target="100">0</span><span class="stat-suffix">%</span>
+                <p>Proyectos en producción</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PORTAFOLIO ===== -->
     <section id="portfolio" class="portfolio">
         <h2 class="section-title hidden">Nuestro Trabajo</h2>
 
@@ -58,8 +103,10 @@
                     Tu navegador no soporta video.
                 </video>
                 <div class="card-overlay">
-                    <h3>Sistema de gestión bibliotecaria IUTA</h3>
-                    <p>Desarrollo en Python <i class="fas fa-external-link-alt"></i></p>
+                    <span class="card-tag">Python · Backend</span>
+                    <h3>Sistema de Gestión Bibliotecaria IUTA</h3>
+                    <p>Aplicación de escritorio para administración de inventario y préstamos <i
+                            class="fas fa-external-link-alt"></i></p>
                 </div>
             </a>
 
@@ -69,8 +116,9 @@
                     Tu navegador no soporta video.
                 </video>
                 <div class="card-overlay">
-                    <h3>Velocidad, soy veloz</h3>
-                    <p>Edición y Motion Graphics</p>
+                    <span class="card-tag">Video · Motion Graphics</span>
+                    <h3>Producción Audiovisual & Motion Graphics</h3>
+                    <p>Edición profesional, animación y efectos visuales para contenido digital.</p>
                 </div>
             </div>
 
@@ -78,8 +126,9 @@
                 <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800&auto=format&fit=crop"
                     alt="App Móvil Comercial">
                 <div class="card-overlay">
+                    <span class="card-tag">Mobile · UI/UX</span>
                     <h3>App Móvil Comercial</h3>
-                    <p>Desarrollo y diseño de interfaz pensada para escalabilidad y venta.</p>
+                    <p>Diseño e interfaz pensada para escalabilidad, conversión y venta.</p>
                 </div>
             </div>
 
@@ -87,6 +136,7 @@
                 <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=800&auto=format&fit=crop"
                     alt="Topología de Red">
                 <div class="card-overlay">
+                    <span class="card-tag">Redes · Cisco</span>
                     <h3>Diseño de Red Corporativa</h3>
                     <p>Proyecto TechSoluciones: Subnetting, VLANs y configuración en Cisco Packet Tracer.</p>
                 </div>
@@ -95,136 +145,161 @@
         </div>
     </section>
 
-    <section id="services" class="portfolio" style="background-color: var(--dark-overlay);">
+    <!-- ===== SERVICIOS ===== -->
+    <section id="services" class="portfolio services-section">
         <h2 class="section-title hidden">Nuestros Servicios</h2>
-        <div class="gallery-grid">
-            <div class="card hidden delay-100" style="height: auto; padding: 30px; background: #1a1a1a;">
-                <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-code"></i> Desarrollo de
-                    Software</h3>
+        <div class="services-grid">
+
+            <div class="service-card hidden delay-100">
+                <div class="service-icon"><i class="fas fa-code"></i></div>
+                <h3>Desarrollo de Software</h3>
                 <p>Creación de aplicaciones web full-stack, sistemas de gestión de bases de datos e integración de APIs.
                     Soluciones escalables desplegadas en plataformas modernas.</p>
+                <ul class="service-tags">
+                    <li>Python</li>
+                    <li>JavaScript</li>
+                    <li>React</li>
+                    <li>Node.js</li>
+                </ul>
             </div>
 
-            <div class="card hidden delay-200" style="height: auto; padding: 30px; background: #1a1a1a;">
-                <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-robot"></i> Integración de IA y
-                    Automatización</h3>
-                <p>Implementación de agentes de inteligencia artificial y automatización de procesos mediante código
-                    para optimizar flujos de trabajo y potenciar las herramientas de productividad de tu negocio.</p>
+            <div class="service-card hidden delay-200">
+                <div class="service-icon"><i class="fas fa-robot"></i></div>
+                <h3>Integración de IA y Automatización</h3>
+                <p>Implementación de agentes de inteligencia artificial y automatización de procesos para optimizar
+                    flujos de trabajo y potenciar las herramientas de productividad de tu negocio.</p>
+                <ul class="service-tags">
+                    <li>LLMs</li>
+                    <li>Agentes IA</li>
+                    <li>Automatización</li>
+                </ul>
             </div>
 
-            <div class="card hidden delay-300" style="height: auto; padding: 30px; background: #1a1a1a;">
-                <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-network-wired"></i>
-                    Infraestructura y Redes</h3>
+            <div class="service-card hidden delay-300">
+                <div class="service-icon"><i class="fas fa-network-wired"></i></div>
+                <h3>Infraestructura y Redes</h3>
                 <p>Diseño, simulación y configuración de topologías de red, estructuración de VLANs y optimización de
                     conectividad para entornos corporativos.</p>
+                <ul class="service-tags">
+                    <li>Cisco</li>
+                    <li>VLANs</li>
+                    <li>Cloud</li>
+                </ul>
             </div>
+
         </div>
     </section>
 
+    <!-- ===== TECH STACK ===== -->
     <section class="tech-stack">
         <h3 class="section-title" style="margin-bottom: 2rem; color: white;">Tecnologías que dominamos</h3>
         <div class="slider">
             <div class="slide-track">
-                <div class="slide"><i class="fab fa-html5"></i></div>
-                <div class="slide"><i class="fab fa-css3-alt"></i></div>
-                <div class="slide"><i class="fab fa-js"></i></div>
-                <div class="slide"><i class="fab fa-python"></i></div>
-                <div class="slide"><i class="fab fa-react"></i></div>
-                <div class="slide"><i class="fab fa-git-alt"></i></div>
-                <div class="slide"><i class="fab fa-node"></i></div>
-                <div class="slide"><i class="fab fa-html5"></i></div>
-                <div class="slide"><i class="fab fa-css3-alt"></i></div>
-                <div class="slide"><i class="fab fa-js"></i></div>
-                <div class="slide"><i class="fab fa-python"></i></div>
-                <div class="slide"><i class="fab fa-react"></i></div>
-                <div class="slide"><i class="fab fa-git-alt"></i></div>
-                <div class="slide"><i class="fab fa-node"></i></div>
+                <div class="slide"><i class="fab fa-html5"></i><span>HTML5</span></div>
+                <div class="slide"><i class="fab fa-css3-alt"></i><span>CSS3</span></div>
+                <div class="slide"><i class="fab fa-js"></i><span>JavaScript</span></div>
+                <div class="slide"><i class="fab fa-python"></i><span>Python</span></div>
+                <div class="slide"><i class="fab fa-react"></i><span>React</span></div>
+                <div class="slide"><i class="fab fa-git-alt"></i><span>Git</span></div>
+                <div class="slide"><i class="fab fa-node"></i><span>Node.js</span></div>
+                <div class="slide"><i class="fab fa-html5"></i><span>HTML5</span></div>
+                <div class="slide"><i class="fab fa-css3-alt"></i><span>CSS3</span></div>
+                <div class="slide"><i class="fab fa-js"></i><span>JavaScript</span></div>
+                <div class="slide"><i class="fab fa-python"></i><span>Python</span></div>
+                <div class="slide"><i class="fab fa-react"></i><span>React</span></div>
+                <div class="slide"><i class="fab fa-git-alt"></i><span>Git</span></div>
+                <div class="slide"><i class="fab fa-node"></i><span>Node.js</span></div>
             </div>
         </div>
     </section>
 
-    <section id="team" class="contact" style="background: var(--dark);">
+    <!-- ===== EQUIPO ===== -->
+    <section id="team" class="team-section">
         <h2 class="section-title hidden">El Equipo</h2>
-        <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 2rem;">
+        <p class="section-subtitle hidden">Dos desarrolladores apasionados listos para hacer realidad tu proyecto.</p>
 
-            <div class="hidden delay-100" style="text-align: center; max-width: 250px;">
-                <div
-                    style="width: 150px; height: 150px; border-radius: 50%; background: #333; margin: 0 auto 15px; border: 3px solid var(--primary);">
+        <div class="team-grid">
+
+            <div class="team-card hidden delay-100">
+                <div class="team-avatar avatar-andres">AM</div>
+                <h3>Andrés Morales</h3>
+                <p class="team-role">Desarrollo & Arquitectura</p>
+                <p class="team-bio">Arquitectura de software, bases de datos relacionales y despliegue técnico en la
+                    nube. Especialista en soluciones backend robustas.</p>
+                <div class="team-skills">
+                    <span>Python</span><span>SQL</span><span>DevOps</span>
                 </div>
-                <h3 style="color: var(--light);">Andrés Morales</h3>
-                <p style="color: var(--primary); font-size: 0.9rem; margin-bottom: 10px;">Desarrollo & Lógica</p>
-                <p style="font-size: 0.85rem; color: #aaa;">Arquitectura de software, bases de datos y despliegue
-                    técnico.</p>
             </div>
 
-            <div class="hidden delay-200" style="text-align: center; max-width: 250px;">
-                <div
-                    style="width: 150px; height: 150px; border-radius: 50%; background: #333; margin: 0 auto 15px; border: 3px solid var(--primary);">
+            <div class="team-card hidden delay-200">
+                <div class="team-avatar avatar-johan">JF</div>
+                <h3>Johan Fernández</h3>
+                <p class="team-role">Socio · UI/UX & Frontend</p>
+                <p class="team-bio">Identidad corporativa, sistemas de diseño, paletas de colores y experiencia de
+                    usuario centrada en conversión y retención.</p>
+                <div class="team-skills">
+                    <span>UI/UX</span><span>HTML/CSS</span><span>Branding</span>
                 </div>
-                <h3 style="color: var(--light);">Johan Fernández</h3>
-                <p style="color: var(--primary); font-size: 0.9rem; margin-bottom: 10px;">Socio / UI & UX</p>
-                <p style="font-size: 0.85rem; color: #aaa;">Identidad corporativa, paletas de colores y experiencia de
-                    usuario.</p>
             </div>
 
-            <div class="hidden delay-300" style="text-align: center; max-width: 250px;">
-                <img src="img/pana-fresco.jpeg" alt="Mascota de la empresa"
-                    style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin: 0 auto 15px; border: 3px solid var(--gray);">
-                <h3 style="color: var(--light);">El Pana Fresco</h3>
-                <p style="color: var(--primary); font-size: 0.9rem; margin-bottom: 10px;">Gerente de Estrés</p>
-                <p style="font-size: 0.85rem; color: #aaa;">Se encarga de dormir mientras los servidores compilan.</p>
+            <div class="team-card team-card--mascot hidden delay-300">
+                <img src="img/pana-fresco.jpeg" alt="Mascota de la empresa" class="team-avatar-img">
+                <h3>El Pana Fresco</h3>
+                <p class="team-role">Director de Serenidad</p>
+                <p class="team-bio">Experto en equilibrio emocional del equipo. Mantiene la calma cuando los servidores
+                    fallan a las 3am.</p>
+                <div class="team-skills">
+                    <span>Motivación</span><span>Resiliencia</span>
+                </div>
             </div>
 
         </div>
     </section>
 
-    <section id="metodologia" class="portfolio" style="background-color: var(--dark);">
+    <!-- ===== METODOLOGÍA ===== -->
+    <section id="metodologia" class="portfolio methodology-section">
         <h2 class="section-title hidden">Cómo Trabajamos</h2>
+        <div class="methodology-grid">
 
-        <div class="gallery-grid"
-            style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1200px;">
-
-            <div class="hidden delay-100" style="text-align: center; padding: 20px;">
-                <div style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"><i class="fas fa-search"></i>
-                </div>
-                <h3 style="color: white; margin-bottom: 10px;">1. Análisis</h3>
-                <p style="color: #aaa; font-size: 0.95rem;">Entendemos los requerimientos de tu negocio, estructuramos
-                    la lógica y diseñamos la arquitectura ideal para el proyecto.</p>
+            <div class="method-step hidden delay-100">
+                <div class="method-number">01</div>
+                <div class="method-icon"><i class="fas fa-search"></i></div>
+                <h3>Análisis</h3>
+                <p>Entendemos los requerimientos de tu negocio, estructuramos la lógica y diseñamos la arquitectura
+                    ideal para el proyecto.</p>
             </div>
 
-            <div class="hidden delay-200" style="text-align: center; padding: 20px;">
-                <div style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"><i
-                        class="fas fa-laptop-code"></i></div>
-                <h3 style="color: white; margin-bottom: 10px;">2. Desarrollo</h3>
-                <p style="color: #aaa; font-size: 0.95rem;">Escribimos código limpio y escalable. Desde la creación de
-                    bases de datos sólidas hasta interfaces de usuario atractivas.</p>
+            <div class="method-step hidden delay-200">
+                <div class="method-number">02</div>
+                <div class="method-icon"><i class="fas fa-laptop-code"></i></div>
+                <h3>Desarrollo</h3>
+                <p>Escribimos código limpio y escalable. Desde bases de datos sólidas hasta interfaces de usuario
+                    atractivas.</p>
             </div>
 
-            <div class="hidden delay-300" style="text-align: center; padding: 20px;">
-                <div style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"><i
-                        class="fas fa-cloud-upload-alt"></i></div>
-                <h3 style="color: white; margin-bottom: 10px;">3. Despliegue</h3>
-                <p style="color: #aaa; font-size: 0.95rem;">Configuramos los entornos y subimos el proyecto a
-                    plataformas en la nube de alta disponibilidad para un rendimiento óptimo.</p>
+            <div class="method-step hidden delay-300">
+                <div class="method-number">03</div>
+                <div class="method-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <h3>Despliegue</h3>
+                <p>Configuramos los entornos y subimos el proyecto a plataformas en la nube de alta disponibilidad.</p>
             </div>
 
-            <div class="hidden delay-100" style="text-align: center; padding: 20px;">
-                <div style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"><i
-                        class="fas fa-check-circle"></i></div>
-                <h3 style="color: white; margin-bottom: 10px;">4. Entrega</h3>
-                <p style="color: #aaa; font-size: 0.95rem;">Realizamos pruebas finales, entregamos el producto
-                    funcionando al 100% y ofrecemos soporte técnico continuo mediante una subscripcion mensual.</p>
+            <div class="method-step hidden delay-100">
+                <div class="method-number">04</div>
+                <div class="method-icon"><i class="fas fa-check-circle"></i></div>
+                <h3>Soporte</h3>
+                <p>Realizamos pruebas finales, entregamos el producto funcionando al 100% y ofrecemos soporte técnico
+                    continuo mensual.</p>
             </div>
 
         </div>
     </section>
 
-    <!-- ===== SECCIÓN PRECIOS ===== -->
-    <section id="pricing" class="portfolio" style="background: #0a0a0a;">
+    <!-- ===== PLANES / PRICING ===== -->
+    <section id="pricing" class="portfolio pricing-section">
         <h2 class="section-title hidden">Nuestros Planes</h2>
-        <p class="hidden"
-            style="color:#aaa; margin-top:-2.5rem; margin-bottom:3rem; text-align:center; max-width:600px;">Elige el
-            plan que mejor se adapta a tu proyecto. Todos incluyen soporte post-entrega.</p>
+        <p class="section-subtitle hidden">Elige el plan que mejor se adapta a tu proyecto. Todos incluyen soporte
+            post-entrega.</p>
 
         <div class="pricing-grid">
 
@@ -286,37 +361,131 @@
         </div>
     </section>
 
-    <section id="contact" class="contact" style="padding: 5rem 5%; background: #111; text-align: center;">
-        <h2 class="section-title hidden">Contacto</h2>
+    <!-- ===== TESTIMONIOS ===== -->
+    <section class="testimonials-section">
+        <h2 class="section-title hidden">Lo Que Dicen de Nosotros</h2>
+        <div class="testimonials-grid">
 
-        <div class="hidden delay-100"
-            style="max-width: 850px; width: 90%; margin: 0 auto; background: #1a1a1a; padding: 50px; border-radius: 16px; text-align: left;">
-            <h3 style="color: var(--primary); margin-bottom: 20px; text-align: center;">Cuéntanos sobre tu proyecto</h3>
+            <div class="testimonial-card hidden delay-100">
+                <div class="testimonial-stars">★★★★★</div>
+                <p>"El sistema de gestión que Canguro's.inc desarrolló para nuestra biblioteca superó todas nuestras
+                    expectativas. Rápido, intuitivo y entregado antes del plazo."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">RP</div>
+                    <div>
+                        <strong>Ricardo P.</strong>
+                        <span>Coordinador IUTA — Biblioteca Central</span>
+                    </div>
+                </div>
+            </div>
 
-            <form id="formContactoWa">
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; color: #ccc;">Nombre o Empresa</label>
-                    <input type="text" id="waNombre" required
-                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #2d2d2d; color: white;">
+            <div class="testimonial-card hidden delay-200">
+                <div class="testimonial-stars">★★★★★</div>
+                <p>"Profesionales desde el primer contacto. Diseñaron nuestra landing page en tiempo récord y los
+                    resultados en conversiones fueron inmediatos."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">MG</div>
+                    <div>
+                        <strong>María G.</strong>
+                        <span>Fundadora — Studio Creativo MG</span>
+                    </div>
                 </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; color: #ccc;">Correo Electrónico</label>
-                    <input type="email" id="waEmail" required
-                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #2d2d2d; color: white;">
+            </div>
+
+            <div class="testimonial-card hidden delay-300">
+                <div class="testimonial-stars">★★★★★</div>
+                <p>"La configuración de nuestra red corporativa fue impecable. Subnetting limpio, sin caídas. El soporte
+                    post-entrega realmente marcan la diferencia."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">CL</div>
+                    <div>
+                        <strong>Carlos L.</strong>
+                        <span>Gerente TI — TechSoluciones Venezuela</span>
+                    </div>
                 </div>
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 5px; color: #ccc;">¿Qué necesitas?</label>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== CONTACTO ===== -->
+    <section id="contact" class="contact-section">
+        <h2 class="section-title hidden">Hablemos de tu Proyecto</h2>
+
+        <div class="contact-wrapper hidden delay-100">
+            <div class="contact-info">
+                <h3>¿Tienes una idea? La hacemos realidad.</h3>
+                <p>Cuéntanos qué necesitas y en menos de 24 horas te damos una propuesta personalizada.</p>
+                <ul class="contact-details">
+                    <li><i class="fab fa-whatsapp"></i> +58 412-712-1162</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Venezuela — Disponibles remotamente</li>
+                    <li><i class="fas fa-clock"></i> Respuesta en &lt; 24h</li>
+                </ul>
+            </div>
+            <form id="formContactoWa" class="contact-form">
+                <div class="form-group">
+                    <label>Nombre o Empresa</label>
+                    <input type="text" id="waNombre" required placeholder="Ej. Empresa ABC">
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="waEmail" required placeholder="tu@correo.com">
+                </div>
+                <div class="form-group">
+                    <label>¿Qué necesitas?</label>
                     <textarea id="waMensaje" rows="4" required
-                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #2d2d2d; color: white; resize: vertical;"></textarea>
+                        placeholder="Describe tu proyecto o servicio que necesitas..."></textarea>
                 </div>
-                <button type="submit" class="btn" style="width: 100%; cursor: none;">Enviar por WhatsApp <i
-                        class="fab fa-whatsapp"></i></button>
+                <button type="submit" class="btn">Enviar por WhatsApp <i class="fab fa-whatsapp"></i></button>
             </form>
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2026 Canguro's.inc. Todos los derechos reservados.</p>
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo">Canguro's<span>.inc</span></div>
+                <p>Transformamos ideas en soluciones digitales reales. Con código, creatividad y compromiso.</p>
+                <div class="footer-social">
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i
+                            class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i
+                            class="fab fa-linkedin-in"></i></a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/584127121162" target="_blank" rel="noopener noreferrer"
+                        aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="#home">Inicio</a></li>
+                    <li><a href="#portfolio">Proyectos</a></li>
+                    <li><a href="#services">Servicios</a></li>
+                    <li><a href="#pricing">Planes</a></li>
+                    <li><a href="#team">Equipo</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Servicios</h4>
+                <ul>
+                    <li><a href="#services">Desarrollo Web</a></li>
+                    <li><a href="#services">Integración de IA</a></li>
+                    <li><a href="#services">Infraestructura</a></li>
+                    <li><a href="#services">Motion Graphics</a></li>
+                    <li><a href="#contact">Cotización Gratis</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Canguro's.inc. Todos los derechos reservados.</p>
+            <p>Hecho con <span style="color: var(--primary);">♥</span> en Venezuela</p>
+        </div>
     </footer>
 
     <a href="https://wa.me/584127121162?text=Hola,%20vengo%20de%20tu%20portafolio%20y%20quiero%20cotizar"
