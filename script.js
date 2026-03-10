@@ -196,16 +196,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =========================================
-       8. NAVBAR SCROLL ACTIVO
+       8. NAVBAR SMART HIDE-ON-SCROLL
        ========================================= */
     const navbar = document.querySelector('.navbar');
+    let lastScrollY   = window.scrollY;
+    let ticking       = false;
+
+    function updateNavbar() {
+        const currentScrollY = window.scrollY;
+        const scrollDiff     = currentScrollY - lastScrollY;
+
+        // Solidify background once past the hero
+        if (currentScrollY > 80) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+
+        // Hide when scrolling down (past 120px) — show when scrolling up
+        if (currentScrollY > 120) {
+            if (scrollDiff > 4) {
+                // Scrolling DOWN → hide
+                navbar.classList.add('nav-hidden');
+            } else if (scrollDiff < -4) {
+                // Scrolling UP → reveal
+                navbar.classList.remove('nav-hidden');
+            }
+        } else {
+            navbar.classList.remove('nav-hidden');
+        }
+
+        lastScrollY = currentScrollY;
+        ticking = false;
+    }
 
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(10, 10, 10, 0.97)';
-        } else {
-            navbar.style.background = 'rgba(10, 10, 10, 0.85)';
+        if (!ticking) {
+            requestAnimationFrame(updateNavbar);
+            ticking = true;
         }
     }, { passive: true });
+
 
 });

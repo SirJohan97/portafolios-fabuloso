@@ -49,6 +49,18 @@ body {
 }
 
 /* =========================================
+   PARTICLE CANVAS LAYERING
+   El canvas está en z-index:0, todo el
+   contenido de la página debe estar encima.
+   ========================================= */
+nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
+    position: relative;
+    z-index: 1;
+}
+/* La navbar ya tiene su propio z-index superior (1000), lo respetamos */
+.navbar { z-index: 1000; }
+
+/* =========================================
    BARRA DE NAVEGACIÓN
    ========================================= */
 .navbar {
@@ -59,12 +71,27 @@ body {
     position: fixed;
     width: 100%;
     top: 0;
-    background: rgba(10, 10, 10, 0.85);
+    background: rgba(10, 10, 10, 0.75);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     z-index: 1000;
-    border-bottom: 1px solid var(--border-subtle);
-    transition: var(--transition);
+    border-bottom: 1px solid transparent;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                background 0.4s ease,
+                border-color 0.4s ease,
+                box-shadow 0.4s ease;
+}
+
+/* Fondo sólido una vez el usuario hizo scroll */
+.navbar.scrolled {
+    background: rgba(10, 10, 10, 0.96);
+    border-bottom-color: var(--border-subtle);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Se desliza hacia arriba fuera de pantalla */
+.navbar.nav-hidden {
+    transform: translateY(-100%);
 }
 
 .logo {
@@ -507,7 +534,6 @@ body {
 }
 
 .service-card:hover {
-    transform: translateY(-6px);
     border-color: rgba(39, 174, 96, 0.25);
     box-shadow: 0 20px 40px rgba(0,0,0,0.3), var(--shadow-green);
 }
@@ -645,7 +671,6 @@ body {
 }
 
 .team-card:hover {
-    transform: translateY(-8px);
     border-color: rgba(39, 174, 96, 0.2);
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
@@ -761,7 +786,6 @@ body {
 }
 
 .method-step:hover {
-    transform: translateY(-5px);
     border-color: rgba(39,174,96,0.2);
 }
 
@@ -833,7 +857,6 @@ body {
 }
 
 .pricing-card:hover {
-    transform: translateY(-8px);
     box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     border-color: rgba(39, 174, 96, 0.3);
 }
@@ -841,13 +864,12 @@ body {
 .pricing-card.featured {
     background: linear-gradient(145deg, #0f2e1d, #141414);
     border: 1px solid rgba(39, 174, 96, 0.45);
-    transform: scale(1.05);
+    transform: translate(var(--mg-x, 0px), var(--mg-y, 0px)) scale(1.05);
     box-shadow: var(--shadow-green);
 }
 
 .pricing-card.featured:hover {
-    transform: scale(1.05) translateY(-8px);
-    box-shadow: 0 25px 60px rgba(39, 174, 96, 0.25);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5), var(--shadow-green);
 }
 
 .pricing-badge {
@@ -979,7 +1001,6 @@ body {
 }
 
 .testimonial-card:hover {
-    transform: translateY(-5px);
     border-color: rgba(39,174,96,0.2);
     box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
@@ -1428,5 +1449,38 @@ body {
         font-size: 26px;
         bottom: 20px;
         right: 20px;
+    }
+}
+
+/* =========================================================
+   EFECTO ANTIGRAVEDAD / REPULSIÓN MAGNÉTICA
+   JS setea el transform directamente (inline style) —
+   aquí solo definimos la transición tipo resorte.
+   Para cambiar la velocidad del resorte ajusta la duración
+   o el cubic-bezier de abajo.
+   ========================================================= */
+.service-card,
+.pricing-card,
+.team-card,
+.method-step,
+.testimonial-card,
+.stat-item {
+    transition:
+        transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        border-color 0.4s ease,
+        box-shadow 0.4s ease;
+    will-change: transform;
+}
+
+/* En móvil desactivamos la transición extra (touch no la necesita) */
+@media (max-width: 991px) {
+    .service-card,
+    .pricing-card,
+    .team-card,
+    .method-step,
+    .testimonial-card,
+    .stat-item {
+        transition: var(--transition);
+        will-change: auto;
     }
 }
