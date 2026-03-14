@@ -1,0 +1,226 @@
+/* ===========================================
+   FASE 5: EFECTOS PREMIUM DE ÉLITE — effects.css
+   =========================================== */
+
+/* ——————————————————————————————————————————
+   1. GRAIN / NOISE OVERLAY (Textura cinematográfica)
+   —————————————————————————————————————————— */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    opacity: 0.025;
+    animation: grainShift 0.8s steps(2) infinite;
+}
+@keyframes grainShift {
+    0%, 100% { transform: translate(0, 0); }
+    25%       { transform: translate(-2%, -3%); }
+    50%       { transform: translate(3%,  1%); }
+    75%       { transform: translate(-1%,  4%); }
+}
+
+/* ——————————————————————————————————————————
+   2. ACTIVE NAV LINK (Resaltado de sección activa)
+   —————————————————————————————————————————— */
+.nav-links a {
+    position: relative;
+    transition: color 0.3s ease;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background: var(--primary);
+    box-shadow: 0 0 6px var(--primary);
+    transition: width 0.3s ease;
+}
+.nav-links a.active-section {
+    color: var(--primary) !important;
+}
+.nav-links a.active-section::after {
+    width: 100%;
+}
+
+/* ——————————————————————————————————————————
+   3. TILT 3D — Variables CSS
+   (JS inyecta --rotX, --rotY y --mx, --my)
+   —————————————————————————————————————————— */
+.tilt-card {
+    --rotX: 0deg;
+    --rotY: 0deg;
+    transform-style: preserve-3d;
+    transform: perspective(900px) rotateX(var(--rotX)) rotateY(var(--rotY));
+    transition: transform 0.12s ease-out, box-shadow 0.2s ease;
+    will-change: transform;
+    position: relative;
+    overflow: hidden;
+}
+.tilt-card:hover {
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.6),
+        0 0 25px rgba(17, 212, 131, 0.08);
+    z-index: 2;
+}
+/* Destello de luz especular que sigue al ratón */
+.tilt-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+        circle at var(--mx, 50%) var(--my, 50%),
+        rgba(255,255,255,0.06) 0%,
+        transparent 55%
+    );
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 5;
+}
+.tilt-card:hover::after {
+    opacity: 1;
+}
+/* Reseteo suave al salir */
+.tilt-card.tilt-reset {
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+}
+
+/* ——————————————————————————————————————————
+   4. CURSOR TRAIL
+   —————————————————————————————————————————— */
+.cursor-trail-dot {
+    position: fixed;
+    border-radius: 50%;
+    background: var(--primary);
+    pointer-events: none;
+    z-index: 9997;
+    transform: translate(-50%, -50%);
+    animation: trailFade 0.55s ease forwards;
+    will-change: opacity, transform;
+}
+@keyframes trailFade {
+    0%   { opacity: 0.65; width: 5px; height: 5px; }
+    100% { opacity: 0;    width: 1px; height: 1px; }
+}
+
+/* ——————————————————————————————————————————
+   5. STATS COUNTER — Flash al llegar al número
+   —————————————————————————————————————————— */
+.stat-number.count-done {
+    animation: statFlash 0.5s ease;
+}
+@keyframes statFlash {
+    0%   { text-shadow: none; }
+    40%  { text-shadow: 0 0 30px rgba(17,212,131,0.9), 0 0 60px rgba(17,212,131,0.5); color: #fff; }
+    100% { text-shadow: 0 0 8px rgba(17,212,131,0.3); }
+}
+
+/* ——————————————————————————————————————————
+   6. ELECTRIC PULSES — Team Section Canvas
+   —————————————————————————————————————————— */
+.team-section {
+    position: relative;
+    overflow: hidden;
+}
+#electric-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.7;
+}
+/* El contenido del equipo queda encima */
+.team-section > *:not(#electric-canvas) {
+    position: relative;
+    z-index: 1;
+}
+
+/* ——————————————————————————————————————————
+   7. TOAST NOTIFICATION
+   Notificación premium esquina inferior derecha
+   —————————————————————————————————————————— */
+.site-toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #161616;
+    border: 1px solid rgba(17, 212, 131, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(17,212,131,0.08);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    min-width: 280px;
+    max-width: 360px;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    overflow: hidden;
+}
+.site-toast.toast-show {
+    transform: translateY(0);
+    opacity: 1;
+}
+.toast-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(17, 212, 131, 0.15);
+    border: 1px solid rgba(17, 212, 131, 0.5);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.toast-msg {
+    flex: 1;
+    line-height: 1.4;
+    color: #ddd;
+}
+/* Barra de progreso de auto-dismiss */
+.toast-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: var(--primary);
+    box-shadow: 0 0 8px var(--primary);
+    animation: toastBarShrink 3.5s linear forwards;
+    transform-origin: left;
+}
+@keyframes toastBarShrink {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(0); }
+}
+
+/* ——————————————————————————————————————————
+   8. MATRIX CANVAS — Asegurar que esté bajo el hero content
+   —————————————————————————————————————————— */
+#matrix-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.hero .hero-grid {
+    position: relative;
+    z-index: 1;
+}

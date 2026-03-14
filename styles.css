@@ -2,26 +2,26 @@
    VARIABLES GLOBALES & DESIGN SYSTEM
    ========================================= */
 :root {
-    --primary: #27ae60;
+    --primary: #11d483;
     --primary-light: #2ecc71;
-    --primary-glow: rgba(39, 174, 96, 0.35);
-    --dark: #0a0a0a;
-    --dark-2: #111111;
-    --dark-3: #141414;
-    --dark-4: #1a1a1a;
-    --dark-overlay: rgba(10, 10, 10, 0.95);
-    --light: #f4f4f4;
-    --gray: #2d2d2d;
-    --text-muted: #888;
-    --text-dim: #aaa;
-    --border-subtle: rgba(255, 255, 255, 0.06);
-    --transition: all 0.4s ease;
+    --primary-glow: rgba(17, 212, 131, 0.35);
+    --dark: #121212;
+    --dark-2: #161616;
+    --dark-3: #1a1a1a;
+    --dark-4: #1e1e1e;
+    --dark-overlay: rgba(18, 18, 18, 0.95);
+    --light: #ffffff;
+    --gray: #2a2a2a;
+    --text-muted: #999;
+    --text-dim: #bbb;
+    --border-subtle: #333333;
+    --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --font-main: 'Inter', 'Segoe UI', system-ui, sans-serif;
-    --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    --radius-sm: 8px;
-    --radius-md: 16px;
-    --radius-lg: 24px;
-    --shadow-green: 0 0 40px rgba(39, 174, 96, 0.15);
+    --font-display: 'Inter', sans-serif;
+    --radius-sm: 4px;
+    --radius-md: 4px;
+    --radius-lg: 8px;
+    --shadow-green: 0 4px 20px rgba(17, 212, 131, 0.15);
 }
 
 /* =========================================
@@ -49,16 +49,205 @@ body {
 }
 
 /* =========================================
+   CUSTOM SCROLLBAR
+   ========================================= */
+::-webkit-scrollbar {
+    width: 6px;
+    background: var(--dark-3);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(17, 212, 131, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-light);
+}
+
+/* =========================================
    PARTICLE CANVAS LAYERING
-   El canvas está en z-index:0, todo el
-   contenido de la página debe estar encima.
    ========================================= */
 nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     position: relative;
     z-index: 1;
 }
-/* La navbar ya tiene su propio z-index superior (1000), lo respetamos */
-.navbar { z-index: 1000; }
+
+/* =========================================
+   CINEMATIC PRELOADER
+   ========================================= */
+#preloader {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#preloader-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.55;
+    z-index: 2;
+}
+
+.preloader-inner {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* --- Hexagonal SVG Ring --- */
+.hex-ring {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    animation: pulseRing 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseRing {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(17,212,131,0.4)); }
+    50%       { filter: drop-shadow(0 0 25px rgba(17,212,131,0.9)); }
+}
+
+.hex-svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Outer hex draws itself in */
+.hex-outer {
+    stroke-dasharray: 700;
+    stroke-dashoffset: 700;
+    animation: drawHex 1.2s cubic-bezier(0.4,0,0.2,1) forwards 0.1s;
+}
+/* Mid hex draws itself in after outer */
+.hex-mid {
+    stroke-dasharray: 580;
+    stroke-dashoffset: 580;
+    animation: drawHex 1s cubic-bezier(0.4,0,0.2,1) forwards 0.6s;
+}
+@keyframes drawHex {
+    to { stroke-dashoffset: 0; }
+}
+
+/* Rotating orbit arc */
+.hex-orbit {
+    transform-origin: center;
+    animation: spinOrbit 2s linear infinite;
+    stroke-dasharray: 90 400;
+}
+@keyframes spinOrbit {
+    to { transform: rotate(360deg); }
+}
+
+/* Center brand text fade-in */
+.hex-brand {
+    opacity: 0;
+    animation: fadeInPl 0.4s ease forwards 1.1s;
+}
+
+/* Scanning line across the hex */
+.hex-ring::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    box-shadow: 0 0 8px var(--primary);
+    animation: scanLine 2s ease-in-out infinite;
+}
+@keyframes scanLine {
+    0%   { top: 10%; opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { top: 90%; opacity: 0; }
+}
+
+/* --- Texts & Bar --- */
+.preloader-texts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    animation: fadeInPl 0.4s ease forwards 0.8s;
+}
+
+.pl-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    color: var(--primary);
+    text-transform: uppercase;
+}
+
+.pl-bar {
+    width: 200px;
+    height: 2px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.pl-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--primary);
+    box-shadow: 0 0 12px var(--primary);
+    transition: width 0.1s linear;
+}
+
+.pl-pct {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    color: #555;
+    letter-spacing: 2px;
+}
+
+/* --- Curtains (dramatic split reveal) --- */
+/* [FASE 1: CARGA] Las cortinas CUBREN EL SITIO de abajo (z-index 1), el preloader content (z-index 10) es visible encima */
+.curtain {
+    position: absolute;
+    left: 0; right: 0;
+    height: 50%;
+    background: #050505;
+    z-index: 1;   /* Detrás del contenido animated del preloader */
+    transition: transform 0.75s cubic-bezier(0.86, 0, 0.07, 1);
+}
+.curtain-top    { top: 0; }
+.curtain-bottom { bottom: 0; }
+
+/* [FASE 2: REVEAL] Al añadir .preloader-hidden, cortinas salen hacia afuera revelando el sitio */
+.preloader-hidden .curtain-top    { transform: translateY(-100%); }
+.preloader-hidden .curtain-bottom { transform: translateY(100%); }
+
+.preloader-hidden {
+    pointer-events: none;
+}
+.preloader-hidden .preloader-inner {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.preloader-hidden #preloader-canvas {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+@keyframes fadeInPl {
+    to { opacity: 1; }
+}
 
 /* =========================================
    BARRA DE NAVEGACIÓN
@@ -71,38 +260,94 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     position: fixed;
     width: 100%;
     top: 0;
-    background: rgba(10, 10, 10, 0.75);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: var(--dark);
     z-index: 1000;
-    border-bottom: 1px solid transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                background 0.4s ease,
-                border-color 0.4s ease,
-                box-shadow 0.4s ease;
+                background 0.4s ease;
+}
+
+.nav-progress-bar {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background: var(--primary);
+    width: 0%;
+    box-shadow: 0 0 10px var(--primary-glow);
+    transition: width 0.1s;
+    z-index: 1001;
 }
 
 /* Fondo sólido una vez el usuario hizo scroll */
 .navbar.scrolled {
-    background: rgba(10, 10, 10, 0.96);
+    background: var(--dark-overlay);
     border-bottom-color: var(--border-subtle);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+    box-shadow: none;
 }
 
-/* Se desliza hacia arriba fuera de pantalla */
-.navbar.nav-hidden {
-    transform: translateY(-100%);
-}
-
+/* ——————————————————————————————————————————
+   LOGO MORFOLÓGICO - Efecto Anthropic
+   Aparece un icono desde el ancho 0 y el texto se encoge simultáneamente
+   —————————————————————————————————————————— */
 .logo {
-    font-family: var(--font-display);
-    font-size: 1.7rem;
-    font-weight: 800;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
     color: var(--light);
+}
+
+.logo-icon {
+    width: 0;
+    opacity: 0;
+    margin-right: 0;
+    overflow: hidden;
+    transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                margin-right 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease 0.1s;
+    display: flex;
+    align-items: center;
+}
+
+.logo-icon svg {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    display: block;
+}
+
+.logo-text {
+    font-size: 1.55rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
+    transform-origin: left center;
+    transition: font-size 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    display: flex;
 }
-.logo span { color: var(--primary); }
+
+.logo-brand {
+    font-family: var(--font-display);
+    color: var(--light);
+}
+
+.logo-accent {
+    font-family: var(--font-display);
+    color: var(--primary);
+}
+
+/* === ESTADO COMPACTO AL HACER SCROLL === */
+.logo.logo-compact .logo-icon {
+    width: 30px;
+    opacity: 1;
+    margin-right: 10px;
+}
+
+.logo.logo-compact .logo-text {
+    font-size: 1rem;
+    letter-spacing: 2px;
+}
 
 .nav-links {
     display: flex;
@@ -160,37 +405,39 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 /* =========================================
    HERO SECTION
    ========================================= */
-@keyframes gradientBG {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
 .hero {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
     position: relative;
-    padding: 0 1rem;
-    background: linear-gradient(-45deg, #050505, #0d1f15, #0a0a0a, #091a10);
-    background-size: 400% 400%;
-    animation: gradientBG 18s ease infinite;
+    padding: 7rem 5% 4rem;
+    background: var(--dark);
     overflow: hidden;
 }
 
-.hero::before {
-    content: '';
+#canvas-network {
     position: absolute;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(39, 174, 96, 0.08) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: auto; /* Required to catch mouse movements inside hero */
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    width: 100%;
+    align-items: center;
+    z-index: 2;
+}
+
+.hero-content {
+    text-align: left;
 }
 
 .hero-badge {
@@ -236,21 +483,189 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 .hero-content p {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     margin-bottom: 2.5rem;
     color: var(--text-dim);
     max-width: 580px;
-    margin-left: auto;
-    margin-right: auto;
     line-height: 1.7;
 }
 
 .hero-btns {
     display: flex;
     gap: 1rem;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     margin-bottom: 2rem;
+}
+
+/* =========================================
+   HERO VISUAL
+   ========================================= */
+.hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.blueprint-container {
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.blueprint-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 0 15px rgba(17, 212, 131, 0.15));
+}
+
+/* Base styles for paths and lines */
+.blueprint-svg line, 
+.blueprint-svg path, 
+.blueprint-svg polyline, 
+.blueprint-svg rect, 
+.blueprint-svg circle {
+    fill: none;
+    stroke: var(--primary);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+
+/* Background Grid */
+.bp-grid line {
+    stroke: var(--border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 6;
+    opacity: 0.3;
+}
+
+/* Outer Border */
+.bp-border {
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 2;
+    stroke-dasharray: 1800;
+    stroke-dashoffset: 1800;
+    animation: drawPath 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards 0.2s;
+}
+
+/* Main Circuit Paths */
+.bp-path {
+    stroke: url(#glow);
+    stroke-width: 3;
+    filter: url(#neon);
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawPath 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.8s;
+}
+
+/* Hardware Nodes */
+.bp-node {
+    fill: var(--dark-3);
+    stroke-width: 2;
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: drawPath 1.5s ease-out forwards 1.2s;
+}
+
+.main-node {
+    fill: var(--dark-2);
+    stroke-width: 3;
+    filter: url(#neon);
+    animation-delay: 1.5s;
+}
+
+/* Center Core and Ring */
+.bp-core {
+    fill: var(--primary);
+    stroke: none;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 2.5s;
+}
+
+.bp-ring {
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+    transform-origin: 250px 250px;
+    animation: fadeIn 1s ease forwards 2.5s, rotateRing 20s linear infinite;
+    opacity: 0;
+}
+
+/* Micro lines */
+.bp-micro {
+    stroke-width: 1.5;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: drawPath 1s ease-out forwards 2s;
+}
+
+/* Delays */
+.delay-1 { animation-delay: 1s; }
+.delay-2 { animation-delay: 1.3s; }
+
+/* === Blueprint PAUSED: congela animaciones hasta reveal del preloader === */
+.blueprint-paused .bp-border,
+.blueprint-paused .bp-path,
+.blueprint-paused .bp-node,
+.blueprint-paused .main-node,
+.blueprint-paused .bp-core,
+.blueprint-paused .bp-ring,
+.blueprint-paused .bp-micro {
+    animation-play-state: paused !important;
+    animation-delay: 99999s !important;   /* Empuja la animación al futuro */
+    opacity: 0;
+}
+
+/* Al remover la clase, las animaciones retoman con timing normal */
+.blueprint-container:not(.blueprint-paused) .bp-border {
+    animation-delay: 0.2s;
+    animation-play-state: running;
+}
+.blueprint-container:not(.blueprint-paused) .bp-path {
+    animation-delay: 0.8s;
+    animation-play-state: running;
+}
+.blueprint-container:not(.blueprint-paused) .bp-node {
+    animation-delay: 1.2s;
+    animation-play-state: running;
+}
+.blueprint-container:not(.blueprint-paused) .main-node {
+    animation-delay: 1.5s;
+    animation-play-state: running;
+}
+.blueprint-container:not(.blueprint-paused) .bp-core {
+    animation-delay: 2.5s;
+    animation-play-state: running;
+    opacity: 0;
+}
+.blueprint-container:not(.blueprint-paused) .bp-ring {
+    animation-delay: 2.5s;
+    animation-play-state: running;
+    opacity: 0;
+}
+.blueprint-container:not(.blueprint-paused) .bp-micro {
+    animation-delay: 2s;
+    animation-play-state: running;
+}
+
+/* Animations */
+@keyframes drawPath {
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes rotateRing {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* Scroll indicator */
@@ -435,7 +850,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 .card:hover {
-    box-shadow: 0 10px 40px rgba(39, 174, 96, 0.4), 0 0 0 1px rgba(39,174,96,0.5);
+    box-shadow: 0 10px 40px rgba(17, 212, 131, 0.2), 0 0 0 1px rgba(17, 212, 131, 0.4);
 }
 
 .card img, .card video {
@@ -500,6 +915,29 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
    ========================================= */
 .services-section {
     background-color: var(--dark-2);
+    position: relative;
+    overflow: hidden;
+}
+
+.data-stream {
+    position: absolute;
+    width: 250px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    box-shadow: 0 0 10px var(--primary-glow);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.stream-1 { top: 25%; animation: streamFlow 5s linear infinite; }
+.stream-2 { top: 60%; width: 400px; animation: streamFlow 7s linear infinite -3s; }
+.stream-3 { top: 85%; width: 150px; animation: streamFlow 4s linear infinite -1s; }
+
+@keyframes streamFlow {
+    0% { left: -30%; opacity: 0; }
+    10% { opacity: 0.45; }
+    90% { opacity: 0.45; }
+    100% { left: 110%; opacity: 0; }
 }
 
 .services-grid {
@@ -509,6 +947,13 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     max-width: 1100px;
     width: 100%;
     margin-top: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.services-section .section-title {
+    position: relative;
+    z-index: 1;
 }
 
 .service-card {
@@ -534,8 +979,8 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 .service-card:hover {
-    border-color: rgba(39, 174, 96, 0.25);
-    box-shadow: 0 20px 40px rgba(39, 174, 96, 0.2), var(--shadow-green);
+    border-color: rgba(17, 212, 131, 0.3);
+    box-shadow: 0 10px 30px rgba(17, 212, 131, 0.1), var(--shadow-green);
 }
 
 .service-card:hover::before { transform: scaleX(1); }
@@ -649,6 +1094,26 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    background-image: radial-gradient(rgba(17, 212, 131, 0.15) 1.5px, transparent 1.5px);
+    background-size: 32px 32px;
+    background-position: 0 0;
+}
+
+.team-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at center, transparent 30%, var(--dark) 95%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.team-section .section-title,
+.team-section .section-subtitle,
+.team-grid {
+    position: relative;
+    z-index: 1;
 }
 
 .team-grid {
@@ -668,11 +1133,39 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     text-align: center;
     max-width: 280px;
     transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.team-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary);
+    box-shadow: 0 0 12px var(--primary);
+    opacity: 0;
+    transform: translateY(-5px);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.team-card:hover::after {
+    opacity: 0.35;
+    animation: scannerLine 2s ease-in-out infinite;
+}
+
+@keyframes scannerLine {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(300px); }
+    100% { transform: translateY(0); }
 }
 
 .team-card:hover {
-    border-color: rgba(39, 174, 96, 0.2);
-    box-shadow: 0 20px 40px rgba(39, 174, 96, 0.2);
+    border-color: rgba(17, 212, 131, 0.3);
+    box-shadow: 0 10px 30px rgba(17, 212, 131, 0.1);
 }
 
 /* Avatar con iniciales */
@@ -786,7 +1279,9 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 .method-step:hover {
-    border-color: rgba(39,174,96,0.2);
+    border-color: rgba(17, 212, 131, 0.4);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(17, 212, 131, 0.12);
 }
 
 .method-number {
@@ -810,6 +1305,12 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     filter: drop-shadow(0 0 8px var(--primary-glow));
     position: relative;
     z-index: 1;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.method-step:hover .method-icon {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 15px var(--primary));
 }
 
 .method-step h3 {
@@ -857,19 +1358,60 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 .pricing-card:hover {
-    box-shadow: 0 20px 50px rgba(39, 174, 96, 0.3);
-    border-color: rgba(39, 174, 96, 0.3);
+    box-shadow: 0 15px 40px rgba(17, 212, 131, 0.15);
+    border-color: rgba(17, 212, 131, 0.3);
 }
 
 .pricing-card.featured {
-    background: linear-gradient(145deg, #0f2e1d, #141414);
-    border: 1px solid rgba(39, 174, 96, 0.45);
+    background: linear-gradient(145deg, #102517, var(--dark-3));
+    border: 1px solid rgba(17, 212, 131, 0.4);
     transform: translate(var(--mg-x, 0px), var(--mg-y, 0px)) scale(1.05);
     box-shadow: var(--shadow-green);
+    overflow: hidden;
+    animation: featuredPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes featuredPulse {
+    from { box-shadow: 0 0 15px rgba(17, 212, 131, 0.15); border-color: rgba(17, 212, 131, 0.4); }
+    to { box-shadow: 0 0 35px rgba(17, 212, 131, 0.5); border-color: rgba(17, 212, 131, 0.8); }
+}
+
+.pricing-card.featured::before {
+    content: '';
+    position: absolute;
+    top: 75px; 
+    left: 50%;
+    width: 130px;
+    height: 130px;
+    margin-left: -65px;
+    background: conic-gradient(from 0deg, transparent 50%, rgba(17, 212, 131, 0.05) 80%, rgba(17, 212, 131, 0.35) 100%);
+    border-radius: 50%;
+    filter: blur(1px);
+    animation: radarSpin 4s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes radarSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.pricing-card.featured > * {
+    position: relative;
+    z-index: 1;
 }
 
 .pricing-card.featured:hover {
-    box-shadow: 0 25px 60px rgba(39, 174, 96, 0.3), var(--shadow-green);
+    box-shadow: 0 15px 40px rgba(17, 212, 131, 0.2), var(--shadow-green);
+}
+
+.pricing-card.featured .btn {
+    box-shadow: 0 0 15px rgba(17, 212, 131, 0.4);
+}
+
+.pricing-card.featured:hover .btn {
+    box-shadow: 0 0 25px rgba(17, 212, 131, 0.8);
 }
 
 .pricing-badge {
@@ -1001,8 +1543,8 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 .testimonial-card:hover {
-    border-color: rgba(39,174,96,0.2);
-    box-shadow: 0 15px 35px rgba(39, 174, 96, 0.2);
+    border-color: rgba(17, 212, 131, 0.3);
+    box-shadow: 0 10px 30px rgba(17, 212, 131, 0.1);
 }
 
 .testimonial-stars {
@@ -1074,6 +1616,41 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     border-radius: 20px;
     padding: 50px;
     border: 1px solid var(--border-subtle);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.contact-wrapper:hover {
+    border-color: rgba(17, 212, 131, 0.3);
+    box-shadow: 0 0 40px rgba(17, 212, 131, 0.1);
+}
+
+.contact-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at center, rgba(17, 212, 131, 0.05) 0%, transparent 40%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.contact-wrapper:hover::before {
+    opacity: 1;
+    animation: pulseContact 3s infinite alternate ease-in-out;
+}
+
+@keyframes pulseContact {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+.contact-info, .contact-form {
+    position: relative;
+    z-index: 1;
 }
 
 .contact-info h3 {
@@ -1267,12 +1844,12 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     border: 1px solid var(--primary);
     border-radius: 50%;
     position: fixed;
-    transform: translate(-50%, -50%);
+    top: 0; left: 0;
     pointer-events: none;
     z-index: 9999;
-    transition: all 0.12s ease;
-    transition-property: background, transform, border-color;
+    transition: background 0.15s ease, border-color 0.15s ease, width 0.15s, height 0.15s;
     backdrop-filter: blur(2px);
+    will-change: transform;
 }
 
 .cursor2 {
@@ -1281,16 +1858,17 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     background-color: var(--primary);
     border-radius: 50%;
     position: fixed;
-    transform: translate(-50%, -50%);
+    top: 0; left: 0;
     pointer-events: none;
     z-index: 9999;
-    transition: left 0.08s, top 0.08s;
+    will-change: transform;
 }
 
 .cursor.hovered {
-    transform: translate(-50%, -50%) scale(1.6);
-    background-color: rgba(39, 174, 96, 0.08);
-    border-color: rgba(39,174,96,0.4);
+    width: 76px;
+    height: 76px;
+    background-color: rgba(17, 212, 131, 0.08);
+    border-color: rgba(17, 212, 131, 0.4);
 }
 
 @media (max-width: 991px) {
@@ -1392,7 +1970,9 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     .nav-links a { font-size: 1.1rem; }
 
     .hero-content h1 { font-size: 2.8rem; letter-spacing: -0.5px; }
-    .hero-btns { flex-direction: column; align-items: center; }
+    .hero-btns { flex-direction: column; align-items: flex-start; }
+    .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-visual { display: none; /* Hide abstract shape on very small screens to save space */ }
 
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);

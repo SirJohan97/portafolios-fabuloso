@@ -1,5 +1,99 @@
 /* =========================================
-   INICIO DEL SCRIPT
+   0. CINEMATIC PRELOADER
+   ========================================= */
+(function() {
+    const _preloader = document.getElementById('preloader');
+    if (!_preloader) return;
+
+    /* --- Canvas de partículas flotantes fondo --- */
+    const plCanvas = document.getElementById('preloader-canvas');
+    const plCtx    = plCanvas ? plCanvas.getContext('2d') : null;
+    let plParticles = [];
+    let plRafId;
+
+    function initPlCanvas() {
+        if (!plCtx) return;
+        plCanvas.width  = window.innerWidth;
+        plCanvas.height = window.innerHeight;
+
+        // Generar 60 partículas flotantes
+        plParticles = Array.from({ length: 60 }, () => ({
+            x: Math.random() * plCanvas.width,
+            y: Math.random() * plCanvas.height,
+            r: Math.random() * 1.5 + 0.4,
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.4,
+            alpha: Math.random() * 0.5 + 0.1
+        }));
+
+        animatePl();
+    }
+
+    function animatePl() {
+        if (!plCtx) return;
+        // Fondo oscuro semi-sólido (el canvas sirve como fondo del preloader)
+        plCtx.fillStyle = 'rgba(5, 5, 5, 0.96)';
+        plCtx.fillRect(0, 0, plCanvas.width, plCanvas.height);
+        plParticles.forEach(p => {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0) p.x = plCanvas.width;
+            if (p.x > plCanvas.width) p.x = 0;
+            if (p.y < 0) p.y = plCanvas.height;
+            if (p.y > plCanvas.height) p.y = 0;
+            plCtx.beginPath();
+            plCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            plCtx.fillStyle = `rgba(17,212,131,${p.alpha})`;
+            plCtx.fill();
+        });
+        plRafId = requestAnimationFrame(animatePl);
+    }
+
+    initPlCanvas();
+
+    /* --- Barra de progreso y contador animados --- */
+    const plFill = document.querySelector('.pl-fill');
+    const plPct  = document.getElementById('pl-pct');
+    let progress = 0;
+    const TOTAL_MS = 2800; // Duración total del preloader
+    const start = performance.now();
+
+    function updateProgress(now) {
+        const elapsed = now - start;
+        // Progreso acelerado: 0% → 85% rápido, 85% → 100% más lento
+        const raw = Math.min(elapsed / TOTAL_MS, 1);
+        progress = raw < 0.7
+            ? raw / 0.7 * 85
+            : 85 + (raw - 0.7) / 0.3 * 15;
+        progress = Math.min(progress, 100);
+
+        if (plFill) plFill.style.width = progress + '%';
+        if (plPct)  plPct.textContent  = Math.floor(progress) + '%';
+
+        if (progress < 100) {
+            requestAnimationFrame(updateProgress);
+        }
+    }
+    requestAnimationFrame(updateProgress);
+
+    /* --- Reveal: cortinas + fade del preloader --- */
+    window.setTimeout(() => {
+        cancelAnimationFrame(plRafId);
+        _preloader.classList.add('preloader-hidden');
+
+        // Las cortinas tardan 750ms en abrirse → activamos el Blueprint cuando terminen
+        setTimeout(() => {
+            _preloader.style.display = 'none';
+            // Liberamos la animación del Blueprint exactamente al finalizarse el reveal
+            const blueprintEl = document.querySelector('.blueprint-container');
+            if (blueprintEl) {
+                blueprintEl.classList.remove('blueprint-paused');
+            }
+        }, 800);
+    }, TOTAL_MS);
+})();
+
+/* =========================================
+   INICIO DEL SCRIPT PRINCIPAL
    ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -118,22 +212,59 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
 
     /* =========================================
-       5. CURSOR PERSONALIZADO
+       5. CURSOR PERSONALIZADO (GPU ACCELERATED)
        ========================================= */
     const cursor  = document.querySelector('.cursor');
     const cursor2 = document.querySelector('.cursor2');
 
     if (window.innerWidth > 991 && cursor) {
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let c1X = mouseX, c1Y = mouseY;
+        let c2X = mouseX, c2Y = mouseY;
+
         document.addEventListener('mousemove', e => {
-            cursor2.style.left = e.clientX + "px";
-            cursor2.style.top  = e.clientY + "px";
-            cursor.style.left  = e.clientX + "px";
-            cursor.style.top   = e.clientY + "px";
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
 
+        function renderCursor() {
+            // Suavizado e inercia para los cursores
+            c1X += (mouseX - c1X) * 0.17; // Anillo exterior sigue un pelo más lento
+            c1Y += (mouseY - c1Y) * 0.17;
+            
+            c2X += (mouseX - c2X) * 0.8; // Punto central casi inmediato
+            c2Y += (mouseY - c2Y) * 0.8;
+
+            cursor.style.transform = `translate3d(calc(${c1X}px - 50%), calc(${c1Y}px - 50%), 0)`;
+            cursor2.style.transform = `translate3d(calc(${c2X}px - 50%), calc(${c2Y}px - 50%), 0)`;
+
+            requestAnimationFrame(renderCursor);
+        }
+        requestAnimationFrame(renderCursor);
+
+        // Hover Effect + Botones Magnéticos (Magnetic Effect)
         document.querySelectorAll('a, button, .card, .logo, .service-card, .team-card, .method-step, .testimonial-card, .pricing-card').forEach(item => {
             item.addEventListener('mouseover',  () => cursor.classList.add('hovered'));
-            item.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            item.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hovered');
+                // Reseteo magnético para botones/enlaces
+                if(item.classList.contains('btn') || item.tagName === 'A') {
+                    item.style.transform = `translate(0px, 0px)`;
+                }
+            });
+
+            // Lógica Magnética: Atraer botones hacia el cursor
+            if (item.classList.contains('btn') || item.tagName === 'A') {
+                item.addEventListener('mousemove', (e) => {
+                    const rect = item.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    // Solo mueve el elemento moderadamente hacia el mouse (factor 0.3)
+                    item.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                });
+            }
         });
     }
 
@@ -213,17 +344,23 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.classList.remove('scrolled');
         }
 
-        // Hide when scrolling down (past 120px) — show when scrolling up
-        if (currentScrollY > 120) {
-            if (scrollDiff > 4) {
-                // Scrolling DOWN → hide
-                navbar.classList.add('nav-hidden');
-            } else if (scrollDiff < -4) {
-                // Scrolling UP → reveal
-                navbar.classList.remove('nav-hidden');
+        // La navbar siempre permanece visible — nunca se oculta
+        // Logo morfológico: colapsa el texto a monograma al scrollear
+        const logoEl = document.querySelector('.logo');
+        if (logoEl) {
+            if (currentScrollY > 80) {
+                logoEl.classList.add('logo-compact');
+            } else {
+                logoEl.classList.remove('logo-compact');
             }
-        } else {
-            navbar.classList.remove('nav-hidden');
+        }
+
+        // --- BARRA DE PROGRESO DE LECTURA NEÓN ---
+        const progressBar = document.querySelector('.nav-progress-bar');
+        if (progressBar) {
+            const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercentage = (currentScrollY / documentHeight) * 100;
+            progressBar.style.width = scrollPercentage + '%';
         }
 
         lastScrollY = currentScrollY;
@@ -236,4 +373,137 @@ document.addEventListener('DOMContentLoaded', () => {
             ticking = true;
         }
     }, { passive: true });
+
+    /* =========================================
+       9. CANVAS NETWORK ANIMATION (NODOS)
+       ========================================= */
+    const canvas = document.getElementById('canvas-network');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        
+        // Configuración de la Red
+        const particleCount = 70; // Cantidad de nodos
+        const connectionDistance = 120; // Distancia máxima para conectar nodos
+        const mouseConnectionDistance = 160; // Distancia de interacción con el mouse
+        const nodeColor = 'rgba(17, 212, 131, 0.9)'; // Emerald green (Theme primary)
+        const lineColor = 'rgba(17, 212, 131, 0.25)'; // Líneas más tenues
+        const mouseLineColor = 'rgba(17, 212, 131, 0.6)';
+
+        let mouse = { x: null, y: null };
+
+        function resizeCanvas() {
+            // El canvas cubre solo el header#home
+            const heroSection = document.getElementById('home');
+            width = canvas.width = heroSection.offsetWidth;
+            height = canvas.height = heroSection.offsetHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 1.0;
+                this.vy = (Math.random() - 0.5) * 1.0;
+                this.radius = Math.random() * 2.0 + 1.0;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Rebotar en los bordes
+                if (this.x < 0 || this.x > width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > height) this.vy = -this.vy;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = nodeColor;
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            resizeCanvas();
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Actualizar y dibujar partículas
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Dibujar lineas (Red)
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = lineColor;
+                        ctx.lineWidth = 1 - (dist / connectionDistance);
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+
+                // Interacción con mouse
+                if (mouse.x !== null && mouse.y !== null) {
+                    const dxm = particles[i].x - mouse.x;
+                    const dym = particles[i].y - mouse.y;
+                    const distMouse = Math.sqrt(dxm * dxm + dym * dym);
+
+                    if (distMouse < mouseConnectionDistance) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = mouseLineColor;
+                        ctx.lineWidth = 1.5 - (distMouse / mouseConnectionDistance);
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.stroke();
+                        
+                        // Pequeña atracción magnética al mouse
+                        particles[i].x -= dxm * 0.015;
+                        particles[i].y -= dym * 0.015;
+                    }
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // Listeners
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+        });
+
+        const heroElement = document.getElementById('home');
+        heroElement.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        heroElement.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        // Lanzar
+        init();
+        animate();
+    }
+
 });
