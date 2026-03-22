@@ -286,67 +286,98 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     box-shadow: none;
 }
 
+
 /* ——————————————————————————————————————————
    LOGO MORFOLÓGICO - Efecto Anthropic
-   Aparece un icono desde el ancho 0 y el texto se encoge simultáneamente
+   Cada letra colapsa individualmente como una animación Lottie
    —————————————————————————————————————————— */
 .logo {
     display: flex;
     align-items: center;
     text-decoration: none;
     color: var(--light);
+    gap: 0;
 }
 
+/* Icono hexagonal oculto por defecto */
 .logo-icon {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
     width: 0;
     opacity: 0;
     margin-right: 0;
-    overflow: hidden;
-    transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-                margin-right 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.3s ease 0.1s;
+    flex-shrink: 0;
+    transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s ease,
+                margin-right 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-icon svg {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    display: block;
+    filter: drop-shadow(0 0 10px var(--primary-glow));
+}
+
+/* Texto del logo */
+.logo-text {
     display: flex;
     align-items: center;
 }
 
-.logo-icon svg {
-    width: 30px;
-    height: 30px;
-    flex-shrink: 0;
-    display: block;
-}
-
-.logo-text {
-    font-size: 1.55rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transform-origin: left center;
-    transition: font-size 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-    white-space: nowrap;
+.brand-letters {
     display: flex;
-}
-
-.logo-brand {
+    align-items: baseline;
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
     font-family: var(--font-display);
-    color: var(--light);
 }
 
-.logo-accent {
-    font-family: var(--font-display);
-    color: var(--primary);
+/* Estilo base para cada letra */
+.l {
+    display: inline-block;
 }
 
-/* === ESTADO COMPACTO AL HACER SCROLL === */
+/* Letras que permanecen (C, ., i) */
+.l.keep {
+    color: inherit;
+}
+
+/* Letras que desaparecen */
+.l.hide {
+    overflow: hidden;
+    max-width: 2ch;
+    opacity: 1;
+    transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Delays escalonados para efecto cascada Anthropic */
+.l.hide:nth-child(2) { transition-delay: 0s;    }
+.l.hide:nth-child(3) { transition-delay: 0.03s; }
+.l.hide:nth-child(4) { transition-delay: 0.06s; }
+.l.hide:nth-child(5) { transition-delay: 0.09s; }
+.l.hide:nth-child(6) { transition-delay: 0.12s; }
+.l.hide:nth-child(7) { transition-delay: 0.15s; }
+.l.hide:nth-child(8) { transition-delay: 0.18s; }
+.l.hide:nth-child(11){ transition-delay: 0.21s; }
+.l.hide:nth-child(12){ transition-delay: 0.24s; }
+
+/* === ESTADO COMPACTO (con scroll) === */
 .logo.logo-compact .logo-icon {
-    width: 30px;
+    width: 34px;
     opacity: 1;
     margin-right: 10px;
 }
 
-.logo.logo-compact .logo-text {
-    font-size: 1rem;
-    letter-spacing: 2px;
+.logo.logo-compact .l.hide {
+    max-width: 0;
+    opacity: 0;
 }
 
 .nav-links {

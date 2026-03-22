@@ -348,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Logo morfológico: colapsa el texto a monograma al scrollear
         const logoEl = document.querySelector('.logo');
         if (logoEl) {
-            if (currentScrollY > 80) {
+            if (currentScrollY > 30) {
                 logoEl.classList.add('logo-compact');
             } else {
                 logoEl.classList.remove('logo-compact');
