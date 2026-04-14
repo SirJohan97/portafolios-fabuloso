@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
        6. EFECTO MÁQUINA DE ESCRIBIR
        ========================================= */
     const textElement = document.querySelector('.typing-text');
-    const words       = ["Experiencias.", "Innovación.", "Tecnología.", "Tu Futuro."];
+    const words       = ["Arquitectura.", "Experiencias.", "Infraestructura.", "Tecnología.", "Tu Futuro."];
     let wordIndex   = 0;
     let charIndex   = 0;
     let isDeleting  = false;
@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!nombre || !email || !mensaje) return;
 
-            const textoMensaje = `¡Hola! Vengo del portafolio y quiero cotizar un proyecto.%0A%0A*Nombre:* ${encodeURIComponent(nombre)}%0A*Correo:* ${encodeURIComponent(email)}%0A*Requerimiento:* ${encodeURIComponent(mensaje)}`;
+            const textoMensaje = `¡Hola! Vengo de su sitio web VANTA y requiero cotizar un proyecto.%0A%0A*Nombre:* ${encodeURIComponent(nombre)}%0A*Correo:* ${encodeURIComponent(email)}%0A*Requerimiento:* ${encodeURIComponent(mensaje)}`;
             const numeroWa     = "584127121162";
             const urlWa        = `https://wa.me/${numeroWa}?text=${textoMensaje}`;
 

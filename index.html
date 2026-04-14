@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canguro's.inc | Soluciones Digitales</title>
+    <title>VANTA | Visual Architecture & Network Technology</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
         rel="stylesheet">
 
     <!-- Archivos CSS Personales -->
@@ -23,16 +23,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <meta name="description"
-        content="Canguro's.inc — Desarrollo web, automatización con IA, apps móviles e infraestructura de redes a medida. Soluciones digitales profesionales en Venezuela.">
+        content="VANTA — Arquitectura visual, automatización con IA e infraestructuras tecnológicas a medida. Ingeniería de software de élite.">
     <meta name="keywords"
-        content="desarrollo web, python, html, css, app, venezuela, programador, automatización, inteligencia artificial">
+        content="vanta, desarrollo web, python, ai, automatización, inteligencia artificial, arquitectura de redes, software, premium">
     <meta name="author" content="Johan Fernández & Andrés Morales">
 
-    <meta property="og:title" content="Canguro's.inc">
+    <meta property="og:title" content="VANTA | Visual Architecture">
     <meta property="og:description"
-        content="Desarrollamos software, integramos IA y diseñamos infraestructura de redes. Mira nuestros proyectos.">
+        content="Desarrollo de software de alto nivel, integración de IA y diseño de infraestructura escalable.">
     <meta property="og:image" content="img/pana-fresco.jpeg">
-    <meta property="og:url" content="https://canguros-inc.vercel.app">
+    <meta property="og:url" content="https://vanta-tech.vercel.app">
     <meta property="og:type" content="website">
 </head>
 
@@ -46,27 +46,37 @@
         <div class="preloader-inner">
             <div class="hex-ring">
                 <svg viewBox="0 0 200 200" class="hex-svg">
-                    <!-- Hex outer -->
-                    <polygon class="hex-outer" points="100,10 185,55 185,145 100,190 15,145 15,55"
-                        fill="none" stroke="rgba(17,212,131,0.3)" stroke-width="1"/>
-                    <!-- Hex middle -->
-                    <polygon class="hex-mid" points="100,30 167,67.5 167,132.5 100,170 33,132.5 33,67.5"
-                        fill="none" stroke="rgba(17,212,131,0.6)" stroke-width="0.8"/>
-                    <!-- Rotating arc -->
-                    <circle class="hex-orbit" cx="100" cy="100" r="75"
-                        fill="none" stroke="url(#arcGrad)" stroke-width="1.5"
-                        stroke-dasharray="80 400"/>
-                    <!-- Center logo glyph -->
-                    <text x="100" y="107" text-anchor="middle"
-                        class="hex-brand" fill="white" font-size="16" font-weight="900"
-                        font-family="Inter, sans-serif" letter-spacing="1">J.A</text>
                     <defs>
                         <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stop-color="rgba(17,212,131,0)"/>
                             <stop offset="50%" stop-color="#11d483"/>
                             <stop offset="100%" stop-color="rgba(17,212,131,0)"/>
                         </linearGradient>
+                        <filter id="glowPl">
+                            <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
                     </defs>
+                    <!-- Outer diamond frame -->
+                    <polygon class="hex-outer" points="100,10 190,100 100,190 10,100"
+                        fill="rgba(17,212,131,0.03)" stroke="rgba(17,212,131,0.35)" stroke-width="1"/>
+                    <!-- Inner diamond -->
+                    <polygon class="hex-mid" points="100,35 165,100 100,165 35,100"
+                        fill="none" stroke="rgba(17,212,131,0.6)" stroke-width="0.8"/>
+                    <!-- Corner accent marks -->
+                    <line x1="100" y1="10" x2="100" y2="30" stroke="rgba(17,212,131,0.5)" stroke-width="1.5"/>
+                    <line x1="190" y1="100" x2="170" y2="100" stroke="rgba(17,212,131,0.5)" stroke-width="1.5"/>
+                    <line x1="100" y1="190" x2="100" y2="170" stroke="rgba(17,212,131,0.5)" stroke-width="1.5"/>
+                    <line x1="10" y1="100" x2="30" y2="100" stroke="rgba(17,212,131,0.5)" stroke-width="1.5"/>
+                    <!-- Rotating arc -->
+                    <circle class="hex-orbit" cx="100" cy="100" r="75"
+                        fill="none" stroke="url(#arcGrad)" stroke-width="1.5"
+                        stroke-dasharray="80 400"/>
+                    <!-- V chevron glyph -->
+                    <polyline class="hex-brand-v" points="62,72 100,135 138,72"
+                        fill="none" stroke="#11d483" stroke-width="6"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        filter="url(#glowPl)"/>
                 </svg>
             </div>
             <div class="preloader-texts">
@@ -82,30 +92,36 @@
 
     <nav class="navbar">
         <div class="nav-progress-bar"></div>
-        <a href="#home" class="logo" aria-label="Canguro's Inc">
+        <a href="#home" class="logo" aria-label="VANTA">
             <span class="logo-icon">
                 <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <polygon points="18,2 32,10 32,26 18,34 4,26 4,10"
-                             stroke="#11d483" stroke-width="1.5" fill="rgba(17,212,131,0.06)"/>
-                    <text x="18" y="24" text-anchor="middle"
-                          fill="white" font-size="10" font-weight="900"
-                          font-family="Inter, sans-serif" letter-spacing="-0.5">C.I</text>
+                    <defs>
+                        <filter id="vGlow">
+                            <feGaussianBlur stdDeviation="1.2" result="blur"/>
+                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                    </defs>
+                    <!-- Diamond frame -->
+                    <polygon points="18,1.5 34.5,18 18,34.5 1.5,18"
+                             stroke="#11d483" stroke-width="1" fill="rgba(17,212,131,0.05)"
+                             stroke-linejoin="round"/>
+                    <!-- Corner ticks -->
+                    <line x1="18" y1="1.5" x2="18" y2="5.5" stroke="rgba(17,212,131,0.6)" stroke-width="1"/>
+                    <line x1="18" y1="30.5" x2="18" y2="34.5" stroke="rgba(17,212,131,0.6)" stroke-width="1"/>
+                    <!-- V chevron -->
+                    <polyline points="9,12 18,25 27,12"
+                              stroke="#11d483" stroke-width="2.2"
+                              stroke-linecap="round" stroke-linejoin="round"
+                              filter="url(#vGlow)"/>
                 </svg>
             </span>
             <span class="logo-text">
                 <span class="brand-letters">
-                    <span class="l keep">C</span>
-                    <span class="l hide">a</span>
-                    <span class="l hide">n</span>
-                    <span class="l hide">g</span>
-                    <span class="l hide">u</span>
-                    <span class="l hide">r</span>
-                    <span class="l hide">o</span>
-                    <span class="l hide">'s</span>
-                    <span class="l keep">.</span>
-                    <span class="l keep">i</span>
-                    <span class="l hide">n</span>
-                    <span class="l hide">c</span>
+                    <span class="l keep">V</span>
+                    <span class="l hide">A</span>
+                    <span class="l hide">N</span>
+                    <span class="l hide">T</span>
+                    <span class="l keep">A</span>
                 </span>
             </span>
         </a>
@@ -538,7 +554,7 @@
 
             <div class="testimonial-card hidden delay-100">
                 <div class="testimonial-stars">★★★★★</div>
-                <p>"El sistema de gestión que Canguro's.inc desarrolló para nuestra biblioteca superó todas nuestras
+                <p>"El sistema de gestión que VANTA desarrolló para nuestra biblioteca superó todas nuestras
                     expectativas. Rápido, intuitivo y entregado antes del plazo."</p>
                 <div class="testimonial-author">
                     <div class="testimonial-avatar">AC</div>
@@ -615,8 +631,8 @@
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-brand">
-                <div class="footer-logo">Canguro's<span>.inc</span></div>
-                <p>Transformamos ideas en soluciones digitales reales. Con código, creatividad y compromiso.</p>
+                <div class="footer-logo">VA<span>NTA</span></div>
+                <p>Ingeniería y arquitectura visual de vanguardia. Construimos sistemas altamente eficientes para un futuro conectado.</p>
                 <div class="footer-social">
                     <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i
                             class="fab fa-github"></i></a>
@@ -653,7 +669,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2026 Canguro's.inc. Todos los derechos reservados.</p>
+            <p>&copy; 2026 VANTA Tech. Todos los derechos reservados.</p>
             <p>Hecho con <span style="color: var(--primary);">♥</span> en Venezuela</p>
         </div>
     </footer>
