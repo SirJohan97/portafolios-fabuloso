@@ -1,3 +1,4 @@
 {
-    "indentRainbow.indicatorStyle": "light"
+  "indentRainbow.indicatorStyle": "light",
+  "liveServer.settings.port": 5501
 }
