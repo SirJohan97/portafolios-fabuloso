@@ -1,39 +1,71 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VANTA | Visual Architecture & Network Technology</title>
 
-    <!-- Favicon -->
+    <!-- SEO PRIMARIO -->
+    <title>VANTA | Ingeniería de Software de Élite · Python, IA & Arquitectura Web</title>
+    <meta name="description" content="VANTA es un estudio de desarrollo de software premium especializado en aplicaciones web, automatización con Inteligencia Artificial, sistemas backend robustos y arquitectura tecnológica a medida.">
+    <meta name="keywords" content="vanta, desarrollo web venezuela, python, fastapi, flask, inteligencia artificial, gemini ai, automatización, software a medida, portafolio programador, backend, postgresql, vercel">
+    <meta name="author" content="Johan Fernández &amp; Andrés Morales — VANTA">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#11D483">
+    <link rel="canonical" href="https://vanta-tech.vercel.app/">
+
+    <!-- OPEN GRAPH — WhatsApp · Facebook · LinkedIn · Telegram -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="VANTA Studio">
+    <meta property="og:title" content="VANTA | Ingeniería de Software de Élite">
+    <meta property="og:description" content="Transformamos ideas en ecosistemas digitales de alto impacto. Especialistas en Python, IA con Google Gemini, FastAPI, sistemas web y automatización. Proyectos reales en producción.">
+    <meta property="og:url" content="https://vanta-tech.vercel.app/">
+    <meta property="og:image" content="https://vanta-tech.vercel.app/img/pana-fresco.jpeg">
+    <meta property="og:image:alt" content="VANTA Studio — Portafolio de Ingeniería de Software">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="es_VE">
+
+    <!-- TWITTER / X CARD -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="VANTA | Ingeniería de Software de Élite">
+    <meta name="twitter:description" content="Transformamos ideas en ecosistemas digitales. Python · FastAPI · IA · PostgreSQL · Vercel. Proyectos reales en producción.">
+    <meta name="twitter:image" content="https://vanta-tech.vercel.app/img/pana-fresco.jpeg">
+    <meta name="twitter:image:alt" content="VANTA Studio — Software Engineering Portfolio">
+
+    <!-- FAVICON -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
 
-    <!-- Google Fonts: Inter + Plus Jakarta Sans -->
+    <!-- SCHEMA.ORG JSON-LD (Google Rich Results) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "VANTA Studio",
+        "url": "https://vanta-tech.vercel.app/",
+        "description": "Estudio de desarrollo de software premium especializado en aplicaciones web, automatización con IA, sistemas backend y arquitectura tecnológica a medida.",
+        "image": "https://vanta-tech.vercel.app/img/pana-fresco.jpeg",
+        "founders": [
+            { "@type": "Person", "name": "Johan Fernández" },
+            { "@type": "Person", "name": "Andrés Morales" }
+        ],
+        "knowsAbout": ["Python", "FastAPI", "Flask", "PostgreSQL", "Inteligencia Artificial", "Google Gemini", "Vercel", "Desarrollo Web"],
+        "areaServed": { "@type": "Country", "name": "Venezuela" },
+        "contactPoint": { "@type": "ContactPoint", "contactType": "customer service", "availableLanguage": "Spanish" }
+    }
+    </script>
+
+    <!-- FUENTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Archivos CSS Personales -->
-    <link rel="stylesheet" href="styles.css?v=8">
-    <!-- Efectos Premium de Élite -->
+    <!-- ESTILOS -->
+    <link rel="stylesheet" href="styles.css?v=9">
     <link rel="stylesheet" href="effects.css?v=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <meta name="description"
-        content="VANTA — Arquitectura visual, automatización con IA e infraestructuras tecnológicas a medida. Ingeniería de software de élite.">
-    <meta name="keywords"
-        content="vanta, desarrollo web, python, ai, automatización, inteligencia artificial, arquitectura de redes, software, premium">
-    <meta name="author" content="Johan Fernández & Andrés Morales">
-
-    <meta property="og:title" content="VANTA | Visual Architecture">
-    <meta property="og:description"
-        content="Desarrollo de software de alto nivel, integración de IA y diseño de infraestructura escalable.">
-    <meta property="og:image" content="img/pana-fresco.jpeg">
-    <meta property="og:url" content="https://vanta-tech.vercel.app">
-    <meta property="og:type" content="website">
 </head>
 
 <body>
@@ -242,71 +274,44 @@
 
         <div class="gallery-grid">
 
-            <a href="https://biblioteca-ashy-sigma.vercel.app" class="card hidden delay-100" target="_blank"
-                rel="noopener noreferrer">
-                <video autoplay muted loop playsinline>
-                    <source src="videos/cerdiv-video.mp4" type="video/mp4">
-                    Tu navegador no soporta video.
-                </video>
+            <div class="card hidden delay-100" data-project="iuta">
+                <img src="img/cerdivweb.jpeg" alt="Sistema de Gestión Bibliotecaria IUTA">
                 <div class="card-overlay">
-                    <span class="card-tag">Python · Backend</span>
+                    <span class="card-tag">Python · Flask · PostgreSQL</span>
                     <h3>Sistema de Gestión Bibliotecaria IUTA</h3>
-                    <p>Aplicación de escritorio para administración de inventario <i
-                            class="fas fa-external-link-alt"></i></p>
+                    <p>Herramienta robusta que moderniza el control bibliotecario del IUTA, transformando procesos manuales en un ecosistema digital eficiente.</p>
                 </div>
-            </a>
-
-            <div class="card hidden delay-200">
-                <video autoplay muted loop playsinline>
-                    <source src="videos/velosidat.mp4" type="video/mp4">
-                    Tu navegador no soporta video.
-                </video>
-                <div class="card-overlay">
-                    <span class="card-tag">Video · Motion Graphics</span>
-                    <h3>Producción Audiovisual & Motion Graphics</h3>
-                    <p>Edición profesional, animación y efectos visuales para contenido digital.</p>
+                <div class="card-menu">
+                    <button class="btn btn-outline info-btn" data-info="iuta">Saber más</button>
+                    <a href="https://biblioteca-ashy-sigma.vercel.app" class="btn" target="_blank" rel="noopener noreferrer">Ir al proyecto <i class="fas fa-external-link-alt"></i></a>
                 </div>
             </div>
 
-            <div class="card hidden delay-300">
-                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800&auto=format&fit=crop"
-                    alt="App Móvil Comercial">
+            <div class="card hidden delay-200" data-project="aura">
+                <img src="img/auracheck.jpeg" alt="Aura Check">
                 <div class="card-overlay">
-                    <span class="card-tag">Mobile · UI/UX</span>
-                    <h3>App Móvil Comercial</h3>
-                    <p>Diseño e interfaz pensada para escalabilidad, conversión y venta.</p>
-                </div>
-            </div>
-
-            <div class="card hidden delay-100">
-                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=800&auto=format&fit=crop"
-                    alt="Topología de Red">
-                <div class="card-overlay">
-                    <span class="card-tag">Redes · Cisco</span>
-                    <h3>Diseño de Red Corporativa</h3>
-                    <p>Proyecto TechSoluciones: Subnetting, VLANs y configuración en Cisco Packet Tracer.</p>
-                </div>
-            </div>
-
-            <a href="https://aura-check-omega.vercel.app/" class="card hidden delay-200" target="_blank"
-                rel="noopener noreferrer">
-                <img src="img/aura-check.png" alt="Aura Check">
-                <div class="card-overlay">
-                    <span class="card-tag">Web · AI</span>
+                    <span class="card-tag">FastAPI · Biometría · Seguridad</span>
                     <h3>Aura Check</h3>
-                    <p>Análisis de aura y energía impulsado por IA. <i class="fas fa-external-link-alt"></i></p>
+                    <p>Panel de auditoría de seguridad biométrica que opera 100% en local — ningún dato sensible abandona el dispositivo del usuario.</p>
                 </div>
-            </a>
+                <div class="card-menu">
+                    <button class="btn btn-outline info-btn" data-info="aura">Saber más</button>
+                    <a href="https://aura-check-omega.vercel.app/" class="btn" target="_blank" rel="noopener noreferrer">Ir al proyecto <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </div>
 
-            <a href="https://que-le-pasa-a-mi-cuerpo.vercel.app/" class="card hidden delay-300" target="_blank"
-                rel="noopener noreferrer">
-                <img src="img/que-le-pasa.png" alt="Qué le pasa a mi cuerpo">
+            <div class="card hidden delay-300" data-project="cuerpo">
+                <img src="img/quelepasacuerpo.jpeg" alt="Qué le pasa a mi cuerpo">
                 <div class="card-overlay">
-                    <span class="card-tag">Web · Salud</span>
+                    <span class="card-tag">IA · FastAPI · Experiencia Inmersiva</span>
                     <h3>¿Qué le pasa a mi cuerpo?</h3>
-                    <p>Plataforma educativa sobre salud y bienestar corporal. <i class="fas fa-external-link-alt"></i></p>
+                    <p>Plataforma médica impulsada por IA que responde consultas de anatomía con la voz de un doctor victoriano de 1885.</p>
                 </div>
-            </a>
+                <div class="card-menu">
+                    <button class="btn btn-outline info-btn" data-info="cuerpo">Saber más</button>
+                    <a href="https://que-le-pasa-a-mi-cuerpo.vercel.app/" class="btn" target="_blank" rel="noopener noreferrer">Ir al proyecto <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </div>
 
         </div>
     </section>
@@ -679,7 +684,36 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <script src="script.js?v=8"></script>
+    <!-- ===== MODAL DE PROYECTO ===== -->
+    <div class="project-modal-overlay" id="projectModalOverlay" role="dialog" aria-modal="true">
+        <div class="project-modal" id="projectModal">
+            <button class="modal-close" id="modalClose" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+
+            <!-- Galería de media -->
+            <div class="modal-gallery" id="modalGallery">
+                <div class="gallery-track" id="galleryTrack"></div>
+                <button class="gallery-nav prev" id="galleryPrev" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+                <button class="gallery-nav next" id="galleryNext" aria-label="Siguiente"><i class="fas fa-chevron-right"></i></button>
+                <div class="gallery-dots" id="galleryDots"></div>
+                <span class="gallery-counter" id="galleryCounter">1 / 1</span>
+                <div class="modal-header-overlay">
+                    <span class="modal-tag" id="modalTag"></span>
+                    <h3 class="modal-title" id="modalTitle"></h3>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <p class="modal-description" id="modalDescription"></p>
+                <ul class="modal-tech-list" id="modalTechList"></ul>
+                <div class="modal-actions">
+                    <a href="#" class="btn btn-outline" id="modalLearnMore" target="_blank" rel="noopener noreferrer">Ver Demo</a>
+                    <a href="#contact" class="btn" id="modalContact">Cotizar este tipo de proyecto</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=9"></script>
     <script src="particles.js?v=8"></script>
     <script src="effects.js?v=1"></script>
 </body>

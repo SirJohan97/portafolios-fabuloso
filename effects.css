@@ -100,7 +100,7 @@ body::after {
     border-radius: 50%;
     background: var(--primary);
     pointer-events: none;
-    z-index: 9997;
+    z-index: 999997;
     transform: translate(-50%, -50%);
     animation: trailFade 0.55s ease forwards;
     will-change: opacity, transform;
