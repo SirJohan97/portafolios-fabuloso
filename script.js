@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
        6. EFECTO MÁQUINA DE ESCRIBIR
        ========================================= */
     const textElement = document.querySelector('.typing-text');
-    const words       = ["Experiencias.", "Innovación.", "Tecnología.", "Tu Futuro."];
+    const words       = ["Arquitectura.", "Experiencias.", "Infraestructura.", "Tecnología.", "Tu Futuro."];
     let wordIndex   = 0;
     let charIndex   = 0;
     let isDeleting  = false;
@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!nombre || !email || !mensaje) return;
 
-            const textoMensaje = `¡Hola! Vengo del portafolio y quiero cotizar un proyecto.%0A%0A*Nombre:* ${encodeURIComponent(nombre)}%0A*Correo:* ${encodeURIComponent(email)}%0A*Requerimiento:* ${encodeURIComponent(mensaje)}`;
+            const textoMensaje = `¡Hola! Vengo de su sitio web VANTA y requiero cotizar un proyecto.%0A%0A*Nombre:* ${encodeURIComponent(nombre)}%0A*Correo:* ${encodeURIComponent(email)}%0A*Requerimiento:* ${encodeURIComponent(mensaje)}`;
             const numeroWa     = "584127121162";
             const urlWa        = `https://wa.me/${numeroWa}?text=${textoMensaje}`;
 
@@ -505,5 +505,219 @@ document.addEventListener('DOMContentLoaded', () => {
         init();
         animate();
     }
+
+    /* =========================================
+       10. CARD MENU INTERACTIVO (click to toggle)
+       ========================================= */
+    const PROJECT_DATA = {
+        iuta: {
+            tag: 'Python · Flask · PostgreSQL · Cloud',
+            title: 'Sistema de Gestión Bibliotecaria IUTA',
+            description: 'Desarrollado como servicio comunitario para el IUTA, este sistema centraliza y automatiza la administración de libros y ejemplares físicos en múltiples sedes universitarias. Reemplaza registros físicos con una base de datos estructurada, implementa búsqueda en tiempo real por título/autor/sede, y gestiona stock con control de copias individuales y estados de disponibilidad. Incluye autenticación segura con cifrado de contraseñas y un panel CRUD completo para administradores.',
+            tech: ['Flask (Python)', 'PostgreSQL / Neon', 'Vercel Blob', 'Werkzeug Auth', 'Búsqueda Asíncrona', 'Multi-sede'],
+            url: 'https://biblioteca-ashy-sigma.vercel.app',
+            gallery: [
+                { type: 'image', src: 'img/cerdivweb.jpeg', label: 'Vista Principal' }
+            ]
+        },
+        aura: {
+            tag: 'FastAPI · Biometría · WebAuthn · Seguridad Local',
+            title: 'Aura Check — Panel de Auditoría de Seguridad',
+            description: 'Aplicación de auditoría de seguridad biométrica que opera 100% en local: ningún dato sensible abandona el dispositivo. Analiza cinco módulos: integridad biométrica (WebAuthn / huella / facial), sensor óptico (cámara + face-api.js), frecuencia acústica (Web Audio API), estado del sistema (Battery API) y seguridad de red (test de velocidad real + geolocalización IP). Genera certificados PDF forenses descargables y persiste el historial de auditorías en localStorage.',
+            tech: ['FastAPI + Python 3.11', 'WebAuthn / Biometría', 'face-api.js', 'Web Audio API', 'jsPDF', 'Vercel Serverless', 'SlowAPI Rate Limiting'],
+            url: 'https://aura-check-omega.vercel.app/',
+            gallery: [
+                { type: 'image', src: 'img/auracheck.jpeg', label: 'Dashboard Principal' }
+            ]
+        },
+        cuerpo: {
+            tag: 'Google Gemini · FastAPI · IA Narrativa · Victorian UX',
+            title: '¿Qué le pasa a mi cuerpo? | Archivo Médico 1885',
+            description: 'Plataforma de consulta médica inmersiva con IA que actúa como un doctor victoriano de 1885. Integra Gemini 1.5/2.0 Flash para respuestas con personalidad histórica, un sistema de fallback a Wikipedia y MedlinePlus (BeautifulSoup4 + httpx), filtros de imagen Cloudinary para estética de grabado antiguo, partículas de polvo ambiental, sellos de cera interactivos y paginación de respuestas simulando un libro físico.',
+            tech: ['Google Gemini 1.5/2.0', 'FastAPI + Python', 'BeautifulSoup4', 'Cloudinary API', 'Tailwind CSS', 'Wikipedia / MedlinePlus', 'Vercel Functions'],
+            url: 'https://que-le-pasa-a-mi-cuerpo.vercel.app/',
+            gallery: [
+                { type: 'image', src: 'img/quelepasacuerpo.jpeg', label: 'Interfaz Principal' }
+            ]
+        }
+    };
+
+    // ---- Gallery state ----
+    let currentGalleryIndex = 0;
+    let currentGalleryData  = [];
+
+    const modalOverlay   = document.getElementById('projectModalOverlay');
+    const modalTag       = document.getElementById('modalTag');
+    const modalTitle     = document.getElementById('modalTitle');
+    const modalDesc      = document.getElementById('modalDescription');
+    const modalTechList  = document.getElementById('modalTechList');
+    const modalLearnMore = document.getElementById('modalLearnMore');
+    const modalCloseBtn  = document.getElementById('modalClose');
+    const galleryTrack   = document.getElementById('galleryTrack');
+    const galleryDots    = document.getElementById('galleryDots');
+    const galleryCounter = document.getElementById('galleryCounter');
+    const galleryEl      = document.getElementById('modalGallery');
+    const galleryPrevBtn = document.getElementById('galleryPrev');
+    const galleryNextBtn = document.getElementById('galleryNext');
+    const galleryCards   = document.querySelectorAll('.gallery-grid .card');
+
+    function buildGallery(items) {
+        currentGalleryData  = items;
+        currentGalleryIndex = 0;
+        galleryTrack.innerHTML = '';
+        galleryDots.innerHTML  = '';
+
+        items.forEach((item, i) => {
+            // Slide
+            const slide = document.createElement('div');
+            slide.className = 'gallery-slide';
+
+            let media;
+            if (item.type === 'video') {
+                media = document.createElement('video');
+                media.src    = item.src;
+                media.autoplay = true;
+                media.muted  = true;
+                media.loop   = true;
+                media.playsInline = true;
+                if (item.poster) media.poster = item.poster;
+            } else {
+                media = document.createElement('img');
+                media.src = item.src;
+                media.alt = item.label || '';
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'gallery-slide-overlay';
+
+            const label = document.createElement('span');
+            label.className = 'gallery-slide-label';
+            label.textContent = item.label || '';
+
+            slide.appendChild(media);
+            slide.appendChild(overlay);
+            slide.appendChild(label);
+            galleryTrack.appendChild(slide);
+
+            // Dot
+            const dot = document.createElement('div');
+            dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goToSlide(i));
+            galleryDots.appendChild(dot);
+        });
+
+        // Single slide → hide controls
+        galleryEl.classList.toggle('single-slide', items.length === 1);
+        updateGalleryUI();
+    }
+
+    function goToSlide(index) {
+        const total = currentGalleryData.length;
+        currentGalleryIndex = (index + total) % total;
+
+        // Pause all videos except current
+        galleryTrack.querySelectorAll('video').forEach((v, i) => {
+            if (i === currentGalleryIndex) { v.play(); } else { v.pause(); }
+        });
+
+        updateGalleryUI();
+    }
+
+    function updateGalleryUI() {
+        const total = currentGalleryData.length;
+        galleryTrack.style.transform = `translateX(-${currentGalleryIndex * 100}%)`;
+        galleryCounter.textContent   = `${currentGalleryIndex + 1} / ${total}`;
+
+        galleryDots.querySelectorAll('.gallery-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === currentGalleryIndex);
+        });
+    }
+
+    function openModal(projectKey) {
+        const data = PROJECT_DATA[projectKey];
+        if (!data) return;
+
+        modalTag.textContent   = data.tag;
+        modalTitle.textContent = data.title;
+        modalDesc.textContent  = data.description;
+        modalTechList.innerHTML = data.tech.map(t => `<li>${t}</li>`).join('');
+        modalLearnMore.href = data.url;
+
+        buildGallery(data.gallery || [{ type: 'image', src: '', label: '' }]);
+
+        modalOverlay.classList.add('modal-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        // Pause any videos
+        if (galleryTrack) {
+            galleryTrack.querySelectorAll('video').forEach(v => v.pause());
+        }
+        modalOverlay.classList.remove('modal-open');
+        document.body.style.overflow = '';
+    }
+
+    // Gallery nav buttons
+    if (galleryPrevBtn) galleryPrevBtn.addEventListener('click', () => goToSlide(currentGalleryIndex - 1));
+    if (galleryNextBtn) galleryNextBtn.addEventListener('click', () => goToSlide(currentGalleryIndex + 1));
+
+    // Swipe support for gallery
+    let touchStartX = 0;
+    if (galleryEl) {
+        galleryEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+        galleryEl.addEventListener('touchend', e => {
+            const diff = touchStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 40) goToSlide(currentGalleryIndex + (diff > 0 ? 1 : -1));
+        });
+    }
+
+    function closeAllCards() {
+        galleryCards.forEach(c => c.classList.remove('card-active'));
+    }
+
+    // Card click → toggle menu
+    galleryCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Si el click fue en el menu (botón o link), no toggling
+            if (e.target.closest('.card-menu')) return;
+
+            const isActive = card.classList.contains('card-active');
+            closeAllCards();
+            if (!isActive) card.classList.add('card-active');
+        });
+    });
+
+    // Info button → open modal
+    document.querySelectorAll('.info-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const key = btn.getAttribute('data-info');
+            openModal(key);
+        });
+    });
+
+    // Close modal
+    if (modalCloseBtn) {
+        modalCloseBtn.addEventListener('click', closeModal);
+    }
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+    }
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+            closeAllCards();
+        }
+    });
+
+    // Click fuera de cards → cierra el menú activo
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.gallery-grid .card')) {
+            closeAllCards();
+        }
+    });
 
 });
