@@ -349,7 +349,9 @@ document.addEventListener('DOMContentLoaded', () => {
        donde el usuario hace clic
        ========================================= */
     function createBurst(x, y) {
-        const COUNT  = 10;
+        // Reducimos la cantidad de partículas en móvil para mejorar el rendimiento
+        const isMobile = window.innerWidth < 768;
+        const COUNT  = isMobile ? 6 : 10;
         const colors = ['#11d483', '#2ecc71', '#00ffaa', '#ffffff'];
 
         for (let i = 0; i < COUNT; i++) {
@@ -362,6 +364,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const speed  = 40 + Math.random() * 60;
             const size   = 3 + Math.random() * 5;
             const color  = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Eliminamos la sombra en móvil para evitar sobrecarga de la GPU (fill-rate)
+            const boxShadow = isMobile ? 'none' : `0 0 6px ${color}`;
 
             dot.style.cssText = `
                 position: fixed;
@@ -369,10 +374,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 width: ${size}px; height: ${size}px;
                 border-radius: 50%;
                 background: ${color};
-                box-shadow: 0 0 6px ${color};
+                box-shadow: ${boxShadow};
                 pointer-events: none;
                 z-index: 99997;
-                transform: translate(-50%, -50%);
+                transform: translate3d(-50%, -50%, 0);
+                will-change: transform, opacity;
                 transition: none;
             `;
 
@@ -387,14 +393,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!startTs) startTs = ts;
                 const elapsed  = ts - startTs;
                 const progress = Math.min(elapsed / duration, 1);
-                const ease     = 1 - Math.pow(progress, 2);   // easeOutQuad
 
                 ox = vx * progress;
                 oy = vy * progress + 80 * progress * progress; // Gravedad downward
                 opacity = 1 - progress;
 
-                dot.style.left    = (x + ox) + 'px';
-                dot.style.top     = (y + oy) + 'px';
+                // OPTIMIZACIÓN: usar transform en vez de modificar top/left salva reflows y aumenta muchísimo los fps
+                dot.style.transform = `translate3d(calc(-50% + ${ox}px), calc(-50% + ${oy}px), 0)`;
                 dot.style.opacity = opacity;
 
                 if (progress < 1) {
