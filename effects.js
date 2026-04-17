@@ -62,7 +62,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Aplicar a tarjetas de proyectos, servicios, planes y equipo
-    applyTilt(document.querySelectorAll('.project-card, .service-card, .pricing-card, .team-card, .testimonial-card'));
+    applyTilt(document.querySelectorAll('.service-card, .pricing-card, .team-card, .testimonial-card'));
+
+    /* =========================================
+       2.5 SCROLL REVEAL (Animaciones de Entrada)
+       ========================================= */
+    const revealElements = document.querySelectorAll('.card, .service-card, .pricing-card, .team-card, .method-step, .stat-item');
+    
+    const revealObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+    revealElements.forEach(el => revealObserver.observe(el));
 
 
     /* =========================================
@@ -146,110 +162,112 @@ document.addEventListener('DOMContentLoaded', () => {
        Canvas con rayos eléctricos animados
        ========================================= */
     const elCanvas  = document.getElementById('electric-canvas');
-    if (!elCanvas) return;
 
-    const elCtx     = elCanvas.getContext('2d');
-    const teamSection = document.querySelector('.team-section');
+    if (elCanvas) {
+        const elCtx     = elCanvas.getContext('2d');
+        const teamSection = document.querySelector('.team-section');
 
-    function resizeElCanvas() {
-        elCanvas.width  = teamSection.offsetWidth;
-        elCanvas.height = teamSection.offsetHeight;
-    }
-    resizeElCanvas();
-    window.addEventListener('resize', resizeElCanvas, { passive: true });
-
-    // ---- Generador de rayos eléctricos fraccionados ----
-    function drawBolt(ctx, x1, y1, x2, y2, roughness, depth) {
-        if (depth === 0) {
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            return;
+        function resizeElCanvas() {
+            elCanvas.width  = teamSection.offsetWidth;
+            elCanvas.height = teamSection.offsetHeight;
         }
-        const mx  = (x1 + x2) / 2 + (Math.random() - 0.5) * roughness;
-        const my  = (y1 + y2) / 2 + (Math.random() - 0.5) * roughness;
-        drawBolt(ctx, x1, y1, mx, my, roughness / 2, depth - 1);
-        drawBolt(ctx, mx, my, x2, y2, roughness / 2, depth - 1);
+        resizeElCanvas();
+        window.addEventListener('resize', resizeElCanvas, { passive: true });
 
-        // Rama secundaria aleatoria
-        if (depth === 2 && Math.random() > 0.55) {
-            const branchX = mx + (Math.random() - 0.5) * roughness * 1.5;
-            const branchY = my + (Math.random() - 0.5) * roughness * 1.5;
-            drawBolt(ctx, mx, my, branchX, branchY, roughness / 3, depth - 1);
+        // ---- Generador de rayos eléctricos fraccionados ----
+        function drawBolt(ctx, x1, y1, x2, y2, roughness, depth) {
+            if (depth === 0) {
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                return;
+            }
+            const mx  = (x1 + x2) / 2 + (Math.random() - 0.5) * roughness;
+            const my  = (y1 + y2) / 2 + (Math.random() - 0.5) * roughness;
+            drawBolt(ctx, x1, y1, mx, my, roughness / 2, depth - 1);
+            drawBolt(ctx, mx, my, x2, y2, roughness / 2, depth - 1);
+
+            // Rama secundaria aleatoria
+            if (depth === 2 && Math.random() > 0.55) {
+                const branchX = mx + (Math.random() - 0.5) * roughness * 1.5;
+                const branchY = my + (Math.random() - 0.5) * roughness * 1.5;
+                drawBolt(ctx, mx, my, branchX, branchY, roughness / 3, depth - 1);
+            }
         }
-    }
 
-    // Pool de rayos activos
-    const bolts = [];
+        // Pool de rayos activos
+        const bolts = [];
 
-    function spawnBolt() {
-        const w = elCanvas.width;
-        const h = elCanvas.height;
+        function spawnBolt() {
+            const w = elCanvas.width;
+            const h = elCanvas.height;
 
-        // Orígen aleatorio en los bordes o puntos del grid de fondo
-        const x1 = Math.random() * w;
-        const y1 = Math.random() * h * 0.3;    // zona superior
-        const x2 = x1 + (Math.random() - 0.5) * 200;
-        const y2 = y1 + Math.random() * 180 + 60;
+            // Orígen aleatorio en los bordes o puntos del grid de fondo
+            const x1 = Math.random() * w;
+            const y1 = Math.random() * h * 0.3;    // zona superior
+            const x2 = x1 + (Math.random() - 0.5) * 200;
+            const y2 = y1 + Math.random() * 180 + 60;
 
-        bolts.push({
-            x1, y1, x2, y2,
-            roughness: 30 + Math.random() * 40,
-            alpha: 0.8 + Math.random() * 0.2,
-            life: 0,
-            maxLife: 12 + Math.floor(Math.random() * 10),   // frames visibles
-            width: 0.5 + Math.random() * 1,
-            hue:  155 + Math.floor(Math.random() * 20)      // Verde primario ±10
-        });
-    }
+            bolts.push({
+                x1, y1, x2, y2,
+                roughness: 30 + Math.random() * 40,
+                alpha: 0.8 + Math.random() * 0.2,
+                life: 0,
+                maxLife: 12 + Math.floor(Math.random() * 10),   // frames visibles
+                width: 0.5 + Math.random() * 1,
+                hue:  155 + Math.floor(Math.random() * 20)      // Verde primario ±10
+            });
+        }
 
-    let elFrame = 0;
-    function animateElectric() {
-        elFrame++;
-        elCtx.clearRect(0, 0, elCanvas.width, elCanvas.height);
+        let elFrame = 0;
+        function animateElectric() {
+            elFrame++;
+            elCtx.clearRect(0, 0, elCanvas.width, elCanvas.height);
 
-        // Generar un nuevo rayo cada ~20 frames (~3/s)
-        if (elFrame % 22 === 0) spawnBolt();
-        // A veces 2 simultáneos para un pulso doble
-        if (elFrame % 55 === 0) spawnBolt();
+            // Generar un nuevo rayo cada ~20 frames (~3/s)
+            if (elFrame % 22 === 0) spawnBolt();
+            // A veces 2 simultáneos para un pulso doble
+            if (elFrame % 55 === 0) spawnBolt();
 
-        // Dibujar rayos activos
-        for (let i = bolts.length - 1; i >= 0; i--) {
-            const b = bolts[i];
-            b.life++;
+            // Dibujar rayos activos
+            for (let i = bolts.length - 1; i >= 0; i--) {
+                const b = bolts[i];
+                b.life++;
 
-            // Fade in → sustain → fade out
-            let opacity;
-            if (b.life < 4) {
-                opacity = b.alpha * (b.life / 4);
-            } else if (b.life < b.maxLife - 4) {
-                opacity = b.alpha;
-            } else {
-                opacity = b.alpha * ((b.maxLife - b.life) / 4);
+                // Fade in → sustain → fade out
+                let opacity;
+                if (b.life < 4) {
+                    opacity = b.alpha * (b.life / 4);
+                } else if (b.life < b.maxLife - 4) {
+                    opacity = b.alpha;
+                } else {
+                    opacity = b.alpha * ((b.maxLife - b.life) / 4);
+                }
+
+                if (opacity <= 0) { bolts.splice(i, 1); continue; }
+
+                elCtx.save();
+                elCtx.beginPath();
+                elCtx.strokeStyle = `hsla(${b.hue}, 100%, 60%, ${opacity})`;
+                elCtx.shadowColor  = `hsla(${b.hue}, 100%, 60%, ${opacity * 0.8})`;
+                elCtx.shadowBlur   = 8;
+                elCtx.lineWidth    = b.width;
+                drawBolt(elCtx, b.x1, b.y1, b.x2, b.y2, b.roughness, 4);
+                elCtx.stroke();
+                elCtx.restore();
+
+                if (b.life >= b.maxLife) bolts.splice(i, 1);
             }
 
-            if (opacity <= 0) { bolts.splice(i, 1); continue; }
-
-            elCtx.save();
-            elCtx.beginPath();
-            elCtx.strokeStyle = `hsla(${b.hue}, 100%, 60%, ${opacity})`;
-            elCtx.shadowColor  = `hsla(${b.hue}, 100%, 60%, ${opacity * 0.8})`;
-            elCtx.shadowBlur   = 8;
-            elCtx.lineWidth    = b.width;
-            drawBolt(elCtx, b.x1, b.y1, b.x2, b.y2, b.roughness, 4);
-            elCtx.stroke();
-            elCtx.restore();
-
-            if (b.life >= b.maxLife) bolts.splice(i, 1);
+            requestAnimationFrame(animateElectric);
         }
 
-        requestAnimationFrame(animateElectric);
+        // Solo activar cuando la sección es visible
+        const teamVisObs = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) animateElectric();
+        }, { threshold: 0.1 });
+        teamVisObs.observe(teamSection);
     }
 
-    // Solo activar cuando la sección es visible
-    const teamVisObs = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) animateElectric();
-    }, { threshold: 0.1 });
-    teamVisObs.observe(teamSection);
 
 
     /* =========================================

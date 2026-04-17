@@ -1,11 +1,11 @@
-/* =========================================
+﻿/* =========================================
    0. CINEMATIC PRELOADER
    ========================================= */
 (function() {
     const _preloader = document.getElementById('preloader');
     if (!_preloader) return;
 
-    /* --- Canvas de partículas flotantes fondo --- */
+    /* --- Canvas de part├¡culas flotantes fondo --- */
     const plCanvas = document.getElementById('preloader-canvas');
     const plCtx    = plCanvas ? plCanvas.getContext('2d') : null;
     let plParticles = [];
@@ -16,7 +16,7 @@
         plCanvas.width  = window.innerWidth;
         plCanvas.height = window.innerHeight;
 
-        // Generar 60 partículas flotantes
+        // Generar 60 part├¡culas flotantes
         plParticles = Array.from({ length: 60 }, () => ({
             x: Math.random() * plCanvas.width,
             y: Math.random() * plCanvas.height,
@@ -31,7 +31,7 @@
 
     function animatePl() {
         if (!plCtx) return;
-        // Fondo oscuro semi-sólido (el canvas sirve como fondo del preloader)
+        // Fondo oscuro semi-s├│lido (el canvas sirve como fondo del preloader)
         plCtx.fillStyle = 'rgba(5, 5, 5, 0.96)';
         plCtx.fillRect(0, 0, plCanvas.width, plCanvas.height);
         plParticles.forEach(p => {
@@ -54,12 +54,12 @@
     const plFill = document.querySelector('.pl-fill');
     const plPct  = document.getElementById('pl-pct');
     let progress = 0;
-    const TOTAL_MS = 2800; // Duración total del preloader
+    const TOTAL_MS = 2800; // Duraci├│n total del preloader
     const start = performance.now();
 
     function updateProgress(now) {
         const elapsed = now - start;
-        // Progreso acelerado: 0% → 85% rápido, 85% → 100% más lento
+        // Progreso acelerado: 0% ÔåÆ 85% r├ípido, 85% ÔåÆ 100% m├ís lento
         const raw = Math.min(elapsed / TOTAL_MS, 1);
         progress = raw < 0.7
             ? raw / 0.7 * 85
@@ -80,10 +80,10 @@
         cancelAnimationFrame(plRafId);
         _preloader.classList.add('preloader-hidden');
 
-        // Las cortinas tardan 750ms en abrirse → activamos el Blueprint cuando terminen
+        // Las cortinas tardan 750ms en abrirse ÔåÆ activamos el Blueprint cuando terminen
         setTimeout(() => {
             _preloader.style.display = 'none';
-            // Liberamos la animación del Blueprint exactamente al finalizarse el reveal
+            // Liberamos la animaci├│n del Blueprint exactamente al finalizarse el reveal
             const blueprintEl = document.querySelector('.blueprint-container');
             if (blueprintEl) {
                 blueprintEl.classList.remove('blueprint-paused');
@@ -98,7 +98,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     /* =========================================
-       1. MENÚ MÓVIL (HAMBURGUESA)
+       1. MEN├Ü M├ôVIL (HAMBURGUESA)
        ========================================= */
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks   = document.querySelector('.nav-links');
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* =========================================
-       3. CONTADOR ANIMADO DE ESTADÍSTICAS
+       3. CONTADOR ANIMADO DE ESTAD├ìSTICAS
        ========================================= */
     function animateCounter(el) {
         const target   = parseInt(el.getAttribute('data-target'), 10);
@@ -217,20 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cursor  = document.querySelector('.cursor');
     const cursor2 = document.querySelector('.cursor2');
 
-    // Efecto Magnético Global para Botones
-    document.querySelectorAll('.btn, .btn-outline, .nav-links a').forEach(item => {
-        item.addEventListener('mousemove', (e) => {
-            const rect = item.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            item.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-        });
-
-        item.addEventListener('mouseleave', () => {
-            item.style.transform = `translate(0px, 0px)`;
-        });
-    });
-
     if (window.innerWidth > 991 && cursor) {
         let mouseX = window.innerWidth / 2;
         let mouseY = window.innerHeight / 2;
@@ -243,9 +229,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         function renderCursor() {
-            c1X += (mouseX - c1X) * 0.17;
+            // Suavizado e inercia para los cursores
+            c1X += (mouseX - c1X) * 0.17; // Anillo exterior sigue un pelo m├ís lento
             c1Y += (mouseY - c1Y) * 0.17;
-            c2X += (mouseX - c2X) * 0.8;
+            
+            c2X += (mouseX - c2X) * 0.8; // Punto central casi inmediato
             c2Y += (mouseY - c2Y) * 0.8;
 
             cursor.style.transform = `translate3d(calc(${c1X}px - 50%), calc(${c1Y}px - 50%), 0)`;
@@ -255,18 +243,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         requestAnimationFrame(renderCursor);
 
-        // Solo el hover del cursor
+        // Hover Effect + Botones Magn├®ticos (Magnetic Effect)
         document.querySelectorAll('a, button, .card, .logo, .service-card, .team-card, .method-step, .testimonial-card, .pricing-card').forEach(item => {
             item.addEventListener('mouseover',  () => cursor.classList.add('hovered'));
-            item.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            item.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hovered');
+                // Reseteo magn├®tico para botones/enlaces
+                if(item.classList.contains('btn') || item.tagName === 'A') {
+                    item.style.transform = `translate(0px, 0px)`;
+                }
+            });
+
+            // L├│gica Magn├®tica: Atraer botones hacia el cursor
+            if (item.classList.contains('btn') || item.tagName === 'A') {
+                item.addEventListener('mousemove', (e) => {
+                    const rect = item.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    // Solo mueve el elemento moderadamente hacia el mouse (factor 0.3)
+                    item.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                });
+            }
         });
     }
 
     /* =========================================
-       6. EFECTO MÁQUINA DE ESCRIBIR
+       6. EFECTO M├üQUINA DE ESCRIBIR
        ========================================= */
     const textElement = document.querySelector('.typing-text');
-    const words       = ["Arquitectura.", "Experiencias.", "Infraestructura.", "Tecnología.", "Tu Futuro."];
+    const words       = ["Arquitectura.", "Experiencias.", "Infraestructura.", "Tecnolog├¡a.", "Tu Futuro."];
     let wordIndex   = 0;
     let charIndex   = 0;
     let isDeleting  = false;
@@ -312,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!nombre || !email || !mensaje) return;
 
-            const textoMensaje = `¡Hola! Vengo de su sitio web VANTA y requiero cotizar un proyecto.%0A%0A*Nombre:* ${encodeURIComponent(nombre)}%0A*Correo:* ${encodeURIComponent(email)}%0A*Requerimiento:* ${encodeURIComponent(mensaje)}`;
+            const textoMensaje = `┬íHola! Vengo de su sitio web VANTA y requiero cotizar un proyecto.%0A%0A*Nombre:* ${encodeURIComponent(nombre)}%0A*Correo:* ${encodeURIComponent(email)}%0A*Requerimiento:* ${encodeURIComponent(mensaje)}`;
             const numeroWa     = "584127121162";
             const urlWa        = `https://wa.me/${numeroWa}?text=${textoMensaje}`;
 
@@ -338,8 +344,8 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.classList.remove('scrolled');
         }
 
-        // La navbar siempre permanece visible — nunca se oculta
-        // Logo morfológico: colapsa el texto a monograma al scrollear
+        // La navbar siempre permanece visible ÔÇö nunca se oculta
+        // Logo morfol├│gico: colapsa el texto a monograma al scrollear
         const logoEl = document.querySelector('.logo');
         if (logoEl) {
             if (currentScrollY > 30) {
@@ -349,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // --- BARRA DE PROGRESO DE LECTURA NEÓN ---
+        // --- BARRA DE PROGRESO DE LECTURA NE├ôN ---
         const progressBar = document.querySelector('.nav-progress-bar');
         if (progressBar) {
             const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -377,12 +383,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let width, height;
         let particles = [];
         
-        // Configuración de la Red
+        // Configuraci├│n de la Red
         const particleCount = 70; // Cantidad de nodos
-        const connectionDistance = 120; // Distancia máxima para conectar nodos
-        const mouseConnectionDistance = 160; // Distancia de interacción con el mouse
+        const connectionDistance = 120; // Distancia m├íxima para conectar nodos
+        const mouseConnectionDistance = 160; // Distancia de interacci├│n con el mouse
         const nodeColor = 'rgba(17, 212, 131, 0.9)'; // Emerald green (Theme primary)
-        const lineColor = 'rgba(17, 212, 131, 0.25)'; // Líneas más tenues
+        const lineColor = 'rgba(17, 212, 131, 0.25)'; // L├¡neas m├ís tenues
         const mouseLineColor = 'rgba(17, 212, 131, 0.6)';
 
         let mouse = { x: null, y: null };
@@ -431,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function animate() {
             ctx.clearRect(0, 0, width, height);
 
-            // Actualizar y dibujar partículas
+            // Actualizar y dibujar part├¡culas
             particles.forEach(p => {
                 p.update();
                 p.draw();
@@ -454,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                // Interacción con mouse
+                // Interacci├│n con mouse
                 if (mouse.x !== null && mouse.y !== null) {
                     const dxm = particles[i].x - mouse.x;
                     const dym = particles[i].y - mouse.y;
@@ -468,7 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ctx.lineTo(mouse.x, mouse.y);
                         ctx.stroke();
                         
-                        // Pequeña atracción magnética al mouse
+                        // Peque├▒a atracci├│n magn├®tica al mouse
                         particles[i].x -= dxm * 0.015;
                         particles[i].y -= dym * 0.015;
                     }
@@ -505,52 +511,33 @@ document.addEventListener('DOMContentLoaded', () => {
        ========================================= */
     const PROJECT_DATA = {
         iuta: {
-            tag: 'Python · Flask · PostgreSQL · Cloud',
-            title: 'Sistema de Gestión Bibliotecaria IUTA',
-            description: 'Desarrollado como servicio comunitario para el IUTA, este sistema centraliza y automatiza la administración de libros y ejemplares físicos en múltiples sedes universitarias. Reemplaza registros físicos con una base de datos estructurada, implementa búsqueda en tiempo real por título/autor/sede, y gestiona stock con control de copias individuales y estados de disponibilidad. Incluye autenticación segura con cifrado de contraseñas y un panel CRUD completo para administradores.',
-            tech: ['Flask (Python)', 'PostgreSQL / Neon', 'Vercel Blob', 'Werkzeug Auth', 'Búsqueda Asíncrona', 'Multi-sede'],
+            tag: 'Python ┬À Flask ┬À PostgreSQL ┬À Cloud',
+            title: 'Sistema de Gesti├│n Bibliotecaria IUTA',
+            description: 'Desarrollado como servicio comunitario para el IUTA, este sistema centraliza y automatiza la administraci├│n de libros y ejemplares f├¡sicos en m├║ltiples sedes universitarias. Reemplaza registros f├¡sicos con una base de datos estructurada, implementa b├║squeda en tiempo real por t├¡tulo/autor/sede, y gestiona stock con control de copias individuales y estados de disponibilidad. Incluye autenticaci├│n segura con cifrado de contrase├▒as y un panel CRUD completo para administradores.',
+            tech: ['Flask (Python)', 'PostgreSQL / Neon', 'Vercel Blob', 'Werkzeug Auth', 'B├║squeda As├¡ncrona', 'Multi-sede'],
             url: 'https://biblioteca-ashy-sigma.vercel.app',
             gallery: [
                 { type: 'image', src: 'img/cerdivweb.jpeg', label: 'Vista Principal' }
             ]
         },
         aura: {
-            tag: 'FastAPI · Biometría · WebAuthn · Seguridad Local',
-            title: 'Aura Check — Panel de Auditoría de Seguridad',
-            description: 'Aplicación de auditoría de seguridad biométrica que opera 100% en local: ningún dato sensible abandona el dispositivo. Analiza cinco módulos: integridad biométrica (WebAuthn / huella / facial), sensor óptico (cámara + face-api.js), frecuencia acústica (Web Audio API), estado del sistema (Battery API) y seguridad de red (test de velocidad real + geolocalización IP). Genera certificados PDF forenses descargables y persiste el historial de auditorías en localStorage.',
-            tech: ['FastAPI + Python 3.11', 'WebAuthn / Biometría', 'face-api.js', 'Web Audio API', 'jsPDF', 'Vercel Serverless', 'SlowAPI Rate Limiting'],
+            tag: 'FastAPI ┬À Biometr├¡a ┬À WebAuthn ┬À Seguridad Local',
+            title: 'Aura Check ÔÇö Panel de Auditor├¡a de Seguridad',
+            description: 'Aplicaci├│n de auditor├¡a de seguridad biom├®trica que opera 100% en local: ning├║n dato sensible abandona el dispositivo. Analiza cinco m├│dulos: integridad biom├®trica (WebAuthn / huella / facial), sensor ├│ptico (c├ímara + face-api.js), frecuencia ac├║stica (Web Audio API), estado del sistema (Battery API) y seguridad de red (test de velocidad real + geolocalizaci├│n IP). Genera certificados PDF forenses descargables y persiste el historial de auditor├¡as en localStorage.',
+            tech: ['FastAPI + Python 3.11', 'WebAuthn / Biometr├¡a', 'face-api.js', 'Web Audio API', 'jsPDF', 'Vercel Serverless', 'SlowAPI Rate Limiting'],
             url: 'https://aura-check-omega.vercel.app/',
             gallery: [
                 { type: 'image', src: 'img/auracheck.jpeg', label: 'Dashboard Principal' }
             ]
         },
         cuerpo: {
-            tag: 'Google Gemini · FastAPI · IA Narrativa · Victorian UX',
-            title: '¿Qué le pasa a mi cuerpo? | Archivo Médico 1885',
-            description: 'Plataforma de consulta médica inmersiva con IA que actúa como un doctor victoriano de 1885. Integra Gemini 1.5/2.0 Flash para respuestas con personalidad histórica, un sistema de fallback a Wikipedia y MedlinePlus (BeautifulSoup4 + httpx), filtros de imagen Cloudinary para estética de grabado antiguo, partículas de polvo ambiental, sellos de cera interactivos y paginación de respuestas simulando un libro físico.',
+            tag: 'Google Gemini ┬À FastAPI ┬À IA Narrativa ┬À Victorian UX',
+            title: '┬┐Qu├® le pasa a mi cuerpo? | Archivo M├®dico 1885',
+            description: 'Plataforma de consulta m├®dica inmersiva con IA que act├║a como un doctor victoriano de 1885. Integra Gemini 1.5/2.0 Flash para respuestas con personalidad hist├│rica, un sistema de fallback a Wikipedia y MedlinePlus (BeautifulSoup4 + httpx), filtros de imagen Cloudinary para est├®tica de grabado antiguo, part├¡culas de polvo ambiental, sellos de cera interactivos y paginaci├│n de respuestas simulando un libro f├¡sico.',
             tech: ['Google Gemini 1.5/2.0', 'FastAPI + Python', 'BeautifulSoup4', 'Cloudinary API', 'Tailwind CSS', 'Wikipedia / MedlinePlus', 'Vercel Functions'],
             url: 'https://que-le-pasa-a-mi-cuerpo.vercel.app/',
             gallery: [
                 { type: 'image', src: 'img/quelepasacuerpo.jpeg', label: 'Interfaz Principal' }
-            ]
-        },
-        inventario: {
-            tag: 'Gestión Empresarial · Stock · Reportes',
-            title: 'Sistema de Inventario Pro | ¡Personalízalo para tu negocio!',
-            description: 'Nuestra solución de inventario es un ecosistema digital diseñado para empresas que buscan orden y escalabilidad. Ofrecemos este software como un producto base altamente flexible: podemos adaptarlo a tus necesidades específicas (campos personalizados, alertas de stock mínimo, multi-sucursales). Incluye gestión de proveedores, historial de movimientos y exportación de reportes detallados.',
-            tech: ['Python', 'Gestión de Stock', 'Base de Datos', 'Personalizable', 'Soporte 24/7'],
-            url: '#contact',
-            gallery: [
-                { type: 'image', src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg', label: 'Vista General del Sistema' },
-                { type: 'image', src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (1).jpeg', label: 'Dashboard de Control' },
-                { type: 'image', src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (2).jpeg', label: 'Gestión de Productos' },
-                { type: 'image', src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (3).jpeg', label: 'Reportes y Estadísticas' },
-                { type: 'image', src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (4).jpeg', label: 'Interfaz de Usuario Adaptable' },
-                { type: 'image', src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (5).jpeg', label: 'Control de Entradas y Salidas' },
-                { type: 'image', src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (6).jpeg', label: 'Módulo de Proveedores' },
-                { type: 'image', src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (7).jpeg', label: 'Configuración Avanzada' },
-                { type: 'image', src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (8).jpeg', label: 'Compatibilidad con Dispositivos' },
-                { type: 'image', src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (9).jpeg', label: 'Respaldo de Información' }
             ]
         }
     };
@@ -598,11 +585,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 media = document.createElement('img');
                 media.src = item.src;
                 media.alt = item.label || '';
-                media.loading = 'lazy';
-                media.style.cursor = 'zoom-in';
-                media.addEventListener('click', () => {
-                    if (typeof openFullscreen === 'function') openFullscreen(item.src);
-                });
             }
 
             const overlay = document.createElement('div');
@@ -624,7 +606,7 @@ document.addEventListener('DOMContentLoaded', () => {
             galleryDots.appendChild(dot);
         });
 
-        // Single slide → hide controls
+        // Single slide ÔåÆ hide controls
         galleryEl.classList.toggle('single-slide', items.length === 1);
         updateGalleryUI();
     }
@@ -694,22 +676,19 @@ document.addEventListener('DOMContentLoaded', () => {
         galleryCards.forEach(c => c.classList.remove('card-active'));
     }
 
-    // Card interaction (Mobile fallback)
+    // Card click ÔåÆ toggle menu
     galleryCards.forEach(card => {
         card.addEventListener('click', (e) => {
-            // Si el click fue en el menu (botón o link), no toggling
+            // Si el click fue en el menu (bot├│n o link), no toggling
             if (e.target.closest('.card-menu')) return;
-            
-            // En dispositivos táctiles, alternamos la clase activa
-            if (window.innerWidth <= 1024) {
-                const isActive = card.classList.contains('card-active');
-                closeAllCards();
-                if (!isActive) card.classList.add('card-active');
-            }
+
+            const isActive = card.classList.contains('card-active');
+            closeAllCards();
+            if (!isActive) card.classList.add('card-active');
         });
     });
 
-    // Info button → open modal
+    // Info button ÔåÆ open modal
     document.querySelectorAll('.info-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -727,49 +706,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === modalOverlay) closeModal();
         });
     }
-
-    // Click fuera de cards → cierra el menú activo
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.gallery-grid .card')) {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
             closeAllCards();
         }
     });
 
-    /* =========================================
-       10. VISOR FULLSCREEN (LIGHTBOX)
-       ========================================= */
-    const fsViewer  = document.getElementById('fullscreenViewer');
-    const viewerImg = document.getElementById('viewerImg');
-    const closeFs   = document.getElementById('closeViewer');
-
-    function openFullscreen(src) {
-        if (!fsViewer || !viewerImg) return;
-        viewerImg.src = src;
-        fsViewer.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeFullscreen() {
-        if (!fsViewer) return;
-        fsViewer.classList.remove('active');
-        // Solo restaurar el scroll si el modal de proyecto no está abierto
-        if (!document.getElementById('projectModalOverlay').classList.contains('modal-open')) {
-            document.body.style.overflow = '';
-        }
-    }
-
-    if (closeFs) closeFs.addEventListener('click', closeFullscreen);
-    if (fsViewer) {
-        fsViewer.addEventListener('click', (e) => {
-            if (e.target !== viewerImg) closeFullscreen();
-        });
-    }
-
-    // Tecla ESC para cerrar todo
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeFullscreen();
-            closeModal();
+    // Click fuera de cards ÔåÆ cierra el men├║ activo
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.gallery-grid .card')) {
             closeAllCards();
         }
     });

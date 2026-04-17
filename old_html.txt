@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -313,20 +313,6 @@
                 </div>
             </div>
 
-            <!-- PROYECTO: SISTEMA DE INVENTARIO (PROMOCIÓN) -->
-            <div class="card hidden delay-100" data-project="inventario">
-                <img src="img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg" alt="Sistema de Inventario Pro">
-                <div class="card-overlay">
-                    <span class="promo-badge">¡OFERTA ESPECIAL!</span>
-                    <h3>Sistema de Inventario Profesional</h3>
-                    <p>Software robusto y 100% personalizable. Optimiza tu control de stock con una interfaz intuitiva y reportes avanzados.</p>
-                </div>
-                <div class="card-menu">
-                    <button class="btn btn-outline info-btn" data-info="inventario">Ver Promoción</button>
-                    <a href="#contact" class="btn">Cotizar ahora <i class="fas fa-shopping-cart"></i></a>
-                </div>
-            </div>
-
         </div>
     </section>
 
@@ -436,7 +422,7 @@
             </div>
 
             <div class="team-card team-card--mascot hidden delay-300">
-                <img src="img/pana-fresco.jpeg" alt="Mascota de la empresa" class="team-avatar-img" loading="lazy">
+                <img src="img/pana-fresco.jpeg" alt="Mascota de la empresa" class="team-avatar-img">
                 <h3>El Pana Fresco</h3>
                 <p class="team-role">Director de Serenidad</p>
                 <p class="team-bio">Experto en equilibrio emocional del equipo. Mantiene la calma cuando los servidores
@@ -725,11 +711,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="fullscreen-viewer" id="fullscreenViewer">
-        <button class="viewer-close" id="closeViewer">&times;</button>
-        <img src="" alt="Vista ampliada" id="viewerImg">
     </div>
 
     <script src="script.js?v=9"></script>

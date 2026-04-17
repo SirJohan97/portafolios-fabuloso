@@ -763,6 +763,19 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     color: var(--primary);
 }
 
+.btn:active {
+    transform: translateY(-1px);
+}
+
+.btn i {
+    transition: transform 0.3s ease;
+    margin-left: 8px;
+}
+
+.btn:hover i {
+    transform: translateX(4px);
+}
+
 .btn-outline {
     background: transparent;
     border: 2px solid rgba(255,255,255,0.25);
@@ -885,14 +898,55 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     text-decoration: none;
     color: inherit;
     cursor: none;
+}
+
+.card, .service-card, .pricing-card, .team-card, .method-step, .stat-item {
     opacity: 0;
-    transform: translateY(50px) scale(0.96);
+    --translateY: 50px;
+    --scale: 0.96;
+    transform: translateY(var(--translateY)) scale(var(--scale));
     transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.4s ease;
 }
 
-.card.visible {
+.card.visible, .service-card.visible, .pricing-card.visible, .team-card.visible, .method-step.visible, .stat-item.visible {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    --translateY: 0px;
+    --scale: 1;
+}
+
+/* =========================================
+   EFECTO 3D TILT
+   ========================================= */
+.tilt-card {
+    transform-style: preserve-3d;
+}
+
+.tilt-card.visible {
+    transform: perspective(1000px) translateY(var(--translateY)) scale(var(--scale)) rotateX(var(--rotX, 0deg)) rotateY(var(--rotY, 0deg));
+}
+
+.tilt-card:hover {
+    transition: transform 0.1s ease-out;
+}
+
+.tilt-reset {
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: perspective(1000px) translateY(var(--translateY)) scale(var(--scale)) rotateX(0deg) rotateY(0deg);
+}
+
+.tilt-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.15), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.tilt-card:hover::after {
+    opacity: 1;
 }
 
 .card:hover {
@@ -931,7 +985,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     transform: translateY(0);
 }
 
-.card-tag {
+.card-tag, .promo-badge {
     font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -939,6 +993,25 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     color: var(--primary-light);
     margin-bottom: 8px;
     opacity: 0.9;
+}
+
+.promo-badge {
+    background: linear-gradient(135deg, #f1c40f, #e67e22);
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: none;
+    color: #000;
+    font-weight: 900;
+    font-size: 0.75rem;
+    box-shadow: 0 0 15px rgba(241, 196, 15, 0.4);
+    display: inline-block;
+    animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(241, 196, 15, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(241, 196, 15, 0.7); }
+    100% { transform: scale(1); box-shadow: 0 0 10px rgba(241, 196, 15, 0.4); }
 }
 
 .card-overlay h3 {
@@ -979,6 +1052,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     border-top: 1px solid rgba(17, 212, 131, 0.2);
 }
 
+.card:hover .card-menu,
 .card.card-active .card-menu {
     transform: translateY(0);
     opacity: 1;
@@ -1002,35 +1076,16 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 .card-menu .info-btn:hover {
-    background: rgba(17, 212, 131, 0.18);
+    background: var(--primary);
     border-color: var(--primary);
     color: white;
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px var(--primary-glow);
 }
 
-/* Indicator dot: click me */
-.card::before {
-    content: '';
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 8px;
-    height: 8px;
-    background: var(--primary);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--primary);
-    z-index: 5;
-    animation: pulseClick 2.2s ease-in-out infinite;
-    transition: opacity 0.3s ease;
-}
-
-.card.card-active::before {
-    opacity: 0;
-}
-
-@keyframes pulseClick {
-    0%, 100% { transform: scale(1); opacity: 0.7; box-shadow: 0 0 6px var(--primary); }
-    50%       { transform: scale(1.5); opacity: 1; box-shadow: 0 0 18px var(--primary); }
+.card-menu .btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px var(--primary-glow);
 }
 
 /* =========================================
@@ -1115,15 +1170,15 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 
 .modal-close {
     position: fixed;
-    top: calc(50vh - 45vh + 14px);
-    right: calc(50vw - min(360px, 48vw) + 14px);
-    width: 36px;
-    height: 36px;
+    top: 30px;
+    right: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: rgba(0,0,0,0.7);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
-    font-size: 1rem;
+    font-size: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2468,6 +2523,77 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     .stat-item {
         transition: var(--transition);
         will-change: auto;
+    }
+}
+
+/* =========================================
+   VISOR FULLSCREEN (LIGHTBOX)
+   ========================================= */
+.fullscreen-viewer {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(15px);
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.fullscreen-viewer.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.fullscreen-viewer img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fullscreen-viewer.active img {
+    transform: scale(1);
+}
+
+.viewer-close {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    line-height: 1;
+    padding-bottom: 5px;
+    z-index: 100001;
+}
+
+.viewer-close:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    transform: rotate(90deg) scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .viewer-close {
+        top: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.8rem;
     }
 }
 
