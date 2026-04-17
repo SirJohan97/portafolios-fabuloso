@@ -977,15 +977,17 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     padding: 28px;
     opacity: 0;
     transform: translateY(12px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: all 0.4s ease;
 }
 
-.card:hover .card-overlay {
+.card:hover .card-overlay,
+.card.card-active .card-overlay {
     opacity: 1;
     transform: translateY(0);
+    padding-bottom: 100px;
 }
 
-.card-tag, .promo-badge {
+.card-tag, .promo-badge, .thesis-badge {
     font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -1004,6 +1006,19 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     font-weight: 900;
     font-size: 0.75rem;
     box-shadow: 0 0 15px rgba(241, 196, 15, 0.4);
+    display: inline-block;
+    animation: badgePulse 2s infinite;
+}
+
+.thesis-badge {
+    background: linear-gradient(135deg, #00f2fe, #4facfe);
+    padding: 4px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #000;
+    font-weight: 900;
+    font-size: 0.75rem;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
     display: inline-block;
     animation: badgePulse 2s infinite;
 }

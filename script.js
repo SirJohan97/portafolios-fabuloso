@@ -504,6 +504,25 @@ document.addEventListener('DOMContentLoaded', () => {
        10. CARD MENU INTERACTIVO (click to toggle)
        ========================================= */
     const PROJECT_DATA = {
+        sviva: {
+            tag: 'YOLOv8 · FastAPI · Visión Artificial · Local',
+            title: 'SVIVA — Sistema de Videovigilancia Inteligente',
+            description: 'Proyecto de tesis (En desarrollo activo). Democratiza el acceso a seguridad avanzada operando algoritmos de visión artificial en tiempo real sobre hardware de gama media. No depende de la nube. Detecta intrusos, rastrea sujetos únicos (ByteTrack) y automatiza toma de decisiones en red local. Cuenta con FastAPI asíncrono, servicio de inferencia desacoplado, motor de grabación inteligente con pre-trigger, módulo de analítica en SQLite y notificaciones en tiempo real vía bot de Telegram.',
+            tech: ['Python', 'YOLOv8', 'FastAPI', 'Inferencia Desacoplada', 'Telegram API', 'SQLite'],
+            url: '#',
+            gallery: [
+                { type: 'image', src: 'img/sviva/svivaindex.jpeg', label: 'Dashboard de Control' },
+                { type: 'image', src: 'img/sviva/svivacamaras.jpeg', label: 'Gestión de Cámaras' },
+                { type: 'image', src: 'img/sviva/svivapersonas.jpeg', label: 'Seguimiento de Sujetos Únicos' },
+                { type: 'image', src: 'img/sviva/svivatommy.jpeg', label: 'Detección en Tiempo Real' },
+                { type: 'image', src: 'img/sviva/svivagrabacion.jpeg', label: 'Grabación de Evidencia (Pre-trigger)' },
+                { type: 'image', src: 'img/sviva/svivatelegram.jpeg', label: 'Alertas por Telegram' },
+                { type: 'image', src: 'img/sviva/svivagraficas.jpeg', label: 'Análisis y Estadísticas' },
+                { type: 'image', src: 'img/sviva/svivaguia.jpeg', label: 'Interfaz de Ayuda' },
+                { type: 'image', src: 'img/sviva/svivalogin.jpeg', label: 'Acceso Seguro' },
+                { type: 'image', src: 'img/sviva/svivaconfig.jpeg', label: 'Configuración del Sistema' }
+            ]
+        },
         iuta: {
             tag: 'Python · Flask · PostgreSQL · Cloud',
             title: 'Sistema de Gestión Bibliotecaria IUTA',
