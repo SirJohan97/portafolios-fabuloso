@@ -511,7 +511,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tech: ['Flask (Python)', 'PostgreSQL / Neon', 'Vercel Blob', 'Werkzeug Auth', 'Búsqueda Asíncrona', 'Multi-sede'],
             url: 'https://biblioteca-ashy-sigma.vercel.app',
             gallery: [
-                { type: 'image', src: 'img/cerdivweb.jpeg', label: 'Vista Principal' }
+                { type: 'image', src: 'img/cerdiv/cerdivweb.jpeg', label: 'Dashboard Principal' },
+                { type: 'image', src: 'img/cerdiv/cerdivsede.jpeg', label: 'Gestión de Sedes' }
             ]
         },
         aura: {
@@ -521,7 +522,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tech: ['FastAPI + Python 3.11', 'WebAuthn / Biometría', 'face-api.js', 'Web Audio API', 'jsPDF', 'Vercel Serverless', 'SlowAPI Rate Limiting'],
             url: 'https://aura-check-omega.vercel.app/',
             gallery: [
-                { type: 'image', src: 'img/auracheck.jpeg', label: 'Dashboard Principal' }
+                { type: 'image', src: 'img/auracheck/aura.jpeg', label: 'Dashboard de Seguridad' },
+                { type: 'image', src: 'img/auracheck/auralogin.jpeg', label: 'Autenticación Biométrica' }
             ]
         },
         cuerpo: {
@@ -531,7 +533,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tech: ['Google Gemini 1.5/2.0', 'FastAPI + Python', 'BeautifulSoup4', 'Cloudinary API', 'Tailwind CSS', 'Wikipedia / MedlinePlus', 'Vercel Functions'],
             url: 'https://que-le-pasa-a-mi-cuerpo.vercel.app/',
             gallery: [
-                { type: 'image', src: 'img/quelepasacuerpo.jpeg', label: 'Interfaz Principal' }
+                { type: 'image', src: 'img/quelepasacuerpo/cuerpopasa.jpeg', label: 'Interfaz Histórica' },
+                { type: 'image', src: 'img/quelepasacuerpo/cuerpologin.jpeg', label: 'Acceso al Archivo' }
             ]
         },
         inventario: {
