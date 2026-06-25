@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -59,18 +59,24 @@
     <!-- FUENTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <!-- ESTILOS -->
-    <link rel="stylesheet" href="styles.css?v=9">
-    <link rel="stylesheet" href="effects.css?v=1">
+    <link rel="stylesheet" href="styles.css?v=15">
+    <link rel="stylesheet" href="effects.css?v=15">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 </head>
 
 <body>
+    <!-- Ambient Auroras / Glows de Fondo -->
+    <div class="ambient-aurora aurora-1"></div>
+    <div class="ambient-aurora aurora-2"></div>
+
     <div class="cursor"></div>
     <div class="cursor2"></div>
+    <!-- Canvas Background para Núcleo 3D de Three.js -->
+    <div id="canvas-3d-container"></div>
 
     <!-- ===== PRELOADER: CINEMATIC SEQUENCE ===== -->
     <div id="preloader">
@@ -158,6 +164,7 @@
             </span>
         </a>
         <ul class="nav-links">
+            <div class="nav-indicator-capsule"></div>
             <li><a href="#home">Inicio</a></li>
             <li><a href="#portfolio">Proyectos</a></li>
             <li><a href="#services">Servicios</a></li>
@@ -171,73 +178,47 @@
 
     <!-- ===== HERO ===== -->
     <header id="home" class="hero">
-        <!-- Canvas Background para Red de Nodos -->
-        <canvas id="canvas-network"></canvas>
+        <!-- HUD Overlay Widgets -->
+        <div class="hud-widget hud-bottom-left">
+            <span class="hud-label">CORE_ENG_V3.1.2</span>
+        </div>
+        <div class="hud-widget hud-bottom-right">
+            <span class="hud-label">EST_2026 // EXP_GLOBAL</span>
+        </div>
+
+        <!-- HUD Blueprint Crosshairs -->
+        <div class="hero-hud-decor decor-top-left">+</div>
+        <div class="hero-hud-decor decor-top-right">+</div>
+        <div class="hero-hud-decor decor-bottom-left">+</div>
+        <div class="hero-hud-decor decor-bottom-right">+</div>
         
-        <div class="hero-grid">
+        <div class="hero-center-layout">
             <div class="hero-content hidden">
-                <div class="hero-badge"> Agencia Digital Premium</div>
-                <h1>Ingeniería y <br><span class="typing-text"></span></h1>
-                <p>Desarrollo de software de alto nivel, diseño de productos digitales e infraestructura tecnológica escalable para empresas.</p>
-                <div class="hero-btns">
-                    <a href="#portfolio" class="btn">Ver Proyectos</a>
-                    <a href="#contact" class="btn btn-outline">Habla con nosotros</a>
+                <div class="hero-title-group">
+                    <div class="reveal-wrapper line-1">
+                        <h1 class="reveal-text hero-title-main">INGENIERÍA DE <span class="brand-green italic-outline">SOFTWARE</span></h1>
+                    </div>
+                    <div class="reveal-wrapper line-2">
+                        <h1 class="reveal-text hero-title-main font-accent">DE ÉLITE <span class="tech-tag">[ V.04 ]</span></h1>
+                    </div>
                 </div>
-            </div>
-            <div class="hero-visual hidden delay-200">
-                <div class="blueprint-container blueprint-paused">
-                    <svg class="blueprint-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.9" />
-                                <stop offset="100%" stop-color="#141414" stop-opacity="0.1" />
-                            </linearGradient>
-                            <filter id="neon" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="3" result="blur" />
-                                <feMerge>
-                                    <feMergeNode in="blur" />
-                                    <feMergeNode in="blur" />
-                                    <feMergeNode in="SourceGraphic" />
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <!-- Grid Background Lines -->
-                        <g class="bp-grid">
-                            <line x1="100" y1="0" x2="100" y2="500"/>
-                            <line x1="200" y1="0" x2="200" y2="500"/>
-                            <line x1="300" y1="0" x2="300" y2="500"/>
-                            <line x1="400" y1="0" x2="400" y2="500"/>
-                            
-                            <line x1="0" y1="100" x2="500" y2="100"/>
-                            <line x1="0" y1="200" x2="500" y2="200"/>
-                            <line x1="0" y1="300" x2="500" y2="300"/>
-                            <line x1="0" y1="400" x2="500" y2="400"/>
-                        </g>
-                        <!-- Outer Border -->
-                        <rect x="25" y="25" width="450" height="450" class="bp-border" rx="10"/>
-                        <!-- Main Circuit Paths -->
-                        <path class="bp-path" d="M25,100 L120,100 L150,150 L250,150 L280,100 L475,100" />
-                        <path class="bp-path delay-1" d="M100,500 L100,350 L150,300 L250,300 L300,350 L400,350 L450,300" />
-                        <path class="bp-path delay-2" d="M25,250 L100,250 L150,200 L300,200 L350,250 L475,250" />
-                        <!-- CPU Node -->
-                        <rect x="200" y="200" width="100" height="100" class="bp-node main-node" rx="8" />
-                        <circle cx="250" cy="250" r="15" class="bp-core" />
-                        <circle cx="250" cy="250" r="28" class="bp-ring" />
-                        
-                        <!-- Peripheral Nodes -->
-                        <circle cx="120" cy="100" r="5" class="bp-node" />
-                        <circle cx="280" cy="100" r="5" class="bp-node" />
-                        <circle cx="150" cy="300" r="5" class="bp-node" />
-                        <circle cx="400" cy="350" r="5" class="bp-node" />
-                        <circle cx="150" cy="200" r="5" class="bp-node" />
-                        <circle cx="350" cy="250" r="5" class="bp-node" />
-                        
-                        <!-- Micro lines -->
-                        <polyline class="bp-micro" points="200,225 170,225 150,200" />
-                        <polyline class="bp-micro delay-2" points="300,275 330,275 350,250" />
-                        <polyline class="bp-micro delay-1" points="250,200 250,170 280,150" />
-                        <polyline class="bp-micro delay-1" points="250,300 250,330 220,350" />
-                    </svg>
+
+                <div class="hero-grid-split">
+                    <div class="hero-split-left">
+                        <p class="hero-typing-subtitle">> <span class="typing-text"></span></p>
+                        <div class="hero-technical-specs">
+                            <div class="spec-line"><span class="spec-label">SYS_STATUS</span><span class="spec-val">ACTIVE_CORE</span></div>
+                            <div class="spec-line"><span class="spec-label">NET_RENDER</span><span class="spec-val">THREE_GL</span></div>
+                            <div class="spec-line"><span class="spec-label">LOC_SERVE</span><span class="spec-val">LATAM_EDGE</span></div>
+                        </div>
+                    </div>
+                    <div class="hero-split-right">
+                        <p class="hero-manifesto">Modelamos arquitectura digital avanzada, agentes autónomos de IA e infraestructura de alta disponibilidad. No creamos sitios web comunes; programamos el futuro.</p>
+                        <div class="hero-btns">
+                            <a href="#portfolio" class="btn"><span>[ 01 ]</span> Ver Proyectos</a>
+                            <a href="#contact" class="btn-outline"><span>[ 02 ]</span> Habla con nosotros</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -246,150 +227,224 @@
         </div>
     </header>
 
-    <!-- ===== STATS ===== -->
-    <section class="stats-section">
-        <div class="stats-grid">
-            <div class="stat-item hidden">
-                <span class="stat-number" data-target="10">0</span><span class="stat-suffix">+</span>
-                <p>Proyectos entregados</p>
+    <!-- ===== PORTAFOLIO (SCROLL HORIZONTAL AWWWARDS) ===== -->
+    <section class="portfolio-scroll-container" id="portfolio">
+        <div class="sticky-wrapper">
+            <div class="portfolio-side-header">
+                <h2 class="section-title"><span class="reveal-word">Nuestro</span> <span class="reveal-word">Trabajo</span></h2>
+                <p class="section-subtitle">Transformando ideas en ecosistemas robustos y de alto rendimiento. Desliza para explorar.</p>
+                <div class="scroll-indicator-arrow">
+                    <span class="arrow-text">DESLIZAR</span>
+                    <i class="fas fa-long-arrow-alt-right animated-arrow"></i>
+                </div>
             </div>
-            <div class="stat-item hidden delay-100">
-                <span class="stat-number" data-target="6">0</span><span class="stat-suffix">+</span>
-                <p>Clientes satisfechos</p>
-            </div>
-            <div class="stat-item hidden delay-200">
-                <span class="stat-number" data-target="12">0</span><span class="stat-suffix">+</span>
-                <p>Tecnologías dominadas</p>
-            </div>
-            <div class="stat-item hidden delay-300">
-                <span class="stat-number" data-target="100">0</span><span class="stat-suffix">%</span>
-                <p>Proyectos en producción</p>
+            <div class="horizontal-track">
+                <!-- PROYECTO 1: SVIVA (TESIS / DESTACADO) -->
+                <div class="card" data-project="sviva">
+                    <div class="card-image-wrap">
+                        <img src="img/sviva/svivalogo.png" alt="SVIVA - Sistema de Videovigilancia Inteligente">
+                    </div>
+                    <div class="card-overlay">
+                        <span class="thesis-badge">¡PROYECTO DE TESIS! • EN DESARROLLO</span>
+                        <h3>SVIVA — Sistema de Videovigilancia Inteligente</h3>
+                        <p>IA operando íntegramente en hardware local. Detección, rastreo y analíticas avanzadas sin internet.</p>
+                    </div>
+                    <div class="card-menu">
+                        <button class="btn-outline info-btn" data-info="sviva">Ver Arquitectura</button>
+                        <a href="#contact" class="btn">Lanzamiento: Julio del 2026</a>
+                    </div>
+                </div>
+
+                <!-- PROYECTO 2: SVIVA WEB (NUEVO) -->
+                <div class="card" data-project="svivaweb">
+                    <div class="card-image-wrap">
+                        <img src="img/sviva/svivaindex.jpeg" alt="SVIVA Web Showcase">
+                    </div>
+                    <div class="card-overlay">
+                        <span class="card-tag">Vite · TypeScript · React</span>
+                        <h3>SVIVA Web — Showcase de Tesis</h3>
+                        <p>Landing page de alta inmersión diseñada para promocionar y distribuir el ejecutable de nuestra obra maestra de visión artificial.</p>
+                    </div>
+                    <div class="card-menu">
+                        <button class="btn-outline info-btn" data-info="svivaweb">Ver Detalles</button>
+                        <a href="#contact" class="btn">Obtener Instalador <i class="fas fa-download"></i></a>
+                    </div>
+                </div>
+
+                <!-- PROYECTO 3: KIOSKO AZUL (NUEVO) -->
+                <div class="card" data-project="kioskoazul">
+                    <div class="card-image-wrap">
+                        <img src="img/auracheck/auralogin.jpeg" alt="Kiosko Azul Restaurante">
+                    </div>
+                    <div class="card-overlay">
+                        <span class="card-tag">Python · Flask · SQLite · HTML/CSS/JS</span>
+                        <h3>Kiosko Azul — Gestión de Restaurante</h3>
+                        <p>Menú digital, reservaciones en tiempo real y pedidos con un completo dashboard administrativo de estadísticas de órdenes.</p>
+                    </div>
+                    <div class="card-menu">
+                        <button class="btn-outline info-btn" data-info="kioskoazul">Saber más</button>
+                        <a href="#contact" class="btn">Solicitar Demo <i class="fas fa-utensils"></i></a>
+                    </div>
+                </div>
+
+                <!-- PROYECTO 4: IUTA -->
+                <div class="card" data-project="iuta">
+                    <div class="card-image-wrap">
+                        <img src="img/cerdiv/cerdivweb.jpeg" alt="Sistema de Gestión Bibliotecaria IUTA">
+                    </div>
+                    <div class="card-overlay">
+                        <span class="card-tag">Python · Flask · PostgreSQL</span>
+                        <h3>Sistema de Gestión Bibliotecaria IUTA</h3>
+                        <p>Herramienta robusta que moderniza el control bibliotecario del IUTA, transformando procesos manuales en un ecosistema digital eficiente.</p>
+                    </div>
+                    <div class="card-menu">
+                        <button class="btn-outline info-btn" data-info="iuta">Saber más</button>
+                        <a href="https://biblioteca-ashy-sigma.vercel.app" class="btn" target="_blank" rel="noopener noreferrer">Ir al proyecto <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+
+                <!-- PROYECTO 5: AURA CHECK -->
+                <div class="card" data-project="aura">
+                    <div class="card-image-wrap">
+                        <img src="img/auracheck/auralogin.jpeg" alt="Aura Check">
+                    </div>
+                    <div class="card-overlay">
+                        <span class="card-tag">FastAPI · Biometría · Seguridad</span>
+                        <h3>Aura Check</h3>
+                        <p>Panel de auditoría de seguridad biométrica que opera 100% en local — ningún dato sensible abandona el dispositivo del usuario.</p>
+                    </div>
+                    <div class="card-menu">
+                        <button class="btn-outline info-btn" data-info="aura">Saber más</button>
+                        <a href="https://aura-check-omega.vercel.app/" class="btn" target="_blank" rel="noopener noreferrer">Ir al proyecto <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+
+                <!-- PROYECTO 6: QUÉ LE PASA A MI CUERPO -->
+                <div class="card" data-project="cuerpo">
+                    <div class="card-image-wrap">
+                        <img src="img/quelepasacuerpo/cuerpologin.jpeg" alt="Qué le pasa a mi cuerpo">
+                    </div>
+                    <div class="card-overlay">
+                        <span class="card-tag">IA · FastAPI · Experiencia Inmersiva</span>
+                        <h3>¿Qué le pasa a mi cuerpo?</h3>
+                        <p>Plataforma médica impulsada por IA que responde consultas de anatomía con la voz de un doctor victoriano de 1885.</p>
+                    </div>
+                    <div class="card-menu">
+                        <button class="btn-outline info-btn" data-info="cuerpo">Saber más</button>
+                        <a href="https://que-le-pasa-a-mi-cuerpo.vercel.app/" class="btn" target="_blank" rel="noopener noreferrer">Ir al proyecto <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+
+                <!-- PROYECTO 7: VENTASTRACK (NUEVO) -->
+                <div class="card" data-project="ventastrack">
+                    <div class="card-image-wrap">
+                        <img src="img/sviva/svivaconfig.jpeg" alt="VentasTrack B2B">
+                    </div>
+                    <div class="card-overlay">
+                        <span class="card-tag">Node.js · TS · Vite · PostgreSQL</span>
+                        <h3>VentasTrack — Gestión Comercial B2B</h3>
+                        <p>Plataforma de ventas con roles y jerarquías, carrito de compras y módulo de facturación, sincronizada a diario con bases de datos del cliente.</p>
+                    </div>
+                    <div class="card-menu">
+                        <button class="btn-outline info-btn" data-info="ventastrack">Saber más</button>
+                        <a href="#contact" class="btn">Cotizar Sistema <i class="fas fa-file-invoice-dollar"></i></a>
+                    </div>
+                </div>
+
+                <!-- PROYECTO 8: INVENTARIO PRO -->
+                <div class="card" data-project="inventario">
+                    <div class="card-image-wrap">
+                        <img src="img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg" alt="Sistema de Inventario Pro">
+                    </div>
+                    <div class="card-overlay">
+                        <span class="promo-badge">¡OFERTA ESPECIAL!</span>
+                        <h3>Sistema de Inventario Profesional</h3>
+                        <p>Software robusto y 100% personalizable. Optimiza tu control de stock con una interfaz intuitiva y reportes avanzados.</p>
+                    </div>
+                    <div class="card-menu">
+                        <button class="btn-outline info-btn" data-info="inventario">Ver Promoción</button>
+                        <a href="#contact" class="btn">Cotizar ahora <i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== PORTAFOLIO ===== -->
-    <section id="portfolio" class="portfolio">
-        <h2 class="section-title hidden">Nuestro Trabajo</h2>
-
-        <div class="gallery-grid">
-
-            <!-- PROYECTO DE TESIS (DESTACADO) -->
-            <div class="card hidden delay-100" data-project="sviva">
-                <img src="img/sviva/svivalogo.jpeg" alt="SVIVA - Sistema de Videovigilancia Inteligente">
-                <div class="card-overlay">
-                    <span class="thesis-badge">¡PROYECTO DE TESIS! • EN DESARROLLO</span>
-                    <h3>SVIVA — Sistema de Videovigilancia Inteligente</h3>
-                    <p>IA operando íntegramente en hardware local. Detección, rastreo y analíticas avanzadas sin internet.</p>
-                </div>
-                <div class="card-menu">
-                    <button class="btn btn-outline info-btn" data-info="sviva">Ver Arquitectura</button>
-                    <a href="#contact" class="btn">Lanzamiento: Julio del 2026</a>
-                </div>
-            </div>
-            <div class="card hidden delay-100" data-project="iuta">
-                <img src="img/cerdiv/cerdivweb.jpeg" alt="Sistema de Gestión Bibliotecaria IUTA">
-                <div class="card-overlay">
-                    <span class="card-tag">Python · Flask · PostgreSQL</span>
-                    <h3>Sistema de Gestión Bibliotecaria IUTA</h3>
-                    <p>Herramienta robusta que moderniza el control bibliotecario del IUTA, transformando procesos manuales en un ecosistema digital eficiente.</p>
-                </div>
-                <div class="card-menu">
-                    <button class="btn btn-outline info-btn" data-info="iuta">Saber más</button>
-                    <a href="https://biblioteca-ashy-sigma.vercel.app" class="btn" target="_blank" rel="noopener noreferrer">Ir al proyecto <i class="fas fa-external-link-alt"></i></a>
-                </div>
-            </div>
-
-            <div class="card hidden delay-200" data-project="aura">
-                <img src="img/auracheck/auralogin.jpeg" alt="Aura Check">
-                <div class="card-overlay">
-                    <span class="card-tag">FastAPI · Biometría · Seguridad</span>
-                    <h3>Aura Check</h3>
-                    <p>Panel de auditoría de seguridad biométrica que opera 100% en local — ningún dato sensible abandona el dispositivo del usuario.</p>
-                </div>
-                <div class="card-menu">
-                    <button class="btn btn-outline info-btn" data-info="aura">Saber más</button>
-                    <a href="https://aura-check-omega.vercel.app/" class="btn" target="_blank" rel="noopener noreferrer">Ir al proyecto <i class="fas fa-external-link-alt"></i></a>
-                </div>
-            </div>
-
-            <div class="card hidden delay-300" data-project="cuerpo">
-                <img src="img/quelepasacuerpo/cuerpologin.jpeg" alt="Qué le pasa a mi cuerpo">
-                <div class="card-overlay">
-                    <span class="card-tag">IA · FastAPI · Experiencia Inmersiva</span>
-                    <h3>¿Qué le pasa a mi cuerpo?</h3>
-                    <p>Plataforma médica impulsada por IA que responde consultas de anatomía con la voz de un doctor victoriano de 1885.</p>
-                </div>
-                <div class="card-menu">
-                    <button class="btn btn-outline info-btn" data-info="cuerpo">Saber más</button>
-                    <a href="https://que-le-pasa-a-mi-cuerpo.vercel.app/" class="btn" target="_blank" rel="noopener noreferrer">Ir al proyecto <i class="fas fa-external-link-alt"></i></a>
+    <!-- ===== SERVICIOS (SCROLL INVERTIDO AWWWARDS) ===== -->
+    <section id="services" class="services-scroll-container">
+        <div class="services-sticky-wrapper">
+            <div class="services-left">
+                <div class="services-text-wrapper">
+                    <!-- Servicio 01 -->
+                    <div class="service-text-item active" data-index="0">
+                        <span class="service-num-tag">01 / SERVICIOS</span>
+                        <h2>Desarrollo de Software</h2>
+                        <p>Creación de aplicaciones web full-stack de alto rendimiento, sistemas de bases de datos relacionales y no relacionales optimizadas, e integraciones fluidas de APIs empresariales.</p>
+                        <ul class="service-tags">
+                            <li>Python</li>
+                            <li>JavaScript</li>
+                            <li>React</li>
+                            <li>Node.js</li>
+                        </ul>
+                    </div>
+                    <!-- Servicio 02 -->
+                    <div class="service-text-item" data-index="1">
+                        <span class="service-num-tag">02 / SERVICIOS</span>
+                        <h2>Integración de IA</h2>
+                        <p>Desarrollo de agentes inteligentes autónomos utilizando LLMs, automatizaciones avanzadas de flujos de trabajo e inferencia local para reducir latencia y optimizar recursos.</p>
+                        <ul class="service-tags">
+                            <li>Google Gemini</li>
+                            <li>Agentes IA</li>
+                            <li>Automatización</li>
+                            <li>FastAPI</li>
+                        </ul>
+                    </div>
+                    <!-- Servicio 03 -->
+                    <div class="service-text-item" data-index="2">
+                        <span class="service-num-tag">03 / SERVICIOS</span>
+                        <h2>Infraestructura y Redes</h2>
+                        <p>Diseño y simulación de topologías de red complejas, implementación de VLANs segmentadas y despliegue robusto en entornos en la nube con altos estándares de seguridad.</p>
+                        <ul class="service-tags">
+                            <li>Cisco</li>
+                            <li>VLANs</li>
+                            <li>Cloud Architecture</li>
+                            <li>DevOps</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-
-            <!-- PROYECTO: SISTEMA DE INVENTARIO (PROMOCIÓN) -->
-            <div class="card hidden delay-100" data-project="inventario">
-                <img src="img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg" alt="Sistema de Inventario Pro">
-                <div class="card-overlay">
-                    <span class="promo-badge">¡OFERTA ESPECIAL!</span>
-                    <h3>Sistema de Inventario Profesional</h3>
-                    <p>Software robusto y 100% personalizable. Optimiza tu control de stock con una interfaz intuitiva y reportes avanzados.</p>
+            <div class="services-right">
+                <div class="services-inverted-track">
+                    <!-- NOTA: El orden físico está invertido para lograr el scroll en sentido opuesto en JS -->
+                    <!-- Visual 03 (Se muestra al final) -->
+                    <div class="service-visual-card" data-index="2">
+                        <div class="visual-wrapper networks-visual">
+                            <div class="glow-bg"></div>
+                            <div class="icon-box"><i class="fas fa-network-wired"></i></div>
+                            <span class="visual-title">INFRASTRUCTURE</span>
+                            <div class="dynamic-lines"></div>
+                        </div>
+                    </div>
+                    <!-- Visual 02 (Se muestra al medio) -->
+                    <div class="service-visual-card" data-index="1">
+                        <div class="visual-wrapper ai-visual">
+                            <div class="glow-bg"></div>
+                            <div class="icon-box"><i class="fas fa-robot"></i></div>
+                            <span class="visual-title">INTELLIGENCE</span>
+                            <div class="brain-pulses"></div>
+                        </div>
+                    </div>
+                    <!-- Visual 01 (Se muestra al inicio) -->
+                    <div class="service-visual-card" data-index="0">
+                        <div class="visual-wrapper code-visual">
+                            <div class="glow-bg"></div>
+                            <div class="icon-box"><i class="fas fa-code"></i></div>
+                            <span class="visual-title">ARCHITECTURE</span>
+                            <div class="code-glow-bars"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-menu">
-                    <button class="btn btn-outline info-btn" data-info="inventario">Ver Promoción</button>
-                    <a href="#contact" class="btn">Cotizar ahora <i class="fas fa-shopping-cart"></i></a>
-                </div>
             </div>
-
-        </div>
-    </section>
-
-    <!-- ===== SERVICIOS ===== -->
-    <section id="services" class="portfolio services-section">
-        <!-- Flujo de Datos Background -->
-        <div class="data-stream stream-1"></div>
-        <div class="data-stream stream-2"></div>
-        <div class="data-stream stream-3"></div>
-
-        <h2 class="section-title hidden">Nuestros Servicios</h2>
-        <div class="services-grid">
-
-            <div class="service-card hidden delay-100">
-                <div class="service-icon"><i class="fas fa-code"></i></div>
-                <h3>Desarrollo de Software</h3>
-                <p>Creación de aplicaciones web full-stack, sistemas de gestión de bases de datos e integración de APIs.
-                    Soluciones escalables desplegadas en plataformas modernas.</p>
-                <ul class="service-tags">
-                    <li>Python</li>
-                    <li>JavaScript</li>
-                    <li>React</li>
-                    <li>Node.js</li>
-                </ul>
-            </div>
-
-            <div class="service-card hidden delay-200">
-                <div class="service-icon"><i class="fas fa-robot"></i></div>
-                <h3>Integración de IA y Automatización</h3>
-                <p>Implementación de agentes de inteligencia artificial y automatización de procesos para optimizar
-                    flujos de trabajo y potenciar las herramientas de productividad de tu negocio.</p>
-                <ul class="service-tags">
-                    <li>LLMs</li>
-                    <li>Agentes IA</li>
-                    <li>Automatización</li>
-                </ul>
-            </div>
-
-            <div class="service-card hidden delay-300">
-                <div class="service-icon"><i class="fas fa-network-wired"></i></div>
-                <h3>Infraestructura y Redes</h3>
-                <p>Diseño, simulación y configuración de topologías de red, estructuración de VLANs y optimización de
-                    conectividad para entornos corporativos.</p>
-                <ul class="service-tags">
-                    <li>Cisco</li>
-                    <li>VLANs</li>
-                    <li>Cloud</li>
-                </ul>
-            </div>
-
         </div>
     </section>
 
@@ -421,246 +476,559 @@
         <!-- Canvas de pulsos eléctricos -->
         <canvas id="electric-canvas"></canvas>
 
-        <h2 class="section-title hidden">El Equipo</h2>
-        <p class="section-subtitle hidden">Dos desarrolladores apasionados listos para hacer realidad tu proyecto.</p>
+        <!-- Marquesina deslizante infinita de fondo -->
+        <div class="team-marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <span>VANTA SOFTWARE ENGINEERS • CORE ARCHITECTS • INNOVATION • DEVELOPMENT • SYSTEM ARCHITECTS • WEB ENGINEERS • </span>
+                <span>VANTA SOFTWARE ENGINEERS • CORE ARCHITECTS • INNOVATION • DEVELOPMENT • SYSTEM ARCHITECTS • WEB ENGINEERS • </span>
+            </div>
+        </div>
+
+        <h2 class="section-title hidden"><span class="reveal-word">El</span> <span class="reveal-word">Equipo</span></h2>
+        <p class="section-subtitle hidden">Ingenieros de sistemas y diseñadores expertos colaborando para crear el futuro.</p>
 
         <div class="team-grid">
 
-            <div class="team-card tilt-card hidden delay-100">
-                <div class="team-avatar avatar-andres">AM</div>
+            <div class="team-card tilt-card hidden delay-100" data-project="andres" data-spec="[ SYSTEMS ARCHITECT ]">
+                <div class="avatar-wrapper">
+                    <div class="team-avatar avatar-andres">AM</div>
+                    <div class="scan-laser"></div>
+                </div>
                 <h3>Andrés Morales</h3>
                 <p class="team-role">Desarrollo & Arquitectura</p>
-                <p class="team-bio">Arquitectura de software, bases de datos relacionales y despliegue técnico en la
-                    nube. Especialista en soluciones backend robustas.</p>
+                <p class="team-bio">Arquitectura de software, bases de datos relacionales y despliegue técnico en la nube. Especialista en soluciones backend robustas.</p>
                 <div class="team-skills">
                     <span>Python</span><span>SQL</span><span>DevOps</span>
                 </div>
             </div>
 
-            <div class="team-card hidden delay-200">
-                <div class="team-avatar avatar-johan">JF</div>
+            <div class="team-card tilt-card hidden delay-200" data-project="johan" data-spec="[ UI/UX DESIGNER ]">
+                <div class="avatar-wrapper">
+                    <div class="team-avatar avatar-johan">JF</div>
+                    <div class="scan-laser"></div>
+                </div>
                 <h3>Johan Fernández</h3>
                 <p class="team-role">Socio · UI/UX & Frontend</p>
-                <p class="team-bio">Identidad corporativa, sistemas de diseño, paletas de colores y experiencia de
-                    usuario centrada en conversión y retención.</p>
+                <p class="team-bio">Identidad corporativa, sistemas de diseño, paletas de colores y experiencia de usuario centrada en conversión y retención.</p>
                 <div class="team-skills">
                     <span>UI/UX</span><span>HTML/CSS</span><span>Branding</span>
                 </div>
             </div>
 
-            <div class="team-card team-card--mascot hidden delay-300">
-                <img src="img/pana-fresco.jpeg" alt="Mascota de la empresa" class="team-avatar-img" loading="lazy">
+            <div class="team-card tilt-card team-card--mascot hidden delay-300" data-project="pana" data-spec="[ EMOTIONAL SUPPORT ]">
+                <div class="avatar-wrapper">
+                    <img src="img/pana-fresco.jpeg" alt="Mascota de la empresa" class="team-avatar-img" loading="lazy">
+                    <div class="scan-laser"></div>
+                </div>
                 <h3>El Pana Fresco</h3>
                 <p class="team-role">Director de Serenidad</p>
-                <p class="team-bio">Experto en equilibrio emocional del equipo. Mantiene la calma cuando los servidores
-                    fallan a las 3am.</p>
+                <p class="team-bio">Experto en equilibrio emocional del equipo. Mantiene la calma cuando los servidores fallan a las 3am.</p>
                 <div class="team-skills">
                     <span>Motivación</span><span>Resiliencia</span>
                 </div>
             </div>
 
-            <!-- Issac Ortís -->
-            <div class="team-card hidden delay-300">
-                <div class="team-avatar" style="background: linear-gradient(135deg, #2c1a0e, #7B4F2E);">IO</div>
-                <h3>Issac Ortís</h3>
-                <p class="team-role">Secretario General de la Cafétería</p>
-                <p class="team-bio">Responsable del suministro estratégico de café. Sin él, el código no compila. Su método
-                    Scrum se basa en "tómese un tinto y piénselo bien".</p>
+            <!-- Isaac Ortiz -->
+            <div class="team-card tilt-card hidden delay-300" data-project="isaac" data-spec="[ COFFEE SUPPLY ]">
+                <div class="avatar-wrapper">
+                    <div class="team-avatar" style="background: linear-gradient(135deg, #2c1a0e, #7B4F2E);">IO</div>
+                    <div class="scan-laser"></div>
+                </div>
+                <h3>Isaac Ortiz</h3>
+                <p class="team-role">Secretario General de la Cafetería</p>
+                <p class="team-bio">Responsable del suministro estratégico de café. Sin él, el código no compila. Su método Scrum se basa en "tómese un tinto y piénselo bien".</p>
                 <div class="team-skills">
                     <span>☕ Café</span><span>Diplomacia</span><span>Puntualidad*</span>
                 </div>
             </div>
 
         </div>
+
+        <!-- CONSOLA DE DIAGNÓSTICO INTERACTIVA "VA-OS" -->
+        <div class="team-terminal-container">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <span class="term-btn close"></span>
+                    <span class="term-btn minimize"></span>
+                    <span class="term-btn expand"></span>
+                </div>
+                <span class="terminal-title">VA-OS v3.1.2 — Diagnostic Console</span>
+                <span class="terminal-status">ONLINE</span>
+            </div>
+            <div class="terminal-body" id="teamTerminalBody">
+                <div class="terminal-line"><span class="term-prompt">></span> Esperando selección de agente...</div>
+                <div class="terminal-line"><span class="term-prompt">></span> Pasa el cursor o haz clic en una tarjeta del equipo para inicializar diagnóstico de perfil.</div>
+            </div>
+        </div>
     </section>
 
-    <!-- ===== METODOLOGÍA ===== -->
-    <section id="metodologia" class="portfolio methodology-section">
-        <h2 class="section-title hidden">Cómo Trabajamos</h2>
-        <div class="methodology-grid">
-
-            <div class="method-step hidden delay-100">
-                <div class="method-number">01</div>
-                <div class="method-icon"><i class="fas fa-search"></i></div>
-                <h3>Análisis</h3>
-                <p>Entendemos los requerimientos de tu negocio, estructuramos la lógica y diseñamos la arquitectura
-                    ideal para el proyecto.</p>
+    <!-- ===== METODOLOGÍA (SCROLL-LOCKED PIPELINE) ===== -->
+    <section id="metodologia" class="methodology-scroll-container">
+        <div class="sticky-wrapper">
+            <div class="methodology-layout">
+                <!-- Left: Pipeline Track and steps -->
+                <div class="methodology-left">
+                    <div class="section-header-method">
+                        <h2 class="section-title"><span class="reveal-word">Cómo</span> <span class="reveal-word">Trabajamos</span></h2>
+                        <p class="section-subtitle">El ciclo de ingeniería riguroso que garantiza la calidad de tu software.</p>
+                    </div>
+                    
+                    <div class="pipeline-wrapper">
+                        <!-- Vertical glowing pipeline path -->
+                        <div class="pipeline-track">
+                            <div class="pipeline-progress-bar"></div>
+                        </div>
+                        
+                        <div class="pipeline-steps">
+                            <div class="method-step active" data-step="1">
+                                <div class="method-number">01</div>
+                                <div class="method-body">
+                                    <h3>Análisis y Arquitectura</h3>
+                                    <p>Estructuramos la lógica del negocio, diagramamos flujos de datos y diseñamos la arquitectura ideal.</p>
+                                </div>
+                            </div>
+                            <div class="method-step" data-step="2">
+                                <div class="method-number">02</div>
+                                <div class="method-body">
+                                    <h3>Desarrollo de Élite</h3>
+                                    <p>Escribimos código limpio, modular y escalable usando arquitecturas robustas sin comprometer la velocidad.</p>
+                                </div>
+                            </div>
+                            <div class="method-step" data-step="3">
+                                <div class="method-number">03</div>
+                                <div class="method-body">
+                                    <h3>Despliegue y CI/CD</h3>
+                                    <p>Automatizamos integraciones y despliegues en la nube de alta disponibilidad, reduciendo tiempos de lanzamiento.</p>
+                                </div>
+                            </div>
+                            <div class="method-step" data-step="4">
+                                <div class="method-number">04</div>
+                                <div class="method-body">
+                                    <h3>Monitoreo y Soporte</h3>
+                                    <p>Garantizamos el 99.9% de uptime mediante monitoreo proactivo y optimización de base de datos continua.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right: Cyber Terminal Output -->
+                <div class="methodology-right">
+                    <div class="cyber-terminal">
+                        <div class="terminal-header">
+                            <span class="terminal-dot red"></span>
+                            <span class="terminal-dot yellow"></span>
+                            <span class="terminal-dot green"></span>
+                            <span class="terminal-title">VANTA_CONSOLE // METODOLOGÍA</span>
+                        </div>
+                        <div class="terminal-body" id="methodology-console">
+                            <!-- Step 1 console -->
+                            <div class="console-screen active" data-console-step="1">
+                                <div class="console-log text-primary">&gt; vanta --init blueprint</div>
+                                <div class="console-log">&gt; Cargando mapa de arquitectura... [OK]</div>
+                                <div class="console-log">&gt; Diseñando flujos de datos relacionales...</div>
+                                <div class="console-diagram">
+                                    [USER] -> [API GATEWAY] -> [MICROSERVICES] -> [POSTGRESQL]
+                                </div>
+                                <div class="console-stat">LATENCY: 12ms // CORE_HEALTH: 100%</div>
+                            </div>
+                            <!-- Step 2 console -->
+                            <div class="console-screen" data-console-step="2">
+                                <div class="console-log text-primary">&gt; vanta --compile-all</div>
+                                <div class="console-log">&gt; Compilando módulos de software de élite...</div>
+                                <div class="console-log text-green">✔ app/core/main.py (compiled in 42ms)</div>
+                                <div class="console-log text-green">✔ app/models/agents.py (compiled in 18ms)</div>
+                                <div class="console-log text-green">✔ app/infra/router.py (compiled in 25ms)</div>
+                                <div class="console-log">&gt; Corriendo suite de pruebas unitarias... [100% PASS]</div>
+                            </div>
+                            <!-- Step 3 console -->
+                            <div class="console-screen" data-console-step="3">
+                                <div class="console-log text-primary">&gt; vanta --deploy prod-cluster</div>
+                                <div class="console-log">&gt; Preparando contenedores Docker... [OK]</div>
+                                <div class="console-log">&gt; Desplegando en Kubernetes (AWS EKS)...</div>
+                                <div class="console-loading-bar">[■■■■■■■■■■■■■■■■■■■■] 100%</div>
+                                <div class="console-log text-green">&gt; CLUSTER: ONLINE // LOAD_BALANCER: READY</div>
+                            </div>
+                            <!-- Step 4 console -->
+                            <div class="console-screen" data-console-step="4">
+                                <div class="console-log text-primary">&gt; vanta --monitor</div>
+                                <div class="console-log">&gt; Conectando a Grafana / Prometheus metrics...</div>
+                                <div class="console-log">&gt; CPU Usage: 4.8% // Mem: 1.2GB/16GB</div>
+                                <div class="console-graph">
+                                    PING: ▬▬▬▬▬▬▬▬▬ (22ms)
+                                </div>
+                                <div class="console-log text-green">&gt; SYSTEM OPERATIONAL. 0 ERRORS DETECTED.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="method-step hidden delay-200">
-                <div class="method-number">02</div>
-                <div class="method-icon"><i class="fas fa-laptop-code"></i></div>
-                <h3>Desarrollo</h3>
-                <p>Escribimos código limpio y escalable. Desde bases de datos sólidas hasta interfaces de usuario
-                    atractivas.</p>
-            </div>
-
-            <div class="method-step hidden delay-300">
-                <div class="method-number">03</div>
-                <div class="method-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                <h3>Despliegue</h3>
-                <p>Configuramos los entornos y subimos el proyecto a plataformas en la nube de alta disponibilidad.</p>
-            </div>
-
-            <div class="method-step hidden delay-100">
-                <div class="method-number">04</div>
-                <div class="method-icon"><i class="fas fa-check-circle"></i></div>
-                <h3>Soporte</h3>
-                <p>Realizamos pruebas finales, entregamos el producto funcionando al 100% y ofrecemos soporte técnico
-                    continuo mensual.</p>
-            </div>
-
         </div>
     </section>
 
     <!-- ===== PLANES / PRICING ===== -->
     <section id="pricing" class="portfolio pricing-section">
-        <h2 class="section-title hidden">Nuestros Planes</h2>
-        <p class="section-subtitle hidden">Elige el plan que mejor se adapta a tu proyecto. Todos incluyen soporte
-            post-entrega.</p>
+        <div class="pricing-intro">
+            <h2 class="section-title hidden"><span class="reveal-word">Nuestros</span> <span class="reveal-word">Planes</span></h2>
+            <p class="section-subtitle hidden">Elige el plan que mejor se adapta a tu proyecto. Todos incluyen soporte post-entrega.</p>
+        </div>
 
-        <div class="pricing-grid">
+        <!-- Toggle Mensual / Anual -->
+        <div class="pricing-toggle-container">
+            <span class="toggle-label active" data-period="monthly">Mensual</span>
+            <button class="pricing-toggle-switch" id="pricingToggleBtn" aria-label="Cambiar periodo de facturación">
+                <span class="switch-dot"></span>
+            </button>
+            <span class="toggle-label" data-period="annual">Anual <span class="discount-badge">-20%</span></span>
+        </div>
+
+        <div class="pricing-cards-scene">
 
             <!-- Plan Básico -->
-            <div class="pricing-card hidden delay-100">
-                <div class="pricing-icon"><i class="fas fa-seedling"></i></div>
-                <h3 class="pricing-name">Básico</h3>
-                <p class="pricing-tagline">Ideal para empezar en digital</p>
-                <div class="pricing-price">Desde <span>$150</span> USD</div>
-                <ul class="pricing-features">
-                    <li><i class="fas fa-check"></i> Landing page profesional</li>
-                    <li><i class="fas fa-check"></i> Diseño responsive (móvil & web)</li>
-                    <li><i class="fas fa-check"></i> Formulario de contacto a WhatsApp</li>
-                    <li><i class="fas fa-check"></i> Dominio y despliegue incluido</li>
-                    <li class="disabled"><i class="fas fa-times"></i> Panel de administración</li>
-                    <li class="disabled"><i class="fas fa-times"></i> Base de datos</li>
-                </ul>
-                <a href="https://wa.me/584127121162?text=Hola,%20estoy%20interesado%20en%20el%20Plan%20B%C3%A1sico%20del%20portafolio"
-                    class="btn btn-outline" target="_blank" rel="noopener noreferrer">Consultar Plan</a>
+            <div class="pricing-clip-wrapper hidden" data-plan="basico">
+                <div class="pricing-card-inner">
+                    <!-- FRENTE: MENSUAL -->
+                    <div class="pricing-card pricing-card-front" data-plan-color="#0d1f12">
+                        <div class="pricing-card-glow"></div>
+                        <div class="pricing-icon"><i class="fas fa-seedling"></i></div>
+                        <h3 class="pricing-name">Básico</h3>
+                        <p class="pricing-tagline">Ideal para empezar en digital</p>
+                        <div class="pricing-price">Desde <span class="price-slot" data-value="150">$150</span> USD</div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Landing page profesional</li>
+                            <li><i class="fas fa-check"></i> Diseño responsive (móvil &amp; web)</li>
+                            <li><i class="fas fa-check"></i> Formulario de contacto a WhatsApp</li>
+                            <li><i class="fas fa-check"></i> Dominio y despliegue incluido</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Panel de administración</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Base de datos</li>
+                        </ul>
+                        <a href="https://wa.me/584127121162?text=Hola,%20estoy%20interesado%20en%20el%20Plan%20B%C3%A1sico%20Mensual" class="btn-outline magnetic-btn" target="_blank" rel="noopener noreferrer">Consultar Plan</a>
+                    </div>
+                    <!-- ATRÁS: ANUAL -->
+                    <div class="pricing-card pricing-card-back" data-plan-color="#0d1f12">
+                        <div class="pricing-card-glow"></div>
+                        <div class="pricing-icon"><i class="fas fa-seedling"></i></div>
+                        <h3 class="pricing-name">Básico Anual</h3>
+                        <p class="pricing-tagline">Ideal para empezar en digital (Ahorro del 20%)</p>
+                        <div class="pricing-price">Desde <span class="price-slot" data-value="120">$120</span> USD <span class="billing-cycle">/ mes</span></div>
+                        <p class="billing-annual-note">Facturado anualmente ($1,440 USD/año)</p>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Landing page profesional</li>
+                            <li><i class="fas fa-check"></i> Diseño responsive (móvil &amp; web)</li>
+                            <li><i class="fas fa-check"></i> Formulario de contacto a WhatsApp</li>
+                            <li><i class="fas fa-check"></i> Dominio y despliegue incluido</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Panel de administración</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Base de datos</li>
+                        </ul>
+                        <a href="https://wa.me/584127121162?text=Hola,%20estoy%20interesado%20en%20el%20Plan%20B%C3%A1sico%20Anual" class="btn-outline magnetic-btn" target="_blank" rel="noopener noreferrer">Consultar Plan</a>
+                    </div>
+                </div>
             </div>
 
             <!-- Plan Profesional (destacado) -->
-            <div class="pricing-card featured hidden delay-200">
-                <div class="pricing-badge">Más Popular</div>
-                <div class="pricing-icon"><i class="fas fa-bolt"></i></div>
-                <h3 class="pricing-name">Profesional</h3>
-                <p class="pricing-tagline">Solución completa para tu negocio</p>
-                <div class="pricing-price">Desde <span>$400</span> USD</div>
-                <ul class="pricing-features">
-                    <li><i class="fas fa-check"></i> Web completa multi-página</li>
-                    <li><i class="fas fa-check"></i> Base de datos + Panel admin</li>
-                    <li><i class="fas fa-check"></i> Integración de APIs externas</li>
-                    <li><i class="fas fa-check"></i> Optimización SEO avanzada</li>
-                    <li><i class="fas fa-check"></i> Despliegue en la nube</li>
-                    <li><i class="fas fa-check"></i> 1 mes de soporte incluido</li>
-                </ul>
-                <a href="https://wa.me/584127121162?text=Hola,%20estoy%20interesado%20en%20el%20Plan%20Profesional%20del%20portafolio"
-                    class="btn" target="_blank" rel="noopener noreferrer">Consultar Plan</a>
+            <div class="pricing-clip-wrapper hidden" data-plan="pro">
+                <div class="pricing-card-inner">
+                    <!-- FRENTE: MENSUAL -->
+                    <div class="pricing-card featured pricing-card-front" data-plan-color="#0d2118">
+                        <div class="pricing-badge">Más Popular</div>
+                        <div class="pricing-card-glow featured-glow"></div>
+                        <div class="pricing-icon"><i class="fas fa-bolt"></i></div>
+                        <h3 class="pricing-name">Profesional</h3>
+                        <p class="pricing-tagline">Solución completa para tu negocio</p>
+                        <div class="pricing-price">Desde <span class="price-slot" data-value="400">$400</span> USD</div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Web completa multi-página</li>
+                            <li><i class="fas fa-check"></i> Base de datos + Panel admin</li>
+                            <li><i class="fas fa-check"></i> Integración de APIs externas</li>
+                            <li><i class="fas fa-check"></i> Optimización SEO avanzada</li>
+                            <li><i class="fas fa-check"></i> Despliegue en la nube</li>
+                            <li><i class="fas fa-check"></i> 1 mes de soporte incluido</li>
+                        </ul>
+                        <a href="https://wa.me/584127121162?text=Hola,%20estoy%20interesado%20en%20el%20Plan%20Profesional%20Mensual" class="btn magnetic-btn" target="_blank" rel="noopener noreferrer">Consultar Plan</a>
+                    </div>
+                    <!-- ATRÁS: ANUAL -->
+                    <div class="pricing-card featured pricing-card-back" data-plan-color="#0d2118">
+                        <div class="pricing-badge">Más Popular</div>
+                        <div class="pricing-card-glow featured-glow"></div>
+                        <div class="pricing-icon"><i class="fas fa-bolt"></i></div>
+                        <h3 class="pricing-name">Profesional Anual</h3>
+                        <p class="pricing-tagline">Solución completa para tu negocio (Ahorro del 20%)</p>
+                        <div class="pricing-price">Desde <span class="price-slot" data-value="320">$320</span> USD <span class="billing-cycle">/ mes</span></div>
+                        <p class="billing-annual-note">Facturado anualmente ($3,840 USD/año)</p>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Web completa multi-página</li>
+                            <li><i class="fas fa-check"></i> Base de datos + Panel admin</li>
+                            <li><i class="fas fa-check"></i> Integración de APIs externas</li>
+                            <li><i class="fas fa-check"></i> Optimización SEO avanzada</li>
+                            <li><i class="fas fa-check"></i> Despliegue en la nube</li>
+                            <li><i class="fas fa-check"></i> 1 mes de soporte incluido</li>
+                        </ul>
+                        <a href="https://wa.me/584127121162?text=Hola,%20estoy%20interesado%20en%20el%20Plan%20Profesional%20Anual" class="btn magnetic-btn" target="_blank" rel="noopener noreferrer">Consultar Plan</a>
+                    </div>
+                </div>
             </div>
 
             <!-- Plan Empresarial -->
-            <div class="pricing-card hidden delay-300">
-                <div class="pricing-icon"><i class="fas fa-rocket"></i></div>
-                <h3 class="pricing-name">Empresarial</h3>
-                <p class="pricing-tagline">Para proyectos de alto impacto</p>
-                <div class="pricing-price"><span>Cotización</span> personalizada</div>
-                <ul class="pricing-features">
-                    <li><i class="fas fa-check"></i> Sistema a medida completo</li>
-                    <li><i class="fas fa-check"></i> Integración de IA y automatización</li>
-                    <li><i class="fas fa-check"></i> Infraestructura y redes</li>
-                    <li><i class="fas fa-check"></i> Escalabilidad garantizada</li>
-                    <li><i class="fas fa-check"></i> SLA y soporte continuo</li>
-                    <li><i class="fas fa-check"></i> Reuniones de seguimiento</li>
-                </ul>
-                <a href="https://wa.me/584127121162?text=Hola,%20necesito%20una%20cotizaci%C3%B3n%20para%20un%20proyecto%20empresarial"
-                    class="btn btn-outline" target="_blank" rel="noopener noreferrer">Solicitar Cotización</a>
+            <div class="pricing-clip-wrapper hidden" data-plan="enterprise">
+                <div class="pricing-card-inner">
+                    <!-- FRENTE: MENSUAL -->
+                    <div class="pricing-card pricing-card-front" data-plan-color="#18100d">
+                        <div class="pricing-card-glow enterprise-glow"></div>
+                        <div class="pricing-icon"><i class="fas fa-rocket"></i></div>
+                        <h3 class="pricing-name">Empresarial</h3>
+                        <p class="pricing-tagline">Para proyectos de alto impacto</p>
+                        <div class="pricing-price"><span class="price-slot" data-text="Cotización">Cotización</span> personalizada</div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Sistema a medida completo</li>
+                            <li><i class="fas fa-check"></i> Integración de IA y automatización</li>
+                            <li><i class="fas fa-check"></i> Infraestructura y redes</li>
+                            <li><i class="fas fa-check"></i> Escalabilidad garantizada</li>
+                            <li><i class="fas fa-check"></i> SLA y soporte continuo</li>
+                            <li><i class="fas fa-check"></i> Reuniones de seguimiento</li>
+                        </ul>
+                        <a href="https://wa.me/584127121162?text=Hola,%20necesito%20una%20cotizaci%C3%B3n%20para%20un%20proyecto%20empresarial" class="btn-outline magnetic-btn" target="_blank" rel="noopener noreferrer">Solicitar Cotización</a>
+                    </div>
+                    <!-- ATRÁS: ANUAL -->
+                    <div class="pricing-card pricing-card-back" data-plan-color="#18100d">
+                        <div class="pricing-card-glow enterprise-glow"></div>
+                        <div class="pricing-icon"><i class="fas fa-rocket"></i></div>
+                        <h3 class="pricing-name">Empresarial Anual</h3>
+                        <p class="pricing-tagline">Para proyectos de alto impacto (Soporte anual)</p>
+                        <div class="pricing-price"><span class="price-slot" data-text="Cotización">Cotización</span> personalizada</div>
+                        <p class="billing-annual-note">Facturación preferencial anual</p>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Sistema a medida completo</li>
+                            <li><i class="fas fa-check"></i> Integración de IA y automatización</li>
+                            <li><i class="fas fa-check"></i> Infraestructura y redes</li>
+                            <li><i class="fas fa-check"></i> Escalabilidad garantizada</li>
+                            <li><i class="fas fa-check"></i> SLA y soporte continuo</li>
+                            <li><i class="fas fa-check"></i> Reuniones de seguimiento</li>
+                        </ul>
+                        <a href="https://wa.me/584127121162?text=Hola,%20necesito%20una%20cotizaci%C3%B3n%20para%20un%20proyecto%20empresarial%20anual" class="btn-outline magnetic-btn" target="_blank" rel="noopener noreferrer">Solicitar Cotización</a>
+                    </div>
+                </div>
             </div>
 
+        </div>
+
+        <!-- SIMULADOR DE ALCANCE INTERACTIVO B2B -->
+        <div class="scope-simulator-container">
+            <h3 class="scope-sim-title">¿Tienes un alcance personalizado? Simúlalo aquí</h3>
+            <p class="scope-sim-subtitle">Selecciona los componentes que necesitas y envíanos la configuración directa a WhatsApp para cotizar.</p>
+            
+            <div class="scope-sim-grid">
+                <!-- Sliders e Inputs -->
+                <div class="scope-sim-controls">
+                    <div class="sim-control-group">
+                        <div class="control-label-row">
+                            <span class="control-label"><i class="fas fa-file-code"></i> Número de Vistas / Páginas</span>
+                            <span class="control-value" id="valPages">3 páginas</span>
+                        </div>
+                        <input type="range" id="inputPages" min="1" max="15" value="3" class="sim-range-slider">
+                    </div>
+                    
+                    <div class="sim-control-group">
+                        <div class="control-label-row">
+                            <span class="control-label"><i class="fas fa-robot"></i> Nivel de Integración de IA</span>
+                            <span class="control-value" id="valAI">Ninguno</span>
+                        </div>
+                        <input type="range" id="inputAI" min="0" max="2" value="0" class="sim-range-slider">
+                    </div>
+                    
+                    <div class="sim-toggle-row">
+                        <label class="sim-checkbox-label">
+                            <input type="checkbox" id="checkDB" class="sim-checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text"><i class="fas fa-database"></i> Base de Datos &amp; Panel Administrativo</span>
+                        </label>
+                    </div>
+
+                    <div class="sim-toggle-row">
+                        <label class="sim-checkbox-label">
+                            <input type="checkbox" id="checkSupport" class="sim-checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text"><i class="fas fa-tools"></i> Soporte Mensual Post-Entrega</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Resultado y Recomendación -->
+                <div class="scope-sim-result">
+                    <div class="result-glow"></div>
+                    <div class="result-badge">Configuración Sugerida</div>
+                    <h4 class="suggested-plan-name" id="suggestedPlan">Plan Básico</h4>
+                    <p class="suggested-plan-desc" id="suggestedDesc">Ideal para proyectos sencillos o de aterrizaje rápido.</p>
+                    
+                    <div class="sim-metric-row">
+                        <div class="metric-item">
+                            <span class="metric-title">Tiempo Estimado</span>
+                            <span class="metric-value" id="estTime">1-2 semanas</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-title">Complejidad</span>
+                            <span class="metric-value" id="estComplexity">Media-Baja</span>
+                        </div>
+                    </div>
+
+                    <div class="scope-checklist">
+                        <h5>Especificaciones Incluidas:</h5>
+                        <ul id="scopeChecklist">
+                            <li><i class="fas fa-check"></i> 3 vistas estáticas optimizadas</li>
+                            <li><i class="fas fa-check"></i> Optimización SEO esencial</li>
+                            <li><i class="fas fa-check"></i> Despliegue listo en Vercel/Netlify</li>
+                        </ul>
+                    </div>
+
+                    <a href="#" id="btnSendScopeWa" class="btn sim-wa-btn magnetic-btn" target="_blank" rel="noopener noreferrer">
+                        <span>Enviar alcance a WhatsApp</span> <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
+
+
     <!-- ===== TESTIMONIOS ===== -->
     <section class="testimonials-section">
-        <h2 class="section-title hidden">Lo Que Dicen de Nosotros</h2>
-        <div class="testimonials-grid">
+        <div class="testimonials-sticky-wrapper">
+            <div class="testimonials-header">
+                <h2 class="section-title"><span class="reveal-word">Lo</span> <span class="reveal-word">Que</span> <span class="reveal-word">Dicen</span> <span class="reveal-word">de</span> <span class="reveal-word">Nosotros</span></h2>
+                <div class="testimonials-progress-bar"><div class="testimonials-progress-fill" id="testimonialsProgress"></div></div>
+            </div>
+            <div class="testimonials-horizontal-track" id="testimonialsTrack">
 
-            <div class="testimonial-card hidden delay-100">
-                <div class="testimonial-stars">★★★★★</div>
-                <p>"El sistema de gestión que VANTA desarrolló para nuestra biblioteca superó todas nuestras
-                    expectativas. Rápido, intuitivo y entregado antes del plazo."</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">AC</div>
-                    <div>
-                        <strong>Antonio C.</strong>
-                        <span>Coordinador IUTA — Biblioteca Central</span>
+                <div class="testimonial-card-h">
+                    <div class="testimonial-card-h-inner">
+                        <div class="testimonial-top">
+                            <div class="testimonial-stars">★★★★★</div>
+                            <div class="testimonial-index-label">01 / 03</div>
+                        </div>
+                        <p class="testimonial-quote">"El sistema de gestión que VANTA desarrolló para nuestra biblioteca superó todas nuestras expectativas. Rápido, intuitivo y entregado antes del plazo."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">AC</div>
+                            <div>
+                                <strong>Antonio C.</strong>
+                                <span>Coordinador IUTA — Biblioteca Central</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card-h">
+                    <div class="testimonial-card-h-inner">
+                        <div class="testimonial-top">
+                            <div class="testimonial-stars">★★★★★</div>
+                            <div class="testimonial-index-label">02 / 03</div>
+                        </div>
+                        <p class="testimonial-quote">"Profesionales desde el primer contacto. Diseñaron nuestra landing page en tiempo récord y los resultados en conversiones fueron inmediatos."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">NM</div>
+                            <div>
+                                <strong>Nicolas M.</strong>
+                                <span>Fundador — Studio Creativo NM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card-h">
+                    <div class="testimonial-card-h-inner">
+                        <div class="testimonial-top">
+                            <div class="testimonial-stars">★★★★★</div>
+                            <div class="testimonial-index-label">03 / 03</div>
+                        </div>
+                        <p class="testimonial-quote">"La configuración de nuestra red corporativa fue impecable. Subnetting limpio, sin caídas. El soporte post-entrega realmente marcan la diferencia."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">IO</div>
+                            <div>
+                                <strong>Isaac O.</strong>
+                                <span>Gerente TI — TechSoluciones Venezuela</span>
                     </div>
                 </div>
             </div>
 
-            <div class="testimonial-card hidden delay-200">
-                <div class="testimonial-stars">★★★★★</div>
-                <p>"Profesionales desde el primer contacto. Diseñaron nuestra landing page en tiempo récord y los
-                    resultados en conversiones fueron inmediatos."</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">NM</div>
-                    <div>
-                        <strong>Nicolas M.</strong>
-                        <span>Fundador — Studio Creativo NM</span>
-                    </div>
-                </div>
             </div>
-
-            <div class="testimonial-card hidden delay-300">
-                <div class="testimonial-stars">★★★★★</div>
-                <p>"La configuración de nuestra red corporativa fue impecable. Subnetting limpio, sin caídas. El soporte
-                    post-entrega realmente marcan la diferencia."</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">IO</div>
-                    <div>
-                        <strong>Issac O.</strong>
-                        <span>Gerente TI — TechSoluciones Venezuela</span>
-                    </div>
-                </div>
-            </div>
-
         </div>
+    </div>
     </section>
 
     <!-- ===== CONTACTO ===== -->
     <section id="contact" class="contact-section">
-        <h2 class="section-title hidden">Hablemos de tu Proyecto</h2>
+        <h2 class="section-title hidden"><span class="reveal-word">Hablemos</span> <span class="reveal-word">de</span> <span class="reveal-word">tu</span> <span class="reveal-word">Proyecto</span></h2>
 
-        <div class="contact-wrapper hidden delay-100">
-            <div class="contact-info">
-                <h3>¿Tienes una idea? La hacemos realidad.</h3>
-                <p>Cuéntanos qué necesitas y en menos de 24 horas te damos una propuesta personalizada.</p>
-                <ul class="contact-details">
-                    <li><i class="fab fa-whatsapp"></i> +58 412-712-1162</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Venezuela — Disponibles remotamente</li>
-                    <li><i class="fas fa-clock"></i> Respuesta en &lt; 24h</li>
-                </ul>
+        <div class="contact-reveal-container hidden">
+            <div class="contact-wrapper" id="contactWrapper">
+                <div class="contact-info">
+                    <h3 class="contact-headline" id="contactHeadline">¿Tienes una idea? La hacemos realidad.</h3>
+                    <p>Cuéntanos qué necesitas y en menos de 24 horas te damos una propuesta personalizada.</p>
+                    <ul class="contact-details">
+                        <li class="contact-detail-item"><i class="fab fa-whatsapp"></i> +58 412-712-1162</li>
+                        <li class="contact-detail-item"><i class="fas fa-map-marker-alt"></i> Venezuela — Disponibles remotamente</li>
+                        <li class="contact-detail-item"><i class="fas fa-clock"></i> Respuesta en &lt; 24h</li>
+                    </ul>
+                    <div class="contact-cta-wa">
+                        <a href="https://wa.me/584127121162" class="wa-orbital-btn" target="_blank" rel="noopener noreferrer">
+                            <span class="orbital-ring or-1"></span>
+                            <span class="orbital-ring or-2"></span>
+                            <span class="orbital-ring or-3"></span>
+                            <i class="fab fa-whatsapp"></i>
+                            <span>Escribir ahora</span>
+                        </a>
+                    </div>
+                </div>
+                <form id="formContactoWa" class="contact-form">
+                    <div class="form-group form-reveal">
+                        <label for="waNombre">Nombre o Empresa</label>
+                        <input type="text" id="waNombre" required placeholder="Ej. Empresa ABC">
+                    </div>
+                    <div class="form-group form-reveal">
+                        <label for="waEmail">Correo Electrónico</label>
+                        <input type="email" id="waEmail" required placeholder="tu@correo.com">
+                    </div>
+                    <div class="form-group form-reveal">
+                        <label for="waMensaje">¿Qué necesitas?</label>
+                        <textarea id="waMensaje" rows="4" required placeholder="Describe tu proyecto o servicio que necesitas..."></textarea>
+                    </div>
+                    <button type="submit" class="btn form-reveal">Enviar por WhatsApp <i class="fab fa-whatsapp"></i></button>
+                </form>
             </div>
-            <form id="formContactoWa" class="contact-form">
-                <div class="form-group">
-                    <label>Nombre o Empresa</label>
-                    <input type="text" id="waNombre" required placeholder="Ej. Empresa ABC">
-                </div>
-                <div class="form-group">
-                    <label>Correo Electrónico</label>
-                    <input type="email" id="waEmail" required placeholder="tu@correo.com">
-                </div>
-                <div class="form-group">
-                    <label>¿Qué necesitas?</label>
-                    <textarea id="waMensaje" rows="4" required
-                        placeholder="Describe tu proyecto o servicio que necesitas..."></textarea>
-                </div>
-                <button type="submit" class="btn">Enviar por WhatsApp <i class="fab fa-whatsapp"></i></button>
-            </form>
         </div>
     </section>
 
     <!-- ===== FOOTER ===== -->
     <footer class="footer">
+        <!-- Agency-style kinetic marquee opener -->
+        <div class="footer-marquee-section" aria-hidden="true">
+            <div class="footer-marquee-row row-left">
+                <div class="footer-marquee-inner fmi-left">
+                    <span>VANTA</span><span class="fm-sep">•</span>
+                    <span>BUILD</span><span class="fm-sep">•</span>
+                    <span>DESIGN</span><span class="fm-sep">•</span>
+                    <span>DEPLOY</span><span class="fm-sep">•</span>
+                    <span>VANTA</span><span class="fm-sep">•</span>
+                    <span>BUILD</span><span class="fm-sep">•</span>
+                    <span>DESIGN</span><span class="fm-sep">•</span>
+                    <span>DEPLOY</span><span class="fm-sep">•</span>
+                    <span>VANTA</span><span class="fm-sep">•</span>
+                    <span>BUILD</span><span class="fm-sep">•</span>
+                </div>
+            </div>
+            <div class="footer-marquee-row row-right">
+                <div class="footer-marquee-inner fmi-right">
+                    <span>INNOVATE</span><span class="fm-sep">•</span>
+                    <span>SCALE</span><span class="fm-sep">•</span>
+                    <span>AUTOMATE</span><span class="fm-sep">•</span>
+                    <span>SECURE</span><span class="fm-sep">•</span>
+                    <span>INNOVATE</span><span class="fm-sep">•</span>
+                    <span>SCALE</span><span class="fm-sep">•</span>
+                    <span>AUTOMATE</span><span class="fm-sep">•</span>
+                    <span>SECURE</span><span class="fm-sep">•</span>
+                    <span>INNOVATE</span><span class="fm-sep">•</span>
+                    <span>SCALE</span><span class="fm-sep">•</span>
+                </div>
+            </div>
+        </div>
         <div class="footer-inner">
             <div class="footer-brand">
                 <div class="footer-logo">VA<span>NTA</span></div>
@@ -716,25 +1084,63 @@
         <div class="project-modal" id="projectModal">
             <button class="modal-close" id="modalClose" aria-label="Cerrar"><i class="fas fa-times"></i></button>
 
-            <!-- Galería de media -->
-            <div class="modal-gallery" id="modalGallery">
-                <div class="gallery-track" id="galleryTrack"></div>
-                <button class="gallery-nav prev" id="galleryPrev" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
-                <button class="gallery-nav next" id="galleryNext" aria-label="Siguiente"><i class="fas fa-chevron-right"></i></button>
-                <div class="gallery-dots" id="galleryDots"></div>
-                <span class="gallery-counter" id="galleryCounter">1 / 1</span>
-                <div class="modal-header-overlay">
-                    <span class="modal-tag" id="modalTag"></span>
-                    <h3 class="modal-title" id="modalTitle"></h3>
+            <div class="modal-grid-container">
+                <!-- COLUMNA IZQUIERDA: CANVAS 3D E IMÁGENES REALES -->
+                <div class="modal-col-left">
+                    <div class="modal-tab-container">
+                        <button class="modal-tab-btn active" data-tab="wireframe">
+                            <i class="fas fa-cubes"></i> Esquema 3D
+                        </button>
+                        <button class="modal-tab-btn" data-tab="screenshots">
+                            <i class="fas fa-desktop"></i> Capturas Reales
+                        </button>
+                    </div>
+                    <div id="modal-3d-canvas-container"></div>
+                    <div class="canvas-3d-hint">
+                        <span class="hud-label">INTERACTION: ROTATE SYSTEM [DRAG]</span>
+                    </div>
+                    <div id="modal-gallery-container" class="tab-hidden">
+                        <div class="modal-gallery-grid" id="modalGalleryGrid"></div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="modal-body">
-                <p class="modal-description" id="modalDescription"></p>
-                <ul class="modal-tech-list" id="modalTechList"></ul>
-                <div class="modal-actions">
-                    <a href="#" class="btn btn-outline" id="modalLearnMore" target="_blank" rel="noopener noreferrer">Ver Demo</a>
-                    <a href="#contact" class="btn" id="modalContact">Cotizar este tipo de proyecto</a>
+                <!-- COLUMNA DERECHA: FICHA TÉCNICA HUD -->
+                <div class="modal-col-right">
+                    <div class="hud-header">
+                        <span class="modal-tag" id="modalTag"></span>
+                        <h3 class="modal-title font-display" id="modalTitle"></h3>
+                    </div>
+                    
+                    <div class="hud-content">
+                        <div class="hud-section">
+                            <span class="hud-label">// DESCRIPCIÓN DEL SISTEMA</span>
+                            <p class="modal-description" id="modalDescription"></p>
+                        </div>
+                        
+                        <div class="hud-section">
+                            <span class="hud-label">// ESPECIFICACIONES TÉCNICAS</span>
+                            <ul class="modal-tech-list" id="modalTechList"></ul>
+                        </div>
+                        
+                        <!-- Panel de código fuente / Algoritmo del sistema -->
+                        <div class="hud-section code-hud-section">
+                            <span class="hud-label">// CÓDIGO FUENTE / ARQUITECTURA DE DATOS</span>
+                            <div class="code-viewport">
+                                <div class="code-header">
+                                    <span class="code-lang">Python // SQL</span>
+                                    <span class="code-dot-group">
+                                        <span></span><span></span><span></span>
+                                    </span>
+                                </div>
+                                <pre><code id="modalCodeSnippet"></code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-actions">
+                            <a href="#" class="btn-outline" id="modalLearnMore" target="_blank" rel="noopener noreferrer">Ver Demo Live <i class="fas fa-external-link-alt"></i></a>
+                            <a href="#contact" class="btn" id="modalContact">Cotizar este sistema</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -745,9 +1151,41 @@
         <img src="" alt="Vista ampliada" id="viewerImg">
     </div>
 
-    <script src="script.js?v=9"></script>
-    <script src="particles.js?v=8"></script>
-    <script src="effects.js?v=1"></script>
+    <!-- ===== HUD SIDEBAR SCROLL NAVIGATOR ===== -->
+    <div class="hud-sidebar" aria-label="Navegador lateral de scroll">
+        <div class="hud-indicator">
+            <span class="hud-section-num">[ 01 ]</span>
+            <span class="hud-section-name">INICIO</span>
+        </div>
+        <div class="hud-progress-track">
+            <div class="hud-progress-fill"></div>
+        </div>
+        <ul class="hud-dots">
+            <li class="active" data-target="home" data-num="01" data-name="INICIO"></li>
+            <li data-target="portfolio" data-num="02" data-name="TRABAJO"></li>
+            <li data-target="services" data-num="03" data-name="SERVICIOS"></li>
+            <li data-target="pricing" data-num="04" data-name="PLANES"></li>
+            <li data-target="team" data-num="05" data-name="EQUIPO"></li>
+            <li data-target="contact" data-num="06" data-name="CONTACTO"></li>
+        </ul>
+    </div>
+
+    <!-- Libraries for Awwwards Premium Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    
+    <div id="debug-err" style="position: fixed; top: 10px; left: 10px; z-index: 10000; background: rgba(255,0,0,0.85); color: white; padding: 10px; font-family: monospace; font-size: 14px; border-radius: 4px; display: none;"></div>
+    <script>
+    window.addEventListener('error', function(e) {
+        var d = document.getElementById('debug-err');
+        d.style.display = 'block';
+        d.innerHTML += '<div>Error: ' + e.message + ' at ' + e.filename.split('/').pop() + ':' + e.lineno + '</div>';
+    });
+    </script>
+    
+    <script src="script.js?v=15"></script>
+    <script src="particles.js?v=15"></script>
+    <script src="effects.js?v=15"></script>
 </body>
 
 </html>

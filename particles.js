@@ -21,7 +21,7 @@
     const CONFIG = {
 
         // ── Cantidad de partículas ────────────────────────────────
-        COUNT: 220,          // Número de partículas (más = más denso)
+        COUNT: 80,          // Número de partículas (más = más denso. Optimizado de 220 para máximo rendimiento)
 
         // ── Velocidad de deriva en idle ───────────────────────────
         // Cada partícula tiene su propia velocidad aleatoria dentro
@@ -171,15 +171,16 @@
             this.pushVx *= CONFIG.FRICTION;
             this.pushVy *= CONFIG.FRICTION;
 
-            // ─── Movimiento total = idle drift + empuje cursor ────────────
+            // ─── Movimiento total = idle drift + empuje cursor + warp scroll ────────────
+            const warp = window.bgParticleScrollWarp || 0;
             this.x += this.driftVx + this.pushVx;
-            this.y += this.driftVy + this.pushVy;
+            this.y += this.driftVy + this.pushVy - warp; // scroll down = fly up
 
             // ─── Rotación visual del trazo ────────────────────────────────
             this.angle += this.spin;
 
             // ─── Wrap-around: si sale de pantalla, renace en el borde opuesto
-            const margin = 20;
+            const margin = 30;
             if (this.x < -margin || this.x > W + margin ||
                 this.y < -margin || this.y > H + margin) {
                 this.reset(false);
@@ -193,15 +194,43 @@
             ctx.lineWidth   = CONFIG.STROKE_WIDTH;
             ctx.lineCap     = 'round';
 
-            // Traducir al centro de la partícula y rotar
-            ctx.translate(this.x, this.y);
-            ctx.rotate(this.angle);
+            const warp = window.bgParticleScrollWarp || 0;
+            const warpAmt = Math.abs(warp);
 
-            // Dibujar el trazo centrado
-            ctx.beginPath();
-            ctx.moveTo(-this.len / 2, 0);
-            ctx.lineTo( this.len / 2, 0);
-            ctx.stroke();
+            if (warpAmt > 0.5) {
+                // When warp is active, stretch and orient vertically
+                ctx.translate(this.x, this.y);
+                
+                // Blend angle: interpolate current angle towards vertical (-Math.PI/2) based on warp strength
+                const verticalAngle = -Math.PI / 2;
+                const blend = Math.min(1, warpAmt / 12);
+                
+                let currentAngle = this.angle;
+                let diff = verticalAngle - currentAngle;
+                while (diff < -Math.PI) diff += Math.PI * 2;
+                while (diff > Math.PI) diff -= Math.PI * 2;
+                
+                const drawAngle = currentAngle + diff * blend;
+                ctx.rotate(drawAngle);
+                
+                // Stretch length based on warp amount
+                const stretchFactor = 1 + (warpAmt * 0.45);
+                const drawLen = this.len * stretchFactor;
+                
+                ctx.beginPath();
+                ctx.moveTo(-drawLen / 2, 0);
+                ctx.lineTo( drawLen / 2, 0);
+                ctx.stroke();
+            } else {
+                // Normal drawing
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+
+                ctx.beginPath();
+                ctx.moveTo(-this.len / 2, 0);
+                ctx.lineTo( this.len / 2, 0);
+                ctx.stroke();
+            }
 
             ctx.restore();
         }
