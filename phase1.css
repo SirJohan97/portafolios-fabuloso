@@ -1,0 +1,197 @@
+﻿/* =============================================================
+   PHASE 1 CSS — Awwwards Quick Wins
+   Magnetic Cursor + Tech Marquee + Cursor Morph
+   ============================================================= */
+
+/* -------------------------------------------------------
+   TECH MARQUEE BANNER
+   ------------------------------------------------------- */
+.vanta-tech-marquee {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    background: rgba(17, 212, 131, 0.02);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid rgba(17, 212, 131, 0.1);
+    border-bottom: 1px solid rgba(17, 212, 131, 0.1);
+}
+
+.vanta-tech-marquee--sm {
+    opacity: 0.75;
+    background: transparent;
+}
+
+.vtm-track {
+    display: flex;
+    width: max-content;
+    animation: vtm-scroll 30s linear infinite;
+    padding: 13px 0;
+    will-change: transform;
+}
+
+.vtm-track.vtm-row-2 {
+    background: rgba(17, 212, 131, 0.012);
+    padding: 10px 0;
+}
+
+.vtm-reverse {
+    animation-direction: reverse;
+    animation-duration: 22s;
+}
+
+@keyframes vtm-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-33.333%); }
+}
+
+.vtm-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px;
+    font-family: 'Orbitron', 'Space Grotesk', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: rgba(17, 212, 131, 0.45);
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+    user-select: none;
+    cursor: default;
+}
+
+.vtm-item:hover {
+    color: rgba(17, 212, 131, 0.9);
+}
+
+.vtm-sep {
+    color: rgba(17, 212, 131, 0.25);
+    font-size: 0.6rem;
+    flex-shrink: 0;
+}
+
+/* Fade gradientes - usando color exacto del fondo #121212 */
+.vtm-fade-left,
+.vtm-fade-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.vtm-fade-left {
+    left: 0;
+    background: linear-gradient(to right, #121212 0%, transparent 100%);
+}
+
+.vtm-fade-right {
+    right: 0;
+    background: linear-gradient(to left, #121212 0%, transparent 100%);
+}
+
+/* Pause on hover - efecto premium */
+.vanta-tech-marquee:hover .vtm-track {
+    animation-play-state: paused;
+}
+
+/* Reduccion de movimiento */
+@media (prefers-reduced-motion: reduce) {
+    .vtm-track {
+        animation: none;
+        transform: translateX(0) !important;
+    }
+}
+
+/* Mobile: solo una banda */
+@media (max-width: 768px) {
+    .vtm-track.vtm-row-2 {
+        display: none;
+    }
+    .vtm-item {
+        font-size: 0.6rem;
+        padding: 0 14px;
+    }
+}
+
+/* -------------------------------------------------------
+   CURSOR MORPH — Estados adicionales del cursor
+   ------------------------------------------------------- */
+.cursor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.cursor-label {
+    position: absolute;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #0a0a0a;
+    text-transform: uppercase;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+    user-select: none;
+    z-index: 1;
+}
+
+/* Estado VER */
+.cursor--view {
+    width: 60px !important;
+    height: 60px !important;
+    background: rgba(17, 212, 131, 0.9) !important;
+    border-color: transparent !important;
+    mix-blend-mode: normal !important;
+    transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.2s ease !important;
+}
+
+.cursor--view .cursor-label {
+    opacity: 1;
+}
+
+/* Estado CLICK */
+.cursor--click {
+    width: 18px !important;
+    height: 18px !important;
+    background: rgba(17, 212, 131, 1) !important;
+    border-color: transparent !important;
+    transition: width 0.2s ease, height 0.2s ease !important;
+}
+
+/* Estado LINK */
+.cursor--link {
+    border-color: rgba(17, 212, 131, 0.8) !important;
+    background: rgba(17, 212, 131, 0.08) !important;
+}
+
+/* -------------------------------------------------------
+   MAGNETIC BUTTON — will-change para GPU
+   ------------------------------------------------------- */
+.btn,
+.btn-outline,
+.magnetic-btn,
+.wa-orbital-btn {
+    will-change: transform;
+}
+
+/* -------------------------------------------------------
+   GRAIN UPGRADE
+   ------------------------------------------------------- */
+body::after {
+    opacity: 0.03;
+    animation-duration: 0.5s;
+    mix-blend-mode: overlay;
+}
