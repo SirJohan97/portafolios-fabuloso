@@ -94,6 +94,10 @@
             if (blueprintEl) {
                 blueprintEl.classList.remove('blueprint-paused');
             }
+            // Disparar la entrada dramática de la V 3D
+            if (window.play3DVEntranceAnimation) {
+                window.play3DVEntranceAnimation();
+            }
         }, 800);
     }, TOTAL_MS);
 })();
@@ -101,7 +105,7 @@
 /* =========================================
    INICIO DEL SCRIPT PRINCIPAL
    ========================================= */
-document.addEventListener('DOMContentLoaded', () => {
+function initMainScript() {
 
     /* =========================================
        1. MENÚ MÓVIL (HAMBURGUESA)
@@ -461,9 +465,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const particleCount = 70; // Cantidad de nodos
         const connectionDistance = 120; // Distancia máxima para conectar nodos
         const mouseConnectionDistance = 160; // Distancia de interacción con el mouse
-        const nodeColor = 'rgba(17, 212, 131, 0.9)'; // Emerald green (Theme primary)
-        const lineColor = 'rgba(17, 212, 131, 0.25)'; // Líneas más tenues
-        const mouseLineColor = 'rgba(17, 212, 131, 0.6)';
+
+        // Live color object — mutated by window.setVantaTheme()
+        window.constellationColors = {
+            node:      'rgba(17, 212, 131, 0.9)',
+            line:      'rgba(17, 212, 131, 0.25)',
+            mouseLine: 'rgba(17, 212, 131, 0.6)',
+        };
 
         let mouse = { x: null, y: null };
 
@@ -495,7 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = nodeColor;
+                ctx.fillStyle = window.constellationColors.node;
                 ctx.fill();
             }
         }
@@ -526,7 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (dist < connectionDistance) {
                         ctx.beginPath();
-                        ctx.strokeStyle = lineColor;
+                        ctx.strokeStyle = window.constellationColors.line;
                         ctx.lineWidth = 1 - (dist / connectionDistance);
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
@@ -542,7 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (distMouse < mouseConnectionDistance) {
                         ctx.beginPath();
-                        ctx.strokeStyle = mouseLineColor;
+                        ctx.strokeStyle = window.constellationColors.mouseLine;
                         ctx.lineWidth = 1.5 - (distMouse / mouseConnectionDistance);
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(mouse.x, mouse.y);
@@ -855,6 +863,13 @@ COMMIT;`
             opacity: 0.65,
             blending: THREE.AdditiveBlending
         });
+        window.modal3DMaterial = mat;
+
+        // Sincronizar color inicial con el tema activo
+        const initialPrimary = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+        if (initialPrimary) {
+            mat.color.setStyle(initialPrimary);
+        }
 
         // Crear geometría única por proyecto
         if (projectKey === 'sviva') {
@@ -1161,6 +1176,7 @@ COMMIT;`
             }
         }, 800);
     }
+    window.openProjectModal = openModal;
 
     function closeModal() {
         modalOverlay.classList.remove('modal-open');
@@ -1268,148 +1284,569 @@ COMMIT;`
     /* =========================================================
        11. NÚCLEO DIGITAL 3D (THREE.JS)
        ========================================================= */
-    function init3DCore() {
-        const container = document.getElementById('canvas-3d-container');
-        if (!container || typeof THREE === 'undefined') return;
+        // Objeto global de comunicación para scrollytelling WebGL
+    window.vanta3D = {
+        progress: 0,
+        glitch: 0,
+        packets: 0
+    };
+
+            function initPhilosophy3D() {
+        const canvas = document.getElementById('philosophy-canvas');
+        if (!canvas || typeof THREE === 'undefined') return;
+
+        const container = canvas.parentElement;
+        const width = container.clientWidth || 300;
+        const height = container.clientHeight || 300;
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 9;
+        const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+        camera.position.z = 6;
 
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(renderer.domElement);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
-        // Crear constelación 3D (Red de Nodos)
-        const nodeCount = 130; // 130 nodos es perfecto para móviles y desktop, gran densidad sin sobrecarga
+        // Configuración de los nodos de la estructura
+        const nodeCount = 90;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(nodeCount * 3);
         const nodeData = [];
+        const cubePositions = [];
 
-        // Generar coordenadas en un volumen esférico con dispersión
+        // Generación de la esfera caótica (estado inicial / glitch)
         for (let i = 0; i < nodeCount; i++) {
             const u = Math.random();
             const v = Math.random();
             const theta = u * 2.0 * Math.PI;
             const phi = Math.acos(2.0 * v - 1.0);
-            const r = 2.0 + Math.random() * 2.6; // Radio de dispersión orgánica
+            const r = 1.2 + Math.random() * 0.65;
 
             const x = r * Math.sin(phi) * Math.cos(theta);
             const y = r * Math.sin(phi) * Math.sin(theta);
             const z = r * Math.cos(phi);
 
-            positions[i * 3] = x;
-            positions[i * 3 + 1] = y;
-            positions[i * 3 + 2] = z;
+            positions[i*3] = x;
+            positions[i*3+1] = y;
+            positions[i*3+2] = z;
 
             nodeData.push(new THREE.Vector3(x, y, z));
         }
 
+        // Generación de posiciones de cubo ordenado (grid 3D para el Capítulo 2)
+        const cubeSize = 2.0;
+        const cubeSteps = 4;
+        const stepSize = cubeSize / (cubeSteps - 1);
+        for (let i = 0; i < nodeCount; i++) {
+            const idx = i % 64; // Grid de 4x4x4 = 64 puntos
+            const z = Math.floor(idx / 16) % 4;
+            const y = Math.floor(idx / 4) % 4;
+            const x = idx % 4;
+
+            const cx = x * stepSize - cubeSize / 2;
+            const cy = y * stepSize - cubeSize / 2;
+            const cz = z * stepSize - cubeSize / 2;
+
+            cubePositions.push(new THREE.Vector3(cx, cy, cz));
+        }
+
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        
-        // Material para los nodos (Puntos brillantes neón)
-        const nodeMaterial = new THREE.PointsMaterial({
-            color: 0x11d483, // Verde esmeralda
-            size: 0.09,
-            transparent: true,
-            opacity: 0.8,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
 
-        const points = new THREE.Points(geometry, nodeMaterial);
-
-        // Encontrar conexiones e instanciar las líneas de filamento
-        const linePositions = [];
-        const maxDistance = 1.35; // Distancia máxima para conectar nodos
-
+        // Conexiones de filamentos entre nodos
+        const connections = [];
         for (let i = 0; i < nodeCount; i++) {
             for (let j = i + 1; j < nodeCount; j++) {
-                const dist = nodeData[i].distanceTo(nodeData[j]);
-                if (dist < maxDistance) {
-                    linePositions.push(nodeData[i].x, nodeData[i].y, nodeData[i].z);
-                    linePositions.push(nodeData[j].x, nodeData[j].y, nodeData[j].z);
+                if (Math.random() < 0.07) {
+                    connections.push({ i, j });
                 }
             }
         }
 
+        // Crear geometría de filamentos (líneas)
+        const lineCount = connections.length;
         const lineGeometry = new THREE.BufferGeometry();
-        lineGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(linePositions), 3));
+        const linePositions = new Float32Array(lineCount * 2 * 3);
+        lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
 
-        // Material básico para las líneas del filamento
-        const lineMaterial = new THREE.LineBasicMaterial({
-            color: 0x11d483,
+        const primaryColorStr = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
+
+        const nodeMaterial = new THREE.PointsMaterial({
+            color: new THREE.Color(primaryColorStr),
+            size: 3.5,
+            sizeAttenuation: false,
             transparent: true,
-            opacity: 0.22,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
         });
 
+        const lineMaterial = new THREE.LineBasicMaterial({
+            color: new THREE.Color(primaryColorStr),
+            transparent: true,
+            opacity: 0.28,
+            blending: THREE.AdditiveBlending
+        });
+
+        const points = new THREE.Points(geometry, nodeMaterial);
         const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
 
-        // Agrupar ambos elementos
-        const systemGroup = new THREE.Group();
-        systemGroup.add(points);
-        systemGroup.add(lines);
-        scene.add(systemGroup);
+        const group = new THREE.Group();
+        group.add(points);
+        group.add(lines);
+        scene.add(group);
 
-        // Interacción con ratón (inercia)
-        let mouseX = 0, mouseY = 0;
-        let targetX = 0, targetY = 0;
+        const clock = new THREE.Clock();
+        const nodesCurrent = Array.from({ length: nodeCount }, () => new THREE.Vector3());
 
-        window.addEventListener('mousemove', (e) => {
-            targetX = (e.clientX - window.innerWidth / 2) * 0.0007;
-            targetY = (e.clientY - window.innerHeight / 2) * 0.0007;
+        function animateLocal() {
+            requestAnimationFrame(animateLocal);
+
+            const time = clock.getElapsedTime();
+            const progress = (window.vanta3D && window.vanta3D.progress) || 0;
+            const glitchVal = (window.vanta3D && window.vanta3D.glitch) || 0;
+
+            // Sincronización del color con el tema del sitio
+            const activeColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
+            nodeMaterial.color.setStyle(activeColor);
+            lineMaterial.color.setStyle(activeColor);
+
+            // Interpolación de coordenadas según el progreso del scroll de la historia (Caos -> Orden)
+            const posAttr = geometry.getAttribute('position');
+            for (let i = 0; i < nodeCount; i++) {
+                const orig = nodeData[i];
+                const target = cubePositions[i];
+
+                let tx = THREE.MathUtils.lerp(orig.x, target.x, progress);
+                let ty = THREE.MathUtils.lerp(orig.y, target.y, progress);
+                let tz = THREE.MathUtils.lerp(orig.z, target.z, progress);
+
+                // Efecto electromagnético glitch en el primer capítulo
+                if (progress < 0.35 && glitchVal > 0.05) {
+                    tx += (Math.random() - 0.5) * glitchVal * 0.3;
+                    ty += (Math.random() - 0.5) * glitchVal * 0.3;
+                    tz += (Math.random() - 0.5) * glitchVal * 0.3;
+                }
+
+                posAttr.setXYZ(i, tx, ty, tz);
+                nodesCurrent[i].set(tx, ty, tz);
+            }
+            posAttr.needsUpdate = true;
+
+            // Actualizar líneas
+            const linePosAttr = lineGeometry.getAttribute('position');
+            let lineIdx = 0;
+            for (let c = 0; c < connections.length; c++) {
+                const conn = connections[c];
+                const n1 = nodesCurrent[conn.i];
+                const n2 = nodesCurrent[conn.j];
+                linePosAttr.setXYZ(lineIdx++, n1.x, n1.y, n1.z);
+                linePosAttr.setXYZ(lineIdx++, n2.x, n2.y, n2.z);
+            }
+            linePosAttr.needsUpdate = true;
+
+            // Rotación suave del grupo
+            group.rotation.y = time * 0.12;
+            group.rotation.x = time * 0.06;
+
+            renderer.render(scene, camera);
+        }
+
+        // Resize handler local
+        const resizeLocal = () => {
+            const w = container.clientWidth || 300;
+            const h = container.clientHeight || 300;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        };
+        window.addEventListener('resize', resizeLocal);
+        resizeLocal();
+
+        animateLocal();
+    }
+
+    function init3DCore() {
+        
+        const container = document.getElementById('canvas-3d-container');
+        if (!container) return;
+        if (typeof THREE === 'undefined') {
+            throw new Error("Three.js library is not loaded! THREE is undefined.");
+        }
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 7.5);
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        container.appendChild(renderer.domElement);
+
+        // 1. Crear Textura Programática de Partícula con Gradiente Radial
+        function createParticleTexture() {
+            const canvas = document.createElement('canvas');
+            const size = 32;
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const radius = size / 2;
+
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+            gradient.addColorStop(0, 'rgba(255,255,255,1.0)');
+            gradient.addColorStop(0.3, 'rgba(17,212,131,0.85)');
+            gradient.addColorStop(1.0, 'rgba(0,0,0,0)');
+            
+            // Define the circular path for the particle shape
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.closePath();
+            
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.needsUpdate = true;
+            return tex;
+        }
+
+        // 2. Configuración de 1,200 Partículas del V-Shockwave Core (Optimizado para 60 FPS)
+        const particleCount = 1200; 
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+        
+        const nodeData = [];             // Posiciones target de la V
+        const disintegrationOffsets = []; // Offsets de disolución cíclica
+        const homeDistances = new Float32Array(particleCount); // Precalculado de distancias
+        
+        const maxHomeRadius = 5.0;
+        let shockwaves = [];             // Cola de ondas expansivas
+
+        // Generar coordenadas tridimensionales de la V y offsets
+        for (let i = 0; i < particleCount; i++) {
+            let x, y, z;
+            if (i < particleCount / 2) {
+                // Rama izquierda de la V (t de 0 a 1)
+                const t = i / (particleCount / 2);
+                x = -1.3 * (1 - t);
+                y = 1.9 * (1 - t) - 1.5 * t;
+            } else {
+                // Rama derecha de la V (t de 0 a 1)
+                const t = (i - particleCount / 2) / (particleCount / 2);
+                x = 1.3 * (1 - t);
+                y = 1.9 * (1 - t) - 1.5 * t;
+            }
+
+            // Dispersión radial suave (grosor de trazo)
+            const rOffset = Math.random() * 0.16;
+            const thetaOffset = Math.random() * Math.PI * 2;
+            x += Math.cos(thetaOffset) * rOffset;
+            y += Math.sin(thetaOffset) * rOffset;
+            z = (Math.random() - 0.5) * 0.4;
+
+            positions[i * 3] = x;
+            positions[i * 3 + 1] = y;
+            positions[i * 3 + 2] = z;
+
+            const vec = new THREE.Vector3(x, y, z);
+            nodeData.push(vec);
+            homeDistances[i] = vec.length() + 1e-6; // Precalcular distancia de origen
+
+            // Colores por defecto (verde/blanco neón)
+            colors[i * 3] = 0.5;
+            colors[i * 3 + 1] = 1.0;
+            colors[i * 3 + 2] = 0.7;
+
+            // Offsets de disolución cíclica radiales
+            const offsetStrength = 5.0 + Math.random() * 6.0;
+            const phi = Math.random() * Math.PI * 2;
+            const theta = Math.acos(2 * Math.random() - 1);
+            disintegrationOffsets.push(new THREE.Vector3(
+                Math.sin(theta) * Math.cos(phi) * offsetStrength,
+                Math.sin(theta) * Math.sin(phi) * offsetStrength,
+                Math.cos(theta) * offsetStrength * 0.3
+            ));
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        // Material premium con AdditiveBlending y tamaño aumentado para densidad
+        const logoMaterial = new THREE.PointsMaterial({
+            size: 7.0,              // 7 píxeles de pantalla exactos
+            sizeAttenuation: false, // Desactivar atenuación para nitidez perfecta sin importar la cámara
+            map: createParticleTexture(),
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.0,           // Inicia invisible, se anima en la entrada
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            alphaTest: 0.005
         });
 
-        // Resize
+        const points = new THREE.Points(geometry, logoMaterial);
+        
+        const logoGroup = new THREE.Group();
+        logoGroup.add(points);
+        logoGroup.scale.setScalar(0.0001); // Escala inicial cero
+        scene.add(logoGroup);
+
+        // 3. Crear Terreno de Rejilla Vectorial (PlaneGeometry para el fondo)
+        const terrainGeometry = new THREE.PlaneGeometry(45, 45, 28, 28);
+        const terrainMaterial = new THREE.MeshBasicMaterial({
+            color: 0x11d483,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.0,
+            blending: THREE.AdditiveBlending
+        });
+
+        const terrainMesh = new THREE.Mesh(terrainGeometry, terrainMaterial);
+        terrainMesh.rotation.x = -Math.PI / 2.2;
+        terrainMesh.position.set(0, -2.5, -2.0);
+        scene.add(terrainMesh);
+
+        // Guardar posiciones originales de la rejilla
+        const terrainPosAttr = terrainGeometry.getAttribute('position');
+        const originalZ = new Float32Array(terrainPosAttr.count);
+        for (let i = 0; i < terrainPosAttr.count; i++) {
+            originalZ[i] = terrainPosAttr.getZ(i);
+        }
+
+        // Posicionamiento responsivo del logo
+        const updateLogoPosition = () => {
+            if (window.innerWidth > 991) {
+                logoGroup.position.x = 3.3; // Totalmente a la derecha en escritorio
+            } else {
+                logoGroup.position.x = 0;   // Centrado en móviles
+            }
+        };
+        updateLogoPosition();
+
+        // Variables de interacción y física de scroll
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+        let lastScrollY = window.scrollY || window.pageYOffset;
+        let scrollVelocity = 0;
+        let flowOffset = 0;
+        let logoScaleObj = { value: 0.0001 };
+
+        window.addEventListener('mousemove', (e) => {
+            targetX = (e.clientX - window.innerWidth / (window.innerWidth > 991 ? 1.4 : 2)) * 0.0006;
+            targetY = (e.clientY - window.innerHeight / 2) * 0.0006;
+        });
+
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            updateLogoPosition();
         });
 
-        // Bucle de animación (Optimizado)
-        let clock = new THREE.Clock();
+        // Disparador de Shockwaves al hacer click en el Hero
+        window.addEventListener('click', (e) => {
+            if (window.scrollY < window.innerHeight * 0.8) {
+                triggerShockwave({ amplitude: 7.5, speed: 12.0, width: 0.8, decay: 1.25 });
+            }
+        });
+
+        function triggerShockwave(opts = {}) {
+            const { amplitude = 7.5, speed = 12.0, width = 0.8, decay = 1.25 } = opts;
+            shockwaves.push({ t0: clock.getElapsedTime(), amplitude, speed, width, decay });
+            if (shockwaves.length > 5) shockwaves.shift();
+        }
+
+        // 4. Función global de entrada elástica de la V + Flash
+        window.play3DVEntranceAnimation = function() {
+            
+            if (typeof gsap !== 'undefined') {
+                gsap.killTweensOf(logoScaleObj);
+                gsap.killTweensOf(logoGroup.rotation);
+                
+                gsap.fromTo(logoScaleObj,
+                    { value: 0.0001 },
+                    { value: 1.0, duration: 2.0, ease: 'elastic.out(0.85, 0.68)' }
+                );
+                
+                gsap.fromTo(logoGroup.rotation,
+                    { y: 3.5 },
+                    { y: 0.0, duration: 2.5, ease: 'power2.out' }
+                );
+            } else {
+                logoScaleObj.value = 1.0;
+            }
+            
+            // Destello flash blanco (se lerpea en el bucle animate)
+            logoMaterial.color.setRGB(2.0, 2.0, 2.0);
+        };
+
+        // Resiliencia: si las cortinas ya se abrieron, arrancar animación
+        const curtainA = document.querySelector('.hero-curtain.curtain-a');
+        const preloaderEl = document.getElementById('preloader');
+        if (!curtainA || curtainA.classList.contains('opened') || (preloaderEl && preloaderEl.style.display === 'none')) {
+            setTimeout(() => {
+                if (window.play3DVEntranceAnimation) window.play3DVEntranceAnimation();
+            }, 100);
+        }
+
+        const clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
 
             const time = clock.getElapsedTime();
             
-            // Inercia de ratón
+
+
+            // 1. Calcular velocidad física de scroll y progreso
+            const currentScroll = window.scrollY || window.pageYOffset;
+            const deltaScroll = currentScroll - lastScrollY;
+            lastScrollY = currentScroll;
+
+            const transitionLimit = window.innerHeight * 1.2;
+            const progress = Math.min(currentScroll / transitionLimit, 1.0);
+
+            scrollVelocity += (Math.abs(deltaScroll) - scrollVelocity) * 0.08;
+            const clampedVelocity = Math.min(scrollVelocity, 120);
+
+            // 2. Colores neón dinámicos con Lerp suave (Optimizado sin reflows)
+            let primaryColor = new THREE.Color(0x11d483);
+            if (window.currentPrimaryColor) {
+                primaryColor.setStyle(window.currentPrimaryColor);
+            }
+
+            logoMaterial.color.lerp(primaryColor, 0.06);
+            terrainMaterial.color.lerp(primaryColor, 0.06);
+
+            // 3. Físicas de Partículas en la "V"
             mouseX += (targetX - mouseX) * 0.05;
             mouseY += (targetY - mouseY) * 0.05;
+            
+            logoGroup.rotation.y = time * 0.22 + mouseX * 0.8;
+            logoGroup.rotation.x = Math.sin(time * 0.15) * 0.1 + mouseY * 0.8;
 
-            // Rotación natural más inercia de ratón
-            systemGroup.rotation.y = time * 0.04 + mouseX;
-            systemGroup.rotation.x = time * 0.015 + mouseY;
+            const logoOpacity = Math.max(0, 1.0 - progress * 2.5);
+            logoMaterial.opacity = logoOpacity * 0.85;
+            
+            logoGroup.scale.setScalar(0.92 * (1.0 - progress * 0.35) * logoScaleObj.value);
+            logoGroup.position.y = progress * 3.2;
 
-            const scrollFactor = Math.min(currentScrollY / (window.innerHeight * 1.5), 1.5); // Escala según scroll
+            // Actualizar posiciones de las partículas con matemáticas optimizadas (sin Math.sqrt interno)
+            const posAttr = geometry.getAttribute('position');
+            const colAttr = geometry.getAttribute('color');
+            const posArray = posAttr.array;
+            const colArray = colAttr.array;
 
-            // Zoom-in y pulsación sutil al hacer scroll
-            const pulse = 1.0 + Math.sin(time * 1.8) * (0.02 + scrollFactor * 0.03);
-            systemGroup.scale.setScalar((1.0 + scrollFactor * 0.5) * pulse);
+            // Ondulación y latido de energía ascendente
+            const waveSpeed = 1.3;
+            const waveFreqY = 0.75;
+            const waveFreqX = 0.55;
+            
+            // Pulso de energía vertical que sube desde abajo (y = -1.6) hasta arriba (y = 2.0)
+            const pulseSpeed = 1.6;
+            const pulseLength = 1.1; // Ancho de la onda del pulso
+            const pulseCycle = 5.0;  // Tiempo de ciclo completo
+            const pulseCenter = -1.6 + ((time * pulseSpeed) % (3.6 + pulseLength));
 
-            // Reducir opacidad en secciones inferiores de la página
-            const opacityMultiplier = Math.max(1 - (currentScrollY / window.innerHeight) * 0.6, 0.1);
-            nodeMaterial.opacity = 0.8 * opacityMultiplier;
-            lineMaterial.opacity = 0.22 * opacityMultiplier;
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                const home = nodeData[i];
+                const dist = homeDistances[i]; // Distancia precalculada
+
+                // 1. Calcular Viento Ondulatorio 3D continuo
+                const waveX = Math.sin(time * waveSpeed + home.y * waveFreqY) * 0.12;
+                const waveY = Math.cos(time * waveSpeed * 0.85 + home.x * waveFreqX) * 0.08;
+                const waveZ = Math.sin(time * waveSpeed * 1.1 + (home.x + home.y) * 0.5) * 0.08;
+
+                // 2. Latido Cuántico de Energía Ascendente
+                const distToPulse = Math.abs(home.y - pulseCenter);
+                let pulseFactor = 0.0;
+                if (distToPulse < pulseLength) {
+                    pulseFactor = Math.cos((distToPulse / pulseLength) * Math.PI * 0.5);
+                }
+
+                // Desplazamiento ligero hacia afuera al paso del pulso (efecto abombamiento)
+                const pulseDisplace = pulseFactor * 0.07;
+                const dirX = home.x > 0 ? 1.0 : -1.0;
+
+                // Calcular Shockwaves (Ondas Expansivas al hacer Click)
+                let addX = 0, addY = 0, addZ = 0;
+                for (let w = 0; w < shockwaves.length; w++) {
+                    const sw = shockwaves[w];
+                    const elapsed = Math.max(0, time - sw.t0);
+                    const R = sw.speed * elapsed;
+                    const sigma = sw.width;
+                    const decayFactor = Math.exp(-sw.decay * elapsed);
+                    const g = Math.exp(-((dist - R) * (dist - R)) / (2 * sigma * sigma));
+                    const amp = sw.amplitude * g * decayFactor;
+                    addX += (home.x / dist) * amp;
+                    addY += (home.y / dist) * amp;
+                    addZ += (home.z / dist) * amp * 0.5;
+                }
+
+                // Target final combinado (Oscilación base + Desplazamiento de pulso + Ondas expansivas)
+                let curTargetX = home.x + waveX + (dirX * pulseDisplace) + addX;
+                let curTargetY = home.y + waveY + addY;
+                let curTargetZ = home.z + waveZ + addZ;
+
+                const lerpFactor = 0.085;
+
+                // Suavizar posición física
+                posArray[i3]     += (curTargetX - posArray[i3]) * lerpFactor;
+                posArray[i3 + 1] += (curTargetY - posArray[i3 + 1]) * lerpFactor;
+                posArray[i3 + 2] += (curTargetZ - posArray[i3 + 2]) * lerpFactor;
+
+                // 3. Brillo neón dinámico (Oscilación individual + Aumento al paso del pulso)
+                let baseBright = 0.55 + Math.sin(time * 2.2 + (i % 8)) * 0.12;
+                // El pulso hace brillar intensamente en verde/blanco neón
+                let bright = baseBright + pulseFactor * 1.1; 
+                
+                colArray[i3]     = logoMaterial.color.r * bright;
+                colArray[i3 + 1] = logoMaterial.color.g * bright;
+                colArray[i3 + 2] = logoMaterial.color.b * bright;
+            }
+            posAttr.needsUpdate = true;
+            colAttr.needsUpdate = true;
+
+            // Filtrar shockwaves vencidas
+            if (shockwaves.length) {
+                shockwaves = shockwaves.filter(sw => {
+                    const elapsed = time - sw.t0;
+                    return elapsed < 3.0;
+                });
+            }
+
+            // 5. Animación de Olas del Terreno Vectorial
+            flowOffset += 0.012 + clampedVelocity * 0.0018;
+            const amplitudeFactor = 0.4 + clampedVelocity * 0.007;
+
+            const terrainPos = terrainGeometry.getAttribute('position');
+            for (let i = 0; i < terrainPos.count; i++) {
+                const x = terrainPos.getX(i);
+                const y = terrainPos.getY(i);
+                const waveHeight = Math.sin(x * 0.18 + y * 0.14 - flowOffset) * amplitudeFactor;
+                terrainPos.setZ(i, originalZ[i] + waveHeight);
+            }
+            terrainPos.needsUpdate = true;
+
+            const terrainOpacity = Math.min(0.22, progress * 1.6);
+            terrainMaterial.opacity = terrainOpacity;
+
+            terrainMesh.rotation.x = -Math.PI / 2.2 + clampedVelocity * 0.0006;
 
             renderer.render(scene, camera);
         }
 
         animate();
     }
-
     /* =========================================================
-       12. LENIS SMOOTH SCROLL (INERCIAL)
+       12. LENIS SMOOTH SCROLL (INERCIAL UNIFICADO)
        ========================================================= */
     let lenis;
     if (typeof Lenis !== 'undefined') {
         lenis = new Lenis({
-            lerp: 0.12, // Interpolación lineal directa: mucho más sensible y fluida sin delay artificial
+            lerp: 0.08, // Fricción reducida para máxima suavidad Awwwards
             direction: 'vertical',
             gestureDirection: 'vertical',
             smooth: true,
@@ -1478,7 +1915,25 @@ COMMIT;`
         let progress = startOffset / maxScroll;
         progress = Math.max(0, Math.min(1, progress));
 
-        horizontalTrack.style.transform = `translate3d(${-progress * maxTranslate}px, 0, 0)`;
+        const translateX = -progress * maxTranslate;
+        horizontalTrack.style.transform = `translate3d(${translateX}px, 0, 0)`;
+
+        // Parallax horizontal multicapa para los elementos de las tarjetas
+        const cards = horizontalTrack.querySelectorAll('.card');
+        const viewportW = window.innerWidth;
+
+        cards.forEach(card => {
+            const cardRect = card.getBoundingClientRect();
+            const cardCenterX = cardRect.left + cardRect.width / 2;
+            const viewportCenterX = viewportW / 2;
+
+            let offset = (cardCenterX - viewportCenterX) / (viewportW / 2);
+            offset = Math.max(-1.5, Math.min(1.5, offset));
+
+            // Inyectar variables en la tarjeta
+            card.style.setProperty('--card-parallax-bg', `${offset * 30}px`);
+            card.style.setProperty('--card-parallax-fg', `${offset * -45}px`);
+        });
     }
 
     /* =========================================================
@@ -1671,6 +2126,7 @@ COMMIT;`
         handleInvertedScroll(scrollY);
         handleMethodologyScroll(scrollY);
         init3DCore();
+        initPhilosophy3D();
         
         // Activar textos iniciales en Hero
         document.querySelectorAll('.hero-content .reveal-text').forEach(el => {
@@ -1678,4 +2134,10 @@ COMMIT;`
         });
     }, 150);
 
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMainScript);
+} else {
+    initMainScript();
+}

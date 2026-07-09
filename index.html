@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- SEO PRIMARIO -->
@@ -62,22 +63,47 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <!-- ESTILOS -->
-    <link rel="stylesheet" href="styles.css?v=16">
-    <link rel="stylesheet" href="effects.css?v=16">
-    <link rel="stylesheet" href="phase1.css?v=1">
+    <link rel="stylesheet" href="styles.css?v=112">
+    <link rel="stylesheet" href="effects.css?v=105">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 </head>
 
 <body>
+    <!-- Film Grain Overlay Cinematográfico -->
+    <canvas id="film-grain-canvas" aria-hidden="true"></canvas>
+
     <!-- Ambient Auroras / Glows de Fondo -->
     <div class="ambient-aurora aurora-1"></div>
     <div class="ambient-aurora aurora-2"></div>
+
+    <!-- Bus de Datos SVG (Scroll-Drawing Fiber Path) -->
+    <svg id="vanta-fiber-svg" viewBox="0 0 100 1000" preserveAspectRatio="none">
+        <path id="vanta-fiber-path" d="M 12,0 L 12,180 L 88,260 L 88,440 L 15,560 L 15,740 L 85,820 L 85,1000" />
+    </svg>
+    <div id="vanta-hud-pointer">
+        <span class="hud-crosshair">+</span>
+        <span class="hud-label">[CONNECT_ACTIVE]</span>
+    </div>
 
     <div class="cursor"></div>
     <div class="cursor2"></div>
     <!-- Canvas Background para Núcleo 3D de Three.js -->
     <div id="canvas-3d-container"></div>
+
+    <!-- SVG Gooey Filter for Liquid/Slime Text Effect -->
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none;">
+        <defs>
+            <filter id="gooey-text">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                <feMerge>
+                    <feMergeNode in="goo" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+        </defs>
+    </svg>
 
     <!-- ===== PRELOADER: CINEMATIC SEQUENCE ===== -->
     <div id="preloader">
@@ -179,54 +205,100 @@
 
     <!-- ===== HERO ===== -->
     <header id="home" class="hero">
-        <!-- HUD Overlay Widgets -->
-        <div class="hud-widget hud-bottom-left">
-            <span class="hud-label">CORE_ENG_V3.1.2</span>
-        </div>
-        <div class="hud-widget hud-bottom-right">
-            <span class="hud-label">EST_2026 // EXP_GLOBAL</span>
-        </div>
-
         <!-- HUD Blueprint Crosshairs -->
         <div class="hero-hud-decor decor-top-left">+</div>
         <div class="hero-hud-decor decor-top-right">+</div>
         <div class="hero-hud-decor decor-bottom-left">+</div>
         <div class="hero-hud-decor decor-bottom-right">+</div>
+
+        <!-- Curtain Reveal Overlays -->
+        <div class="hero-curtain curtain-a"></div>
+        <div class="hero-curtain curtain-b"></div>
         
         <div class="hero-center-layout">
             <div class="hero-content hidden">
                 <div class="hero-title-group">
-                    <div class="reveal-wrapper line-1">
-                        <h1 class="reveal-text hero-title-main">INGENIERÍA DE <span class="brand-green italic-outline">SOFTWARE</span></h1>
+                    <!-- Cada palabra se convierte en split-text al cargar -->
+                    <div class="split-line-wrap">
+                        <h1 class="hero-title-main split-target">INGENIERÍA DE <span class="brand-green italic-outline">SOFTWARE</span></h1>
                     </div>
-                    <div class="reveal-wrapper line-2">
-                        <h1 class="reveal-text hero-title-main font-accent">DE ÉLITE <span class="tech-tag">[ V.04 ]</span></h1>
+                    <div class="split-line-wrap">
+                        <h1 class="hero-title-main font-accent split-target">DE ÉLITE <span class="tech-tag">[ V.04 ]</span></h1>
                     </div>
                 </div>
 
-                <div class="hero-grid-split">
-                    <div class="hero-split-left">
-                        <p class="hero-typing-subtitle">> <span class="typing-text"></span></p>
-                        <div class="hero-technical-specs">
-                            <div class="spec-line"><span class="spec-label">SYS_STATUS</span><span class="spec-val">ACTIVE_CORE</span></div>
-                            <div class="spec-line"><span class="spec-label">NET_RENDER</span><span class="spec-val">THREE_GL</span></div>
-                            <div class="spec-line"><span class="spec-label">LOC_SERVE</span><span class="spec-val">LATAM_EDGE</span></div>
-                        </div>
+                <div class="hero-sub-row">
+                    <div class="hero-typing-subtitle-wrap">
+                        <span class="subtitle-static">Especialistas en</span>
+                        <span class="subtitle-liquid-word" id="liquid-text">APLICACIONES WEB</span>
                     </div>
-                    <div class="hero-split-right">
-                        <p class="hero-manifesto">Modelamos arquitectura digital avanzada, agentes autónomos de IA e infraestructura de alta disponibilidad. No creamos sitios web comunes; programamos el futuro.</p>
-                        <div class="hero-btns">
-                            <a href="#portfolio" class="btn"><span>[ 01 ]</span> Ver Proyectos</a>
-                            <a href="#contact" class="btn-outline"><span>[ 02 ]</span> Habla con nosotros</a>
-                        </div>
+                    <div class="hero-btns">
+                        <a href="#portfolio" class="btn magnetic-btn">Ver Proyectos</a>
+                        <a href="#contact" class="btn-outline magnetic-btn">Hablar con nosotros</a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="hero-hud-bottom">
+            <span class="hud-label">EST_2026 // LATAM_EDGE</span>
+            <span class="hud-label">SYS_STATUS: ACTIVE_CORE</span>
+        </div>
+
         <div class="hero-scroll-indicator">
             <span></span>
         </div>
     </header>
+
+    <!-- ===== FILOSOFÍA (NARRATIVE STORYTELLING PINNED) ===== -->
+    <section class="vanta-philosophy-section" id="philosophy">
+        <div class="philosophy-sticky-container">
+            <div class="ph-hud-decor decor-1">+</div>
+            <div class="ph-hud-decor decor-2">+</div>
+            
+            <div class="philosophy-layout-grid">
+                <!-- Columna Izquierda: Texto Narrativo -->
+                <div class="ph-col-left">
+                    <div class="philosophy-chapters">
+                        <!-- Capítulo 01 -->
+                        <div class="ph-chapter ph-chapter-1 active">
+                            <span class="ph-chapter-num">// CAPÍTULO_01 // CAOS_DIGITAL</span>
+                            <h3 class="ph-chapter-title font-display">La velocidad sin cimientos destruye valor.</h3>
+                            <p class="ph-chapter-desc">El 95% del software moderno falla en producción. Sistemas mal optimizados, frameworks inflados y código desechable son el estándar. Nosotros nos negamos a construir sobre arena.</p>
+                        </div>
+                        
+                        <!-- Capítulo 02 -->
+                        <div class="ph-chapter ph-chapter-2">
+                            <span class="ph-chapter-num">// CAPÍTULO_02 // OBSESIÓN_TÉCNICA</span>
+                            <h3 class="ph-chapter-title font-display">Construimos sobre hierro y código limpio.</h3>
+                            <p class="ph-chapter-desc">Diseñamos bases de datos optimizadas para latencias mínimas y arquitecturas escalables. Pensamos en cada consulta, en cada ciclo de CPU, en cada detalle que garantiza robustez.</p>
+                        </div>
+                        
+                        <!-- Capítulo 03 -->
+                        <div class="ph-chapter ph-chapter-3">
+                            <span class="ph-chapter-num">// CAPÍTULO_03 // LA_META</span>
+                            <h3 class="ph-chapter-title font-display">Ecosistemas digitales listos para el futuro.</h3>
+                            <p class="ph-chapter-desc">Programamos el núcleo de tus sistemas usando Python de alta eficiencia, integraciones de IA autónomas e infraestructura de élite. Si buscas un sitio genérico, no somos tu opción.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Canvas Visualizador de Arquitectura -->
+                <div class="ph-col-right" aria-hidden="true">
+                    <div class="canvas-hud-indicator">
+                        <span class="hud-led"></span>
+                        <span class="hud-status-text">SYSTEM_VISUALIZER: ACTIVE</span>
+                    </div>
+                    <canvas id="philosophy-canvas"></canvas>
+                </div>
+            </div>
+            
+            <div class="philosophy-progress-track">
+                <div class="philosophy-progress-fill"></div>
+            </div>
+        </div>
+    </section>
+
 
     <!-- ===== PORTAFOLIO (SCROLL HORIZONTAL AWWWARDS) ===== -->
     <section class="portfolio-scroll-container" id="portfolio">
@@ -371,8 +443,109 @@
         </div>
     </section>
 
+    <!-- ===== STATS — VANTA EN NÚMEROS ===== -->
+    <section class="vanta-stats-section" id="stats" aria-label="VANTA en números">
+        <!-- Fondo grid HUD decorativo -->
+        <div class="stats-hud-grid" aria-hidden="true"></div>
+
+        <!-- Headline narrativo -->
+        <div class="stats-headline-wrap">
+            <p class="stats-eyebrow">// VANTA_METRICS.LOG</p>
+            <h2 class="stats-headline">
+                <span class="sh-line">El Software</span>
+                <span class="sh-line sh-accent">Habla por Sí Solo</span>
+            </h2>
+        </div>
+
+        <!-- Grid de métricas -->
+        <div class="stats-grid">
+
+            <div class="stat-card" data-delay="0">
+                <div class="stat-card-inner">
+                    <div class="stat-icon-ring">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <polygon points="24,2 46,24 24,46 2,24" stroke="rgba(17,212,131,0.4)" stroke-width="1" fill="rgba(17,212,131,0.04)"/>
+                            <polygon points="24,10 38,24 24,38 10,24" stroke="rgba(17,212,131,0.6)" stroke-width="0.8" fill="none"/>
+                            <path d="M18 24h12M24 18v12" stroke="#11d483" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-value-wrap">
+                        <span class="stat-number" data-count="8" data-suffix="+">0+</span>
+                        <span class="stat-label">Proyectos<br>en Producción</span>
+                    </div>
+                    <div class="stat-progress-track"><div class="stat-progress-bar"></div></div>
+                </div>
+            </div>
+
+            <div class="stat-card" data-delay="120">
+                <div class="stat-card-inner">
+                    <div class="stat-icon-ring">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <polygon points="24,2 46,24 24,46 2,24" stroke="rgba(17,212,131,0.4)" stroke-width="1" fill="rgba(17,212,131,0.04)"/>
+                            <polygon points="24,10 38,24 24,38 10,24" stroke="rgba(17,212,131,0.6)" stroke-width="0.8" fill="none"/>
+                            <circle cx="24" cy="24" r="6" stroke="#11d483" stroke-width="1.5" fill="none"/>
+                            <path d="M24 18v-4M24 34v-4M30 24h4M14 24h4" stroke="#11d483" stroke-width="1" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-value-wrap">
+                        <span class="stat-number" data-count="3" data-suffix=" años">0 años</span>
+                        <span class="stat-label">Experiencia<br>en Ingeniería</span>
+                    </div>
+                    <div class="stat-progress-track"><div class="stat-progress-bar"></div></div>
+                </div>
+            </div>
+
+            <div class="stat-card" data-delay="240">
+                <div class="stat-card-inner">
+                    <div class="stat-icon-ring">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <polygon points="24,2 46,24 24,46 2,24" stroke="rgba(17,212,131,0.4)" stroke-width="1" fill="rgba(17,212,131,0.04)"/>
+                            <polygon points="24,10 38,24 24,38 10,24" stroke="rgba(17,212,131,0.6)" stroke-width="0.8" fill="none"/>
+                            <path d="M17 24l5 5 9-9" stroke="#11d483" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-value-wrap">
+                        <span class="stat-number" data-count="100" data-suffix="%">0%</span>
+                        <span class="stat-label">Proyectos<br>Desplegados</span>
+                    </div>
+                    <div class="stat-progress-track"><div class="stat-progress-bar"></div></div>
+                </div>
+            </div>
+
+            <div class="stat-card" data-delay="360">
+                <div class="stat-card-inner">
+                    <div class="stat-icon-ring">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <polygon points="24,2 46,24 24,46 2,24" stroke="rgba(17,212,131,0.4)" stroke-width="1" fill="rgba(17,212,131,0.04)"/>
+                            <polygon points="24,10 38,24 24,38 10,24" stroke="rgba(17,212,131,0.6)" stroke-width="0.8" fill="none"/>
+                            <path d="M20 20h8v8h-8z" stroke="#11d483" stroke-width="1.2" fill="rgba(17,212,131,0.1)"/>
+                            <path d="M16 16l3 3M32 16l-3 3M16 32l3-3M32 32l-3-3" stroke="#11d483" stroke-width="1" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-value-wrap">
+                        <span class="stat-number" data-count="5" data-suffix=" IA">0 IA</span>
+                        <span class="stat-label">Agentes de IA<br>Desplegados</span>
+                    </div>
+                    <div class="stat-progress-track"><div class="stat-progress-bar"></div></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Statement narrativo final -->
+        <div class="stats-statement">
+            <div class="statement-line"></div>
+            <p class="statement-text">
+                No creamos sitios web.<br>
+                <span class="statement-accent">Programamos el futuro.</span>
+            </p>
+            <div class="statement-line"></div>
+        </div>
+    </section>
+
     <!-- ===== SERVICIOS (SCROLL INVERTIDO AWWWARDS) ===== -->
     <section id="services" class="services-scroll-container">
+
         <div class="services-sticky-wrapper">
             <div class="services-left">
                 <div class="services-text-wrapper">
@@ -469,6 +642,85 @@
                 <div class="slide"><i class="fab fa-git-alt"></i><span>Git</span></div>
                 <div class="slide"><i class="fab fa-node"></i><span>Node.js</span></div>
             </div>
+        </div>
+    </section>
+
+    <!-- ===== BENTO GRID — POR QUÉ VANTA ===== -->
+    <section class="bento-section" id="bento">
+        <div class="bento-header">
+            <span class="bento-eyebrow">// WHY_VANTA.EXE</span>
+            <h2 class="bento-title split-target">Por qué nos eligen</h2>
+        </div>
+        <div class="bento-grid">
+
+            <!-- Tarjeta 1: Grande — Propuesta de valor -->
+            <div class="bento-card bento-card--large bento-reveal">
+                <div class="bento-card-glow"></div>
+                <span class="bento-card-tag">CORE_VALUE</span>
+                <h3 class="bento-card-headline">No creamos sitios web.<br><span class="bento-accent">Programamos el futuro.</span></h3>
+                <p class="bento-card-sub">Sistemas que escalan, agentes que piensan, código que perdura.</p>
+                <div class="bento-card-deco-lines" aria-hidden="true"></div>
+            </div>
+
+            <!-- Tarjeta 2: Mediana — Stack tecnológico -->
+            <div class="bento-card bento-card--medium bento-reveal" data-delay="60">
+                <div class="bento-card-glow"></div>
+                <span class="bento-card-tag">TECH_STACK</span>
+                <div class="bento-tech-grid">
+                    <span>Python</span><span>FastAPI</span><span>PostgreSQL</span>
+                    <span>Three.js</span><span>React</span><span>Node.js</span>
+                    <span>Docker</span><span>Vercel</span><span>Gemini AI</span>
+                </div>
+            </div>
+
+            <!-- Tarjeta 3: Pequeña — Proyectos -->
+            <div class="bento-card bento-card--small bento-reveal" data-delay="100">
+                <div class="bento-card-glow"></div>
+                <span class="bento-card-tag">DEPLOYED</span>
+                <div class="bento-stat">
+                    <span class="bento-stat-num">8+</span>
+                    <span class="bento-stat-label">Proyectos en<br>producción</span>
+                </div>
+            </div>
+
+            <!-- Tarjeta 4: Pequeña — Respuesta -->
+            <div class="bento-card bento-card--small bento-reveal" data-delay="140">
+                <div class="bento-card-glow"></div>
+                <span class="bento-card-tag">RESPONSE_TIME</span>
+                <div class="bento-stat">
+                    <span class="bento-stat-num">&lt;24h</span>
+                    <span class="bento-stat-label">Tiempo de<br>respuesta</span>
+                </div>
+            </div>
+
+            <!-- Tarjeta 5: Mediana — IA -->
+            <div class="bento-card bento-card--medium bento-reveal" data-delay="80">
+                <div class="bento-card-glow bento-glow-ai"></div>
+                <span class="bento-card-tag">AI_AGENTS</span>
+                <div class="bento-ai-display">
+                    <div class="bento-ai-icon"><i class="fas fa-robot"></i></div>
+                    <div>
+                        <div class="bento-stat-num">5</div>
+                        <div class="bento-stat-label">Agentes de IA<br>en producción activa</div>
+                    </div>
+                </div>
+                <div class="bento-ai-pulses" aria-hidden="true">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+
+            <!-- Tarjeta 6: Pequeña — Ubicación global -->
+            <div class="bento-card bento-card--small bento-reveal" data-delay="120">
+                <div class="bento-card-glow"></div>
+                <span class="bento-card-tag">REACH</span>
+                <div class="bento-reach">
+                    <span class="bento-reach-from">LATAM</span>
+                    <span class="bento-reach-arrow">→</span>
+                    <span class="bento-reach-to">GLOBAL</span>
+                </div>
+                <p class="bento-reach-sub">Disponibles remotamente para cualquier proyecto</p>
+            </div>
+
         </div>
     </section>
 
@@ -958,7 +1210,7 @@
     <section id="contact" class="contact-section">
         <h2 class="section-title hidden"><span class="reveal-word">Hablemos</span> <span class="reveal-word">de</span> <span class="reveal-word">tu</span> <span class="reveal-word">Proyecto</span></h2>
 
-        <div class="contact-reveal-container hidden">
+        <div class="contact-reveal-container">
             <div class="contact-wrapper" id="contactWrapper">
                 <div class="contact-info">
                     <h3 class="contact-headline" id="contactHeadline">¿Tienes una idea? La hacemos realidad.</h3>
@@ -997,9 +1249,9 @@
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
-    <footer class="footer">
-        <!-- Agency-style kinetic marquee opener -->
+    <!-- ===== FOOTER CINEMATOGRÁFICO ===== -->
+    <footer class="footer-cinema" id="footer-cinema">
+        <!-- Marquee doble velocidad -->
         <div class="footer-marquee-section" aria-hidden="true">
             <div class="footer-marquee-row row-left">
                 <div class="footer-marquee-inner fmi-left">
@@ -1011,8 +1263,6 @@
                     <span>BUILD</span><span class="fm-sep">•</span>
                     <span>DESIGN</span><span class="fm-sep">•</span>
                     <span>DEPLOY</span><span class="fm-sep">•</span>
-                    <span>VANTA</span><span class="fm-sep">•</span>
-                    <span>BUILD</span><span class="fm-sep">•</span>
                 </div>
             </div>
             <div class="footer-marquee-row row-right">
@@ -1025,53 +1275,37 @@
                     <span>SCALE</span><span class="fm-sep">•</span>
                     <span>AUTOMATE</span><span class="fm-sep">•</span>
                     <span>SECURE</span><span class="fm-sep">•</span>
-                    <span>INNOVATE</span><span class="fm-sep">•</span>
-                    <span>SCALE</span><span class="fm-sep">•</span>
                 </div>
             </div>
         </div>
-        <div class="footer-inner">
-            <div class="footer-brand">
-                <div class="footer-logo">VA<span>NTA</span></div>
-                <p>Ingeniería y arquitectura visual de vanguardia. Construimos sistemas altamente eficientes para un futuro conectado.</p>
-                <div class="footer-social">
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i
-                            class="fab fa-github"></i></a>
-                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i
-                            class="fab fa-linkedin-in"></i></a>
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i
-                            class="fab fa-instagram"></i></a>
-                    <a href="https://wa.me/584127121162" target="_blank" rel="noopener noreferrer"
-                        aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
 
-            <div class="footer-links">
-                <h4>Navegación</h4>
-                <ul>
-                    <li><a href="#home">Inicio</a></li>
-                    <li><a href="#portfolio">Proyectos</a></li>
-                    <li><a href="#services">Servicios</a></li>
-                    <li><a href="#pricing">Planes</a></li>
-                    <li><a href="#team">Equipo</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-links">
-                <h4>Servicios</h4>
-                <ul>
-                    <li><a href="#services">Desarrollo Web</a></li>
-                    <li><a href="#services">Integración de IA</a></li>
-                    <li><a href="#services">Infraestructura</a></li>
-                    <li><a href="#services">Motion Graphics</a></li>
-                    <li><a href="#contact">Cotización Gratis</a></li>
-                </ul>
+        <!-- Hero texto masivo -->
+        <div class="footer-hero-text">
+            <div class="footer-big-word" aria-label="VANTA">VANTA</div>
+            <div class="footer-cta-row">
+                <p class="footer-tagline">¿Listos cuando lo estés.</p>
+                <a href="#contact" class="footer-cta-btn magnetic-btn">
+                    <span>Iniciar Proyecto</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
 
-        <div class="footer-bottom">
-            <p>&copy; 2026 VANTA Tech. Todos los derechos reservados.</p>
-            <p>Hecho con <span style="color: var(--primary);">♥</span> en Venezuela</p>
+        <!-- Bottom bar minimalista -->
+        <div class="footer-bottom-bar">
+            <div class="footer-social-mini">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/584127121162" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <p class="footer-copy">&copy; 2026 VANTA Studio — Venezuela</p>
+            <nav class="footer-nav-mini" aria-label="Footer navigation">
+                <a href="#home">Inicio</a>
+                <a href="#portfolio">Proyectos</a>
+                <a href="#services">Servicios</a>
+                <a href="#contact">Contacto</a>
+            </nav>
         </div>
     </footer>
 
@@ -1163,31 +1397,42 @@
         </div>
         <ul class="hud-dots">
             <li class="active" data-target="home" data-num="01" data-name="INICIO"></li>
-            <li data-target="portfolio" data-num="02" data-name="TRABAJO"></li>
-            <li data-target="services" data-num="03" data-name="SERVICIOS"></li>
-            <li data-target="pricing" data-num="04" data-name="PLANES"></li>
-            <li data-target="team" data-num="05" data-name="EQUIPO"></li>
-            <li data-target="contact" data-num="06" data-name="CONTACTO"></li>
+            <li data-target="philosophy" data-num="02" data-name="FILOSOFÍA"></li>
+            <li data-target="portfolio" data-num="03" data-name="TRABAJO"></li>
+            <li data-target="stats" data-num="04" data-name="MÉTRICAS"></li>
+            <li data-target="services" data-num="05" data-name="SERVICIOS"></li>
+            <li data-target="pricing" data-num="06" data-name="PLANES"></li>
+            <li data-target="team" data-num="07" data-name="EQUIPO"></li>
+            <li data-target="contact" data-num="08" data-name="CONTACTO"></li>
         </ul>
     </div>
+
 
     <!-- Libraries for Awwwards Premium Effects -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     
+
+    
+    <script src="script.js?v=132"></script>
+    <script src="particles.js?v=101"></script>
+    
+    <script src="effects.js?v=116"></script>
+    
+
+    <!-- Silent Production Error Monitor -->
     <div id="debug-err" style="position: fixed; top: 10px; left: 10px; z-index: 10000; background: rgba(255,0,0,0.85); color: white; padding: 10px; font-family: monospace; font-size: 14px; border-radius: 4px; display: none;"></div>
     <script>
     window.addEventListener('error', function(e) {
         var d = document.getElementById('debug-err');
-        d.style.display = 'block';
-        d.innerHTML += '<div>Error: ' + e.message + ' at ' + e.filename.split('/').pop() + ':' + e.lineno + '</div>';
+        if (d) {
+            d.style.display = 'block';
+            d.innerHTML += '<div>Error: ' + e.message + ' at ' + (e.filename ? e.filename.split('/').pop() : 'unknown') + ':' + e.lineno + '</div>';
+        }
     });
     </script>
-    
-    <script src="script.js?v=16"></script>
-    <script src="particles.js?v=16"></script>
-    <script src="effects.js?v=16"></script>
-    <script src="phase1.js?v=1"></script>
 </body>
 
 </html>

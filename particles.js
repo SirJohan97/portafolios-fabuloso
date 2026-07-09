@@ -21,7 +21,7 @@
     const CONFIG = {
 
         // ── Cantidad de partículas ────────────────────────────────
-        COUNT: 80,          // Número de partículas (más = más denso. Optimizado de 220 para máximo rendimiento)
+        COUNT: 55,          // Reducido a 55 para mejor rendimiento
 
         // ── Velocidad de deriva en idle ───────────────────────────
         // Cada partícula tiene su propia velocidad aleatoria dentro
@@ -44,7 +44,7 @@
         FRICTION: 0.92,
 
         // ── Colores (paleta estilo el portafolio pero vibrante) ───
-        // Añade o quita colores a tu gusto.
+        // El sistema de theming mutará este array en tiempo real.
         COLORS: [
             '#27ae60',   // verde primario
             '#2ecc71',   // verde claro
@@ -60,6 +60,9 @@
         ALPHA_MIN: 0.35,
         ALPHA_MAX: 0.85,
     };
+
+    // Expose CONFIG globally so the color theming system can mutate COLORS
+    window.particleConfig = CONFIG;
 
     /* ══════════════════════════════════════════════════════════════
        2. CANVAS
@@ -148,7 +151,7 @@
             this.len       = CONFIG.STROKE_LEN_MIN
                            + Math.random() * (CONFIG.STROKE_LEN_MAX - CONFIG.STROKE_LEN_MIN);
             // Color y opacidad fijos para esta partícula
-            this.color     = CONFIG.COLORS[Math.floor(Math.random() * CONFIG.COLORS.length)];
+            this.colorIndex = Math.floor(Math.random() * CONFIG.COLORS.length);
             this.alpha     = CONFIG.ALPHA_MIN + Math.random() * (CONFIG.ALPHA_MAX - CONFIG.ALPHA_MIN);
         }
 
@@ -190,7 +193,10 @@
         draw() {
             ctx.save();
             ctx.globalAlpha = this.alpha;
-            ctx.strokeStyle = this.color;
+            // Read color live from CONFIG each frame so theme changes take effect immediately
+            const palette = CONFIG.COLORS;
+            ctx.strokeStyle = palette[this.colorIndex % palette.length];
+
             ctx.lineWidth   = CONFIG.STROKE_WIDTH;
             ctx.lineCap     = 'round';
 
