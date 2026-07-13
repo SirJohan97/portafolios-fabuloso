@@ -1154,11 +1154,16 @@
 .hero-sub-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    margin-top: 2.5rem;
+    justify-content: flex-start;
+    margin-top: 2.2rem;
     padding-top: 1.5rem;
     border-top: 1px solid rgba(var(--primary-rgb), 0.12);
+}
+
+.hero-btns {
+    margin-top: 2.4rem; /* Generous breathing room for slime dripping animation */
+    display: flex;
+    justify-content: flex-start;
 }
 
 .hero-hud-bottom {

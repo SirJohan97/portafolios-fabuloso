@@ -1300,27 +1300,27 @@ COMMIT;`
         const height = container.clientHeight || 300;
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-        camera.position.z = 6;
+        const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+        camera.position.z = 6.2;
 
         const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
         renderer.setSize(width, height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
-        // Configuración de los nodos de la estructura
-        const nodeCount = 90;
+        // Exactly 64 nodes to map 1-to-1 to a 4x4x4 grid (no duplicates/overlap)
+        const nodeCount = 64;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(nodeCount * 3);
         const nodeData = [];
         const cubePositions = [];
 
-        // Generación de la esfera caótica (estado inicial / glitch)
+        // 1. Generate chaotic initial state (beautiful spherical layout)
         for (let i = 0; i < nodeCount; i++) {
             const u = Math.random();
             const v = Math.random();
             const theta = u * 2.0 * Math.PI;
             const phi = Math.acos(2.0 * v - 1.0);
-            const r = 1.2 + Math.random() * 0.65;
+            const r = 1.3 + Math.random() * 0.45; // tighter spherical shell
 
             const x = r * Math.sin(phi) * Math.cos(theta);
             const y = r * Math.sin(phi) * Math.sin(theta);
@@ -1333,15 +1333,13 @@ COMMIT;`
             nodeData.push(new THREE.Vector3(x, y, z));
         }
 
-        // Generación de posiciones de cubo ordenado (grid 3D para el Capítulo 2)
-        const cubeSize = 2.0;
-        const cubeSteps = 4;
-        const stepSize = cubeSize / (cubeSteps - 1);
+        // 2. Generate target grid cube positions (perfect 4x4x4 layout)
+        const cubeSize = 2.1;
+        const stepSize = cubeSize / 3; // 4 nodes = 3 steps
         for (let i = 0; i < nodeCount; i++) {
-            const idx = i % 64; // Grid de 4x4x4 = 64 puntos
-            const z = Math.floor(idx / 16) % 4;
-            const y = Math.floor(idx / 4) % 4;
-            const x = idx % 4;
+            const z = Math.floor(i / 16) % 4;
+            const y = Math.floor(i / 4) % 4;
+            const x = i % 4;
 
             const cx = x * stepSize - cubeSize / 2;
             const cy = y * stepSize - cubeSize / 2;
@@ -1352,37 +1350,63 @@ COMMIT;`
 
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-        // Conexiones de filamentos entre nodos
+        // 3. Generate connection lines along orthogonal axes of the grid only (no diagonal jumble)
         const connections = [];
-        for (let i = 0; i < nodeCount; i++) {
-            for (let j = i + 1; j < nodeCount; j++) {
-                if (Math.random() < 0.07) {
-                    connections.push({ i, j });
+        for (let z = 0; z < 4; z++) {
+            for (let y = 0; y < 4; y++) {
+                for (let x = 0; x < 4; x++) {
+                    const i = x + y * 4 + z * 16;
+                    if (x < 3) connections.push({ i, j: i + 1 });
+                    if (y < 3) connections.push({ i, j: i + 4 });
+                    if (z < 3) connections.push({ i, j: i + 16 });
                 }
             }
         }
 
-        // Crear geometría de filamentos (líneas)
         const lineCount = connections.length;
         const lineGeometry = new THREE.BufferGeometry();
         const linePositions = new Float32Array(lineCount * 2 * 3);
         lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
 
+        // Create glowing radial circular dot particle texture for elegant point look
+        function createCircleTexture(colorStr) {
+            const matCanvas = document.createElement('canvas');
+            matCanvas.width = 32;
+            matCanvas.height = 32;
+            const matCtx = matCanvas.getContext('2d');
+            
+            const grad = matCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
+            grad.addColorStop(0, '#ffffff');
+            grad.addColorStop(0.22, colorStr);
+            grad.addColorStop(1, 'rgba(0,0,0,0)');
+            
+            matCtx.fillStyle = grad;
+            matCtx.fillRect(0, 0, 32, 32);
+            
+            const tex = new THREE.CanvasTexture(matCanvas);
+            tex.needsUpdate = true;
+            return tex;
+        }
+
         const primaryColorStr = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
 
+        // Elegant PointsMaterial using texture and real 3D depth attenuation
         const nodeMaterial = new THREE.PointsMaterial({
-            color: new THREE.Color(primaryColorStr),
-            size: 3.5,
-            sizeAttenuation: false,
+            size: 0.17,
+            sizeAttenuation: true,
+            map: createCircleTexture(primaryColorStr),
             transparent: true,
-            opacity: 0.8,
-            blending: THREE.AdditiveBlending
+            opacity: 0.95,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
         });
 
+        // Thin, sharp blueprints style line material
         const lineMaterial = new THREE.LineBasicMaterial({
             color: new THREE.Color(primaryColorStr),
             transparent: true,
             opacity: 0.28,
+            linewidth: 1,
             blending: THREE.AdditiveBlending
         });
 
@@ -1397,19 +1421,43 @@ COMMIT;`
         const clock = new THREE.Clock();
         const nodesCurrent = Array.from({ length: nodeCount }, () => new THREE.Vector3());
 
+        // Parallax states
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            targetX = ((e.clientX - rect.left) / rect.width - 0.5) * 0.45;
+            targetY = ((e.clientY - rect.top) / rect.height - 0.5) * 0.45;
+        });
+
+        container.addEventListener('mouseleave', () => {
+            targetX = 0;
+            targetY = 0;
+        });
+
+        let isPhilosophyVisible = false;
+        const philosophyObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                isPhilosophyVisible = entry.isIntersecting;
+            });
+        }, { threshold: 0.01 });
+        philosophyObserver.observe(canvas);
+
         function animateLocal() {
             requestAnimationFrame(animateLocal);
+            if (!isPhilosophyVisible) return;
 
             const time = clock.getElapsedTime();
             const progress = (window.vanta3D && window.vanta3D.progress) || 0;
             const glitchVal = (window.vanta3D && window.vanta3D.glitch) || 0;
 
-            // Sincronización del color con el tema del sitio
+            // Sync dynamic colors
             const activeColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
-            nodeMaterial.color.setStyle(activeColor);
+            nodeMaterial.color.setStyle('#ffffff'); // core stays white/bright
             lineMaterial.color.setStyle(activeColor);
 
-            // Interpolación de coordenadas según el progreso del scroll de la historia (Caos -> Orden)
+            // Interpolate Positions: Chaos Sphere (0.0) -> Ordered Grid Cube (1.0)
             const posAttr = geometry.getAttribute('position');
             for (let i = 0; i < nodeCount; i++) {
                 const orig = nodeData[i];
@@ -1419,11 +1467,17 @@ COMMIT;`
                 let ty = THREE.MathUtils.lerp(orig.y, target.y, progress);
                 let tz = THREE.MathUtils.lerp(orig.z, target.z, progress);
 
-                // Efecto electromagnético glitch en el primer capítulo
+                // Chaotic organic wavelike float (decreases as progress reaches 1.0)
+                const floatAmt = (1.0 - progress) * 0.08;
+                tx += Math.sin(time * 1.5 + i) * floatAmt;
+                ty += Math.cos(time * 1.2 + i) * floatAmt;
+                tz += Math.sin(time * 0.8 + i) * floatAmt;
+
+                // Glitch effect on error/chaos chapter
                 if (progress < 0.35 && glitchVal > 0.05) {
-                    tx += (Math.random() - 0.5) * glitchVal * 0.3;
-                    ty += (Math.random() - 0.5) * glitchVal * 0.3;
-                    tz += (Math.random() - 0.5) * glitchVal * 0.3;
+                    tx += (Math.random() - 0.5) * glitchVal * 0.25;
+                    ty += (Math.random() - 0.5) * glitchVal * 0.25;
+                    tz += (Math.random() - 0.5) * glitchVal * 0.25;
                 }
 
                 posAttr.setXYZ(i, tx, ty, tz);
@@ -1431,7 +1485,7 @@ COMMIT;`
             }
             posAttr.needsUpdate = true;
 
-            // Actualizar líneas
+            // Update line positions
             const linePosAttr = lineGeometry.getAttribute('position');
             let lineIdx = 0;
             for (let c = 0; c < connections.length; c++) {
@@ -1443,14 +1497,18 @@ COMMIT;`
             }
             linePosAttr.needsUpdate = true;
 
-            // Rotación suave del grupo
-            group.rotation.y = time * 0.12;
-            group.rotation.x = time * 0.06;
+            // Interpolate mouse parallax
+            mouseX += (targetX - mouseX) * 0.08;
+            mouseY += (targetY - mouseY) * 0.08;
+
+            // Auto-rotation + mouse parallax tilt
+            group.rotation.y = time * 0.09 + mouseX;
+            group.rotation.x = time * 0.04 + mouseY;
 
             renderer.render(scene, camera);
         }
 
-        // Resize handler local
+        // Local resize handler
         const resizeLocal = () => {
             const w = container.clientWidth || 300;
             const h = container.clientHeight || 300;
@@ -1631,6 +1689,7 @@ COMMIT;`
         let scrollVelocity = 0;
         let flowOffset = 0;
         let logoScaleObj = { value: 0.0001 };
+        let logoRotationObj = { y: 3.5 };
 
         window.addEventListener('mousemove', (e) => {
             targetX = (e.clientX - window.innerWidth / (window.innerWidth > 991 ? 1.4 : 2)) * 0.0006;
@@ -1662,19 +1721,20 @@ COMMIT;`
             
             if (typeof gsap !== 'undefined') {
                 gsap.killTweensOf(logoScaleObj);
-                gsap.killTweensOf(logoGroup.rotation);
+                gsap.killTweensOf(logoRotationObj);
                 
                 gsap.fromTo(logoScaleObj,
                     { value: 0.0001 },
-                    { value: 1.0, duration: 2.0, ease: 'elastic.out(0.85, 0.68)' }
+                    { value: 1.0, duration: 2.2, ease: 'elastic.out(0.85, 0.68)' }
                 );
                 
-                gsap.fromTo(logoGroup.rotation,
+                gsap.fromTo(logoRotationObj,
                     { y: 3.5 },
-                    { y: 0.0, duration: 2.5, ease: 'power2.out' }
+                    { y: 0.0, duration: 2.8, ease: 'power2.out' }
                 );
             } else {
                 logoScaleObj.value = 1.0;
+                logoRotationObj.y = 0.0;
             }
             
             // Destello flash blanco (se lerpea en el bucle animate)
@@ -1696,13 +1756,10 @@ COMMIT;`
             requestAnimationFrame(animate);
 
             const time = clock.getElapsedTime();
-            
-
-
-            // 1. Calcular velocidad física de scroll y progreso
             const currentScroll = window.scrollY || window.pageYOffset;
             const deltaScroll = currentScroll - lastScrollY;
             lastScrollY = currentScroll;
+
 
             const transitionLimit = window.innerHeight * 1.2;
             const progress = Math.min(currentScroll / transitionLimit, 1.0);
@@ -1723,16 +1780,24 @@ COMMIT;`
             mouseX += (targetX - mouseX) * 0.05;
             mouseY += (targetY - mouseY) * 0.05;
             
-            logoGroup.rotation.y = time * 0.22 + mouseX * 0.8;
-            logoGroup.rotation.x = Math.sin(time * 0.15) * 0.1 + mouseY * 0.8;
+            if (currentScroll <= window.innerHeight * 1.2) {
+                // Settle into a gentle sway plus mouse tilt, preserving the entrance rotation
+                const swayY = Math.sin(time * 0.2) * 0.08;
+                const swayX = Math.cos(time * 0.15) * 0.04;
+                logoGroup.rotation.y = logoRotationObj.y + swayY + mouseX * 0.65;
+                logoGroup.rotation.x = swayX + mouseY * 0.55;
 
-            const logoOpacity = Math.max(0, 1.0 - progress * 2.5);
-            logoMaterial.opacity = logoOpacity * 0.85;
-            
-            logoGroup.scale.setScalar(0.92 * (1.0 - progress * 0.35) * logoScaleObj.value);
-            logoGroup.position.y = progress * 3.2;
+                const logoOpacity = Math.max(0, 1.0 - progress * 2.5);
+                logoMaterial.opacity = logoOpacity * 0.85;
+                
+                logoGroup.scale.setScalar(0.92 * (1.0 - progress * 0.35) * logoScaleObj.value);
+                logoGroup.position.y = progress * 3.2;
+            } else {
+                logoMaterial.opacity = 0;
+            }
 
-            // Actualizar posiciones de las partículas con matemáticas optimizadas (sin Math.sqrt interno)
+            if (currentScroll <= window.innerHeight * 1.2) {
+                // Actualizar posiciones de las partículas con matemáticas optimizadas (sin Math.sqrt interno)
             const posAttr = geometry.getAttribute('position');
             const colAttr = geometry.getAttribute('color');
             const posArray = posAttr.array;
@@ -1808,6 +1873,7 @@ COMMIT;`
             }
             posAttr.needsUpdate = true;
             colAttr.needsUpdate = true;
+            }
 
             // Filtrar shockwaves vencidas
             if (shockwaves.length) {
@@ -1856,6 +1922,12 @@ COMMIT;`
             infinite: false,
         });
         window.lenis = lenis;
+
+        // Pause Lenis during preload
+        const preloaderEl = document.getElementById('preloader');
+        if (preloaderEl && preloaderEl.style.display !== 'none') {
+            lenis.stop();
+        }
 
         function raf(time) {
             lenis.raf(time);

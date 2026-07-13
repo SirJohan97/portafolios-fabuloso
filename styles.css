@@ -221,7 +221,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     font-family: 'Courier New', monospace;
     font-size: 0.75rem;
     color: #555;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
 }
 
 /* --- Curtains (dramatic split reveal) --- */
@@ -664,7 +664,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     font-family: 'Orbitron', monospace;
     font-size: 0.68rem;
     color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     z-index: 5;
     pointer-events: none;
     text-transform: uppercase;
@@ -869,27 +869,65 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     to { transform: rotate(360deg); }
 }
 
-/* Scroll indicator */
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); opacity: 0.5; }
-    50%       { transform: translateY(8px); opacity: 1; }
-}
-
+/* Scroll indicator - liquid mouse capsule */
 .hero-scroll-indicator {
     position: absolute;
-    bottom: 2rem;
+    bottom: 2.2rem;
     left: 50%;
     transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    z-index: 10;
 }
 
-.hero-scroll-indicator span {
+/* Mouse shell outline */
+.hero-scroll-indicator::before {
+    content: '';
     display: block;
-    width: 2px;
-    height: 40px;
-    background: linear-gradient(to bottom, transparent, var(--primary));
-    margin: 0 auto;
-    animation: bounce 2s ease infinite;
+    width: 22px;
+    height: 36px;
+    border: 1.5px solid var(--primary);
+    border-radius: 11px;
+    opacity: 0.55;
+    box-shadow: 0 0 8px rgba(17, 212, 131, 0.15);
+}
+
+/* Dripping dot inside */
+.hero-scroll-indicator span {
+    position: absolute;
+    top: 7px;
+    display: block;
+    width: 3.5px;
+    height: 9px;
+    background: var(--primary);
     border-radius: 2px;
+    box-shadow: 0 0 6px var(--primary);
+    animation: liquidScrollDrip 1.8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes liquidScrollDrip {
+    0% {
+        transform: translateY(0) scaleY(0.7);
+        opacity: 0;
+    }
+    15% {
+        transform: translateY(0) scaleY(1.3);
+        opacity: 1;
+    }
+    45% {
+        transform: translateY(9px) scaleY(1.8);
+        opacity: 1;
+    }
+    75% {
+        transform: translateY(16px) scaleY(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(16px) scaleY(0.8);
+        opacity: 0;
+    }
 }
 
 /* =========================================
@@ -905,7 +943,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     font-size: 0.9rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     border-radius: 4px; /* Menos redondeado, look industrial/Awwwards */
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -1322,7 +1360,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 .modal-tag {
     font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     text-transform: uppercase;
     color: var(--primary);
     margin-bottom: 5px;
@@ -1453,7 +1491,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     left: 20px;
     font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     text-transform: uppercase;
     color: rgba(255,255,255,0.5);
 }
@@ -2399,7 +2437,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     padding: 5px 18px;
     border-radius: 50px;
     white-space: nowrap;
@@ -2525,7 +2563,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 .testimonial-stars {
     color: #f4c542;
     font-size: 1rem;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     margin-bottom: 14px;
 }
 
@@ -3244,7 +3282,7 @@ body.custom-cursor-active * {
     color: var(--primary);
     font-weight: 700;
     font-size: 0.8rem;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
 }
 
 .animated-arrow {
@@ -3692,7 +3730,7 @@ body {
     font-size: 1.15rem;
     font-weight: 700;
     color: var(--primary);
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     margin: 0;
 }
 .hero-manifesto {
@@ -3765,7 +3803,7 @@ body {
     font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     padding: 16px 36px;
     border: 1px solid rgba(var(--primary-rgb), 0.4);
     background: transparent;
@@ -3844,7 +3882,7 @@ body {
     font-size: 0.65rem;
     font-weight: 900;
     color: var(--dark);
-    letter-spacing: 2px;
+    letter-spacing: 0px;
 }
 .cursor.btn-hover {
     transform: scale(0) !important;
@@ -3935,7 +3973,7 @@ body {
     font-family: 'Orbitron', monospace;
     font-size: 0.72rem;
     color: var(--primary);
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     background: rgba(var(--primary-rgb), 0.07);
     border: 1px solid rgba(var(--primary-rgb), 0.18);
     padding: 3px 10px;
@@ -4363,7 +4401,7 @@ body {
     font-family: var(--font-display);
     font-size: 0.78rem;
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.55);
     padding: 0 18px;
@@ -5545,19 +5583,21 @@ body {
 }
 
 
-/* =========================================
-   HUD LIQUID SUBTITLE (GOOEY TEXT ROTATION)
-   ========================================= */
+
+/* ====================================================================
+   SLIME TEXT ENGINE — Canvas-based metaball fluid subtitle
+   ==================================================================== */
 .hero-typing-subtitle-wrap {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: 0.6rem;
     margin-bottom: 2.2rem;
     font-family: var(--font-mono);
     font-size: 0.92rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
+    position: relative;
+    overflow: visible;   /* allow slime drip to fall below the row */
 }
 
 .subtitle-static {
@@ -5565,70 +5605,29 @@ body {
     opacity: 0.45;
 }
 
+/* High-resolution vector slime text with SVG turbulence filter */
 .subtitle-liquid-word {
-    color: var(--primary);
-    position: relative;
-    display: inline-flex;
-    font-weight: 700;
-    filter: url('#gooey-text');
-    min-height: 1.4rem;
-}
-
-/* Liquid Character Styling */
-.liquid-char {
+    visibility: visible !important;
     display: inline-block;
-    position: relative;
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0px);
-    transition: color 0.8s ease;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+    color: #11d483;
+    text-shadow: 0 0 8px rgba(17, 212, 131, 0.85), 0 0 16px rgba(17, 212, 131, 0.4);
+    filter: url('#vanta-slime-filter');
+    padding: 12px 30px;
+    margin: -12px -30px; /* padding prevents standard SVG clipping */
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-/* Character Melting Out Animation */
-.liquid-char.melt {
-    animation: meltOut 0.6s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+/* Slime canvas — positioned by JS, CSS just ensures no interaction */
+#slime-canvas {
+    pointer-events: none;
+    z-index: 3;
 }
 
-/* Character Coalescing In Animation */
-.liquid-char.coalesce {
-    opacity: 0;
-    transform: translateY(-22px) scale(1.15);
-    filter: blur(10px);
-    animation: coalesceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-@keyframes meltOut {
-    0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0px);
-    }
-    45% {
-        opacity: 0.95;
-        transform: translateY(6px) scaleY(1.3) scaleX(0.85); /* Estiramiento vertical tipo gota */
-        filter: blur(3px);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(24px) scaleY(0.4) scaleX(1.8); /* Se aplana como gota chocando abajo */
-        filter: blur(12px);
-    }
-}
-
-@keyframes coalesceIn {
-    0% {
-        opacity: 0;
-        transform: translateY(-22px) scaleY(0.4) scaleX(1.8);
-        filter: blur(12px);
-    }
-    55% {
-        opacity: 0.9;
-        transform: translateY(3px) scaleY(1.15) scaleX(0.9);
-        filter: blur(4px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0px);
-    }
-}
