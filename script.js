@@ -212,7 +212,7 @@ function initMainScript() {
        4. EFECTO PARALLAX SUAVE EN EL HERO
        ========================================= */
     let currentScrollY = 0;
-    const heroContent = document.querySelector('.hero-content');
+    const heroCenterLayout = document.querySelector('.hero-center-layout');
     const heroBlueprintContainer = document.querySelector('.blueprint-container');
     const hero = document.querySelector('.hero');
     let heroH = hero ? hero.offsetHeight : window.innerHeight;
@@ -263,61 +263,90 @@ function initMainScript() {
     }
     initNavbarIndicator();
  
-    // Efecto Magnético Global Optimizado (Sin lag de transición)
+    // Hover de botones sin desplazamiento magnético (botón estable + cursor fluido)
     document.querySelectorAll('.btn, .btn-outline, .modal-close, .viewer-close, .modal-tab-btn, .nav-links a, .logo, .menu-toggle').forEach(item => {
         item.addEventListener('mouseenter', () => {
-            item.style.transition = 'none'; // Desactivar transiciones para evitar lag durante mousemove
             if (cursor) cursor.classList.add('btn-hover');
         });
-
-        item.addEventListener('mousemove', (e) => {
-            const rect = item.getBoundingClientRect();
-            const x = (e.clientX - (rect.left + rect.width / 2)) * 0.32;
-            const y = (e.clientY - (rect.top + rect.height / 2)) * 0.32;
-            item.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-        });
- 
         item.addEventListener('mouseleave', () => {
-            item.style.transition = 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)'; // Transición elástica de retorno
-            item.style.transform = 'translate3d(0px, 0px, 0)';
             if (cursor) cursor.classList.remove('btn-hover');
         });
     });
  
-    if (window.innerWidth > 991 && cursor) {
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+    if (window.innerWidth > 991 && cursor && !isTouchDevice) {
         document.body.classList.add('custom-cursor-active');
  
         let mouseX = window.innerWidth / 2;
         let mouseY = window.innerHeight / 2;
         let c1X = mouseX, c1Y = mouseY;
         let c2X = mouseX, c2Y = mouseY;
+        let cursorRafId = null;
+        let isCursorRunning = false;
+
+        function startCursorLoop() {
+            if (!isCursorRunning && !document.hidden) {
+                isCursorRunning = true;
+                renderCursor();
+            }
+        }
+
+        function stopCursorLoop() {
+            isCursorRunning = false;
+            if (cursorRafId) {
+                cancelAnimationFrame(cursorRafId);
+                cursorRafId = null;
+            }
+        }
  
         document.addEventListener('mousemove', e => {
             mouseX = e.clientX;
             mouseY = e.clientY;
+            startCursorLoop();
         });
  
         document.addEventListener('mouseleave', () => {
             cursor.style.opacity = '0';
             cursor2.style.opacity = '0';
+            stopCursorLoop();
         });
         document.addEventListener('mouseenter', () => {
             cursor.style.opacity = '1';
             cursor2.style.opacity = '1';
+            startCursorLoop();
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopCursorLoop();
+            } else {
+                startCursorLoop();
+            }
         });
  
         function renderCursor() {
-            c1X += (mouseX - c1X) * 0.17;
-            c1Y += (mouseY - c1Y) * 0.17;
-            c2X += (mouseX - c2X) * 0.8;
-            c2Y += (mouseY - c2Y) * 0.8;
+            if (document.hidden || !isCursorRunning) return;
+            const diff1X = mouseX - c1X;
+            const diff1Y = mouseY - c1Y;
+            const diff2X = mouseX - c2X;
+            const diff2Y = mouseY - c2Y;
+
+            c1X += diff1X * 0.17;
+            c1Y += diff1Y * 0.17;
+            c2X += diff2X * 0.8;
+            c2Y += diff2Y * 0.8;
  
             cursor.style.transform = `translate3d(calc(${c1X}px - 50%), calc(${c1Y}px - 50%), 0)`;
             cursor2.style.transform = `translate3d(calc(${c2X}px - 50%), calc(${c2Y}px - 50%), 0)`;
  
-            requestAnimationFrame(renderCursor);
+            if (Math.abs(diff1X) < 0.1 && Math.abs(diff1Y) < 0.1 && Math.abs(diff2X) < 0.1 && Math.abs(diff2Y) < 0.1) {
+                isCursorRunning = false;
+                cursorRafId = null;
+            } else {
+                cursorRafId = requestAnimationFrame(renderCursor);
+            }
         }
-        requestAnimationFrame(renderCursor);
+        startCursorLoop();
+ 
  
         // Hover general del cursor
         document.querySelectorAll('a, button, .logo, .service-card, .method-step, .testimonial-card, .pricing-card').forEach(item => {
@@ -360,6 +389,9 @@ function initMainScript() {
                 if (cursor2) cursor2.style.opacity = '1';
             });
         });
+    } else {
+        if (cursor) cursor.style.display = 'none';
+        if (cursor2) cursor2.style.display = 'none';
     }
 
     /* =========================================
@@ -425,31 +457,92 @@ function initMainScript() {
        ========================================= */
     const navbar = document.querySelector('.navbar');
     const logoEl = document.querySelector('.logo');
-    const progressBar = document.querySelector('.nav-progress-bar');
+
+    // Motor de Interpolación Física Lerp para Navbar y Logo (Awwwards Grade)
+    let navTargetP  = 0;
+    let navCurrentP = 0;
+    let isNavLerpRunning = false;
+
+    const logoIcon = document.querySelector('.logo-icon');
+    const hideLtrs = document.querySelectorAll('.logo .l.hide');
+    const navMenuContainer = document.querySelector('.nav-links');
 
     function updateNavbar(scrollY) {
-        // Solidify background once past the hero
-        if (scrollY > 80) {
-            navbar.classList.add('scrolled');
+        // Progreso continuo 0.0 -> 1.0 según la salida del Hero (0px a 260px)
+        navTargetP = Math.min(1, Math.max(0, scrollY / 260));
+
+        if (!isNavLerpRunning) {
+            isNavLerpRunning = true;
+            requestAnimationFrame(renderNavLerp);
+        }
+    }
+
+    function renderNavLerp() {
+        const diff = navTargetP - navCurrentP;
+        if (Math.abs(diff) > 0.0005) {
+            navCurrentP += diff * 0.09; // lerp continuo ultra-fluido a 60fps
+            requestAnimationFrame(renderNavLerp);
         } else {
-            navbar.classList.remove('scrolled');
+            navCurrentP = navTargetP;
+            isNavLerpRunning = false;
         }
 
-        // Logo morfológico: colapsa el texto a monograma al scrollear
-        if (logoEl) {
-            if (scrollY > 30) {
-                logoEl.classList.add('logo-compact');
-            } else {
-                logoEl.classList.remove('logo-compact');
-            }
+        const p = navCurrentP; // 0.0 en Hero -> 1.0 al salir del Hero
+
+        // 1. Estado colapsado: sin recuadros, 100% transparente para máxima inmersión
+        if (p > 0.85) {
+            navbar.classList.add('scrolled-out');
+        } else {
+            navbar.classList.remove('scrolled-out');
         }
 
-        // --- BARRA DE PROGRESO DE LECTURA NEÓN ---
-        if (progressBar) {
-            const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercentage = (scrollY / Math.max(1, documentHeight)) * 100;
-            progressBar.style.width = scrollPercentage + '%';
+        if (p < 0.85) {
+            const bgAlpha = (1 - p) * 0.45;
+            const borderAlpha = (1 - p) * 0.05;
+            const shadowAlpha = (1 - p) * 0.5;
+            const blurPx = (1 - p) * 22;
+
+            navbar.style.background = `rgba(10, 10, 10, ${bgAlpha.toFixed(3)})`;
+            navbar.style.borderColor = `rgba(255, 255, 255, ${borderAlpha.toFixed(3)})`;
+            navbar.style.boxShadow = `0 10px 40px rgba(0, 0, 0, ${shadowAlpha.toFixed(3)})`;
+            navbar.style.backdropFilter = `blur(${blurPx.toFixed(1)}px)`;
+            navbar.style.webkitBackdropFilter = `blur(${blurPx.toFixed(1)}px)`;
+        } else {
+            navbar.style.background = '';
+            navbar.style.borderColor = '';
+            navbar.style.boxShadow = '';
+            navbar.style.backdropFilter = '';
+            navbar.style.webkitBackdropFilter = '';
         }
+
+        // 2. Enlaces del menú: se desvanecen suavemente según el progreso del scroll
+        if (navMenuContainer && !navbar.classList.contains('scrolled-out')) {
+            navMenuContainer.style.opacity = Math.max(0, 1 - p * 1.25).toFixed(3);
+            navMenuContainer.style.transform = `translate3d(0, ${(-p * 12).toFixed(1)}px, 0)`;
+            navMenuContainer.style.pointerEvents = p > 0.65 ? 'none' : 'all';
+        } else if (navMenuContainer && navbar.classList.contains('scrolled-out')) {
+            navMenuContainer.style.opacity = '';
+            navMenuContainer.style.transform = '';
+            navMenuContainer.style.pointerEvents = '';
+        }
+
+        // 3. Icono morfológico del logo: emerge desde 0px a 34px de ancho
+        if (logoIcon) {
+            const iconW = p * 34;
+            const iconMargin = p * 10;
+            logoIcon.style.width = `${iconW.toFixed(1)}px`;
+            logoIcon.style.marginRight = `${iconMargin.toFixed(1)}px`;
+            logoIcon.style.opacity = p.toFixed(3);
+        }
+
+        // 4. Letras A, N, T: colapsan suavemente en cascada
+        hideLtrs.forEach(ltr => {
+            const ltrOpacity = Math.max(0, 1 - p * 1.35);
+            const ltrW = Math.max(0, (1 - p) * 2);
+            ltr.style.opacity = ltrOpacity.toFixed(3);
+            ltr.style.maxWidth = `${ltrW.toFixed(2)}ch`;
+            ltr.style.letterSpacing = `${((1 - p) * 5).toFixed(1)}px`;
+        });
     }
 
     /* =========================================
@@ -1291,236 +1384,655 @@ COMMIT;`
         packets: 0
     };
 
-            function initPhilosophy3D() {
-        const canvas = document.getElementById('philosophy-canvas');
-        if (!canvas || typeof THREE === 'undefined') return;
 
-        const container = canvas.parentElement;
-        const width = container.clientWidth || 300;
-        const height = container.clientHeight || 300;
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-        camera.position.z = 6.2;
-
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-        renderer.setSize(width, height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-
-        // Exactly 64 nodes to map 1-to-1 to a 4x4x4 grid (no duplicates/overlap)
-        const nodeCount = 64;
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(nodeCount * 3);
-        const nodeData = [];
-        const cubePositions = [];
-
-        // 1. Generate chaotic initial state (beautiful spherical layout)
-        for (let i = 0; i < nodeCount; i++) {
-            const u = Math.random();
-            const v = Math.random();
-            const theta = u * 2.0 * Math.PI;
-            const phi = Math.acos(2.0 * v - 1.0);
-            const r = 1.3 + Math.random() * 0.45; // tighter spherical shell
-
-            const x = r * Math.sin(phi) * Math.cos(theta);
-            const y = r * Math.sin(phi) * Math.sin(theta);
-            const z = r * Math.cos(phi);
-
-            positions[i*3] = x;
-            positions[i*3+1] = y;
-            positions[i*3+2] = z;
-
-            nodeData.push(new THREE.Vector3(x, y, z));
-        }
-
-        // 2. Generate target grid cube positions (perfect 4x4x4 layout)
-        const cubeSize = 2.1;
-        const stepSize = cubeSize / 3; // 4 nodes = 3 steps
-        for (let i = 0; i < nodeCount; i++) {
-            const z = Math.floor(i / 16) % 4;
-            const y = Math.floor(i / 4) % 4;
-            const x = i % 4;
-
-            const cx = x * stepSize - cubeSize / 2;
-            const cy = y * stepSize - cubeSize / 2;
-            const cz = z * stepSize - cubeSize / 2;
-
-            cubePositions.push(new THREE.Vector3(cx, cy, cz));
-        }
-
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-        // 3. Generate connection lines along orthogonal axes of the grid only (no diagonal jumble)
-        const connections = [];
-        for (let z = 0; z < 4; z++) {
-            for (let y = 0; y < 4; y++) {
-                for (let x = 0; x < 4; x++) {
-                    const i = x + y * 4 + z * 16;
-                    if (x < 3) connections.push({ i, j: i + 1 });
-                    if (y < 3) connections.push({ i, j: i + 4 });
-                    if (z < 3) connections.push({ i, j: i + 16 });
+            // ============================================================
+            //  FASE 2 #1: MESH GRADIENT BACKGROUND (Canvas 2D, 20fps)
+            // ============================================================
+            (function initMeshGradient() {
+                const canvas = document.getElementById('mesh-gradient-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                if (!ctx) return;
+                let W, H, rafId, lastTs = 0;
+                const THROTTLE = 50;
+                const blobs = [
+                    { x:0.2, y:0.15, r:0.55, sp:0.00018, ph:0 },
+                    { x:0.8, y:0.25, r:0.48, sp:0.00023, ph:1.3 },
+                    { x:0.5, y:0.72, r:0.52, sp:0.00015, ph:2.6 },
+                    { x:0.15,y:0.65, r:0.42, sp:0.00021, ph:3.9 },
+                    { x:0.85,y:0.6,  r:0.45, sp:0.00017, ph:5.2 },
+                ];
+                let colors = [[8,15,42],[4,42,22],[30,8,55],[8,38,18],[18,8,35]];
+                const PALETTES = {
+                    home:       [[8,12,40],[4,42,22],[28,8,55],[8,35,18],[18,8,32]],
+                    portfolio:  [[4,42,22],[8,8,12],[8,55,30],[4,30,14],[12,28,8]],
+                    bento:      [[8,35,18],[22,12,5],[8,8,12],[4,42,22],[8,25,8]],
+                    services:   [[8,18,50],[4,55,40],[28,8,10],[8,22,45],[5,12,35]],
+                    pricing:    [[8,32,18],[38,28,6],[8,8,12],[4,40,20],[18,22,5]],
+                    contact:    [[4,55,25],[4,4,4],[8,8,8],[8,45,22],[4,4,4]],
+                    philosophy: [[50,8,8],[35,18,4],[8,8,8],[28,12,4],[18,8,4]],
+                    stats:      [[4,42,22],[8,8,8],[22,50,22],[4,28,14],[8,8,8]],
+                };
+                let target = colors.map(c => [...c]);
+                function setPalette(id) {
+                    const key = PALETTES[id] ? id : 'home';
+                    target = PALETTES[key].map(c => [...c]);
                 }
-            }
-        }
+                document.querySelectorAll('section[id]').forEach(sec => {
+                    new IntersectionObserver(entries => {
+                        if (entries[0].isIntersecting) setPalette(sec.id);
+                    }, { threshold: 0.35 }).observe(sec);
+                });
+                function resize() {
+                    W = canvas.width  = Math.ceil(window.innerWidth / 3);
+                    H = canvas.height = Math.ceil(window.innerHeight / 3);
+                }
+                function draw(ts) {
+                    if (ts - lastTs < THROTTLE) return;
+                    lastTs = ts;
+                    ctx.clearRect(0, 0, W, H);
+                    ctx.fillStyle = '#050508';
+                    ctx.fillRect(0, 0, W, H);
+                    blobs.forEach((b, i) => {
+                        colors[i] = colors[i].map((c, j) => c + (target[i][j] - c) * 0.025);
+                        const t  = ts * b.sp + b.ph;
+                        const bx = (b.x + Math.sin(t) * 0.18) * W;
+                        const by = (b.y + Math.cos(t * 1.3) * 0.12) * H;
+                        const br = b.r * Math.max(W, H);
+                        const [r, g, bl] = colors[i].map(Math.round);
+                        const grd = ctx.createRadialGradient(bx, by, 0, bx, by, br);
+                        grd.addColorStop(0, `rgba(${r},${g},${bl},0.5)`);
+                        grd.addColorStop(1, 'rgba(0,0,0,0)');
+                        ctx.fillStyle = grd;
+                        ctx.fillRect(0, 0, W, H);
+                    });
+                }
+                function loop(ts) { rafId = requestAnimationFrame(loop); draw(ts); }
+                resize();
+                window.addEventListener('resize', resize, { passive: true });
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) { cancelAnimationFrame(rafId); rafId = null; }
+                    else rafId = requestAnimationFrame(loop);
+                });
+                rafId = requestAnimationFrame(loop);
+            })();
 
-        const lineCount = connections.length;
-        const lineGeometry = new THREE.BufferGeometry();
-        const linePositions = new Float32Array(lineCount * 2 * 3);
-        lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
 
-        // Create glowing radial circular dot particle texture for elegant point look
-        function createCircleTexture(colorStr) {
-            const matCanvas = document.createElement('canvas');
-            matCanvas.width = 32;
-            matCanvas.height = 32;
-            const matCtx = matCanvas.getContext('2d');
-            
-            const grad = matCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
-            grad.addColorStop(0, '#ffffff');
-            grad.addColorStop(0.22, colorStr);
-            grad.addColorStop(1, 'rgba(0,0,0,0)');
-            
-            matCtx.fillStyle = grad;
-            matCtx.fillRect(0, 0, 32, 32);
-            
-            const tex = new THREE.CanvasTexture(matCanvas);
-            tex.needsUpdate = true;
-            return tex;
-        }
+            // ============================================================
+            //  FASE 2 #2: BENTO UNIVERSE (Three.js Orbiting System)
+            // ============================================================
+            (function initBentoUniverse() {
+                const canvas = document.getElementById('bento-universe-canvas');
+                if (!canvas || typeof THREE === 'undefined') return;
+                const wrap = document.getElementById('bento-universe-canvas-wrap');
+                if (!wrap) return;
+                let W = wrap.clientWidth || 600, H = wrap.clientHeight || 560;
+                const scene  = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 100);
+                camera.position.z = 7;
+                const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true });
+                renderer.setSize(W, H);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.3));
+                const col = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
+                const COL = new THREE.Color(col);
 
-        const primaryColorStr = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
+                // Sol central
+                const sunMat = new THREE.MeshBasicMaterial({ color: COL, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending });
+                const sun    = new THREE.Mesh(new THREE.SphereGeometry(0.38, 16, 16), sunMat);
+                const haloMat= new THREE.MeshBasicMaterial({ color: COL, transparent: true, opacity: 0.08, blending: THREE.AdditiveBlending, side: THREE.BackSide });
+                sun.add(new THREE.Mesh(new THREE.SphereGeometry(0.6, 16, 16), haloMat));
+                scene.add(sun);
 
-        // Elegant PointsMaterial using texture and real 3D depth attenuation
-        const nodeMaterial = new THREE.PointsMaterial({
-            size: 0.17,
-            sizeAttenuation: true,
-            map: createCircleTexture(primaryColorStr),
-            transparent: true,
-            opacity: 0.95,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
+                // Anillos
+                const ORBITS = [
+                    { r: 1.6, speed: 0.55, incl: 0.25 },
+                    { r: 2.3, speed: 0.38, incl: -0.4 },
+                    { r: 3.0, speed: 0.28, incl: 0.6 },
+                ];
+                ORBITS.forEach(o => {
+                    const pts = new THREE.EllipseCurve(0, 0, o.r, o.r * 0.35, 0, Math.PI * 2, false, 0).getPoints(64);
+                    const ring = new THREE.LineLoop(
+                        new THREE.BufferGeometry().setFromPoints(pts),
+                        new THREE.LineBasicMaterial({ color: COL, transparent: true, opacity: 0.1, blending: THREE.AdditiveBlending })
+                    );
+                    ring.rotation.x = o.incl;
+                    scene.add(ring);
+                });
 
-        // Thin, sharp blueprints style line material
-        const lineMaterial = new THREE.LineBasicMaterial({
-            color: new THREE.Color(primaryColorStr),
-            transparent: true,
-            opacity: 0.28,
-            linewidth: 1,
-            blending: THREE.AdditiveBlending
-        });
+                // Orbes
+                const ORB_DATA = [
+                    { oi: 0, angle: 0 }, { oi: 0, angle: Math.PI },
+                    { oi: 1, angle: 0.5 }, { oi: 1, angle: 0.5 + Math.PI },
+                    { oi: 2, angle: 1.2 }, { oi: 2, angle: 1.2 + Math.PI },
+                ];
+                const orbMeshes = ORB_DATA.map((od, i) => {
+                    const sz = 0.12 + (i % 3) * 0.04;
+                    const m  = new THREE.Mesh(
+                        new THREE.SphereGeometry(sz, 10, 10),
+                        new THREE.MeshBasicMaterial({ color: COL, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending })
+                    );
+                    m.add(new THREE.Mesh(
+                        new THREE.SphereGeometry(sz * 2.2, 8, 8),
+                        new THREE.MeshBasicMaterial({ color: COL, transparent: true, opacity: 0.05, blending: THREE.AdditiveBlending, side: THREE.BackSide })
+                    ));
+                    scene.add(m);
+                    return m;
+                });
 
-        const points = new THREE.Points(geometry, nodeMaterial);
-        const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+                // Lineas de conexion
+                const lineGeos = ORB_DATA.map(() => {
+                    const buf = new Float32Array(6);
+                    const geo = new THREE.BufferGeometry();
+                    geo.setAttribute('position', new THREE.BufferAttribute(buf, 3));
+                    scene.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ color: COL, transparent: true, opacity: 0.08, blending: THREE.AdditiveBlending })));
+                    return { geo, buf };
+                });
 
-        const group = new THREE.Group();
-        group.add(points);
-        group.add(lines);
-        scene.add(group);
+                // Stars
+                const starPos = new Float32Array(300 * 3).map(() => (Math.random() - 0.5) * 14);
+                const starGeo = new THREE.BufferGeometry();
+                starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+                scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.018, transparent: true, opacity: 0.3 })));
 
-        const clock = new THREE.Clock();
-        const nodesCurrent = Array.from({ length: nodeCount }, () => new THREE.Vector3());
+                const clock = new THREE.Clock();
+                let running = false, rafId = null, mx = 0, my = 0, tx = 0, ty = 0;
+                wrap.addEventListener('mousemove', e => {
+                    const r = wrap.getBoundingClientRect();
+                    tx = ((e.clientX - r.left) / r.width  - 0.5) * 0.5;
+                    ty = ((e.clientY - r.top)  / r.height - 0.5) * 0.5;
+                });
+                wrap.addEventListener('mouseleave', () => { tx = 0; ty = 0; });
+                const orbLabels = document.querySelectorAll('.orb-label');
 
-        // Parallax states
-        let mouseX = 0, mouseY = 0;
-        let targetX = 0, targetY = 0;
-
-        container.addEventListener('mousemove', (e) => {
-            const rect = container.getBoundingClientRect();
-            targetX = ((e.clientX - rect.left) / rect.width - 0.5) * 0.45;
-            targetY = ((e.clientY - rect.top) / rect.height - 0.5) * 0.45;
-        });
-
-        container.addEventListener('mouseleave', () => {
-            targetX = 0;
-            targetY = 0;
-        });
-
-        let isPhilosophyVisible = false;
-        const philosophyObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                isPhilosophyVisible = entry.isIntersecting;
-            });
-        }, { threshold: 0.01 });
-        philosophyObserver.observe(canvas);
-
-        function animateLocal() {
-            requestAnimationFrame(animateLocal);
-            if (!isPhilosophyVisible) return;
-
-            const time = clock.getElapsedTime();
-            const progress = (window.vanta3D && window.vanta3D.progress) || 0;
-            const glitchVal = (window.vanta3D && window.vanta3D.glitch) || 0;
-
-            // Sync dynamic colors
-            const activeColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
-            nodeMaterial.color.setStyle('#ffffff'); // core stays white/bright
-            lineMaterial.color.setStyle(activeColor);
-
-            // Interpolate Positions: Chaos Sphere (0.0) -> Ordered Grid Cube (1.0)
-            const posAttr = geometry.getAttribute('position');
-            for (let i = 0; i < nodeCount; i++) {
-                const orig = nodeData[i];
-                const target = cubePositions[i];
-
-                let tx = THREE.MathUtils.lerp(orig.x, target.x, progress);
-                let ty = THREE.MathUtils.lerp(orig.y, target.y, progress);
-                let tz = THREE.MathUtils.lerp(orig.z, target.z, progress);
-
-                // Chaotic organic wavelike float (decreases as progress reaches 1.0)
-                const floatAmt = (1.0 - progress) * 0.08;
-                tx += Math.sin(time * 1.5 + i) * floatAmt;
-                ty += Math.cos(time * 1.2 + i) * floatAmt;
-                tz += Math.sin(time * 0.8 + i) * floatAmt;
-
-                // Glitch effect on error/chaos chapter
-                if (progress < 0.35 && glitchVal > 0.05) {
-                    tx += (Math.random() - 0.5) * glitchVal * 0.25;
-                    ty += (Math.random() - 0.5) * glitchVal * 0.25;
-                    tz += (Math.random() - 0.5) * glitchVal * 0.25;
+                function animate() {
+                    if (!running) return;
+                    rafId = requestAnimationFrame(animate);
+                    const t = clock.getElapsedTime();
+                    mx += (tx - mx) * 0.06; my += (ty - my) * 0.06;
+                    scene.rotation.y = mx * 0.5;
+                    scene.rotation.x = my * 0.3;
+                    sunMat.opacity  = 0.75 + Math.sin(t * 2.2) * 0.2;
+                    haloMat.opacity = 0.05 + Math.sin(t * 1.8) * 0.03;
+                    ORB_DATA.forEach((od, i) => {
+                        const orb   = ORBITS[od.oi];
+                        const angle = od.angle + t * orb.speed;
+                        const x = Math.cos(angle) * orb.r;
+                        const z = Math.sin(angle) * orb.r * 0.35;
+                        const y = Math.sin(angle * 0.7 + od.angle) * 0.3;
+                        orbMeshes[i].position.set(x, y * Math.cos(orb.incl) - z * Math.sin(orb.incl), y * Math.sin(orb.incl) + z * Math.cos(orb.incl));
+                        orbMeshes[i].material.opacity = 0.7 + Math.sin(t * 3 + i) * 0.25;
+                        const { buf } = lineGeos[i];
+                        buf[0]=0; buf[1]=0; buf[2]=0;
+                        buf[3]=orbMeshes[i].position.x; buf[4]=orbMeshes[i].position.y; buf[5]=orbMeshes[i].position.z;
+                        lineGeos[i].geo.getAttribute('position').needsUpdate = true;
+                        if (orbLabels[i]) {
+                            const tempProjVec = new THREE.Vector3();
+                            tempProjVec.copy(orbMeshes[i].position).project(camera);
+                            orbLabels[i].style.left = ((tempProjVec.x * 0.5 + 0.5) * W) + 'px';
+                            orbLabels[i].style.top  = ((-tempProjVec.y * 0.5 + 0.5) * H + 18) + 'px';
+                            orbLabels[i].classList.add('visible');
+                        }
+                    });
+                    renderer.render(scene, camera);
                 }
 
-                posAttr.setXYZ(i, tx, ty, tz);
-                nodesCurrent[i].set(tx, ty, tz);
-            }
-            posAttr.needsUpdate = true;
+                new IntersectionObserver(entries => {
+                    if (entries[0].isIntersecting) { running = true; animate(); }
+                    else { running = false; cancelAnimationFrame(rafId); orbLabels.forEach(l => l.classList.remove('visible')); }
+                }, { threshold: 0.1 }).observe(canvas);
 
-            // Update line positions
-            const linePosAttr = lineGeometry.getAttribute('position');
-            let lineIdx = 0;
-            for (let c = 0; c < connections.length; c++) {
-                const conn = connections[c];
-                const n1 = nodesCurrent[conn.i];
-                const n2 = nodesCurrent[conn.j];
-                linePosAttr.setXYZ(lineIdx++, n1.x, n1.y, n1.z);
-                linePosAttr.setXYZ(lineIdx++, n2.x, n2.y, n2.z);
-            }
-            linePosAttr.needsUpdate = true;
+                // Counter animation
+                document.querySelectorAll('.bum').forEach(el => {
+                    const val = parseInt(el.dataset.val) || 0;
+                    const sfx = el.dataset.suffix || '';
+                    const lbl = el.dataset.label || '';
+                    el.innerHTML = `<span class="bum-val">0${sfx}</span><span class="bum-label">${lbl}</span>`;
+                    const numEl = el.querySelector('.bum-val');
+                    new IntersectionObserver(entries => {
+                        if (!entries[0].isIntersecting) return;
+                        let cur = 0;
+                        const step = Math.max(1, Math.floor(val / 40));
+                        const tick = setInterval(() => {
+                            cur = Math.min(cur + step, val);
+                            numEl.textContent = cur + sfx;
+                            if (cur >= val) clearInterval(tick);
+                        }, 30);
+                    }, { threshold: 0.5 }).observe(el);
+                });
 
-            // Interpolate mouse parallax
-            mouseX += (targetX - mouseX) * 0.08;
-            mouseY += (targetY - mouseY) * 0.08;
+                window.addEventListener('resize', () => {
+                    W = wrap.clientWidth || 600; H = wrap.clientHeight || 560;
+                    camera.aspect = W / H; camera.updateProjectionMatrix();
+                    renderer.setSize(W, H);
+                }, { passive: true });
+            })();
 
-            // Auto-rotation + mouse parallax tilt
-            group.rotation.y = time * 0.09 + mouseX;
-            group.rotation.x = time * 0.04 + mouseY;
 
-            renderer.render(scene, camera);
-        }
+            // ============================================================
+            //  FASE 2 #3: PORTFOLIO CARD — CURSOR-REACTIVE WATER RIPPLE
+            //  Dynamic fluid wave that reacts in real-time to cursor speed & position
+            // ============================================================
+            (function initPortfolioRipple() {
+                if (window.matchMedia('(pointer: coarse)').matches) return;
 
-        // Local resize handler
-        const resizeLocal = () => {
-            const w = container.clientWidth || 300;
-            const h = container.clientHeight || 300;
-            camera.aspect = w / h;
-            camera.updateProjectionMatrix();
-            renderer.setSize(w, h);
-        };
-        window.addEventListener('resize', resizeLocal);
-        resizeLocal();
+                const dispMap    = document.getElementById('water-disp');
+                const turbulence = document.getElementById('water-turbulence');
+                if (!dispMap || !turbulence) return;
 
-        animateLocal();
-    }
+                let currentScale = 0;
+                let targetScale  = 0;
+                let activeImg    = null;
+                let animId       = null;
+                let t            = 0;
+
+                // Mouse tracking state for real-time cursor reactivity
+                let lastX    = 0, lastY = 0;
+                let mouseVel = 0;
+                let normX    = 0.5, normY = 0.5;
+
+                function renderRipple() {
+                    t += 0.015;
+
+                    // Mouse velocity decays naturally like fluid drag
+                    mouseVel *= 0.91;
+
+                    // Dynamic scale: base scale (10) + velocity impulse from mouse movement (up to +20)
+                    const activeTarget = targetScale > 0 ? (10 + Math.min(20, mouseVel * 1.3)) : 0;
+                    currentScale += (activeTarget - currentScale) * 0.1;
+
+                    if (currentScale > 0.1 && activeImg) {
+                        // Fluid wave pulse driven by cursor activity
+                        const wave = currentScale * (1 + Math.sin(t * 2.5) * 0.15);
+                        dispMap.setAttribute('scale', wave.toFixed(2));
+
+                        // Wave frequency dynamically follows normalized mouse position on the card
+                        const freqX = (0.009 + normX * 0.014 + Math.sin(t * 1.5) * 0.003).toFixed(4);
+                        const freqY = (0.013 + normY * 0.016 + Math.cos(t * 1.2) * 0.003).toFixed(4);
+                        turbulence.setAttribute('baseFrequency', `${freqX} ${freqY}`);
+
+                        animId = requestAnimationFrame(renderRipple);
+                    } else {
+                        dispMap.setAttribute('scale', '0');
+                        if (activeImg) {
+                            activeImg.style.filter = '';
+                            activeImg = null;
+                        }
+                        animId = null;
+                    }
+                }
+
+                document.querySelectorAll('.card').forEach(card => {
+                    const imgEl = card.querySelector('img');
+                    if (!imgEl) return;
+
+                    card.addEventListener('mouseenter', (e) => {
+                        if (activeImg && activeImg !== imgEl) {
+                            activeImg.style.filter = '';
+                        }
+                        activeImg = imgEl;
+                        activeImg.style.filter = 'url(#water-ripple-filter)';
+                        targetScale = 10;
+                        lastX = e.clientX;
+                        lastY = e.clientY;
+                        mouseVel = 6; // Splash impulse when cursor enters card
+                        if (!animId) animId = requestAnimationFrame(renderRipple);
+                    });
+
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        normX = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                        normY = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+
+                        // Calculate cursor movement speed
+                        const dx = e.clientX - lastX;
+                        const dy = e.clientY - lastY;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        mouseVel = Math.max(mouseVel, dist);
+
+                        lastX = e.clientX;
+                        lastY = e.clientY;
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        if (activeImg === imgEl) {
+                            targetScale = 0; // Smoothly fade out when cursor leaves
+                        }
+                    });
+                });
+            })();
+
+            // ============================================================
+            //  PHILOSOPHY ENGINE v2 — CANVAS CENTRALIZADO + OPTIMIZADO
+            //  Arquitectura: UN loop maestro, renderiza solo el canvas activo
+            //  Cap1: Caos Digital (Canvas2D, 60 particulas, throttled)
+            //  Cap2: Cristal Dodecaedro (Three.js, lazy-init)
+            //  Cap3: Red Neuronal (Three.js, lazy-init)
+            // ============================================================
+            (function initPhilosophyEngine() {
+
+                // ---- Estado central ----
+                let activeCanvas = 1;    // 1, 2, o 3
+                let sectionVisible = false;
+                let masterRafId = null;
+                let masterRunning = false;
+                const container = document.querySelector('.ph-col-right');
+
+                // ---- Exponer switchPhCanvas globalmente ----
+                window.switchPhCanvas = function(n) {
+                    if (activeCanvas === n) return;
+                    activeCanvas = n;
+                    document.querySelectorAll('.ph-chapter-canvas').forEach((c, i) => {
+                        c.classList.toggle('active', i + 1 === n);
+                    });
+                    // Resize el canvas que acaba de activarse
+                    if (n === 2 && crystal) crystal.resize();
+                    if (n === 3 && neural)  neural.resize();
+                };
+                window._phCanvasActive = 1;
+                const origSwitch = window.switchPhCanvas;
+                window.switchPhCanvas = function(n) {
+                    window._phCanvasActive = n;
+                    origSwitch(n);
+                };
+
+                // ---- CAP 01: CAOS DIGITAL (Canvas 2D) ----
+                const chaos = (function() {
+                    const cvs = document.getElementById('ph-canvas-1');
+                    if (!cvs) return null;
+                    const ctx = cvs.getContext('2d');
+                    const CHARS = '01xyzABC#@!%<>{}|*+-=?~'.split('');
+                    const RED = '#e74c3c', AMBER = '#e67e22', DIM = 'rgba(200,50,30,0.22)';
+                    let W = 1, H = 1, particles = null;
+                    const N = 60; // reduced for perf
+                    let lastDraw = 0;
+                    const THROTTLE = 33; // ~30fps cap for Canvas2D
+
+                    function resize() {
+                        if (!container) return;
+                        W = cvs.width  = container.clientWidth  || 350;
+                        H = cvs.height = container.clientHeight || 350;
+                    }
+
+                    function mkP() {
+                        return {
+                            x: Math.random() * W, y: Math.random() * H,
+                            ch: CHARS[Math.floor(Math.random() * CHARS.length)],
+                            sz: 8 + Math.random() * 10,
+                            vx: (Math.random() - 0.5) * 0.7,
+                            vy: (Math.random() - 0.5) * 0.7,
+                            al: 0.2 + Math.random() * 0.55,
+                            life: Math.random() * 180, maxLife: 140 + Math.random() * 160,
+                            col: Math.random() > 0.4 ? DIM : (Math.random() > 0.5 ? RED : AMBER)
+                        };
+                    }
+
+                    function draw(ts) {
+                        if (ts - lastDraw < THROTTLE) return; // throttle
+                        lastDraw = ts;
+                        ctx.fillStyle = 'rgba(5,5,5,0.2)';
+                        ctx.fillRect(0, 0, W, H);
+                        for (const p of particles) {
+                            p.life++;
+                            if (p.life > p.maxLife) { Object.assign(p, mkP()); p.x = Math.random()*W; p.y = Math.random()*H; }
+                            p.x += p.vx + Math.sin(p.life * 0.04) * 0.25;
+                            p.y += p.vy + Math.cos(p.life * 0.033) * 0.25;
+                            if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+                            if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+                            const fade = Math.sin((p.life / p.maxLife) * Math.PI);
+                            ctx.globalAlpha = p.al * fade;
+                            ctx.fillStyle = (Math.random() < 0.006) ? '#ffffff' : p.col;
+                            ctx.font = p.sz + 'px monospace';
+                            ctx.fillText(p.ch, p.x, p.y);
+                        }
+                        ctx.globalAlpha = 1;
+                    }
+
+                    function init() {
+                        resize();
+                        if (!particles) particles = Array.from({ length: N }, mkP);
+                        window.addEventListener('resize', resize);
+                    }
+                    init();
+                    return { draw, resize };
+                })();
+
+                // ---- CAP 02: CRISTAL THREE.JS (lazy-init) ----
+                let crystal = null;
+                function initCrystal() {
+                    if (crystal || typeof THREE === 'undefined') return;
+                    const cvs = document.getElementById('ph-canvas-2');
+                    if (!cvs) return;
+                    const scene  = new THREE.Scene();
+                    const cam    = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+                    cam.position.z = 6.5;
+                    const rend = new THREE.WebGLRenderer({ canvas: cvs, antialias: false, alpha: true });
+                    rend.setPixelRatio(Math.min(window.devicePixelRatio, 1.3));
+
+                    const col = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
+                    const geo   = new THREE.DodecahedronGeometry(1.65, 0);
+                    const edges = new THREE.EdgesGeometry(geo);
+                    const mat   = new THREE.LineBasicMaterial({ color: new THREE.Color(col), transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+                    const wire  = new THREE.LineSegments(edges, mat);
+                    const igeo  = new THREE.OctahedronGeometry(0.85, 0);
+                    const imat  = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending });
+                    const inner = new THREE.LineSegments(new THREE.EdgesGeometry(igeo), imat);
+                    const core  = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8),
+                        new THREE.MeshBasicMaterial({ color: new THREE.Color(col), transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending }));
+
+                    // Photons — 12 only for perf
+                    const PCOUNT = 12;
+                    const pGeo = new THREE.BufferGeometry();
+                    const pPos = new Float32Array(PCOUNT * 3);
+                    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+                    const pMat  = new THREE.PointsMaterial({ color: 0xffffff, size: 0.07, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false });
+                    const pPts  = new THREE.Points(pGeo, pMat);
+
+                    const eArr = edges.getAttribute('position').array;
+                    const eCnt = eArr.length / 6;
+                    const pData = Array.from({ length: PCOUNT }, () => {
+                        const ei = Math.floor(Math.random() * eCnt) * 6;
+                        return { ax: eArr[ei], ay: eArr[ei+1], az: eArr[ei+2], bx: eArr[ei+3], by: eArr[ei+4], bz: eArr[ei+5], t: Math.random(), sp: 0.009 + Math.random() * 0.011 };
+                    });
+
+                    const grp = new THREE.Group();
+                    grp.add(wire, inner, core, pPts);
+                    scene.add(grp);
+                    const clk = new THREE.Clock();
+                    let mx = 0, my = 0, tx = 0, ty = 0;
+                    if (container) {
+                        container.addEventListener('mousemove', e => {
+                            const r = container.getBoundingClientRect();
+                            tx = ((e.clientX - r.left) / r.width  - 0.5) * 0.55;
+                            ty = ((e.clientY - r.top)  / r.height - 0.5) * 0.55;
+                        });
+                        container.addEventListener('mouseleave', () => { tx = 0; ty = 0; });
+                    }
+
+                    function draw() {
+                        const t = clk.getElapsedTime();
+                        mx += (tx - mx) * 0.07; my += (ty - my) * 0.07;
+                        grp.rotation.y  = t * 0.11 + mx;
+                        grp.rotation.x  = t * 0.065 + my;
+                        inner.rotation.y = -t * 0.21;
+                        inner.rotation.z =  t * 0.13;
+                        core.material.opacity = 0.55 + Math.sin(t * 3.8) * 0.3;
+                        pData.forEach((p, i) => {
+                            p.t += p.sp;
+                            if (p.t > 1) { p.t = 0; const ei = Math.floor(Math.random() * eCnt) * 6; p.ax=eArr[ei];p.ay=eArr[ei+1];p.az=eArr[ei+2];p.bx=eArr[ei+3];p.by=eArr[ei+4];p.bz=eArr[ei+5]; }
+                            pPos[i*3]   = p.ax + (p.bx-p.ax)*p.t;
+                            pPos[i*3+1] = p.ay + (p.by-p.ay)*p.t;
+                            pPos[i*3+2] = p.az + (p.bz-p.az)*p.t;
+                        });
+                        pGeo.getAttribute('position').needsUpdate = true;
+                        rend.render(scene, cam);
+                    }
+
+                    function resize() {
+                        if (!container) return;
+                        const w = container.clientWidth || 350;
+                        const h = container.clientHeight || 350;
+                        cam.aspect = w / h;
+                        cam.updateProjectionMatrix();
+                        rend.setSize(w, h);
+                    }
+                    window.addEventListener('resize', resize);
+                    resize();
+                    crystal = { draw, resize };
+                }
+
+                // ---- CAP 03: RED NEURONAL THREE.JS (lazy-init) ----
+                let neural = null;
+                function initNeural() {
+                    if (neural || typeof THREE === 'undefined') return;
+                    const cvs = document.getElementById('ph-canvas-3');
+                    if (!cvs) return;
+                    const scene = new THREE.Scene();
+                    const cam   = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+                    cam.position.z = 7;
+                    const rend = new THREE.WebGLRenderer({ canvas: cvs, antialias: false, alpha: true });
+                    rend.setPixelRatio(Math.min(window.devicePixelRatio, 1.3));
+
+                    const col = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
+
+                    // Nodos — 22 para perf
+                    const NODES = 22;
+                    const nodePos = [], nodeMeshes = [];
+                    const nGrp = new THREE.Group();
+
+                    for (let i = 0; i < NODES; i++) {
+                        const theta = Math.acos(1 - 2*(i+0.5)/NODES);
+                        const phi   = Math.PI * (1 + Math.sqrt(5)) * i;
+                        const r = 2.2 + Math.random() * 0.7;
+                        const v = new THREE.Vector3(r*Math.sin(theta)*Math.cos(phi), r*Math.sin(theta)*Math.sin(phi), r*Math.cos(theta));
+                        nodePos.push(v);
+                        const m = new THREE.Mesh(
+                            new THREE.SphereGeometry(0.055 + Math.random() * 0.04, 6, 6),
+                            new THREE.MeshBasicMaterial({ color: new THREE.Color(col), transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending })
+                        );
+                        m.position.copy(v);
+                        nGrp.add(m);
+                        nodeMeshes.push(m);
+                    }
+
+                    // Axones
+                    const MAX_D = 2.5;
+                    const axonLines = [];
+                    nodePos.forEach((a, i) => nodePos.forEach((b, j) => { if (j > i && a.distanceTo(b) < MAX_D) axonLines.push([i,j]); }));
+                    const aCnt = axonLines.length;
+                    const aPosArr = new Float32Array(aCnt * 6);
+                    axonLines.forEach(([a,b],idx) => {
+                        aPosArr[idx*6]=nodePos[a].x;aPosArr[idx*6+1]=nodePos[a].y;aPosArr[idx*6+2]=nodePos[a].z;
+                        aPosArr[idx*6+3]=nodePos[b].x;aPosArr[idx*6+4]=nodePos[b].y;aPosArr[idx*6+5]=nodePos[b].z;
+                    });
+                    const aGeo = new THREE.BufferGeometry();
+                    aGeo.setAttribute('position', new THREE.BufferAttribute(aPosArr, 3));
+                    const aLines = new THREE.LineSegments(aGeo, new THREE.LineBasicMaterial({ color: new THREE.Color(col), transparent: true, opacity: 0.11, blending: THREE.AdditiveBlending }));
+                    nGrp.add(aLines);
+
+                    // Pulsos — 8 para perf
+                    const PULSES = 8;
+                    const pGeo = new THREE.BufferGeometry();
+                    const pPos = new Float32Array(PULSES * 3);
+                    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+                    const pPts = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.1, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false }));
+                    nGrp.add(pPts);
+                    const pData = Array.from({ length: PULSES }, () => ({ ai: Math.floor(Math.random()*aCnt), t: Math.random(), sp: 0.007+Math.random()*0.009 }));
+
+                    scene.add(nGrp);
+                    const clk = new THREE.Clock();
+
+                    function draw() {
+                        const t = clk.getElapsedTime();
+                        nGrp.rotation.y = t * 0.065;
+                        nGrp.rotation.x = Math.sin(t * 0.14) * 0.10;
+                        nodeMeshes.forEach((m, i) => {
+                            const s = 1 + 0.13 * Math.sin(t * 2.3 + i * 0.85);
+                            m.scale.setScalar(s);
+                            m.material.opacity = 0.7 + 0.25 * Math.sin(t * 2.1 + i * 0.9);
+                        });
+                        pData.forEach((p, pi) => {
+                            p.t += p.sp;
+                            if (p.t > 1) { p.t = 0; p.ai = Math.floor(Math.random() * aCnt); }
+                            const [ai, bi] = axonLines[p.ai];
+                            const tempPulseVec = new THREE.Vector3(); tempPulseVec.copy(nodePos[ai]).lerp(nodePos[bi], p.t); const np = tempPulseVec;
+                            pPos[pi*3]=np.x; pPos[pi*3+1]=np.y; pPos[pi*3+2]=np.z;
+                        });
+                        pGeo.getAttribute('position').needsUpdate = true;
+                        rend.render(scene, cam);
+                    }
+
+                    function resize() {
+                        if (!container) return;
+                        const w = container.clientWidth || 350;
+                        const h = container.clientHeight || 350;
+                        cam.aspect = w / h;
+                        cam.updateProjectionMatrix();
+                        rend.setSize(w, h);
+                    }
+                    window.addEventListener('resize', resize);
+                    resize();
+                    neural = { draw, resize };
+                }
+
+                // ---- MASTER LOOP — Solo renderiza el canvas activo ----
+                function masterLoop(ts) {
+                    if (!masterRunning) return;
+                    masterRafId = requestAnimationFrame(masterLoop);
+                    const ac = activeCanvas;
+
+                    if (ac === 1 && chaos) {
+                        chaos.draw(ts);
+                    } else if (ac === 2) {
+                        if (!crystal) initCrystal();
+                        if (crystal) crystal.draw();
+                    } else if (ac === 3) {
+                        if (!neural) initNeural();
+                        if (neural) neural.draw();
+                    }
+                }
+
+                function startMaster() {
+                    if (masterRunning) return;
+                    masterRunning = true;
+                    masterRafId = requestAnimationFrame(masterLoop);
+                }
+
+                function stopMaster() {
+                    masterRunning = false;
+                    if (masterRafId) { cancelAnimationFrame(masterRafId); masterRafId = null; }
+                }
+
+                // ---- Observer en el CONTENEDOR (no en los canvas individuales) ----
+                if (container) {
+                    const obs = new IntersectionObserver(entries => {
+                        sectionVisible = entries[0].isIntersecting;
+                        if (sectionVisible) startMaster();
+                        else stopMaster();
+                    }, { threshold: 0.01 });
+                    obs.observe(container);
+                }
+
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) stopMaster();
+                    else if (sectionVisible) startMaster();
+                });
+
+                window.addEventListener('resize', () => {
+                    if (chaos) chaos.resize();
+                    if (crystal && activeCanvas === 2) crystal.resize();
+                    if (neural  && activeCanvas === 3) neural.resize();
+                });
+
+            })();
+
+
+
+
+
+
+
+
+
 
     function init3DCore() {
         
@@ -1685,7 +2197,7 @@ COMMIT;`
         // Variables de interacción y física de scroll
         let mouseX = 0, mouseY = 0;
         let targetX = 0, targetY = 0;
-        let lastScrollY = window.scrollY || window.pageYOffset;
+        let lastScrollY = window.scrollY || window.pageYOffset || 0;
         let scrollVelocity = 0;
         let flowOffset = 0;
         let logoScaleObj = { value: 0.0001 };
@@ -1751,139 +2263,127 @@ COMMIT;`
         }
 
         const clock = new THREE.Clock();
+ 
+        let animationFrameId = null;
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+            } else {
+                if (!animationFrameId) {
+                    animate();
+                }
+            }
+        });
 
         function animate() {
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
+            if (document.hidden) return;
 
+            const currentScroll = window.scrollY || window.pageYOffset || 0;
             const time = clock.getElapsedTime();
-            const currentScroll = window.scrollY || window.pageYOffset;
             const deltaScroll = currentScroll - lastScrollY;
             lastScrollY = currentScroll;
 
-
-            const transitionLimit = window.innerHeight * 1.2;
-            const progress = Math.min(currentScroll / transitionLimit, 1.0);
+            const heroHeight = window.innerHeight;
+            const inHero = currentScroll <= heroHeight * 1.2;
+            const progress = Math.min(currentScroll / (heroHeight * 1.2), 1.0);
 
             scrollVelocity += (Math.abs(deltaScroll) - scrollVelocity) * 0.08;
             const clampedVelocity = Math.min(scrollVelocity, 120);
 
-            // 2. Colores neón dinámicos con Lerp suave (Optimizado sin reflows)
+            // Colores neón dinámicos
             let primaryColor = new THREE.Color(0x11d483);
             if (window.currentPrimaryColor) {
                 primaryColor.setStyle(window.currentPrimaryColor);
             }
-
             logoMaterial.color.lerp(primaryColor, 0.06);
             terrainMaterial.color.lerp(primaryColor, 0.06);
 
-            // 3. Físicas de Partículas en la "V"
+            // --- V LOGO (solo en Hero) ---
             mouseX += (targetX - mouseX) * 0.05;
             mouseY += (targetY - mouseY) * 0.05;
-            
-            if (currentScroll <= window.innerHeight * 1.2) {
-                // Settle into a gentle sway plus mouse tilt, preserving the entrance rotation
+
+            if (inHero) {
                 const swayY = Math.sin(time * 0.2) * 0.08;
                 const swayX = Math.cos(time * 0.15) * 0.04;
                 logoGroup.rotation.y = logoRotationObj.y + swayY + mouseX * 0.65;
                 logoGroup.rotation.x = swayX + mouseY * 0.55;
-
                 const logoOpacity = Math.max(0, 1.0 - progress * 2.5);
                 logoMaterial.opacity = logoOpacity * 0.85;
-                
                 logoGroup.scale.setScalar(0.92 * (1.0 - progress * 0.35) * logoScaleObj.value);
-                logoGroup.position.y = progress * 3.2;
+                logoGroup.position.y = -0.7 + progress * 3.2;
+
+                // Partículas de la V
+                const posAttr = geometry.getAttribute('position');
+                const colAttr = geometry.getAttribute('color');
+                const posArray = posAttr.array;
+                const colArray = colAttr.array;
+
+                const waveSpeed = 1.3;
+                const waveFreqY = 0.75;
+                const waveFreqX = 0.55;
+                const pulseSpeed = 1.6;
+                const pulseLength = 1.1;
+                const pulseCenter = -1.6 + ((time * pulseSpeed) % (3.6 + pulseLength));
+
+                for (let i = 0; i < particleCount; i++) {
+                    const i3 = i * 3;
+                    const home = nodeData[i];
+                    const dist = homeDistances[i];
+
+                    const waveX = Math.sin(time * waveSpeed + home.y * waveFreqY) * 0.12;
+                    const waveY = Math.cos(time * waveSpeed * 0.85 + home.x * waveFreqX) * 0.08;
+                    const waveZ = Math.sin(time * waveSpeed * 1.1 + (home.x + home.y) * 0.5) * 0.08;
+
+                    const distToPulse = Math.abs(home.y - pulseCenter);
+                    let pulseFactor = 0.0;
+                    if (distToPulse < pulseLength) {
+                        pulseFactor = Math.cos((distToPulse / pulseLength) * Math.PI * 0.5);
+                    }
+
+                    const pulseDisplace = pulseFactor * 0.07;
+                    const dirX = home.x > 0 ? 1.0 : -1.0;
+
+                    let addX = 0, addY = 0, addZ = 0;
+                    for (let w = 0; w < shockwaves.length; w++) {
+                        const sw = shockwaves[w];
+                        const elapsed = Math.max(0, time - sw.t0);
+                        const R = sw.speed * elapsed;
+                        const sigma = sw.width;
+                        const decayFactor = Math.exp(-sw.decay * elapsed);
+                        const g = Math.exp(-((dist - R) * (dist - R)) / (2 * sigma * sigma));
+                        const amp = sw.amplitude * g * decayFactor;
+                        addX += (home.x / dist) * amp;
+                        addY += (home.y / dist) * amp;
+                        addZ += (home.z / dist) * amp * 0.5;
+                    }
+
+                    const lerpFactor = 0.085;
+                    posArray[i3]     += (home.x + waveX + (dirX * pulseDisplace) + addX - posArray[i3]) * lerpFactor;
+                    posArray[i3 + 1] += (home.y + waveY + addY - posArray[i3 + 1]) * lerpFactor;
+                    posArray[i3 + 2] += (home.z + waveZ + addZ - posArray[i3 + 2]) * lerpFactor;
+
+                    let bright = 0.55 + Math.sin(time * 2.2 + (i % 8)) * 0.12 + pulseFactor * 1.1;
+                    colArray[i3]     = logoMaterial.color.r * bright;
+                    colArray[i3 + 1] = logoMaterial.color.g * bright;
+                    colArray[i3 + 2] = logoMaterial.color.b * bright;
+                }
+                posAttr.needsUpdate = true;
+                colAttr.needsUpdate = true;
+
+                // Limpiar shockwaves vencidas
+                if (shockwaves.length) {
+                    shockwaves = shockwaves.filter(sw => (time - sw.t0) < 3.0);
+                }
             } else {
                 logoMaterial.opacity = 0;
             }
 
-            if (currentScroll <= window.innerHeight * 1.2) {
-                // Actualizar posiciones de las partículas con matemáticas optimizadas (sin Math.sqrt interno)
-            const posAttr = geometry.getAttribute('position');
-            const colAttr = geometry.getAttribute('color');
-            const posArray = posAttr.array;
-            const colArray = colAttr.array;
-
-            // Ondulación y latido de energía ascendente
-            const waveSpeed = 1.3;
-            const waveFreqY = 0.75;
-            const waveFreqX = 0.55;
-            
-            // Pulso de energía vertical que sube desde abajo (y = -1.6) hasta arriba (y = 2.0)
-            const pulseSpeed = 1.6;
-            const pulseLength = 1.1; // Ancho de la onda del pulso
-            const pulseCycle = 5.0;  // Tiempo de ciclo completo
-            const pulseCenter = -1.6 + ((time * pulseSpeed) % (3.6 + pulseLength));
-
-            for (let i = 0; i < particleCount; i++) {
-                const i3 = i * 3;
-                const home = nodeData[i];
-                const dist = homeDistances[i]; // Distancia precalculada
-
-                // 1. Calcular Viento Ondulatorio 3D continuo
-                const waveX = Math.sin(time * waveSpeed + home.y * waveFreqY) * 0.12;
-                const waveY = Math.cos(time * waveSpeed * 0.85 + home.x * waveFreqX) * 0.08;
-                const waveZ = Math.sin(time * waveSpeed * 1.1 + (home.x + home.y) * 0.5) * 0.08;
-
-                // 2. Latido Cuántico de Energía Ascendente
-                const distToPulse = Math.abs(home.y - pulseCenter);
-                let pulseFactor = 0.0;
-                if (distToPulse < pulseLength) {
-                    pulseFactor = Math.cos((distToPulse / pulseLength) * Math.PI * 0.5);
-                }
-
-                // Desplazamiento ligero hacia afuera al paso del pulso (efecto abombamiento)
-                const pulseDisplace = pulseFactor * 0.07;
-                const dirX = home.x > 0 ? 1.0 : -1.0;
-
-                // Calcular Shockwaves (Ondas Expansivas al hacer Click)
-                let addX = 0, addY = 0, addZ = 0;
-                for (let w = 0; w < shockwaves.length; w++) {
-                    const sw = shockwaves[w];
-                    const elapsed = Math.max(0, time - sw.t0);
-                    const R = sw.speed * elapsed;
-                    const sigma = sw.width;
-                    const decayFactor = Math.exp(-sw.decay * elapsed);
-                    const g = Math.exp(-((dist - R) * (dist - R)) / (2 * sigma * sigma));
-                    const amp = sw.amplitude * g * decayFactor;
-                    addX += (home.x / dist) * amp;
-                    addY += (home.y / dist) * amp;
-                    addZ += (home.z / dist) * amp * 0.5;
-                }
-
-                // Target final combinado (Oscilación base + Desplazamiento de pulso + Ondas expansivas)
-                let curTargetX = home.x + waveX + (dirX * pulseDisplace) + addX;
-                let curTargetY = home.y + waveY + addY;
-                let curTargetZ = home.z + waveZ + addZ;
-
-                const lerpFactor = 0.085;
-
-                // Suavizar posición física
-                posArray[i3]     += (curTargetX - posArray[i3]) * lerpFactor;
-                posArray[i3 + 1] += (curTargetY - posArray[i3 + 1]) * lerpFactor;
-                posArray[i3 + 2] += (curTargetZ - posArray[i3 + 2]) * lerpFactor;
-
-                // 3. Brillo neón dinámico (Oscilación individual + Aumento al paso del pulso)
-                let baseBright = 0.55 + Math.sin(time * 2.2 + (i % 8)) * 0.12;
-                // El pulso hace brillar intensamente en verde/blanco neón
-                let bright = baseBright + pulseFactor * 1.1; 
-                
-                colArray[i3]     = logoMaterial.color.r * bright;
-                colArray[i3 + 1] = logoMaterial.color.g * bright;
-                colArray[i3 + 2] = logoMaterial.color.b * bright;
-            }
-            posAttr.needsUpdate = true;
-            colAttr.needsUpdate = true;
-            }
-
-            // Filtrar shockwaves vencidas
-            if (shockwaves.length) {
-                shockwaves = shockwaves.filter(sw => {
-                    const elapsed = time - sw.t0;
-                    return elapsed < 3.0;
-                });
-            }
-
-            // 5. Animación de Olas del Terreno Vectorial
+            // --- TERRAIN DE OLAS (siempre activo en toda la página) ---
             flowOffset += 0.012 + clampedVelocity * 0.0018;
             const amplitudeFactor = 0.4 + clampedVelocity * 0.007;
 
@@ -1896,9 +2396,11 @@ COMMIT;`
             }
             terrainPos.needsUpdate = true;
 
-            const terrainOpacity = Math.min(0.22, progress * 1.6);
+            // Opacidad del terreno: aparece al entrar en el Hero y se mantiene en el resto
+            const terrainOpacity = inHero
+                ? Math.min(0.22, progress * 1.1)   // fade-in en el Hero
+                : 0.22;                              // siempre visible fuera del Hero
             terrainMaterial.opacity = terrainOpacity;
-
             terrainMesh.rotation.x = -Math.PI / 2.2 + clampedVelocity * 0.0006;
 
             renderer.render(scene, camera);
@@ -2146,9 +2648,9 @@ COMMIT;`
         
         // Parallax del Hero
         if (scrollY < 800) {
-            if (heroContent) {
-                heroContent.style.transform = `translate3d(0, ${scrollY * 0.35}px, 0)`;
-                heroContent.style.opacity   = 1 - scrollY / 650;
+            if (heroCenterLayout) {
+                heroCenterLayout.style.transform = `translate3d(0, ${scrollY * 0.35}px, 0)`;
+                heroCenterLayout.style.opacity   = 1 - scrollY / 650;
             }
             if (heroBlueprintContainer) {
                 const factor = scrollY / (heroH || 800);
@@ -2198,8 +2700,9 @@ COMMIT;`
         handleInvertedScroll(scrollY);
         handleMethodologyScroll(scrollY);
         init3DCore();
-        initPhilosophy3D();
+        // Philosophy canvases auto-initialize via their IIFE/function calls in the 3-canvas system
         
+
         // Activar textos iniciales en Hero
         document.querySelectorAll('.hero-content .reveal-text').forEach(el => {
             el.classList.add('active');

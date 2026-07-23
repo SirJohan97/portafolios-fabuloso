@@ -807,15 +807,7 @@
         to   { opacity: 1; transform: translateX(0); }
     }
 
-    .nav-progress-bar {
-        animation: nav-progress linear;
-        animation-timeline: scroll();
-        transform-origin: left;
-    }
-    @keyframes nav-progress {
-        from { transform: scaleX(0); }
-        to   { transform: scaleX(1); }
-    }
+
 }
 
 @supports not (animation-timeline: scroll()) {
@@ -1137,15 +1129,33 @@
 /* ——————————————————————————————————————————
    FILM GRAIN CANVAS (Animado por JS, más vivo que el pseudo-element)
    —————————————————————————————————————————— */
+@keyframes grainAnimation {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -10%); }
+    20% { transform: translate(-15%, 5%); }
+    30% { transform: translate(7%, -9%); }
+    40% { transform: translate(-5%, 25%); }
+    50% { transform: translate(-15%, 10%); }
+    60% { transform: translate(15%, 0%); }
+    70% { transform: translate(0%, 15%); }
+    80% { transform: translate(3%, 35%); }
+    90% { transform: translate(-10%, 10%); }
+}
+
 #film-grain-canvas {
     position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    top: -50px;
+    left: -50px;
+    width: calc(100% + 100px);
+    height: calc(100% + 100px);
     pointer-events: none;
     z-index: 9997;
-    opacity: 0.045;
-    mix-blend-mode: overlay;
+    opacity: 0.035;
+    mix-blend-mode: normal;
+}
+
+.grain-active #film-grain-canvas {
+    animation: grainAnimation 0.9s steps(10) infinite;
 }
 
 /* ——————————————————————————————————————————
@@ -1627,4 +1637,29 @@
     .footer-bottom-bar { flex-direction: column; text-align: center; }
     .hero-sub-row { flex-direction: column; gap: 1.5rem; }
 }
+
+/* 3D Depth Hover Effects for Hero */
+.hero-content {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    will-change: transform;
+}
+.hero-title-group {
+    transform: translateZ(50px);
+    transform-style: preserve-3d;
+}
+.hero-sub-row {
+    transform: translateZ(25px);
+    transform-style: preserve-3d;
+}
+.hero-btns {
+    transform: translateZ(35px);
+    transform-style: preserve-3d;
+}
+
+/* Hardware acceleration for SVG dynamic filters */
+.brand-letters, .split-target, #vanta-hud-pointer, .wa-orbital-btn {
+    will-change: transform, filter;
+}
+
 

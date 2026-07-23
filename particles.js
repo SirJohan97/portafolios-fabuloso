@@ -268,7 +268,12 @@
     /* ══════════════════════════════════════════════════════════════
        7. BUCLE DE ANIMACIÓN
        ══════════════════════════════════════════════════════════════ */
+    let animationFrameId;
+    let isPageVisible = !document.hidden;
+
     function animate() {
+        if (!isPageVisible) return;
+
         ctx.clearRect(0, 0, W, H);
 
         for (let i = 0; i < particles.length; i++) {
@@ -276,13 +281,24 @@
             particles[i].draw();
         }
 
-        requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
     }
+
+    document.addEventListener('visibilitychange', () => {
+        isPageVisible = !document.hidden;
+        if (isPageVisible) {
+            cancelAnimationFrame(animationFrameId);
+            animate();
+        } else {
+            cancelAnimationFrame(animationFrameId);
+        }
+    });
 
     /* ══════════════════════════════════════════════════════════════
        8. ARRANQUE
        ══════════════════════════════════════════════════════════════ */
     initParticles();
-    requestAnimationFrame(animate);
+    animate();
 
 })();
+

@@ -275,16 +275,6 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
                 background 0.4s ease;
 }
 
-.nav-progress-bar {
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    height: 2px;
-    background: var(--primary);
-    width: 0%;
-    box-shadow: 0 0 10px var(--primary-glow);
-    transition: width 0.1s;
-    z-index: 1001;
 }
 
 /* Fondo sólido una vez el usuario hizo scroll */
@@ -316,9 +306,10 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     opacity: 0;
     margin-right: 0;
     flex-shrink: 0;
-    transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.4s ease,
-                margin-right 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.45s ease,
+                margin-right 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: width, opacity, margin-right;
 }
 
 .logo-icon svg {
@@ -371,9 +362,10 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     max-width: 2ch;
     opacity: 1;
     letter-spacing: 5px;
-    transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                letter-spacing 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                letter-spacing 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: max-width, opacity;
 }
 
 /* Delays escalonados para efecto cascada (A, N, T) */
@@ -546,38 +538,44 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 /* Ambient Auroras / Glows de Fondo */
 .ambient-aurora {
     position: fixed;
-    width: 60vw;
-    height: 60vh;
-    border-radius: 50%;
-    filter: blur(140px);
     pointer-events: none;
     z-index: 0;
-    opacity: 0.045;
     will-change: transform;
+    border-radius: 50%;
 }
 
 .aurora-1 {
-    top: -15%;
-    left: -15%;
-    background-color: var(--primary);
+    top: -25vh;
+    left: -25vw;
+    width: 90vw;
+    height: 90vh;
+    background: radial-gradient(ellipse at center,
+        rgba(17, 212, 131, 0.13) 0%,
+        rgba(17, 212, 131, 0.06) 40%,
+        rgba(17, 212, 131, 0.00) 70%);
     animation: floatAurora1 20s ease-in-out infinite alternate;
 }
 
 .aurora-2 {
-    bottom: -15%;
-    right: -15%;
-    background-color: #00ffaa;
+    bottom: -35vh;
+    right: -35vw;
+    width: 90vw;
+    height: 90vh;
+    background: radial-gradient(ellipse at center,
+        rgba(0, 255, 170, 0.10) 0%,
+        rgba(0, 255, 170, 0.04) 40%,
+        rgba(0, 255, 170, 0.00) 70%);
     animation: floatAurora2 25s ease-in-out infinite alternate;
 }
 
 @keyframes floatAurora1 {
-    0% { transform: translate3d(0, 0, 0) scale(1); }
-    100% { transform: translate3d(12vw, 8vh, 0) scale(1.15); }
+    0%   { transform: translate3d(0,   0,   0) scale(1.0); }
+    100% { transform: translate3d(6vw, 5vh, 0) scale(1.15); }
 }
 
 @keyframes floatAurora2 {
-    0% { transform: translate3d(0, 0, 0) scale(1); }
-    100% { transform: translate3d(-10vw, -8vh, 0) scale(0.9); }
+    0%   { transform: translate3d(0,    0,    0) scale(1.0); }
+    100% { transform: translate3d(-6vw, -5vh, 0) scale(0.88); }
 }
 
 /* =========================================
@@ -601,9 +599,9 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     position: absolute;
     inset: 0;
     background: radial-gradient(
-        450px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(var(--primary-rgb), 0.035),
-        transparent 80%
+        500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(var(--primary-rgb), 0.05) 0%,
+        transparent 75%
     );
     z-index: 1;
     pointer-events: none;
@@ -3548,7 +3546,7 @@ body.custom-cursor-active * {
    AWWWARDS ELEVATION OVERRIDES
    ========================================================= */
 
-/* --- A. Floating Glass Pill Navbar (Desktop) --- */
+/* --- A. Organic Un-boxed Floating Navbar (Desktop) --- */
 @media (min-width: 769px) {
     .navbar {
         padding: 0.6rem 2.2rem;
@@ -3565,14 +3563,60 @@ body.custom-cursor-active * {
         border-radius: 100px;
         z-index: 1000;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: padding 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .navbar.scrolled {
-        background: rgba(8, 8, 8, 0.85);
-        border-color: rgba(var(--primary-rgb), 0.2);
-        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        top: 10px;
-        padding: 0.45rem 1.8rem;
+
+    /* Estado colapsado fuera del hero: TOTALMENTE TRANSPARENTE, SIN RECUADROS NI BORDES */
+    .navbar.scrolled-out {
+        background: transparent !important;
+        border-color: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        pointer-events: none;
+    }
+
+    .navbar.scrolled-out .logo,
+    .navbar.scrolled-out .audio-toggle-btn,
+    .navbar.scrolled-out .menu-toggle {
+        pointer-events: all;
+    }
+
+    .navbar.scrolled-out .logo {
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .navbar.scrolled-out .logo:hover {
+        transform: scale(1.06);
+    }
+
+    /* Floating glass dropdown menu when hovering logo or top bar area */
+    .navbar.scrolled-out .nav-links {
+        position: absolute;
+        top: 48px;
+        left: 20px;
+        background: rgba(8, 10, 15, 0.94);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(var(--primary-rgb), 0.3);
+        border-radius: 50px;
+        padding: 0.6rem 1.6rem;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 25px rgba(var(--primary-rgb), 0.2);
+        opacity: 0;
+        transform: translateY(-8px) scale(0.96);
+        pointer-events: none;
+        transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        gap: 1.5rem;
+    }
+
+    .navbar.scrolled-out:hover .nav-links,
+    .navbar.scrolled-out .logo:hover ~ .nav-links,
+    .navbar.scrolled-out .nav-links:hover {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: all;
     }
     .nav-links {
         position: relative;
@@ -4301,6 +4345,334 @@ body {
 .pricing-intro {
     text-align: center;
     padding: 5rem 5% 2rem;
+}
+
+/* ---- VANTA INTERACTIVE PRICING ENGINE ---- */
+.pricing-badge-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    background: rgba(17, 212, 131, 0.08);
+    border: 1px solid rgba(17, 212, 131, 0.25);
+    color: var(--primary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.vanta-pricing-container {
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 5% 4rem;
+}
+
+.vanta-pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 2.5rem;
+    background: rgba(15, 17, 21, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 2.5rem;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 991px) {
+    .vanta-pricing-grid {
+        grid-template-columns: 1fr;
+        padding: 1.8rem;
+        gap: 2rem;
+    }
+}
+
+/* Columna Izquierda: Features */
+.pricing-features-title {
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.pricing-features-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+    margin-bottom: 1.8rem;
+}
+
+.pricing-interactive-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pricing-interactive-features li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.pricing-interactive-features li i {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+.pricing-interactive-features li.included i {
+    background: rgba(17, 212, 131, 0.2);
+    color: var(--primary);
+    border: 1px solid rgba(17, 212, 131, 0.4);
+    box-shadow: 0 0 10px rgba(17, 212, 131, 0.2);
+}
+
+.pricing-interactive-features li.excluded {
+    opacity: 0.4;
+    background: transparent;
+    border-color: transparent;
+    text-decoration: line-through;
+}
+
+.pricing-interactive-features li.excluded i {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Columna Derecha: Selectores */
+.switch-label-title {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.pricing-tab-switch-wrap,
+.pricing-cycle-switch-wrap {
+    margin-bottom: 1.4rem;
+}
+
+.pricing-tabs-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.plan-tab-btn {
+    background: transparent;
+    border: none;
+    padding: 10px 8px;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    position: relative;
+}
+
+.plan-tab-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.plan-tab-btn.active {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 4px 15px rgba(17, 212, 131, 0.35);
+}
+
+.tab-badge-offer {
+    font-size: 0.62rem;
+    padding: 2px 6px;
+    border-radius: 8px;
+    background: #ff3e3e;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.plan-tab-btn.active .tab-badge-offer {
+    background: #000;
+    color: #fff;
+}
+
+.tab-badge-pop {
+    font-size: 0.62rem;
+    padding: 2px 6px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-weight: 700;
+}
+
+.plan-tab-btn.active .tab-badge-pop {
+    background: rgba(0, 0, 0, 0.25);
+    color: #000;
+}
+
+.pricing-cycle-toggle-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cycle-btn {
+    background: transparent;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.cycle-btn.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.cycle-discount {
+    font-size: 0.72rem;
+    color: var(--primary);
+    background: rgba(17, 212, 131, 0.15);
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+/* Display Box & Precio */
+.pricing-display-box {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(17, 212, 131, 0.2);
+    border-radius: 20px;
+    padding: 1.6rem;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.pricing-offer-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255, 62, 62, 0.2), rgba(255, 140, 0, 0.2));
+    border: 1px solid rgba(255, 62, 62, 0.4);
+    color: #ff5e5e;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+    animation: pulseBadge 2s infinite alternate;
+}
+
+@keyframes pulseBadge {
+    0% { transform: scale(1); opacity: 0.9; }
+    100% { transform: scale(1.03); opacity: 1; box-shadow: 0 0 15px rgba(255, 62, 62, 0.3); }
+}
+
+.pricing-price-wrapper {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 0.8rem;
+}
+
+.price-main-value {
+    display: flex;
+    align-items: baseline;
+    color: #fff;
+}
+
+.price-main-value .currency {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-right: 2px;
+}
+
+.price-main-value .amount-number {
+    font-size: 3.2rem;
+    font-weight: 800;
+    font-family: var(--font-display);
+    line-height: 1;
+    color: #fff;
+    letter-spacing: -1px;
+}
+
+.price-main-value .price-period {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 6px;
+    font-weight: 500;
+}
+
+.price-slashed-value {
+    display: flex;
+    align-items: baseline;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: line-through;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.pricing-plan-desc {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.92rem;
+    margin-bottom: 1.4rem;
+}
+
+.pricing-cta-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px;
+    font-size: 1rem;
+    border-radius: 14px;
 }
 
 .pricing-cards-scene {
@@ -5631,3 +6003,480 @@ body {
     z-index: 3;
 }
 
+
+/* ============================================================
+   PHASE 1 PREMIUM UPGRADE — VANTA STUDIO
+   ============================================================ */
+
+/* ----- 3 Philosophy Canvases ----- */
+.ph-chapter-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+.ph-chapter-canvas.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ----- Audio Toggle Button ----- */
+.audio-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(var(--primary-rgb), 0.25);
+    background: rgba(var(--primary-rgb), 0.06);
+    border-radius: 50%;
+    color: rgba(255,255,255,0.55);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+.audio-toggle-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--primary-rgb), 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.audio-toggle-btn:hover {
+    border-color: rgba(var(--primary-rgb), 0.6);
+    color: var(--primary);
+    box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.3);
+}
+.audio-toggle-btn:hover::before { opacity: 1; }
+.audio-toggle-btn.active {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.12);
+    box-shadow: 0 0 16px rgba(var(--primary-rgb), 0.4);
+    animation: audioPulse 2s infinite ease-in-out;
+}
+@keyframes audioPulse {
+    0%, 100% { box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.3); }
+    50% { box-shadow: 0 0 22px rgba(var(--primary-rgb), 0.6); }
+}
+
+/* ----- Portfolio Cards Premium Hover ----- */
+.card {
+    position: relative;
+}
+.card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+        400px circle at var(--mx, 50%) var(--my, 50%),
+        rgba(var(--primary-rgb), 0.08) 0%,
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+.card:hover::after { opacity: 1; }
+
+.card .card-image-wrap img {
+    transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s ease;
+}
+.card:hover .card-image-wrap img {
+    transform: scale(1.06);
+    filter: brightness(1.05) saturate(1.1);
+}
+
+/* Glowing border on hover */
+.card {
+    transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+}
+.card:hover {
+    box-shadow: 0 0 0 1px rgba(var(--primary-rgb), 0.35), 0 20px 60px rgba(0,0,0,0.6);
+    transform: translateY(-4px);
+}
+
+/* Magnetic title drift effect */
+.card h3 {
+    transition: transform 0.3s ease;
+    will-change: transform;
+}
+
+/* ----- Text Scramble Characters ----- */
+.scramble-char {
+    display: inline-block;
+    position: relative;
+}
+.scramble-char.scrambling {
+    color: var(--primary);
+    opacity: 0.7;
+}
+
+/* ----- Sections headlines scramble wrapper ----- */
+.section-title {
+    position: relative;
+    overflow: visible;
+}
+
+/* Sound wave visual feedback (micro indicator) */
+.audio-wave-indicator {
+    display: none;
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 3px;
+    align-items: flex-end;
+    height: 20px;
+    z-index: 9999;
+    pointer-events: none;
+}
+.audio-wave-indicator.visible {
+    display: flex;
+}
+.audio-wave-indicator span {
+    display: block;
+    width: 3px;
+    background: var(--primary);
+    border-radius: 2px;
+    animation: waveBar 0.8s ease-in-out infinite;
+}
+.audio-wave-indicator span:nth-child(1) { height: 6px;  animation-delay: 0s; }
+.audio-wave-indicator span:nth-child(2) { height: 14px; animation-delay: 0.1s; }
+.audio-wave-indicator span:nth-child(3) { height: 20px; animation-delay: 0.2s; }
+.audio-wave-indicator span:nth-child(4) { height: 14px; animation-delay: 0.3s; }
+.audio-wave-indicator span:nth-child(5) { height: 6px;  animation-delay: 0.4s; }
+@keyframes waveBar {
+    0%, 100% { transform: scaleY(0.4); opacity: 0.5; }
+    50%       { transform: scaleY(1);   opacity: 1; }
+}
+
+/* ----- Neural pulse ring (Canvas 3) indicator ----- */
+.ph-canvas-burst {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* ============================================================
+   FASE 2 PREMIUM — VANTA STUDIO
+   ============================================================ */
+
+/* ----- Mesh Gradient Canvas ----- */
+#mesh-gradient-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+    opacity: 1;
+}
+
+/* ----- Bento Universe ----- */
+.bento-section.bento-universe {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    padding: 8rem 6rem;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+.bento-universe-left {
+    flex: 0 0 420px;
+    max-width: 420px;
+    z-index: 2;
+}
+.bento-universe-left .bento-title {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    margin: 0.5rem 0 1rem;
+    line-height: 1.1;
+}
+.bento-universe-sub {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    font-family: var(--font-body, system-ui);
+}
+.bento-universe-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+}
+.bum {
+    padding: 1.1rem 1.4rem;
+    border: 1px solid rgba(var(--primary-rgb), 0.15);
+    border-radius: 8px;
+    background: rgba(var(--primary-rgb), 0.04);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, background 0.3s;
+}
+.bum:hover {
+    border-color: rgba(var(--primary-rgb), 0.4);
+    background: rgba(var(--primary-rgb), 0.08);
+}
+.bum-val {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: 'Orbitron', monospace;
+    color: var(--primary);
+    line-height: 1;
+}
+.bum-label {
+    display: block;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 0.3rem;
+}
+.bento-universe-right {
+    flex: 1;
+    position: relative;
+    height: 560px;
+    min-height: 480px;
+}
+#bento-universe-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+.orb-label {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: translateY(4px);
+    text-align: center;
+    white-space: nowrap;
+}
+.orb-label.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.orb-label span {
+    display: block;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.orb-label small {
+    display: block;
+    font-size: 0.5rem;
+    color: rgba(255,255,255,0.45);
+    margin-top: 1px;
+}
+
+/* ----- Cursor Premium con Thumbnail ----- */
+.cursor {
+    transition: width 0.35s cubic-bezier(0.25,1,0.5,1),
+                height 0.35s cubic-bezier(0.25,1,0.5,1),
+                border-color 0.3s,
+                background 0.3s,
+                opacity 0.3s;
+}
+.cursor.cursor--thumb {
+    width: 110px !important;
+    height: 110px !important;
+    border-color: rgba(var(--primary-rgb), 0.6) !important;
+    background: transparent !important;
+    overflow: hidden;
+}
+.cursor.cursor--thumb canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.cursor-click-ripple {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    animation: cursorRipple 0.55s ease-out forwards;
+}
+@keyframes cursorRipple {
+    from { width: 10px; height: 10px; opacity: 0.8; }
+    to   { width: 80px; height: 80px; opacity: 0; }
+}
+
+/* ----- Portfolio Card Ripple Distortion ----- */
+.card-image-wrap {
+    position: relative;
+    overflow: hidden;
+}
+.card-ripple-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.card:hover .card-ripple-canvas {
+    opacity: 1;
+}
+
+/* ----- SPA Expand Overlay ----- */
+#project-expand-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+}
+#project-expand-overlay.open {
+    pointer-events: all;
+    visibility: visible;
+    opacity: 1;
+}
+.peo-bg {
+    position: absolute;
+    inset: 0;
+    background: #080808;
+    clip-path: circle(0% at 50% 50%);
+    transition: clip-path 0.65s cubic-bezier(0.77,0,0.175,1);
+}
+#project-expand-overlay.open .peo-bg {
+    clip-path: circle(150% at 50% 50%);
+}
+.peo-close {
+    position: absolute;
+    top: 2rem;
+    right: 2.5rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
+    background: rgba(var(--primary-rgb), 0.08);
+    color: rgba(255,255,255,0.7);
+    font-size: 1.1rem;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+#project-expand-overlay.open .peo-close {
+    opacity: 1;
+    transform: rotate(0deg);
+    transition: opacity 0.4s 0.4s, transform 0.4s 0.4s cubic-bezier(0.34,1.56,0.64,1), background 0.3s, border-color 0.3s;
+}
+.peo-close:hover {
+    background: rgba(var(--primary-rgb), 0.18);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+.peo-content {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1100px;
+    width: 90%;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.4s 0.5s, transform 0.4s 0.5s cubic-bezier(0.25,1,0.5,1);
+}
+#project-expand-overlay.open .peo-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+.peo-tag {
+    display: inline-block;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
+    border-radius: 50px;
+}
+.peo-title {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+.peo-desc {
+    color: rgba(255,255,255,0.55);
+    font-size: 1rem;
+    line-height: 1.65;
+}
+.peo-image-wrap {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(var(--primary-rgb), 0.15);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+}
+.peo-image-wrap img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+}
+.peo-meta {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.peo-meta span {
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    border: 1px solid rgba(var(--primary-rgb), 0.2);
+    color: rgba(255,255,255,0.5);
+    font-family: monospace;
+}
+
+/* Mobile tweaks for universe */
+@media (max-width: 900px) {
+    .bento-section.bento-universe {
+        flex-direction: column;
+        padding: 5rem 2rem;
+        min-height: auto;
+    }
+    .bento-universe-left { max-width: 100%; flex: none; }
+    .bento-universe-right { width: 100%; height: 320px; }
+    .peo-content { grid-template-columns: 1fr; gap: 2rem; }
+}

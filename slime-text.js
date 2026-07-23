@@ -32,6 +32,18 @@
     let CANVAS_W   = 0;
     let CANVAS_H   = 0;
 
+    let isSlimeVisible = true;
+    let timeoutId      = null;
+
+    function scheduleNextCycle() {
+        if (timeoutId) clearTimeout(timeoutId);
+        const currentScroll = window.scrollY || window.pageYOffset;
+        isSlimeVisible = currentScroll < window.innerHeight * 1.5;
+        if (isSlimeVisible && !document.hidden) {
+            timeoutId = setTimeout(startSag, DISPLAY_MS);
+        }
+    }
+
     // ─── INIT ─────────────────────────────────────────────────
     function init() {
         anchorEl = document.getElementById('liquid-text');
@@ -66,8 +78,40 @@
 
         phase = 'idle';
         phaseStart = performance.now();
-        setTimeout(startSag, DISPLAY_MS);
-        // Animation loop is paused initially
+
+        function wakeUpSlime() {
+            const currentScroll = window.scrollY || window.pageYOffset;
+            const nowVisible = currentScroll < window.innerHeight * 1.5;
+            if (nowVisible) {
+                if (!isSlimeVisible || (phase === 'idle' && !timeoutId)) {
+                    isSlimeVisible = true;
+                    scheduleNextCycle();
+                }
+            } else {
+                if (isSlimeVisible) {
+                    isSlimeVisible = false;
+                    if (timeoutId) {
+                        clearTimeout(timeoutId);
+                        timeoutId = null;
+                    }
+                }
+            }
+        }
+
+        window.addEventListener('scroll', wakeUpSlime, { passive: true });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (timeoutId) {
+                    clearTimeout(timeoutId);
+                    timeoutId = null;
+                }
+            } else {
+                wakeUpSlime();
+            }
+        });
+
+        scheduleNextCycle();
     }
 
     // ─── RESIZE ───────────────────────────────────────────────
@@ -240,7 +284,7 @@
                 if (ctx) ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
                 
                 phaseStart = performance.now();
-                setTimeout(startSag, DISPLAY_MS);
+                scheduleNextCycle();
             }
         }
     }

@@ -167,73 +167,7 @@ function initEffectsScript() {
             el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--click'));
         });
 
-        // Magnetismo en botones (Throttled con bandera para evitar saturacion de CPU)
-        const magneticEls = document.querySelectorAll(
-            '.btn, .btn-outline, .magnetic-btn, .wa-orbital-btn, .nav-links a, .logo, .footer-social a'
-        );
-
-        const STRENGTH = 0.38;
-        const RADIUS = 80;
-        let activeElement = null;
-        let clientX = 0;
-        let clientY = 0;
-
-        // Guardar coordenadas de raton de forma pasiva
-        document.addEventListener('mousemove', (e) => {
-            clientX = e.clientX;
-            clientY = e.clientY;
-        }, { passive: true });
-
-        // Ticker de GSAP para actualizar posiciones a 60fps (evitando miles de repaints en mousemove)
-        gsap.ticker.add(() => {
-            if (!activeElement) return;
-
-            const rect = activeElement.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const deltaX = clientX - centerX;
-            const deltaY = clientY - centerY;
-            const dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-            if (dist < RADIUS) {
-                const pull = 1 - dist / RADIUS;
-                const moveX = deltaX * STRENGTH * pull;
-                const moveY = deltaY * STRENGTH * pull;
-
-                activeElement.style.transition = 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1)';
-                activeElement.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                
-                const inner = activeElement.querySelector('span, i');
-                if (inner) {
-                    inner.style.transition = 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1)';
-                    inner.style.transform = `translate(${moveX * 0.3}px, ${moveY * 0.3}px)`;
-                }
-            } else {
-                snapBack(activeElement);
-                activeElement = null;
-            }
-        });
-
-        // Eventos Hover para activar/desactivar el magnetismo de forma selectiva
-        magneticEls.forEach(el => {
-            el.addEventListener('mouseenter', () => { activeElement = el; });
-            el.addEventListener('mouseleave', () => {
-                if (activeElement === el) {
-                    snapBack(el);
-                    activeElement = null;
-                }
-            });
-        });
-
-        function snapBack(el) {
-            el.style.transition = 'transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            el.style.transform = 'translate(0px, 0px)';
-            const inner = el.querySelector('span, i');
-            if (inner) {
-                inner.style.transition = 'transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                inner.style.transform = 'translate(0px, 0px)';
-            }
-        }
+// (Botón magnetismo removido para permitir botones estables y cursor totalmente fluido)
     })();
 
 
@@ -530,30 +464,36 @@ function initEffectsScript() {
                     if (progressFill) progressFill.style.width = `${self.progress * 100}%`;
                     scrollState.progress = self.progress;
 
-                    // Alimentar el canvas 3D global
+                    // Switch canvas activo — el engine centralizado en script.js maneja el resto
+                    let targetCanvas = 1;
+                    if (self.progress >= 0.35 && self.progress < 0.70) targetCanvas = 2;
+                    else if (self.progress >= 0.70) targetCanvas = 3;
+
+                    if (typeof window.switchPhCanvas === 'function') {
+                        window.switchPhCanvas(targetCanvas);
+                    }
+
+                    // Alimentar el canvas 3D global de fondo
                     if (window.vanta3D) {
                         window.vanta3D.progress = self.progress;
-                        if (self.progress < 0.35) {
-                            const norm = self.progress / 0.35;
-                            window.vanta3D.glitch = Math.sin(norm * Math.PI) * 0.95;
-                        } else {
-                            window.vanta3D.glitch = 0;
-                        }
+                        window.vanta3D.glitch = (self.progress < 0.35)
+                            ? Math.sin((self.progress / 0.35) * Math.PI) * 0.95
+                            : 0;
                     }
 
                     if (statusText && led) {
                         if (self.progress < 0.35) {
-                            statusText.textContent = 'SYSTEM_STATUS: ERROR_CAOS';
+                            statusText.textContent = 'VISUALIZER: CAOS_DIGITAL';
                             statusText.style.color = '#e74c3c';
                             led.style.background = '#e74c3c';
                             led.style.boxShadow = '0 0 8px #e74c3c';
-                        } else if (self.progress < 0.7) {
-                            statusText.textContent = 'SYSTEM_STATUS: OPTIMIZING_GRID';
+                        } else if (self.progress < 0.70) {
+                            statusText.textContent = 'VISUALIZER: ARCHITECTURE_CRYSTAL';
                             statusText.style.color = '#f1c40f';
                             led.style.background = '#f1c40f';
                             led.style.boxShadow = '0 0 8px #f1c40f';
                         } else {
-                            statusText.textContent = 'SYSTEM_STATUS: ACTIVE_ECOSYSTEM';
+                            statusText.textContent = 'VISUALIZER: NEURAL_NETWORK';
                             statusText.style.color = '#11d483';
                             led.style.background = '#11d483';
                             led.style.boxShadow = '0 0 8px #11d483';
@@ -1108,6 +1048,8 @@ function initEffectsScript() {
     (function initParticleScrollWarp() {
         let lastScrollY = window.scrollY;
         let currentWarp = 0;
+        let isLoopRunning = false;
+        let warpRafId = null;
 
         function updateWarpLoop() {
             const currentY = window.scrollY;
@@ -1122,15 +1064,23 @@ function initEffectsScript() {
 
             if (Math.abs(currentWarp) < 0.01) {
                 window.bgParticleScrollWarp = 0;
+                isLoopRunning = false;
+                warpRafId = null;
             } else {
                 window.bgParticleScrollWarp = currentWarp;
+                warpRafId = requestAnimationFrame(updateWarpLoop);
             }
-
-            requestAnimationFrame(updateWarpLoop);
         }
 
-        // Lanzar loop de render
-        requestAnimationFrame(updateWarpLoop);
+        function wakeUp() {
+            if (!isLoopRunning) {
+                isLoopRunning = true;
+                updateWarpLoop();
+            }
+        }
+
+        // Listen to scroll to wake it up
+        window.addEventListener('scroll', wakeUp, { passive: true });
 
         // Integración directa con Lenis si está activo
         setTimeout(() => {
@@ -1139,9 +1089,12 @@ function initEffectsScript() {
                     const target = e.velocity * 0.04;
                     currentWarp += (target - currentWarp) * 0.12;
                     window.bgParticleScrollWarp = currentWarp;
+                    wakeUp();
                 });
             }
         }, 500);
+
+        wakeUp();
     })();
 
 
@@ -1153,32 +1106,24 @@ function initEffectsScript() {
         if (!canvas) return;
 
         const ctx = canvas.getContext('2d');
-        // Draw on tiny canvas - browsers handle the scaling for free
-        const GRAIN_RES = 128;
+        const GRAIN_RES = 256;
         canvas.width  = GRAIN_RES;
         canvas.height = GRAIN_RES;
-        // CSS scales it up to full screen
-        canvas.style.width  = '100%';
-        canvas.style.height = '100%';
         canvas.style.imageRendering = 'pixelated';
 
         const imageData = ctx.createImageData(GRAIN_RES, GRAIN_RES);
         const data = imageData.data;
 
-        let lastDraw = 0;
-        function loop(ts) {
-            if (ts - lastDraw > 100) { // only 10fps - imperceptible but grain-like
-                for (let i = 0; i < data.length; i += 4) {
-                    const v = Math.random() * 255 | 0;
-                    data[i] = data[i+1] = data[i+2] = v;
-                    data[i+3] = 255;
-                }
-                ctx.putImageData(imageData, 0, 0);
-                lastDraw = ts;
-            }
-            requestAnimationFrame(loop);
+        // Generate static noise once
+        for (let i = 0; i < data.length; i += 4) {
+            const v = (Math.random() * 50 + 100) | 0;
+            data[i] = data[i+1] = data[i+2] = v;
+            data[i+3] = 255;
         }
-        requestAnimationFrame(loop);
+        ctx.putImageData(imageData, 0, 0);
+
+        // Activamos la animación por CSS añadiendo la clase
+        canvas.parentElement.classList.add('grain-active');
     })();
 
     /* ============================================================
@@ -1555,16 +1500,7 @@ function initEffectsScript() {
 
         const currentN = counter.querySelector('.current-n');
 
-        // Show/hide counter based on portfolio section visibility
-        const sectionObs = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                counter.classList.toggle('visible', entry.isIntersecting);
-            });
-        }, { threshold: 0.1 });
-        sectionObs.observe(portfolioSection);
-
         // Read horizontal scroll progress via GSAP ScrollTrigger
-        // Poll horizontal track scroll offset
         function getActiveCard() {
             const track = document.querySelector('.horizontal-track');
             if (!track) return 0;
@@ -1576,7 +1512,8 @@ function initEffectsScript() {
         }
 
         let lastIndex = -1;
-        function updateCounter() {
+        function updateCounterOnScroll() {
+            if (!counter.classList.contains('visible')) return;
             const idx = getActiveCard();
             if (idx !== lastIndex) {
                 lastIndex = idx;
@@ -1597,9 +1534,612 @@ function initEffectsScript() {
                     });
                 }, 150);
             }
-            requestAnimationFrame(updateCounter);
         }
-        requestAnimationFrame(updateCounter);
+
+        // Show/hide counter based on portfolio section visibility
+        const sectionObs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const isVisible = entry.isIntersecting;
+                counter.classList.toggle('visible', isVisible);
+                if (isVisible) {
+                    updateCounterOnScroll();
+                }
+            });
+        }, { threshold: 0.1 });
+        sectionObs.observe(portfolioSection);
+
+        // Bind scroll event to update counter
+        setTimeout(() => {
+            if (window.lenis) {
+                window.lenis.on('scroll', updateCounterOnScroll);
+            } else {
+                window.addEventListener('scroll', updateCounterOnScroll, { passive: true });
+            }
+        }, 500);
+    })();
+
+    /* ============================================================
+       10. HERO 3D MOUSE TILT EFFECT
+       ============================================================ */
+    (function initHeroTilt() {
+        const hero = document.getElementById('home') || document.querySelector('.hero');
+        const heroContent = document.querySelector('.hero-content');
+        if (!hero || !heroContent) return;
+
+        let mouseX = 0, mouseY = 0;
+        let currentX = 0, currentY = 0;
+        let isTiltRunning = false;
+        let tiltRafId = null;
+
+        function startTiltLoop() {
+            if (!isTiltRunning && !document.hidden) {
+                isTiltRunning = true;
+                updateTilt();
+            }
+        }
+
+        function stopTiltLoop() {
+            isTiltRunning = false;
+            if (tiltRafId) {
+                cancelAnimationFrame(tiltRafId);
+                tiltRafId = null;
+            }
+        }
+
+        hero.addEventListener('mousemove', (e) => {
+            const rect = hero.getBoundingClientRect();
+            // normalized coordinates from center of the hero (-1 to 1)
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            mouseX = (e.clientX - cx) / (rect.width / 2);
+            mouseY = (e.clientY - cy) / (rect.height / 2);
+            startTiltLoop();
+        }, { passive: true });
+
+        hero.addEventListener('mouseleave', () => {
+            mouseX = 0;
+            mouseY = 0;
+            startTiltLoop();
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopTiltLoop();
+            } else {
+                startTiltLoop();
+            }
+        });
+
+        // Smooth interpolation loop using requestAnimationFrame
+        function updateTilt() {
+            if (document.hidden || !isTiltRunning) return;
+
+            // Lerp values for smooth movement
+            const diffX = mouseX - currentX;
+            const diffY = mouseY - currentY;
+
+            currentX += diffX * 0.08;
+            currentY += diffY * 0.08;
+
+            const tiltY = currentX * 6; // Max 6 deg rotateY
+            const tiltX = -currentY * 6; // Max 6 deg rotateX
+
+            heroContent.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+
+            if (Math.abs(diffX) < 0.001 && Math.abs(diffY) < 0.001) {
+                isTiltRunning = false;
+                tiltRafId = null;
+            } else {
+                tiltRafId = requestAnimationFrame(updateTilt);
+            }
+        }
+        startTiltLoop();
+    })();
+
+    /* ============================================================
+       14. VANTA INTERACTIVE PRICING ENGINE & NUMBER ODOMETER
+       ============================================================ */
+    (function initVantaPricingEngine() {
+        const featuresList = document.getElementById('pricingFeaturesList');
+        const planTabsGroup = document.getElementById('planTabsGroup');
+        const cycleToggleBar = document.querySelector('.pricing-cycle-toggle-bar');
+        const offerBadge = document.getElementById('planOfferBadge');
+        const amountEl = document.getElementById('pricingAmount');
+        const currencyEl = document.getElementById('pricingCurrency');
+        const periodEl = document.getElementById('pricingPeriod');
+        const slashedPriceWrap = document.getElementById('slashedPriceWrap');
+        const slashedEl = document.getElementById('pricingSlashed');
+        const descText = document.getElementById('planDescriptionText');
+        const ctaBtn = document.getElementById('pricingCtaBtn');
+
+        if (!featuresList || !planTabsGroup) return;
+
+        // Matriz de Datos de los 3 Planes con Descuento Estratégico en el Plan Básico
+        const PLANS_DATA = {
+            basico: {
+                name: "Básico",
+                desc: "Ideal para despegar rápido con una landing page de alto impacto.",
+                offerBadge: "🔥 OFERTA ÚNICA - 31% DESCUENTO",
+                monthly: { price: 199, original: 290, period: "USD" },
+                annual: { price: 159, original: 230, period: "USD / mes" },
+                ctaText: "Adquirir Plan Básico",
+                waMsg: "Hola,%20quiero%20aprovechar%20la%20Oferta%20del%20Plan%20B%C3%A1sico",
+                features: [
+                    { name: "Landing page profesional de alta conversión", included: true },
+                    { name: "Diseño responsive adaptado a móvil y web", included: true },
+                    { name: "Formulario directo de contacto a WhatsApp", included: true },
+                    { name: "Dominio y despliegue rápido en la nube", included: true },
+                    { name: "Panel de administración CMS", included: false },
+                    { name: "Base de datos y API Backend", included: false },
+                    { name: "Integraciones de IA autónomas", included: false }
+                ]
+            },
+            pro: {
+                name: "Profesional",
+                desc: "Solución completa para negocios que requieren gestión de datos y panel admin.",
+                offerBadge: "⚡ PLAN MÁS POPULAR ENTRE STARTUPS",
+                monthly: { price: 499, original: 650, period: "USD" },
+                annual: { price: 399, original: 520, period: "USD / mes" },
+                ctaText: "Seleccionar Plan Profesional",
+                waMsg: "Hola,%20estoy%20interesado%20en%20el%20Plan%20Profesional",
+                features: [
+                    { name: "Web completa multi-página con micro-animaciones", included: true },
+                    { name: "Diseño responsive adaptado a móvil y web", included: true },
+                    { name: "Formulario directo de contacto a WhatsApp", included: true },
+                    { name: "Dominio y despliegue rápido en la nube", included: true },
+                    { name: "Panel de administración CMS completo", included: true },
+                    { name: "Base de datos escalable + API Backend", included: true },
+                    { name: "Integraciones de IA autónomas", included: false }
+                ]
+            },
+            enterprise: {
+                name: "Empresarial",
+                desc: "Infraestructura a medida de alta escala con integración de Inteligencia Artificial.",
+                offerBadge: "🚀 INFRAESTRUCTURA DE ÉLITE A MEDIDA",
+                monthly: { price: "Custom", original: null, period: "" },
+                annual: { price: "Custom", original: null, period: "" },
+                ctaText: "Solicitar Cotización Personalizada",
+                waMsg: "Hola,%20necesito%20una%20cotizaci%C3%B3n%20para%20un%20proyecto%20Empresarial",
+                features: [
+                    { name: "Sistema a medida multi-módulo completo", included: true },
+                    { name: "Diseño responsive adaptado a móvil y web", included: true },
+                    { name: "Formulario directo de contacto a WhatsApp", included: true },
+                    { name: "Dominio y despliegue rápido en la nube", included: true },
+                    { name: "Panel de administración CMS completo", included: true },
+                    { name: "Base de datos escalable + API Backend", included: true },
+                    { name: "Integraciones de IA autónomas y Agentes", included: true }
+                ]
+            }
+        };
+
+        let activePlanKey = 'basico';
+        let activeCycleKey = 'monthly';
+
+        // Animación suave de cambio numérico (Odometer / NumberFlow)
+        function animateValue(obj, start, end, duration) {
+            if (isNaN(start) || isNaN(end)) {
+                obj.textContent = end;
+                return;
+            }
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentVal = Math.floor(progress * (end - start) + start);
+                obj.textContent = currentVal;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function renderPricingUI() {
+            const plan = PLANS_DATA[activePlanKey];
+            const cycleData = plan[activeCycleKey];
+
+            // 1. Renderizar Features List
+            featuresList.innerHTML = plan.features.map(f => `
+                <li class="${f.included ? 'included' : 'excluded'}">
+                    <i class="fas ${f.included ? 'fa-check' : 'fa-times'}"></i>
+                    <span>${f.name}</span>
+                </li>
+            `).join('');
+
+            // 2. Badge & Descrip
+            offerBadge.textContent = plan.offerBadge;
+            descText.textContent = plan.desc;
+
+            // 3. Precios y animación de números
+            if (typeof cycleData.price === 'number') {
+                currencyEl.style.display = 'inline';
+                periodEl.textContent = cycleData.period;
+                
+                const currentVal = parseInt(amountEl.textContent) || 0;
+                animateValue(amountEl, currentVal, cycleData.price, 400);
+
+                if (cycleData.original) {
+                    slashedPriceWrap.style.display = 'flex';
+                    const currentSlashed = parseInt(slashedEl.textContent) || 0;
+                    animateValue(slashedEl, currentSlashed, cycleData.original, 400);
+                } else {
+                    slashedPriceWrap.style.display = 'none';
+                }
+            } else {
+                // Caso Empresarial (Cotización Custom)
+                currencyEl.style.display = 'none';
+                amountEl.textContent = "Cotización";
+                periodEl.textContent = "a medida";
+                slashedPriceWrap.style.display = 'none';
+            }
+
+            // 4. Actualizar CTA WhatsApp Button
+            ctaBtn.setAttribute('href', `https://wa.me/584127121162?text=${plan.waMsg}%20(${activeCycleKey === 'annual' ? 'Facturaci%C3%B3n%20Anual' : 'Facturaci%C3%B3n%20Mensual'})`);
+            const btnSpan = ctaBtn.querySelector('span');
+            if (btnSpan) btnSpan.textContent = plan.ctaText;
+        }
+
+        // Handlers para Tabs de Planes
+        planTabsGroup.querySelectorAll('.plan-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                planTabsGroup.querySelectorAll('.plan-tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activePlanKey = btn.getAttribute('data-plan');
+                renderPricingUI();
+            });
+        });
+
+        // Handlers para Toggle de Ciclos
+        if (cycleToggleBar) {
+            cycleToggleBar.querySelectorAll('.cycle-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    cycleToggleBar.querySelectorAll('.cycle-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeCycleKey = btn.getAttribute('data-cycle');
+                    renderPricingUI();
+                });
+            });
+        }
+
+        // Render Inicial
+        renderPricingUI();
+    })();
+
+
+    /* ============================================================
+       PHASE 1 PREMIUM — AUDIO UI ENGINE (Web Audio API)
+       ============================================================ */
+    (function initAudioUI() {
+        const btn = document.getElementById('audio-toggle-btn');
+        if (!btn) return;
+
+        let audioCtx = null;
+        let enabled = false;
+
+        function getCtx() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            return audioCtx;
+        }
+
+        function playTone(freq, duration, type = 'sine', gain = 0.05) {
+            if (!enabled) return;
+            try {
+                const ctx = getCtx();
+                const osc = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+                osc.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq * 0.82, ctx.currentTime + duration);
+                gainNode.gain.setValueAtTime(0, ctx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(gain, ctx.currentTime + 0.02);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + duration + 0.05);
+            } catch(e) {}
+        }
+
+        function playClick()   { playTone(880, 0.12, 'sine', 0.045); }
+        function playHover()   { playTone(660, 0.07, 'sine', 0.025); }
+        function playSection() {
+            playTone(440, 0.14, 'sine', 0.038);
+            setTimeout(() => playTone(554, 0.14, 'sine', 0.038), 80);
+            setTimeout(() => playTone(660, 0.18, 'sine', 0.038), 160);
+        }
+
+        btn.addEventListener('click', () => {
+            enabled = !enabled;
+            btn.classList.toggle('active', enabled);
+            const offIcon = btn.querySelector('.audio-icon-off');
+            const onIcon  = btn.querySelector('.audio-icon-on');
+            if (offIcon) offIcon.style.display = enabled ? 'none' : '';
+            if (onIcon)  onIcon.style.display  = enabled ? '' : 'none';
+
+            if (enabled) {
+                playTone(440, 0.15, 'sine', 0.07);
+                setTimeout(() => playTone(554, 0.15, 'sine', 0.07), 100);
+                setTimeout(() => playTone(880, 0.25, 'sine', 0.06), 200);
+            } else {
+                playTone(880, 0.12, 'sine', 0.06);
+                setTimeout(() => playTone(440, 0.2, 'sine', 0.05), 100);
+            }
+        });
+
+        document.addEventListener('click', e => {
+            if (!enabled) return;
+            if (e.target.closest('.btn, .btn-outline, .plan-tab-btn, .cycle-btn, .modal-tab-btn')) {
+                playClick();
+            }
+        });
+
+        document.querySelectorAll('.nav-links a, .footer-nav-mini a').forEach(a => {
+            a.addEventListener('mouseenter', () => playHover());
+        });
+
+        document.querySelectorAll('.hud-dots li').forEach(dot => {
+            dot.addEventListener('click', () => playSection());
+        });
+
+        window._vantaAudio = { playClick, playHover, playSection, isEnabled: () => enabled };
+    })();
+
+
+    /* ============================================================
+       PHASE 1 PREMIUM — TEXT SCRAMBLE EN TÍTULOS DE SECCIÓN
+       ============================================================ */
+    (function initSectionTitleScramble() {
+        const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&!';
+        const SCRAMBLE_DURATION = 800;
+        const SETTLE_DELAY = 28;
+
+        function scrambleText(el) {
+            if (el._scrambling) return;
+            // Skip elements with child elements (reveal-word spans etc)
+            const hasChildElements = el.children.length > 0;
+            if (hasChildElements) return;
+
+            el._scrambling = true;
+            const original = el.getAttribute('data-soriginal') || el.textContent.trim();
+            if (!el.getAttribute('data-soriginal')) el.setAttribute('data-soriginal', original);
+
+            const chars = original.split('');
+            const settled = new Array(chars.length).fill(false);
+            const start = performance.now();
+
+            function tick(now) {
+                const elapsed = now - start;
+                let display = '';
+                chars.forEach((ch, i) => {
+                    if (ch === ' ' || settled[i]) {
+                        settled[i] = true;
+                        display += ch;
+                    } else if (elapsed > i * SETTLE_DELAY + SCRAMBLE_DURATION * 0.55) {
+                        settled[i] = true;
+                        display += ch;
+                    } else {
+                        display += GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+                    }
+                });
+                el.textContent = display;
+                if (!settled.every(Boolean)) {
+                    requestAnimationFrame(tick);
+                } else {
+                    el.textContent = original;
+                    el._scrambling = false;
+                }
+            }
+            requestAnimationFrame(tick);
+        }
+
+        const targets = document.querySelectorAll('.footer-big-word, .stats-headline .sh-line, .bento-title');
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => scrambleText(entry.target), 100);
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.45 });
+
+        targets.forEach(el => obs.observe(el));
+    })();
+
+
+    /* ============================================================
+       PHASE 1 PREMIUM — PORTFOLIO CARD MAGNETIC HOVER + SPOTLIGHT
+       ============================================================ */
+    (function initPortfolioCardMagneticHover() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            const h3 = card.querySelector('h3');
+
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // CSS custom properties for the radial spotlight (::after pseudo)
+                card.style.setProperty('--mx', `${x}px`);
+                card.style.setProperty('--my', `${y}px`);
+
+                // Spotlight radial update (h3 estático para respuesta limpia)
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.removeProperty('--mx');
+                card.style.removeProperty('--my');
+                if (h3) h3.style.transform = '';
+            });
+        });
+    })();
+
+    /* ============================================================
+       FASE 2 #4: CURSOR PREMIUM — THUMBNAIL + CLICK RIPPLE
+       ============================================================ */
+    (function initCursorPremium() {
+        if (window.matchMedia('(pointer: coarse)').matches) return;
+        const cursor = document.querySelector('.cursor');
+        if (!cursor) return;
+
+        // Pre-load thumbnail images
+        const thumbCache = new Map();
+        document.querySelectorAll('[data-cursor-thumb]').forEach(img => {
+            const src = img.dataset.cursorThumb;
+            if (!src || thumbCache.has(src)) return;
+            const image = new Image();
+            image.src = src;
+            thumbCache.set(src, image);
+        });
+
+        // Thumb canvas inside cursor
+        let thumbCanvas = cursor.querySelector('.cursor-thumb-canvas');
+        if (!thumbCanvas) {
+            thumbCanvas = document.createElement('canvas');
+            thumbCanvas.className = 'cursor-thumb-canvas';
+            thumbCanvas.width  = 110;
+            thumbCanvas.height = 110;
+            thumbCanvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border-radius:50%;opacity:0;transition:opacity 0.3s;';
+            cursor.appendChild(thumbCanvas);
+        }
+        const tCtx = thumbCanvas.getContext('2d');
+
+        function drawThumb(src) {
+            const img = thumbCache.get(src);
+            if (!img) return;
+            function render() {
+                tCtx.clearRect(0, 0, 110, 110);
+                tCtx.save();
+                tCtx.beginPath();
+                tCtx.arc(55, 55, 55, 0, Math.PI * 2);
+                tCtx.clip();
+                const aspect = img.naturalWidth / img.naturalHeight;
+                let sw = 110, sh = 110;
+                if (aspect > 1) { sh = 110 / aspect; } else { sw = 110 * aspect; }
+                tCtx.drawImage(img, (110 - sw) / 2, (110 - sh) / 2, sw, sh);
+                tCtx.restore();
+                thumbCanvas.style.opacity = '1';
+            }
+            if (img.complete) render();
+            else img.onload = render;
+        }
+
+        function hideThumb() {
+            thumbCanvas.style.opacity = '0';
+            cursor.classList.remove('cursor--thumb');
+        }
+
+        // Attach to portfolio cards
+        document.querySelectorAll('.card').forEach(card => {
+            const img = card.querySelector('[data-cursor-thumb]');
+            if (!img) return;
+            card.addEventListener('mouseenter', () => {
+                cursor.classList.add('cursor--thumb');
+                drawThumb(img.dataset.cursorThumb);
+            });
+            card.addEventListener('mouseleave', hideThumb);
+        });
+
+        // Click ripple effect
+        document.addEventListener('click', e => {
+            const ripple = document.createElement('div');
+            ripple.className = 'cursor-click-ripple';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top  = e.clientY + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+    })();
+
+
+    /* ============================================================
+       FASE 2 #5: SPA EXPAND TRANSITION (proyecto pantalla completa)
+       ============================================================ */
+    (function initProjectExpand() {
+        const overlay   = document.getElementById('project-expand-overlay');
+        const closeBtn  = document.getElementById('peo-close-btn');
+        const peoTag    = document.getElementById('peo-tag');
+        const peoTitle  = document.getElementById('peo-title');
+        const peoDesc   = document.getElementById('peo-desc');
+        const peoImg    = document.getElementById('peo-img');
+        const peoBg     = overlay ? overlay.querySelector('.peo-bg') : null;
+        if (!overlay || !closeBtn || !peoBg) return;
+
+        // Project data map (from data-info)
+        const DATA = {
+            sviva:       { tag: 'TESIS · IA · EDGE', title: 'SVIVA', desc: 'Sistema de Videovigilancia Inteligente. IA operando íntegramente en hardware local. Detección, rastreo y analíticas avanzadas sin internet ni nube.', img: 'img/sviva/svivalogo.png', stack: ['Python','OpenCV','YOLO','FastAPI','Edge Computing'] },
+            svivaweb:    { tag: 'Vite · TypeScript · React', title: 'SVIVA Web', desc: 'Landing page de alta inmersión diseñada para promocionar y distribuir el ejecutable de nuestra obra maestra de visión artificial.', img: 'img/sviva/svivaindex.jpeg', stack: ['Vite','TypeScript','React','Three.js','GSAP'] },
+            kioskoazul:  { tag: 'Python · Flask · SQLite', title: 'Kiosko Azul', desc: 'Menú digital, reservaciones en tiempo real y pedidos con un completo dashboard administrativo de estadísticas de órdenes.', img: 'img/auracheck/auralogin.jpeg', stack: ['Python','Flask','SQLite','HTML','CSS','JavaScript'] },
+            iuta:        { tag: 'Python · Flask · PostgreSQL', title: 'Sistema Bibliotecario IUTA', desc: 'Herramienta robusta que moderniza el control bibliotecario del IUTA, transformando procesos manuales en un ecosistema digital eficiente.', img: 'img/cerdiv/cerdivweb.jpeg', stack: ['Python','Flask','PostgreSQL','Bootstrap'] },
+            aura:        { tag: 'FastAPI · Biometría · Seguridad', title: 'Aura Check', desc: 'Panel de auditoría de seguridad biométrica que opera 100% en local — ningún dato sensible abandona el dispositivo del usuario.', img: 'img/auracheck/auralogin.jpeg', stack: ['FastAPI','Python','Biometría','LocalFirst'] },
+            cuerpo:      { tag: 'IA · FastAPI · Inmersivo', title: '¿Qué le pasa a mi cuerpo?', desc: 'Plataforma médica impulsada por IA que responde consultas de anatomía con la voz de un doctor victoriano de 1885.', img: 'img/quelepasacuerpo/cuerpologin.jpeg', stack: ['FastAPI','Gemini AI','TTS','Python'] },
+            ventastrack: { tag: 'Node.js · TS · PostgreSQL', title: 'VentasTrack B2B', desc: 'Plataforma de ventas con roles y jerarquías, carrito de compras y módulo de facturación, sincronizada a diario con bases de datos del cliente.', img: 'img/sviva/svivaconfig.jpeg', stack: ['Node.js','TypeScript','Vite','PostgreSQL'] },
+            inventario:  { tag: 'Sistema · Personalizable', title: 'Inventario Pro', desc: 'Software robusto y 100% personalizable. Optimiza tu control de stock con una interfaz intuitiva y reportes avanzados.', img: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg', stack: ['Python','FastAPI','React','PostgreSQL'] },
+        };
+
+        function openProject(key, originCard) {
+            const d = DATA[key];
+            if (!d) return;
+            peoTag.textContent   = d.tag;
+            peoTitle.textContent = d.title;
+            peoDesc.textContent  = d.desc;
+            peoImg.src = d.img;
+            peoImg.alt = d.title;
+
+            const metaEl = document.getElementById('peo-meta');
+            if (metaEl && d.stack) {
+                metaEl.innerHTML = d.stack.map(s => `<span>${s}</span>`).join('');
+            }
+
+            // Calculate clip-path origin from card's image
+            let cx = 50, cy = 50;
+            if (originCard) {
+                const r = originCard.getBoundingClientRect();
+                cx = ((r.left + r.width  / 2) / window.innerWidth)  * 100;
+                cy = ((r.top  + r.height / 2) / window.innerHeight) * 100;
+            }
+            peoBg.style.transition = 'none';
+            peoBg.style.clipPath   = `circle(0% at ${cx}% ${cy}%)`;
+            overlay.classList.add('open');
+            overlay.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+
+            requestAnimationFrame(() => {
+                peoBg.style.transition = 'clip-path 0.65s cubic-bezier(0.77,0,0.175,1)';
+                peoBg.style.clipPath   = `circle(150% at ${cx}% ${cy}%)`;
+            });
+        }
+
+        function closeOverlay() {
+            overlay.classList.remove('open');
+            overlay.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                peoBg.style.clipPath = 'circle(0% at 50% 50%)';
+            }, 100);
+        }
+
+        // Hook all info-btn buttons
+        document.querySelectorAll('.info-btn[data-info]').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.preventDefault();
+                const key  = btn.dataset.info;
+                const card = btn.closest('.card');
+                openProject(key, card);
+            });
+        });
+
+        closeBtn.addEventListener('click', closeOverlay);
+
+        overlay.addEventListener('click', e => {
+            if (e.target === overlay || e.target.classList.contains('peo-bg')) closeOverlay();
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay();
+        });
     })();
 
 }
@@ -1609,4 +2149,5 @@ if (document.readyState === 'loading') {
 } else {
     initEffectsScript();
 }
+
 

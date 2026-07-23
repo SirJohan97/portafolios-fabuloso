@@ -60,9 +60,21 @@
     <!-- FUENTES (Served Locally) -->
     <link rel="stylesheet" href="css/fonts.css">
 
+    <!-- Silent Production Error Monitor (Active at boot to catch all errors) -->
+    <div id="debug-err" style="position: fixed; top: 10px; left: 10px; z-index: 10000; background: rgba(255,0,0,0.85); color: white; padding: 10px; font-family: monospace; font-size: 14px; border-radius: 4px; display: none;"></div>
+    <script>
+    window.addEventListener('error', function(e) {
+        var d = document.getElementById('debug-err');
+        if (d) {
+            d.style.display = 'block';
+            d.innerHTML += '<div>Error: ' + e.message + ' at ' + (e.filename ? e.filename.split('/').pop() : 'unknown') + ':' + e.lineno + '</div>';
+        }
+    });
+    </script>
+
     <!-- ESTILOS -->
-    <link rel="stylesheet" href="styles.css?v=113">
-    <link rel="stylesheet" href="effects.css?v=106">
+    <link rel="stylesheet" href="styles.css?v=260">
+    <link rel="stylesheet" href="effects.css?v=200">
     <link rel="stylesheet" href="css/all.min.css">
 
 </head>
@@ -83,9 +95,41 @@
         <span class="hud-crosshair">+</span>
         <span class="hud-label">[CONNECT_ACTIVE]</span>
     </div>
+    <!-- Mesh Gradient Background (WebGL-powered atmosphere) -->
+    <canvas id="mesh-gradient-canvas" aria-hidden="true"></canvas>
 
+    <!-- SVG Filters — hidden, GPU-composited water shimmer -->
+    <svg id="svg-filters" xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+        <defs>
+            <filter id="water-ripple-filter" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+                <feTurbulence id="water-turbulence" type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="2" result="noise"/>
+                <feDisplacementMap id="water-disp" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Custom Cursor -->
     <div class="cursor"></div>
     <div class="cursor2"></div>
+
+    <!-- SPA Project Expand Overlay -->
+    <div id="project-expand-overlay" aria-hidden="true">
+        <div class="peo-bg"></div>
+        <button class="peo-close" id="peo-close-btn" aria-label="Cerrar">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="peo-content">
+            <div class="peo-header">
+                <span class="peo-tag" id="peo-tag"></span>
+                <h2 class="peo-title" id="peo-title"></h2>
+                <p class="peo-desc" id="peo-desc"></p>
+            </div>
+            <div class="peo-image-wrap">
+                <img id="peo-img" src="" alt="">
+            </div>
+            <div class="peo-meta" id="peo-meta"></div>
+        </div>
+    </div>
     <!-- SVG Filter for Awwwards Slime Liquid Distortion -->
     <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0; pointer-events: none; opacity: 0; overflow: hidden;">
         <defs>
@@ -115,7 +159,6 @@
     </div>
 
     <nav class="navbar">
-        <div class="nav-progress-bar"></div>
         <a href="#home" class="logo" aria-label="VANTA">
             <span class="logo-icon">
                 <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -157,6 +200,11 @@
             <li><a href="#pricing">Planes</a></li>
             <li><a href="#contact" class="nav-cta">Contacto</a></li>
         </ul>
+        <!-- Audio UI Toggle -->
+        <button id="audio-toggle-btn" class="audio-toggle-btn" aria-label="Activar sonido" title="Sonido">
+            <span class="audio-icon-off"><i class="fas fa-volume-mute"></i></span>
+            <span class="audio-icon-on" style="display:none"><i class="fas fa-volume-up"></i></span>
+        </button>
         <div class="menu-toggle">
             <i class="fas fa-bars"></i>
         </div>
@@ -242,13 +290,18 @@
                     </div>
                 </div>
 
-                <!-- Columna Derecha: Canvas Visualizador de Arquitectura -->
+                <!-- Columna Derecha: 3 Canvas Únicos por Capítulo -->
                 <div class="ph-col-right" aria-hidden="true">
                     <div class="canvas-hud-indicator">
                         <span class="hud-led"></span>
                         <span class="hud-status-text">SYSTEM_VISUALIZER: ACTIVE</span>
                     </div>
-                    <canvas id="philosophy-canvas"></canvas>
+                    <!-- Cap 01: CAOS_DIGITAL — Texto entrópico Canvas2D -->
+                    <canvas id="ph-canvas-1" class="ph-chapter-canvas active"></canvas>
+                    <!-- Cap 02: OBSESIÓN_TÉCNICA — Cristal Three.js + circuito -->
+                    <canvas id="ph-canvas-2" class="ph-chapter-canvas"></canvas>
+                    <!-- Cap 03: LA_META — Red neuronal Three.js pulsante -->
+                    <canvas id="ph-canvas-3" class="ph-chapter-canvas"></canvas>
                 </div>
             </div>
             
@@ -274,7 +327,7 @@
                 <!-- PROYECTO 1: SVIVA (TESIS / DESTACADO) -->
                 <div class="card" data-project="sviva">
                     <div class="card-image-wrap">
-                        <img src="img/sviva/svivalogo.png" alt="SVIVA - Sistema de Videovigilancia Inteligente">
+                        <img src="img/sviva/svivalogo.png" alt="SVIVA" data-cursor-thumb="img/sviva/svivalogo.png">
                     </div>
                     <div class="card-overlay">
                         <span class="thesis-badge">¡PROYECTO DE TESIS! • EN DESARROLLO</span>
@@ -290,7 +343,7 @@
                 <!-- PROYECTO 2: SVIVA WEB (NUEVO) -->
                 <div class="card" data-project="svivaweb">
                     <div class="card-image-wrap">
-                        <img src="img/sviva/svivaindex.jpeg" alt="SVIVA Web Showcase">
+                        <img src="img/sviva/svivaindex.jpeg" alt="SVIVA Web" data-cursor-thumb="img/sviva/svivaindex.jpeg">
                     </div>
                     <div class="card-overlay">
                         <span class="card-tag">Vite · TypeScript · React</span>
@@ -306,7 +359,7 @@
                 <!-- PROYECTO 3: KIOSKO AZUL (NUEVO) -->
                 <div class="card" data-project="kioskoazul">
                     <div class="card-image-wrap">
-                        <img src="img/auracheck/auralogin.jpeg" alt="Kiosko Azul Restaurante">
+                        <img src="img/auracheck/auralogin.jpeg" alt="Kiosko Azul" data-cursor-thumb="img/auracheck/auralogin.jpeg">
                     </div>
                     <div class="card-overlay">
                         <span class="card-tag">Python · Flask · SQLite · HTML/CSS/JS</span>
@@ -322,7 +375,7 @@
                 <!-- PROYECTO 4: IUTA -->
                 <div class="card" data-project="iuta">
                     <div class="card-image-wrap">
-                        <img src="img/cerdiv/cerdivweb.jpeg" alt="Sistema de Gestión Bibliotecaria IUTA">
+                        <img src="img/cerdiv/cerdivweb.jpeg" alt="IUTA" data-cursor-thumb="img/cerdiv/cerdivweb.jpeg">
                     </div>
                     <div class="card-overlay">
                         <span class="card-tag">Python · Flask · PostgreSQL</span>
@@ -338,7 +391,7 @@
                 <!-- PROYECTO 5: AURA CHECK -->
                 <div class="card" data-project="aura">
                     <div class="card-image-wrap">
-                        <img src="img/auracheck/auralogin.jpeg" alt="Aura Check">
+                        <img src="img/auracheck/auralogin.jpeg" alt="Aura Check" data-cursor-thumb="img/auracheck/auralogin.jpeg">
                     </div>
                     <div class="card-overlay">
                         <span class="card-tag">FastAPI · Biometría · Seguridad</span>
@@ -354,7 +407,7 @@
                 <!-- PROYECTO 6: QUÉ LE PASA A MI CUERPO -->
                 <div class="card" data-project="cuerpo">
                     <div class="card-image-wrap">
-                        <img src="img/quelepasacuerpo/cuerpologin.jpeg" alt="Qué le pasa a mi cuerpo">
+                        <img src="img/quelepasacuerpo/cuerpologin.jpeg" alt="Que le pasa" data-cursor-thumb="img/quelepasacuerpo/cuerpologin.jpeg">
                     </div>
                     <div class="card-overlay">
                         <span class="card-tag">IA · FastAPI · Experiencia Inmersiva</span>
@@ -370,7 +423,7 @@
                 <!-- PROYECTO 7: VENTASTRACK (NUEVO) -->
                 <div class="card" data-project="ventastrack">
                     <div class="card-image-wrap">
-                        <img src="img/sviva/svivaconfig.jpeg" alt="VentasTrack B2B">
+                        <img src="img/sviva/svivaconfig.jpeg" alt="VentasTrack" data-cursor-thumb="img/sviva/svivaconfig.jpeg">
                     </div>
                     <div class="card-overlay">
                         <span class="card-tag">Node.js · TS · Vite · PostgreSQL</span>
@@ -386,7 +439,7 @@
                 <!-- PROYECTO 8: INVENTARIO PRO -->
                 <div class="card" data-project="inventario">
                     <div class="card-image-wrap">
-                        <img src="img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg" alt="Sistema de Inventario Pro">
+                        <img src="img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg" alt="Inventario" data-cursor-thumb="img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg">
                     </div>
                     <div class="card-overlay">
                         <span class="promo-badge">¡OFERTA ESPECIAL!</span>
@@ -604,84 +657,32 @@
         </div>
     </section>
 
-    <!-- ===== BENTO GRID — POR QUÉ VANTA ===== -->
-    <section class="bento-section" id="bento">
-        <div class="bento-header">
+    <!-- ===== BENTO GRID — ORBITING DATA UNIVERSE ===== -->
+    <section class="bento-section bento-universe" id="bento" aria-label="Por qué VANTA">
+        <div class="bento-universe-left">
             <span class="bento-eyebrow">// WHY_VANTA.EXE</span>
-            <h2 class="bento-title split-target">Por qué nos eligen</h2>
+            <h2 class="bento-title">Por qué nos eligen</h2>
+            <p class="bento-universe-sub">Cada órbita representa una razón por la que nuestros clientes nos eligen sobre cualquier agencia tradicional.</p>
+            <div class="bento-universe-metrics">
+                <div class="bum" data-val="8" data-suffix="+" data-label="Proyectos en producción"></div>
+                <div class="bum" data-val="100" data-suffix="%" data-label="Código propio"></div>
+                <div class="bum" data-val="5" data-suffix="" data-label="Agentes IA activos"></div>
+                <div class="bum" data-val="24" data-suffix="h" data-label="Tiempo de respuesta"></div>
+            </div>
         </div>
-        <div class="bento-grid">
-
-            <!-- Tarjeta 1: Grande — Propuesta de valor -->
-            <div class="bento-card bento-card--large bento-reveal">
-                <div class="bento-card-glow"></div>
-                <span class="bento-card-tag">CORE_VALUE</span>
-                <h3 class="bento-card-headline">No creamos sitios web.<br><span class="bento-accent">Programamos el futuro.</span></h3>
-                <p class="bento-card-sub">Sistemas que escalan, agentes que piensan, código que perdura.</p>
-                <div class="bento-card-deco-lines" aria-hidden="true"></div>
-            </div>
-
-            <!-- Tarjeta 2: Mediana — Stack tecnológico -->
-            <div class="bento-card bento-card--medium bento-reveal" data-delay="60">
-                <div class="bento-card-glow"></div>
-                <span class="bento-card-tag">TECH_STACK</span>
-                <div class="bento-tech-grid">
-                    <span>Python</span><span>FastAPI</span><span>PostgreSQL</span>
-                    <span>Three.js</span><span>React</span><span>Node.js</span>
-                    <span>Docker</span><span>Vercel</span><span>Gemini AI</span>
-                </div>
-            </div>
-
-            <!-- Tarjeta 3: Pequeña — Proyectos -->
-            <div class="bento-card bento-card--small bento-reveal" data-delay="100">
-                <div class="bento-card-glow"></div>
-                <span class="bento-card-tag">DEPLOYED</span>
-                <div class="bento-stat">
-                    <span class="bento-stat-num">8+</span>
-                    <span class="bento-stat-label">Proyectos en<br>producción</span>
-                </div>
-            </div>
-
-            <!-- Tarjeta 4: Pequeña — Respuesta -->
-            <div class="bento-card bento-card--small bento-reveal" data-delay="140">
-                <div class="bento-card-glow"></div>
-                <span class="bento-card-tag">RESPONSE_TIME</span>
-                <div class="bento-stat">
-                    <span class="bento-stat-num">&lt;24h</span>
-                    <span class="bento-stat-label">Tiempo de<br>respuesta</span>
-                </div>
-            </div>
-
-            <!-- Tarjeta 5: Mediana — IA -->
-            <div class="bento-card bento-card--medium bento-reveal" data-delay="80">
-                <div class="bento-card-glow bento-glow-ai"></div>
-                <span class="bento-card-tag">AI_AGENTS</span>
-                <div class="bento-ai-display">
-                    <div class="bento-ai-icon"><i class="fas fa-robot"></i></div>
-                    <div>
-                        <div class="bento-stat-num">5</div>
-                        <div class="bento-stat-label">Agentes de IA<br>en producción activa</div>
-                    </div>
-                </div>
-                <div class="bento-ai-pulses" aria-hidden="true">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>
-
-            <!-- Tarjeta 6: Pequeña — Ubicación global -->
-            <div class="bento-card bento-card--small bento-reveal" data-delay="120">
-                <div class="bento-card-glow"></div>
-                <span class="bento-card-tag">REACH</span>
-                <div class="bento-reach">
-                    <span class="bento-reach-from">LATAM</span>
-                    <span class="bento-reach-arrow">→</span>
-                    <span class="bento-reach-to">GLOBAL</span>
-                </div>
-                <p class="bento-reach-sub">Disponibles remotamente para cualquier proyecto</p>
-            </div>
-
+        <div class="bento-universe-right" id="bento-universe-canvas-wrap" aria-hidden="true">
+            <canvas id="bento-universe-canvas"></canvas>
+            <!-- Orbe labels — posicionados por JS -->
+            <div class="orb-label" id="orb-0"><span>CORE_VALUE</span><small>Programamos el futuro</small></div>
+            <div class="orb-label" id="orb-1"><span>TECH_STACK</span><small>Python · FastAPI · Three.js</small></div>
+            <div class="orb-label" id="orb-2"><span>AI_AGENTS</span><small>5 agentes activos</small></div>
+            <div class="orb-label" id="orb-3"><span>RESPONSE</span><small>&lt;24h siempre</small></div>
+            <div class="orb-label" id="orb-4"><span>REACH</span><small>LATAM → Global</small></div>
+            <div class="orb-label" id="orb-5"><span>DEPLOYED</span><small>8+ en producción</small></div>
         </div>
     </section>
+
+
 
     <!-- ===== EQUIPO ===== -->
     <section id="team" class="team-section">
@@ -880,220 +881,78 @@
 
     <!-- ===== PLANES / PRICING ===== -->
     <section id="pricing" class="portfolio pricing-section">
-        <div class="pricing-intro">
+        <div class="pricing-intro text-center">
+            <div class="pricing-badge-top">
+                <i class="fas fa-bolt text-brand"></i>
+                <span>CONFIGURADOR DE ARQUITECTURA DIGITAL</span>
+            </div>
             <h2 class="section-title hidden"><span class="reveal-word">Nuestros</span> <span class="reveal-word">Planes</span></h2>
-            <p class="section-subtitle hidden">Elige el plan que mejor se adapta a tu proyecto. Todos incluyen soporte post-entrega.</p>
+            <p class="section-subtitle hidden">Conecta tu negocio con infraestructura de alto rendimiento. Elige tu nivel o simula tu arquitectura.</p>
         </div>
 
-        <!-- Toggle Mensual / Anual -->
-        <div class="pricing-toggle-container">
-            <span class="toggle-label active" data-period="monthly">Mensual</span>
-            <button class="pricing-toggle-switch" id="pricingToggleBtn" aria-label="Cambiar periodo de facturación">
-                <span class="switch-dot"></span>
-            </button>
-            <span class="toggle-label" data-period="annual">Anual <span class="discount-badge">-20%</span></span>
-        </div>
-
-        <div class="pricing-cards-scene">
-
-            <!-- Plan Básico -->
-            <div class="pricing-clip-wrapper hidden" data-plan="basico">
-                <div class="pricing-card-inner">
-                    <!-- FRENTE: MENSUAL -->
-                    <div class="pricing-card pricing-card-front" data-plan-color="#0d1f12">
-                        <div class="pricing-card-glow"></div>
-                        <div class="pricing-icon"><i class="fas fa-seedling"></i></div>
-                        <h3 class="pricing-name">Básico</h3>
-                        <p class="pricing-tagline">Ideal para empezar en digital</p>
-                        <div class="pricing-price">Desde <span class="price-slot" data-value="150">$150</span> USD</div>
-                        <ul class="pricing-features">
-                            <li><i class="fas fa-check"></i> Landing page profesional</li>
-                            <li><i class="fas fa-check"></i> Diseño responsive (móvil &amp; web)</li>
-                            <li><i class="fas fa-check"></i> Formulario de contacto a WhatsApp</li>
-                            <li><i class="fas fa-check"></i> Dominio y despliegue incluido</li>
-                            <li class="disabled"><i class="fas fa-times"></i> Panel de administración</li>
-                            <li class="disabled"><i class="fas fa-times"></i> Base de datos</li>
-                        </ul>
-                        <a href="https://wa.me/584127121162?text=Hola,%20estoy%20interesado%20en%20el%20Plan%20B%C3%A1sico%20Mensual" class="btn-outline magnetic-btn" target="_blank" rel="noopener noreferrer">Consultar Plan</a>
-                    </div>
-                    <!-- ATRÁS: ANUAL -->
-                    <div class="pricing-card pricing-card-back" data-plan-color="#0d1f12">
-                        <div class="pricing-card-glow"></div>
-                        <div class="pricing-icon"><i class="fas fa-seedling"></i></div>
-                        <h3 class="pricing-name">Básico Anual</h3>
-                        <p class="pricing-tagline">Ideal para empezar en digital (Ahorro del 20%)</p>
-                        <div class="pricing-price">Desde <span class="price-slot" data-value="120">$120</span> USD <span class="billing-cycle">/ mes</span></div>
-                        <p class="billing-annual-note">Facturado anualmente ($1,440 USD/año)</p>
-                        <ul class="pricing-features">
-                            <li><i class="fas fa-check"></i> Landing page profesional</li>
-                            <li><i class="fas fa-check"></i> Diseño responsive (móvil &amp; web)</li>
-                            <li><i class="fas fa-check"></i> Formulario de contacto a WhatsApp</li>
-                            <li><i class="fas fa-check"></i> Dominio y despliegue incluido</li>
-                            <li class="disabled"><i class="fas fa-times"></i> Panel de administración</li>
-                            <li class="disabled"><i class="fas fa-times"></i> Base de datos</li>
-                        </ul>
-                        <a href="https://wa.me/584127121162?text=Hola,%20estoy%20interesado%20en%20el%20Plan%20B%C3%A1sico%20Anual" class="btn-outline magnetic-btn" target="_blank" rel="noopener noreferrer">Consultar Plan</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Plan Profesional (destacado) -->
-            <div class="pricing-clip-wrapper hidden" data-plan="pro">
-                <div class="pricing-card-inner">
-                    <!-- FRENTE: MENSUAL -->
-                    <div class="pricing-card featured pricing-card-front" data-plan-color="#0d2118">
-                        <div class="pricing-badge">Más Popular</div>
-                        <div class="pricing-card-glow featured-glow"></div>
-                        <div class="pricing-icon"><i class="fas fa-bolt"></i></div>
-                        <h3 class="pricing-name">Profesional</h3>
-                        <p class="pricing-tagline">Solución completa para tu negocio</p>
-                        <div class="pricing-price">Desde <span class="price-slot" data-value="400">$400</span> USD</div>
-                        <ul class="pricing-features">
-                            <li><i class="fas fa-check"></i> Web completa multi-página</li>
-                            <li><i class="fas fa-check"></i> Base de datos + Panel admin</li>
-                            <li><i class="fas fa-check"></i> Integración de APIs externas</li>
-                            <li><i class="fas fa-check"></i> Optimización SEO avanzada</li>
-                            <li><i class="fas fa-check"></i> Despliegue en la nube</li>
-                            <li><i class="fas fa-check"></i> 1 mes de soporte incluido</li>
-                        </ul>
-                        <a href="https://wa.me/584127121162?text=Hola,%20estoy%20interesado%20en%20el%20Plan%20Profesional%20Mensual" class="btn magnetic-btn" target="_blank" rel="noopener noreferrer">Consultar Plan</a>
-                    </div>
-                    <!-- ATRÁS: ANUAL -->
-                    <div class="pricing-card featured pricing-card-back" data-plan-color="#0d2118">
-                        <div class="pricing-badge">Más Popular</div>
-                        <div class="pricing-card-glow featured-glow"></div>
-                        <div class="pricing-icon"><i class="fas fa-bolt"></i></div>
-                        <h3 class="pricing-name">Profesional Anual</h3>
-                        <p class="pricing-tagline">Solución completa para tu negocio (Ahorro del 20%)</p>
-                        <div class="pricing-price">Desde <span class="price-slot" data-value="320">$320</span> USD <span class="billing-cycle">/ mes</span></div>
-                        <p class="billing-annual-note">Facturado anualmente ($3,840 USD/año)</p>
-                        <ul class="pricing-features">
-                            <li><i class="fas fa-check"></i> Web completa multi-página</li>
-                            <li><i class="fas fa-check"></i> Base de datos + Panel admin</li>
-                            <li><i class="fas fa-check"></i> Integración de APIs externas</li>
-                            <li><i class="fas fa-check"></i> Optimización SEO avanzada</li>
-                            <li><i class="fas fa-check"></i> Despliegue en la nube</li>
-                            <li><i class="fas fa-check"></i> 1 mes de soporte incluido</li>
-                        </ul>
-                        <a href="https://wa.me/584127121162?text=Hola,%20estoy%20interesado%20en%20el%20Plan%20Profesional%20Anual" class="btn magnetic-btn" target="_blank" rel="noopener noreferrer">Consultar Plan</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Plan Empresarial -->
-            <div class="pricing-clip-wrapper hidden" data-plan="enterprise">
-                <div class="pricing-card-inner">
-                    <!-- FRENTE: MENSUAL -->
-                    <div class="pricing-card pricing-card-front" data-plan-color="#18100d">
-                        <div class="pricing-card-glow enterprise-glow"></div>
-                        <div class="pricing-icon"><i class="fas fa-rocket"></i></div>
-                        <h3 class="pricing-name">Empresarial</h3>
-                        <p class="pricing-tagline">Para proyectos de alto impacto</p>
-                        <div class="pricing-price"><span class="price-slot" data-text="Cotización">Cotización</span> personalizada</div>
-                        <ul class="pricing-features">
-                            <li><i class="fas fa-check"></i> Sistema a medida completo</li>
-                            <li><i class="fas fa-check"></i> Integración de IA y automatización</li>
-                            <li><i class="fas fa-check"></i> Infraestructura y redes</li>
-                            <li><i class="fas fa-check"></i> Escalabilidad garantizada</li>
-                            <li><i class="fas fa-check"></i> SLA y soporte continuo</li>
-                            <li><i class="fas fa-check"></i> Reuniones de seguimiento</li>
-                        </ul>
-                        <a href="https://wa.me/584127121162?text=Hola,%20necesito%20una%20cotizaci%C3%B3n%20para%20un%20proyecto%20empresarial" class="btn-outline magnetic-btn" target="_blank" rel="noopener noreferrer">Solicitar Cotización</a>
-                    </div>
-                    <!-- ATRÁS: ANUAL -->
-                    <div class="pricing-card pricing-card-back" data-plan-color="#18100d">
-                        <div class="pricing-card-glow enterprise-glow"></div>
-                        <div class="pricing-icon"><i class="fas fa-rocket"></i></div>
-                        <h3 class="pricing-name">Empresarial Anual</h3>
-                        <p class="pricing-tagline">Para proyectos de alto impacto (Soporte anual)</p>
-                        <div class="pricing-price"><span class="price-slot" data-text="Cotización">Cotización</span> personalizada</div>
-                        <p class="billing-annual-note">Facturación preferencial anual</p>
-                        <ul class="pricing-features">
-                            <li><i class="fas fa-check"></i> Sistema a medida completo</li>
-                            <li><i class="fas fa-check"></i> Integración de IA y automatización</li>
-                            <li><i class="fas fa-check"></i> Infraestructura y redes</li>
-                            <li><i class="fas fa-check"></i> Escalabilidad garantizada</li>
-                            <li><i class="fas fa-check"></i> SLA y soporte continuo</li>
-                            <li><i class="fas fa-check"></i> Reuniones de seguimiento</li>
-                        </ul>
-                        <a href="https://wa.me/584127121162?text=Hola,%20necesito%20una%20cotizaci%C3%B3n%20para%20un%20proyecto%20empresarial%20anual" class="btn-outline magnetic-btn" target="_blank" rel="noopener noreferrer">Solicitar Cotización</a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- SIMULADOR DE ALCANCE INTERACTIVO B2B -->
-        <div class="scope-simulator-container">
-            <h3 class="scope-sim-title">¿Tienes un alcance personalizado? Simúlalo aquí</h3>
-            <p class="scope-sim-subtitle">Selecciona los componentes que necesitas y envíanos la configuración directa a WhatsApp para cotizar.</p>
-            
-            <div class="scope-sim-grid">
-                <!-- Sliders e Inputs -->
-                <div class="scope-sim-controls">
-                    <div class="sim-control-group">
-                        <div class="control-label-row">
-                            <span class="control-label"><i class="fas fa-file-code"></i> Número de Vistas / Páginas</span>
-                            <span class="control-value" id="valPages">3 páginas</span>
-                        </div>
-                        <input type="range" id="inputPages" min="1" max="15" value="3" class="sim-range-slider">
-                    </div>
+        <div class="vanta-pricing-container">
+            <div class="vanta-pricing-grid">
+                <!-- Columna Izquierda: Entregables y Alcance Incluido -->
+                <div class="pricing-col-left">
+                    <h3 class="pricing-features-title font-display">Lo que incluye tu proyecto</h3>
+                    <p class="pricing-features-subtitle">Garantía de código limpio, despliegue en la nube e ingeniería de élite.</p>
                     
-                    <div class="sim-control-group">
-                        <div class="control-label-row">
-                            <span class="control-label"><i class="fas fa-robot"></i> Nivel de Integración de IA</span>
-                            <span class="control-value" id="valAI">Ninguno</span>
-                        </div>
-                        <input type="range" id="inputAI" min="0" max="2" value="0" class="sim-range-slider">
-                    </div>
-                    
-                    <div class="sim-toggle-row">
-                        <label class="sim-checkbox-label">
-                            <input type="checkbox" id="checkDB" class="sim-checkbox">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-text"><i class="fas fa-database"></i> Base de Datos &amp; Panel Administrativo</span>
-                        </label>
-                    </div>
-
-                    <div class="sim-toggle-row">
-                        <label class="sim-checkbox-label">
-                            <input type="checkbox" id="checkSupport" class="sim-checkbox">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-text"><i class="fas fa-tools"></i> Soporte Mensual Post-Entrega</span>
-                        </label>
-                    </div>
+                    <ul class="pricing-interactive-features" id="pricingFeaturesList">
+                        <!-- Generado dinámicamente en JS -->
+                    </ul>
                 </div>
 
-                <!-- Resultado y Recomendación -->
-                <div class="scope-sim-result">
-                    <div class="result-glow"></div>
-                    <div class="result-badge">Configuración Sugerida</div>
-                    <h4 class="suggested-plan-name" id="suggestedPlan">Plan Básico</h4>
-                    <p class="suggested-plan-desc" id="suggestedDesc">Ideal para proyectos sencillos o de aterrizaje rápido.</p>
-                    
-                    <div class="sim-metric-row">
-                        <div class="metric-item">
-                            <span class="metric-title">Tiempo Estimado</span>
-                            <span class="metric-value" id="estTime">1-2 semanas</span>
-                        </div>
-                        <div class="metric-item">
-                            <span class="metric-title">Complejidad</span>
-                            <span class="metric-value" id="estComplexity">Media-Baja</span>
+                <!-- Columna Derecha: Selector de Plan, Toggle y Precio Dinámico -->
+                <div class="pricing-col-right">
+                    <!-- Selector de los 3 Planes (Básico, Profesional, Empresarial) -->
+                    <div class="pricing-tab-switch-wrap">
+                        <span class="switch-label-title">Selecciona el Nivel de Plan</span>
+                        <div class="pricing-tabs-group" id="planTabsGroup">
+                            <button class="plan-tab-btn active" data-plan="basico">
+                                <span class="tab-name">Básico</span>
+                                <span class="tab-badge-offer">OFERTA -32%</span>
+                            </button>
+                            <button class="plan-tab-btn" data-plan="pro">
+                                <span class="tab-name">Profesional</span>
+                                <span class="tab-badge-pop">POPULAR</span>
+                            </button>
+                            <button class="plan-tab-btn" data-plan="enterprise">
+                                <span class="tab-name">Empresarial</span>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="scope-checklist">
-                        <h5>Especificaciones Incluidas:</h5>
-                        <ul id="scopeChecklist">
-                            <li><i class="fas fa-check"></i> 3 vistas estáticas optimizadas</li>
-                            <li><i class="fas fa-check"></i> Optimización SEO esencial</li>
-                            <li><i class="fas fa-check"></i> Despliegue listo en Vercel/Netlify</li>
-                        </ul>
+                    <!-- Toggle de Ciclo: Mensual vs Anual -->
+                    <div class="pricing-cycle-switch-wrap">
+                        <span class="switch-label-title">Periodo de Soporte y Facturación</span>
+                        <div class="pricing-cycle-toggle-bar">
+                            <button class="cycle-btn active" data-cycle="monthly">Mensual</button>
+                            <button class="cycle-btn" data-cycle="annual">Anual <span class="cycle-discount">-20% Ahorro</span></button>
+                        </div>
                     </div>
 
-                    <a href="#" id="btnSendScopeWa" class="btn sim-wa-btn magnetic-btn" target="_blank" rel="noopener noreferrer">
-                        <span>Enviar alcance a WhatsApp</span> <i class="fab fa-whatsapp"></i>
-                    </a>
+                    <!-- Bloque de Precio y Oferta -->
+                    <div class="pricing-display-box">
+                        <div class="pricing-offer-badge" id="planOfferBadge">🔥 OFERTA ÚNICA POR TIEMPO LIMITADO</div>
+                        <div class="pricing-price-wrapper">
+                            <div class="price-main-value">
+                                <span class="currency" id="pricingCurrency">$</span>
+                                <span class="amount-number" id="pricingAmount">199</span>
+                                <span class="price-period" id="pricingPeriod">USD</span>
+                            </div>
+                            <div class="price-slashed-value" id="slashedPriceWrap">
+                                <span class="slashed-currency">$</span>
+                                <span class="slashed-number" id="pricingSlashed">290</span>
+                                <span class="slashed-note">USD</span>
+                            </div>
+                        </div>
+                        <p class="pricing-plan-desc" id="planDescriptionText">Ideal para despegar rápido con una landing page de alto impacto.</p>
+                        
+                        <a href="https://wa.me/584127121162?text=Hola,%20quiero%20aprovechar%20la%20Oferta%20del%20Plan%20B%C3%A1sico" id="pricingCtaBtn" class="btn magnetic-btn pricing-cta-btn" target="_blank" rel="noopener noreferrer">
+                            <span>Adquirir Plan Básico</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1375,25 +1234,11 @@
     
 
     
-    <script src="preloader-v.js?v=5"></script>
-    <script src="script.js?v=138"></script>
-    <script src="particles.js?v=101"></script>
-    
-    <script src="effects.js?v=119"></script>
-    <script src="slime-text.js?v=11"></script>
-    
-
-    <!-- Silent Production Error Monitor -->
-    <div id="debug-err" style="position: fixed; top: 10px; left: 10px; z-index: 10000; background: rgba(255,0,0,0.85); color: white; padding: 10px; font-family: monospace; font-size: 14px; border-radius: 4px; display: none;"></div>
-    <script>
-    window.addEventListener('error', function(e) {
-        var d = document.getElementById('debug-err');
-        if (d) {
-            d.style.display = 'block';
-            d.innerHTML += '<div>Error: ' + e.message + ' at ' + (e.filename ? e.filename.split('/').pop() : 'unknown') + ':' + e.lineno + '</div>';
-        }
-    });
-    </script>
+    <script src="preloader-v.js?v=200"></script>
+    <script src="script.js?v=320"></script>
+    <script src="particles.js?v=200"></script>
+    <script src="effects.js?v=240"></script>
+    <script src="slime-text.js?v=200"></script>
 </body>
 
 </html>
