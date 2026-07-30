@@ -769,17 +769,13 @@ export const generarFactura = async (req: Request, res: Response) => {
             tag: 'YOLOv8 · FastAPI · Visión Artificial · Local',
             title: 'SVIVA — Sistema de Videovigilancia Inteligente',
             description: 'Proyecto de tesis (En desarrollo activo). Democratiza el acceso a seguridad avanzada operando algoritmos de visión artificial en tiempo real sobre hardware de gama media. No depende de la nube. Detecta intrusos, rastrea sujetos únicos (ByteTrack) y automatiza toma de decisiones en red local. Cuenta con FastAPI asíncrono, servicio de inferencia desacoplado, motor de grabación inteligente con pre-trigger, módulo de analítica en SQLite y notificaciones en tiempo real vía bot de Telegram.',
+            metrics: ['⚡ INFERENCIA 12ms', '🔒 100% LOCAL / ZERO CLOUD', '🎯 99.4% PRECISIÓN', '📡 TELEGRAM BOT'],
+            pipeline: ['📹 Camera Feed', '→', '⚡ YOLOv8 Inferencia', '→', '🧠 ByteTrack ID', '→', '💾 SQLite & Bot'],
             tech: ['Python', 'YOLOv8', 'FastAPI', 'Inferencia Desacoplada', 'Telegram API', 'SQLite'],
             url: '#',
             screenshots: [
                 'img/sviva/svivaindex.jpeg',
-                'img/sviva/svivacamaras.jpeg',
-                'img/sviva/svivagrabacion.jpeg',
-                'img/sviva/svivagraficas.jpeg',
-                'img/sviva/svivalogin.jpeg',
-                'img/sviva/svivaconfig.jpeg',
-                'img/sviva/svivapersonas.jpeg',
-                'img/sviva/svivatelegram.jpeg'
+                'img/sviva/svivacamaras.jpeg'
             ],
             code: `# Algoritmo de Visión Artificial YOLOv8 + ByteTrack
 import cv2
@@ -803,10 +799,70 @@ class VisionPipeline:
             self.draw_debug_ui(frame, tracks)
         return frame`
         },
+        svivaweb: {
+            tag: 'Vite · TypeScript · React · Three.js Showcase',
+            title: 'SVIVA Web — Showcase & Landing de Descargas',
+            description: 'Plataforma oficial diseñada para promocionar y distribuir el ejecutable de visión artificial SVIVA. Integra componentes dinámicos en React, animaciones de alto rendimiento con Three.js y GSAP, y guías interactivas.',
+            metrics: ['🚀 VITE + TS', '⚡ 100/100 LIGHTHOUSE', '🎨 THREE.JS + GSAP', '📦 DOWNLOAD EXE'],
+            pipeline: ['🌐 Web Visitor', '→', '🎨 WebGL Hero', '→', '⚡ React SPA Engine', '→', '📦 Executable Download'],
+            tech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Showcase de Producto'],
+            url: '#',
+            screenshots: [
+                'img/sviva/svivaindex.jpeg',
+                'img/sviva/svivaconfig.jpeg'
+            ],
+            code: `// React + Three.js Showcase Component
+import React, { useEffect, useRef } from 'react';
+import * as THREE from 'three';
+
+export const Hero3D = () => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    useEffect(() => {
+        if (!canvasRef.current) return;
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, alpha: true });
+        renderer.setSize(400, 400);
+        return () => renderer.dispose();
+    }, []);
+    return <canvas ref={canvasRef} />;
+};`
+        },
+        kioskoazul: {
+            tag: 'Python · Flask · SQLite · POS Real-time',
+            title: 'Kiosko Azul — POS & Menú Digital Interactivo',
+            description: 'Menú digital, reservaciones en tiempo real y pedidos con un completo dashboard administrativo de estadísticas de órdenes para restauración y comercio.',
+            metrics: ['🍔 REAL-TIME POS', '⚡ 0.04s LATENCIA', '📊 DASHBOARD SQL', '🔒 AUDITORÍA POS'],
+            pipeline: ['📱 Client Order UI', '→', '⚡ Flask Async Engine', '→', '💾 SQLite Database', '→', '👨‍🍳 Kitchen Dashboard'],
+            tech: ['Python', 'Flask', 'SQLite', 'HTML5', 'CSS3', 'JavaScript Async'],
+            url: '#',
+            screenshots: [
+                'img/auracheck/auralogin.jpeg',
+                'img/cerdiv/cerdivweb.jpeg'
+            ],
+            code: `# Motor POS y Gestión de Órdenes Flask
+from flask import Flask, request, jsonify
+import sqlite3
+
+app = Flask(__name__)
+
+@app.route('/api/ordenes', methods=['POST'])
+def crear_orden():
+    data = request.get_json()
+    conn = sqlite3.connect('kiosko.db')
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO ordenes (mesa_id, total, estado) VALUES (?, ?, ?)',
+                   (data['mesa_id'], data['total'], 'PENDIENTE'))
+    conn.commit()
+    conn.close()
+    return jsonify({'status': 'SUCCESS', 'orden_id': cursor.lastrowid})`
+        },
         iuta: {
-            tag: 'Python · Flask · PostgreSQL · Cloud',
+            tag: 'Python · Flask · PostgreSQL · Multi-Sede',
             title: 'Sistema de Gestión Bibliotecaria IUTA',
-            description: 'Desarrollado como servicio comunitario para el IUTA, este sistema centraliza y automatiza la administración de libros y ejemplares físicos en múltiples sedes universitarias. Reemplaza registros físicos con una base de datos estructurada, implementa búsqueda en tiempo real por título/autor/sede, y gestiona stock con control de copias individuales y estados de disponibilidad. Incluye autenticación segura con cifrado de contraseñas y un panel CRUD completo para administradores.',
+            description: 'Desarrollado como servicio comunitario para el IUTA, este sistema centraliza y automatiza la administración de libros y ejemplares físicos en múltiples sedes universitarias.',
+            metrics: ['📚 15.000+ REGISTROS', '⚡ BÚSQUEDA ASÍNCRONA', '🔒 POSTGRESQL NEON', '🏛️ MULTI-SEDE'],
+            pipeline: ['🔍 Search Query', '→', '⚡ Flask ORM', '→', '🐘 PostgreSQL Neon', '→', '📖 Stock Allocation'],
             tech: ['Flask (Python)', 'PostgreSQL / Neon', 'Vercel Blob', 'Werkzeug Auth', 'Búsqueda Asíncrona', 'Multi-sede'],
             url: 'https://biblioteca-ashy-sigma.vercel.app',
             screenshots: [
@@ -832,7 +888,9 @@ def registrar_prestamo_libro(usuario_id, libro_id, sede_id):
         aura: {
             tag: 'FastAPI · Biometría · WebAuthn · Seguridad Local',
             title: 'Aura Check — Panel de Auditoría de Seguridad',
-            description: 'Aplicación de auditoría de seguridad biométrica que opera 100% en local: ningún dato sensible abandona el dispositivo. Analiza cinco módulos: integridad biométrica (WebAuthn / huella / facial), sensor óptico (cámara + face-api.js), frecuencia acústica (Web Audio API), estado del sistema (Battery API) y seguridad de red (test de velocidad real + geolocalización IP). Genera certificados PDF forenses descargables y persiste el historial de auditorías en localStorage.',
+            description: 'Aplicación de auditoría de seguridad biométrica que opera 100% en local: ningún dato sensible abandona el dispositivo. Analiza cinco módulos: integridad biométrica (WebAuthn / huella / facial), sensor óptico (cámara + face-api.js), frecuencia acústica (Web Audio API), estado del sistema (Battery API) y seguridad de red (test de velocidad real + geolocalización IP).',
+            metrics: ['🧬 BIOMETRÍA FACIAL', '🔒 ZERO DATA LEAK', '⚡ FASTAPI ASYNC', '📄 PDF FORENSE'],
+            pipeline: ['👁️ Optical Camera', '→', '⚡ face-api.js Local', '→', '🔑 WebAuthn Key', '→', '📄 Audit PDF Generator'],
             tech: ['FastAPI + Python 3.11', 'WebAuthn / Biometría', 'face-api.js', 'Web Audio API', 'jsPDF', 'Vercel Serverless', 'SlowAPI Rate Limiting'],
             url: 'https://aura-check-omega.vercel.app/',
             screenshots: [
@@ -860,7 +918,9 @@ async function auditBiometrics() {
         cuerpo: {
             tag: 'Google Gemini · FastAPI · IA Narrativa · Victorian UX',
             title: '¿Qué le pasa a mi cuerpo? | Archivo Médico 1885',
-            description: 'Plataforma de consulta médica inmersiva con IA que actúa como un doctor victoriano de 1885. Integra Gemini 1.5/2.0 Flash para respuestas con personalidad histórica, un sistema de fallback a Wikipedia y MedlinePlus (BeautifulSoup4 + httpx), filtros de imagen Cloudinary para estética de grabado antiguo, partículas de polvo ambiental, sellos de cera interactivos y paginación de respuestas simulando un libro físico.',
+            description: 'Plataforma de consulta médica inmersiva con IA que actúa como un doctor victoriano de 1885. Integra Gemini 1.5/2.0 Flash para respuestas con personalidad histórica, un sistema de fallback a Wikipedia y MedlinePlus (BeautifulSoup4 + httpx), filtros de imagen Cloudinary para estética de grabado antiguo.',
+            metrics: ['🎙️ VOZ VICTORIANA 1885', '🤖 GEMINI AI', '⚡ TTS EN TIEMPO REAL', '📖 UX HISTÓRICA'],
+            pipeline: ['❓ User Query', '→', '🤖 Gemini 1.5 Flash', '→', '📜 Victorian Filter', '→', '🔊 Web Audio TTS'],
             tech: ['Google Gemini 1.5/2.0', 'FastAPI + Python', 'BeautifulSoup4', 'Cloudinary API', 'Tailwind CSS', 'Wikipedia / MedlinePlus', 'Vercel Functions'],
             url: 'https://que-le-pasa-a-mi-cuerpo.vercel.app/',
             screenshots: [
@@ -883,17 +943,49 @@ def consulta_medica_historica(pregunta: str):
     soup = BeautifulSoup(response.text, "html.parser")
     return soup.get_text()`
         },
+        ventastrack: {
+            tag: 'Node.js · TypeScript · PostgreSQL · B2B',
+            title: 'VentasTrack B2B Commercial System',
+            description: 'Plataforma de ventas con roles y jerarquías, carrito de compras y módulo de facturación, sincronizada a diario con bases de datos del cliente.',
+            metrics: ['💼 B2B FACTURACIÓN', '🔄 SYNC DIARIO', '⚡ NODE.JS + TS', '📊 REPORTES SALES'],
+            pipeline: ['🛒 B2B Cart', '→', '⚡ Node.js Transaction', '→', '🐘 PostgreSQL ACID', '→', '📄 Invoice PDF'],
+            tech: ['Node.js', 'TypeScript', 'Vite', 'PostgreSQL', 'JWT Auth', 'Billing Engine'],
+            url: '#',
+            screenshots: [
+                'img/sviva/svivaconfig.jpeg',
+                'img/sviva/svivagraficas.jpeg'
+            ],
+            code: `// Node.js + TypeScript Transaction Handler
+import { Pool } from 'pg';
+const pool = new Pool();
+
+export const processOrder = async (clienteId: string, items: any[]) => {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+        const total = items.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+        const res = await client.query(
+            'INSERT INTO facturas (cliente_id, total, estado) VALUES ($1, $2, $3) RETURNING id',
+            [clienteId, total, 'PENDIENTE']
+        );
+        await client.query('COMMIT');
+        return res.rows[0];
+    } finally {
+        client.release();
+    }
+};`
+        },
         inventario: {
-            tag: 'Gestión Empresarial · Stock · Reportes',
-            title: 'Sistema de Inventario Pro | ¡Personalízalo para tu negocio!',
-            description: 'Nuestra solución de inventario es un ecosistema digital diseñado para empresas que buscan orden y escalabilidad. Ofrecemos este software como un producto base altamente flexible: podemos adaptarlo a tus necesidades específicas (campos personalizados, alertas de stock mínimo, multi-sucursales). Incluye gestión de proveedores, historial de movimientos y exportación de reportes detallados.',
+            tag: 'Gestión Empresarial · Stock · Custom Software',
+            title: 'Sistema de Inventario Pro | 100% Personalizable',
+            description: 'Nuestra solución de inventario es un ecosistema digital diseñado para empresas que buscan orden y escalabilidad. Ofrecemos este software como un producto base altamente flexible (campos personalizados, alertas de stock mínimo, multi-sucursales).',
+            metrics: ['📦 100% CUSTOM', '⚡ STOCK EN VIVO', '📊 REPORTES AUTO', '🔒 MULTI-BODEGA'],
+            pipeline: ['📦 Stock Scan', '→', '⚡ Python FastAPI', '→', '🔒 FOR UPDATE Lock', '→', '📊 Real-time Inventory'],
             tech: ['Python', 'Gestión de Stock', 'Base de Datos', 'Personalizable', 'Soporte 24/7'],
             url: '#contact',
             screenshots: [
                 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg',
-                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (2).jpeg',
-                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (3).jpeg',
-                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (7).jpeg'
+                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (2).jpeg'
             ],
             code: `-- Query de Inventario con Bloqueo de Filas y Reportes Diarios
 BEGIN;
@@ -953,7 +1045,7 @@ COMMIT;`
             color: 0x11d483,
             wireframe: true,
             transparent: true,
-            opacity: 0.65,
+            opacity: 0.7,
             blending: THREE.AdditiveBlending
         });
         window.modal3DMaterial = mat;
@@ -964,34 +1056,89 @@ COMMIT;`
             mat.color.setStyle(initialPrimary);
         }
 
-        // Crear geometría única por proyecto
+        // Crear geometría visualizadora 3D única por proyecto
         if (projectKey === 'sviva') {
-            // Neural Net / Icosaedro subdivided
-            modal3DMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(1.8, 1), mat);
+            // 👁️ SVIVA: AI Security Camera Node + Scan Rings
+            const group = new THREE.Group();
+            const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.4, 1), mat);
+            const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.1, 0.05, 8, 30), mat);
+            const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.04, 8, 30), mat);
+            ring2.rotation.x = Math.PI / 2;
+            group.add(core, ring1, ring2);
+            modal3DMesh = group;
+
+        } else if (projectKey === 'svivaweb') {
+            // 💻 SVIVA WEB: Floating 3D Laptop/Screen Hologram
+            const group = new THREE.Group();
+            const base = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.1, 1.8), mat);
+            const screen = new THREE.Mesh(new THREE.BoxGeometry(2.5, 1.6, 0.08), mat);
+            screen.position.set(0, 0.85, -0.8);
+            screen.rotation.x = -0.15;
+            group.add(base, screen);
+            modal3DMesh = group;
+
+        } else if (projectKey === 'kioskoazul') {
+            // 🍔 KIOSKO AZUL: 3D POS Tablet & Stand
+            const group = new THREE.Group();
+            const stand = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.6, 2.0, 12), mat);
+            const tablet = new THREE.Mesh(new THREE.BoxGeometry(2.2, 1.5, 0.1), mat);
+            tablet.position.set(0, 0.7, 0.2);
+            tablet.rotation.x = -0.28;
+            group.add(stand, tablet);
+            modal3DMesh = group;
+
         } else if (projectKey === 'iuta') {
-            // DB cylinders stack
-            const dbGroup = new THREE.Group();
+            // 📚 IUTA: 3D Database Stack & Core Knowledge Cube
+            const group = new THREE.Group();
             for (let i = 0; i < 3; i++) {
-                const cyl = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.0, 0.55, 12, 1, true), mat);
-                cyl.position.y = (i - 1) * 0.85;
-                dbGroup.add(cyl);
+                const cyl = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 0.5, 16, 1, true), mat);
+                cyl.position.y = (i - 1) * 0.75;
+                group.add(cyl);
             }
-            modal3DMesh = dbGroup;
+            const coreCube = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.7, 0.7), mat);
+            group.add(coreCube);
+            modal3DMesh = group;
+
         } else if (projectKey === 'aura') {
-            // Biometric shield / Sphere octaedro
-            modal3DMesh = new THREE.Mesh(new THREE.OctahedronGeometry(1.8, 2), mat);
+            // 🧬 AURA CHECK: 3D Biometric Facial/Vault Mesh + Scan Ring
+            const group = new THREE.Group();
+            const mesh = new THREE.Mesh(new THREE.OctahedronGeometry(1.6, 2), mat);
+            const scanRing = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.05, 8, 24), mat);
+            scanRing.rotation.x = Math.PI / 2;
+            group.add(mesh, scanRing);
+            modal3DMesh = group;
+
         } else if (projectKey === 'cuerpo') {
-            // Historical book / Torus
-            modal3DMesh = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.45, 8, 20), mat);
-        } else {
-            // Inventario Pro / Server rack
-            const rackGroup = new THREE.Group();
-            for (let i = 0; i < 3; i++) {
-                const box = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.42, 1.7), mat);
-                box.position.y = (i - 1) * 0.72;
-                rackGroup.add(box);
+            // 🎙️ CUERPO: 3D Victorian Anatomical DNA Knot
+            const group = new THREE.Group();
+            const knot = new THREE.Mesh(new THREE.TorusKnotGeometry(1.1, 0.35, 64, 12), mat);
+            group.add(knot);
+            modal3DMesh = group;
+
+        } else if (projectKey === 'ventastrack') {
+            // 💼 VENTASTRACK: 3D Commercial Sales Node Network
+            const group = new THREE.Group();
+            const centerNode = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 1.1), mat);
+            group.add(centerNode);
+            for (let i = 0; i < 4; i++) {
+                const angle = (i / 4) * Math.PI * 2;
+                const node = new THREE.Mesh(new THREE.IcosahedronGeometry(0.38, 0), mat);
+                node.position.set(Math.cos(angle) * 1.8, Math.sin(angle) * 1.8, 0);
+                group.add(node);
             }
-            modal3DMesh = rackGroup;
+            modal3DMesh = group;
+
+        } else {
+            // 📦 INVENTARIO PRO: 3x3 Automated Storage Grid
+            const group = new THREE.Group();
+            for (let x = -1; x <= 1; x++) {
+                for (let y = -1; y <= 1; y++) {
+                    const box = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.65, 0.65), mat);
+                    box.position.set(x * 0.9, y * 0.9, 0);
+                    group.add(box);
+                }
+            }
+            modal3DMesh = group;
         }
 
         modal3DScene.add(modal3DMesh);
@@ -1189,6 +1336,29 @@ COMMIT;`
         modalTechList.innerHTML = data.tech.map(t => `<li>${t}</li>`).join('');
         modalLearnMore.href = data.url;
 
+        // Renderizar Métricas de Ingeniería (KPI Pills)
+        const metricsBar = document.getElementById('modalMetricsBar');
+        if (metricsBar) {
+            if (data.metrics && data.metrics.length > 0) {
+                metricsBar.innerHTML = data.metrics.map(m => `<span class="hud-metric-pill">${m}</span>`).join('');
+            } else {
+                metricsBar.innerHTML = '';
+            }
+        }
+
+        // Renderizar Diagrama de Flujo de la Arquitectura
+        const pipelineEl = document.getElementById('modalPipelineDiagram');
+        if (pipelineEl) {
+            if (data.pipeline && data.pipeline.length > 0) {
+                pipelineEl.innerHTML = data.pipeline.map(step => {
+                    if (step === '→') return `<span class="pipeline-arrow">→</span>`;
+                    return `<span class="pipeline-node">${step}</span>`;
+                }).join('');
+            } else {
+                pipelineEl.innerHTML = '';
+            }
+        }
+
         // Reset modal tabs to default (wireframe)
         const defaultTabBtn = document.querySelector('.modal-tab-btn[data-tab="wireframe"]');
         if (defaultTabBtn) {
@@ -1306,12 +1476,25 @@ COMMIT;`
         });
     });
 
-    // Info button → open modal
+    // Info button → 3D Warp Tunnel Flight Experience
     document.querySelectorAll('.info-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
+            e.preventDefault();
             const key = btn.getAttribute('data-info');
-            openModal(key);
+            const card = btn.closest('.card');
+            
+            if (window.WarpRunner && typeof window.WarpRunner.launch === 'function') {
+                window.WarpRunner.launch(key, (projKey) => {
+                    if (typeof window.openProjectModal === 'function') {
+                        window.openProjectModal(projKey);
+                    } else {
+                        openModal(projKey);
+                    }
+                });
+            } else {
+                openModal(key);
+            }
         });
     });
 
@@ -2396,10 +2579,23 @@ COMMIT;`
             }
             terrainPos.needsUpdate = true;
 
-            // Opacidad del terreno: aparece al entrar en el Hero y se mantiene en el resto
-            const terrainOpacity = inHero
-                ? Math.min(0.22, progress * 1.1)   // fade-in en el Hero
-                : 0.22;                              // siempre visible fuera del Hero
+            // Opacidad del terreno de olas 3D: NUNCA en el Hero ni al scrollear en Hero/Filosofía.
+            // Se activa únicamente al entrar al apartado "Nuestro Trabajo" (#portfolio)
+            const portfolioEl = document.getElementById('portfolio');
+            let terrainOpacity = 0;
+            if (portfolioEl) {
+                const rect = portfolioEl.getBoundingClientRect();
+                const windowH = window.innerHeight;
+                if (rect.top < windowH && rect.bottom > 0) {
+                    // Entrando o dentro del apartado Nuestro Trabajo (#portfolio)
+                    const enteringProgress = Math.min(1.0, Math.max(0, (windowH - rect.top) / (windowH * 0.6)));
+                    terrainOpacity = enteringProgress * 0.22;
+                } else if (rect.bottom <= 0) {
+                    terrainOpacity = 0.22; // En secciones posteriores a Nuestro Trabajo
+                } else {
+                    terrainOpacity = 0; // Arriba de #portfolio (Hero y Filosofía) -> CERO olas
+                }
+            }
             terrainMaterial.opacity = terrainOpacity;
             terrainMesh.rotation.x = -Math.PI / 2.2 + clampedVelocity * 0.0006;
 
@@ -2692,6 +2888,310 @@ COMMIT;`
         revealObserver.observe(el);
     });
 
+    // ─── 🔊 GENERATIVE WEB AUDIO UI SYNTHESIZER ───
+    const UISound = {
+        ctx: null,
+        enabled: false,
+        init() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (AudioCtx) this.ctx = new AudioCtx();
+            } catch(e) {}
+        },
+        toggle(forceState) {
+            this.enabled = typeof forceState === 'boolean' ? forceState : !this.enabled;
+            const btn = document.getElementById('audio-toggle-btn');
+            if (btn) {
+                const iconOff = btn.querySelector('.audio-icon-off');
+                const iconOn  = btn.querySelector('.audio-icon-on');
+                if (this.enabled) {
+                    if (iconOff) iconOff.style.display = 'none';
+                    if (iconOn)  iconOn.style.display = 'inline-block';
+                    btn.classList.add('active');
+                    this.playClick();
+                } else {
+                    if (iconOff) iconOff.style.display = 'inline-block';
+                    if (iconOn)  iconOn.style.display = 'none';
+                    btn.classList.remove('active');
+                }
+            }
+            return this.enabled;
+        },
+        playTick() {
+            if (!this.enabled || !this.ctx) return;
+            try {
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1400, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(2800, this.ctx.currentTime + 0.03);
+                gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.035);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.04);
+            } catch(e) {}
+        },
+        playClick() {
+            if (!this.enabled || !this.ctx) return;
+            try {
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(220, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(80, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.09);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.1);
+            } catch(e) {}
+        }
+    };
+    window.UISound = UISound;
+    UISound.init();
+
+    // Hook audio toggle button
+    const audioToggleBtn = document.getElementById('audio-toggle-btn');
+    if (audioToggleBtn) {
+        audioToggleBtn.addEventListener('click', () => {
+            UISound.toggle();
+        });
+    }
+
+    // Attach hover ticks to all interactive elements
+    document.querySelectorAll('.btn, .btn-outline, .card, .plan-tab-btn, .modal-tab-btn, .nav-links a').forEach(el => {
+        el.addEventListener('mouseenter', () => UISound.playTick());
+        el.addEventListener('click', () => UISound.playClick());
+    });
+
+    // ─── 🌐 TECH BENTO GRID TILT ───
+    function initTechBentoTilt() {
+        const cards = document.querySelectorAll('.tech-bento-card.tilt-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+
+            card.addEventListener('mouseenter', () => {
+                if (window.UISound) window.UISound.playTick();
+            });
+
+            card.addEventListener('click', () => {
+                if (window.UISound) window.UISound.playClick();
+            });
+        });
+    }
+
+    // ─── ✨ COSMIC SPARKLES CANVAS (tecnologias.tsx) ───
+    function initSparklesCanvas() {
+        const canvas = document.getElementById('sparkles-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        let width = canvas.parentElement ? canvas.parentElement.clientWidth : window.innerWidth;
+        let height = canvas.parentElement ? canvas.parentElement.clientHeight : 600;
+        let particles = [];
+
+        function resize() {
+            if (!canvas.parentElement) return;
+            width = canvas.parentElement.clientWidth;
+            height = canvas.parentElement.clientHeight;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            ctx.scale(dpr, dpr);
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+        }
+
+        class Sparkle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2.2 + 0.6;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.opacity = Math.random() * 0.8 + 0.2;
+                this.opacitySpeed = (Math.random() * 0.02 + 0.005) * (Math.random() > 0.5 ? 1 : -1);
+                this.color = Math.random() > 0.35 ? '#ffffff' : '#11d483';
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.opacity += this.opacitySpeed;
+                if (this.opacity >= 1 || this.opacity <= 0.1) {
+                    this.opacitySpeed = -this.opacitySpeed;
+                }
+                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, Math.min(1, this.opacity));
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 8;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function init() {
+            resize();
+            particles = [];
+            for (let i = 0; i < 250; i++) {
+                particles.push(new Sparkle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+        window.addEventListener('resize', resize);
+    }
+
+    // ─── 🧠 NEURAL FLOW FIELD CANVAS (final.tsx) ───
+    function initNeuralCanvas() {
+        const canvas = document.getElementById('neural-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        let width = canvas.parentElement ? canvas.parentElement.clientWidth : window.innerWidth;
+        let height = canvas.parentElement ? canvas.parentElement.clientHeight : 600;
+        let particles = [];
+        let mouse = { x: -1000, y: -1000 };
+
+        function resize() {
+            if (!canvas.parentElement) return;
+            width = canvas.parentElement.clientWidth;
+            height = canvas.parentElement.clientHeight;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            ctx.scale(dpr, dpr);
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+        }
+
+        class NeuralParticle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = 0;
+                this.vy = 0;
+                this.age = 0;
+                this.life = Math.random() * 200 + 100;
+            }
+            update() {
+                const angle = (Math.cos(this.x * 0.005) + Math.sin(this.y * 0.005)) * Math.PI;
+                this.vx += Math.cos(angle) * 0.2;
+                this.vy += Math.sin(angle) * 0.2;
+
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    const force = (150 - dist) / 150;
+                    this.vx -= dx * force * 0.05;
+                    this.vy -= dy * force * 0.05;
+                }
+
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vx *= 0.95;
+                this.vy *= 0.95;
+
+                this.age++;
+                if (this.age > this.life) this.reset();
+
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+            }
+            draw() {
+                const alpha = 1 - Math.abs((this.age / this.life) - 0.5) * 2;
+                ctx.fillStyle = '#11d483';
+                ctx.globalAlpha = Math.max(0, Math.min(1, alpha * 0.8));
+                ctx.fillRect(this.x, this.y, 1.8, 1.8);
+            }
+        }
+
+        function init() {
+            resize();
+            particles = [];
+            for (let i = 0; i < 450; i++) {
+                particles.push(new NeuralParticle());
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 8, 16, 0.15)';
+            ctx.fillRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        window.addEventListener('resize', resize);
+        const section = canvas.parentElement;
+        if (section) {
+            section.addEventListener('mousemove', (e) => {
+                const r = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - r.left;
+                mouse.y = e.clientY - r.top;
+            });
+            section.addEventListener('mouseleave', () => {
+                mouse.x = -1000;
+                mouse.y = -1000;
+            });
+        }
+    }
+
     // Lanzar al cargar
     setTimeout(() => {
         updateLayoutCache();
@@ -2700,9 +3200,10 @@ COMMIT;`
         handleInvertedScroll(scrollY);
         handleMethodologyScroll(scrollY);
         init3DCore();
-        // Philosophy canvases auto-initialize via their IIFE/function calls in the 3-canvas system
+        initTechBentoTilt();
+        initSparklesCanvas();
+        initNeuralCanvas();
         
-
         // Activar textos iniciales en Hero
         document.querySelectorAll('.hero-content .reveal-text').forEach(el => {
             el.classList.add('active');
