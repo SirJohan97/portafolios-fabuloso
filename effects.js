@@ -1744,6 +1744,14 @@ function initEffectsScript() {
             });
         }
 
+        // Feedback HUD al hacer click en adquirir plan
+        ctaBtn.addEventListener('click', () => {
+            if (window.showHudToast) {
+                const planName = activePlanKey === 'basico' ? 'PLAN BÁSICO' : (activePlanKey === 'pro' ? 'PLAN PROFESIONAL' : 'PLAN EMPRESARIAL');
+                window.showHudToast(`[COTIZACIÓN SELECCIONADA // ${planName}]`);
+            }
+        });
+
         // Render Inicial
         renderPricingUI();
     })();
@@ -2457,28 +2465,35 @@ function initEffectsScript() {
             }
 
             // ─── Card Positions ───────────────────────────────────────────
+            // ─── Card Positions & Responsive Spreads ───────────────────────
             const andresCards = Array.from(document.querySelectorAll('.card-andres'));
             const johanCards  = Array.from(document.querySelectorAll('.card-johan'));
             const masterCard  = document.getElementById('master-vanta-card');
 
+            const isMobile = window.innerWidth < 768;
+            const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+            const xSpread = isMobile ? (window.innerWidth < 480 ? 0.46 : 0.62) : (isTablet ? 0.82 : 1.0);
+            const ySpread = isMobile ? (window.innerHeight < 700 ? 0.72 : 0.85) : 1.0;
+            const cardTargetScale = isMobile ? 0.68 : (isTablet ? 0.80 : 0.91);
+            const masterTargetScale = isMobile ? 0.80 : (isTablet ? 0.92 : 1.0);
+
             // Final resting spots for each hand
-            // Andrés (top of table): x from -320 to 320, y around -160
             const andresSpots = [
-                { x: -300, y: -138, rZ: -12 },
-                { x: -180, y: -145, rZ: -7  },
-                { x: -60,  y: -148, rZ: -2  },
-                { x:  60,  y: -148, rZ:  2  },
-                { x:  180, y: -145, rZ:  7  },
-                { x:  300, y: -138, rZ:  12 }
+                { x: -300 * xSpread, y: -138 * ySpread, rZ: -12 },
+                { x: -180 * xSpread, y: -145 * ySpread, rZ: -7  },
+                { x: -60  * xSpread, y: -148 * ySpread, rZ: -2  },
+                { x:  60  * xSpread, y: -148 * ySpread, rZ:  2  },
+                { x:  180 * xSpread, y: -145 * ySpread, rZ:  7  },
+                { x:  300 * xSpread, y: -138 * ySpread, rZ:  12 }
             ];
             // Johan (bottom of table): mirror
             const johanSpots = [
-                { x: -300, y:  138, rZ: -12 },
-                { x: -180, y:  145, rZ: -7  },
-                { x: -60,  y:  148, rZ: -2  },
-                { x:  60,  y:  148, rZ:  2  },
-                { x:  180, y:  145, rZ:  7  },
-                { x:  300, y:  138, rZ:  12 }
+                { x: -300 * xSpread, y:  138 * ySpread, rZ: -12 },
+                { x: -180 * xSpread, y:  145 * ySpread, rZ: -7  },
+                { x: -60  * xSpread, y:  148 * ySpread, rZ: -2  },
+                { x:  60  * xSpread, y:  148 * ySpread, rZ:  2  },
+                { x:  180 * xSpread, y:  145 * ySpread, rZ:  7  },
+                { x:  300 * xSpread, y:  138 * ySpread, rZ:  12 }
             ];
 
             // ─── Pre-set ALL cards to dealer deck at center ───────────────
@@ -2551,14 +2566,13 @@ function initEffectsScript() {
                 const endRZ = spot.rZ;
 
                 // Arc mid-point: 52% of the way, with lateral deflection for curve feel
-                // Deflect slightly opposite to the rotation direction to simulate wrist flick
-                const arcMidX = endX * 0.52 + (endRZ > 0 ? -18 : 18);
+                const arcMidX = endX * 0.52 + (endRZ > 0 ? -14 : 14);
                 const arcMidY = endY * 0.48;
 
                 // — Step 1: Snap out of deck, rocket toward arc midpoint —
                 tl.to(card, {
                     x: arcMidX, y: arcMidY,
-                    scale: 0.90, opacity: 1,
+                    scale: cardTargetScale * 0.96, opacity: 1,
                     rotationZ: endRZ * 0.25,
                     duration: SLIDE_DUR * 0.6,
                     ease: "power4.out"
@@ -2583,7 +2597,7 @@ function initEffectsScript() {
                 // — Step 2: Decelerate & settle into final position —
                 tl.to(card, {
                     x: endX, y: endY,
-                    scale: 0.91,
+                    scale: cardTargetScale,
                     rotationZ: endRZ,
                     duration: SLIDE_DUR * 0.55,
                     ease: "power3.inOut"
@@ -2591,8 +2605,8 @@ function initEffectsScript() {
 
                 // — Step 3: Landing thud — squish compress then elastic bounce —
                 const landAt = baseDelay + SLIDE_DUR * 0.52 + SLIDE_DUR * 0.55;
-                tl.to(card, { scaleY: 0.84, scaleX: 0.97, duration: 0.055, ease: "power3.in" }, landAt);
-                tl.to(card, { scaleY: 0.91, scaleX: 0.91, duration: 0.20,  ease: "elastic.out(1.35, 0.52)" }, landAt + 0.055);
+                tl.to(card, { scaleY: cardTargetScale * 0.88, scaleX: cardTargetScale * 1.05, duration: 0.055, ease: "power3.in" }, landAt);
+                tl.to(card, { scaleY: cardTargetScale, scaleX: cardTargetScale, duration: 0.20,  ease: "elastic.out(1.35, 0.52)" }, landAt + 0.055);
 
                 // Crisp click sound on landing
                 tl.call(() => {
@@ -2608,13 +2622,13 @@ function initEffectsScript() {
 
                 // Master card: ascends smoothly from deck to floating hero position
                 tl.to(masterCard, {
-                    y: -240, scale: 1.55, opacity: 1,
+                    y: isMobile ? -160 : -240, scale: isMobile ? 1.15 : 1.55, opacity: 1,
                     duration: 0.50, ease: "power3.out"
                 }, riverStart);
 
                 // Hold in air with subtle floating drift (suspense beat)
                 tl.to(masterCard, {
-                    y: -255, scale: 1.60,
+                    y: isMobile ? -170 : -255, scale: isMobile ? 1.20 : 1.60,
                     duration: 0.35, ease: "sine.inOut"
                 }, riverStart + 0.50);
 
@@ -2627,15 +2641,15 @@ function initEffectsScript() {
                 // Heavy gravity slam DOWN onto center of felt
                 tl.to(masterCard, {
                     x: 0, y: 0,
-                    scale: 1.05,
+                    scale: masterTargetScale * 1.05,
                     rotationZ: 0,
                     duration: 0.45,
                     ease: "power4.in"
                 }, riverStart + 0.85);
 
                 // Landing: heavy compress + dramatic elastic expansion
-                tl.to(masterCard, { scaleY: 0.75, scaleX: 1.12, duration: 0.09, ease: "power4.in" }, riverStart + 1.30);
-                tl.to(masterCard, { scaleY: 1.0,  scaleX: 1.0,  duration: 0.45, ease: "elastic.out(1.2, 0.48)" }, riverStart + 1.39);
+                tl.to(masterCard, { scaleY: masterTargetScale * 0.75, scaleX: masterTargetScale * 1.12, duration: 0.09, ease: "power4.in" }, riverStart + 1.30);
+                tl.to(masterCard, { scaleY: masterTargetScale,  scaleX: masterTargetScale,  duration: 0.45, ease: "elastic.out(1.2, 0.48)" }, riverStart + 1.39);
 
                 // Shockwave + shake + bass boom
                 tl.call(() => {

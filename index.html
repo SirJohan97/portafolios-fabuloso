@@ -1367,8 +1367,12 @@
                             <span class="orbital-ring or-2"></span>
                             <span class="orbital-ring or-3"></span>
                             <i class="fab fa-whatsapp"></i>
-                            <span>Escribir ahora</span>
+                            <span>WhatsApp Directo</span>
                         </a>
+                        <button type="button" class="btn-outline email-copy-btn" id="emailCopyBtn" title="Copiar correo de contacto">
+                            <i class="fas fa-copy"></i>
+                            <span id="emailCopyText">Copiar Correo</span>
+                        </button>
                     </div>
                 </div>
                 <form id="formContactoWa" class="contact-form">
@@ -1584,7 +1588,16 @@
                     </div>
                 </div>
             </div>
+    </div>
+
+    <!-- ===== HUD TOAST NOTIFICATION (AWWWARDS FEEDBACK) ===== -->
+    <div id="vanta-hud-toast" class="vanta-hud-toast" aria-live="polite">
+        <div class="toast-indicator-pulse"></div>
+        <div class="toast-content">
+            <span class="toast-tag">[SYS_COMMS]</span>
+            <span class="toast-msg" id="toastMsg">TRANSMISIÓN ENVIADA // < 24H</span>
         </div>
+    </div>
 
     <!-- Libraries for Awwwards Premium Effects -->
     <script src="three.min.js"></script>

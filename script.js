@@ -430,8 +430,47 @@ function initMainScript() {
     typeEffect();
 
     /* =========================================
-       7. FORMULARIO A WHATSAPP
+       7. HUD TOAST & FORMULARIO A WHATSAPP
        ========================================= */
+    let hudToastTimeout = null;
+    window.showHudToast = function(message, duration = 3400) {
+        const toast = document.getElementById('vanta-hud-toast');
+        const msgEl = document.getElementById('toastMsg');
+        if (!toast || !msgEl) return;
+
+        msgEl.textContent = message;
+        toast.classList.add('active');
+
+        if (hudToastTimeout) clearTimeout(hudToastTimeout);
+        hudToastTimeout = setTimeout(() => {
+            toast.classList.remove('active');
+        }, duration);
+    };
+
+    // Copiar Correo Directo
+    const emailCopyBtn = document.getElementById('emailCopyBtn');
+    const emailCopyText = document.getElementById('emailCopyText');
+    if (emailCopyBtn) {
+        emailCopyBtn.addEventListener('click', () => {
+            const email = 'contacto@vanta.tech';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(email).then(() => {
+                    if (emailCopyText) emailCopyText.textContent = '¡Copiado!';
+                    emailCopyBtn.classList.add('btn-copied');
+                    window.showHudToast('[CORREO COPIADO // CONTACTO@VANTA.TECH]');
+                    setTimeout(() => {
+                        if (emailCopyText) emailCopyText.textContent = 'Copiar Correo';
+                        emailCopyBtn.classList.remove('btn-copied');
+                    }, 2800);
+                }).catch(() => {
+                    window.location.href = `mailto:${email}`;
+                });
+            } else {
+                window.location.href = `mailto:${email}`;
+            }
+        });
+    }
+
     const formContacto = document.getElementById('formContactoWa');
 
     if (formContacto) {
@@ -447,6 +486,10 @@ function initMainScript() {
             const textoMensaje = `¡Hola! Vengo de su sitio web VANTA y requiero cotizar un proyecto.%0A%0A*Nombre:* ${encodeURIComponent(nombre)}%0A*Correo:* ${encodeURIComponent(email)}%0A*Requerimiento:* ${encodeURIComponent(mensaje)}`;
             const numeroWa     = "584127121162";
             const urlWa        = `https://wa.me/${numeroWa}?text=${textoMensaje}`;
+
+            if (window.showHudToast) {
+                window.showHudToast('[TRANSMISIÓN ENVIADA // ENLACE A WHATSAPP ACTIVO]');
+            }
 
             window.open(urlWa, '_blank', 'noopener,noreferrer');
         });
@@ -609,7 +652,11 @@ function initMainScript() {
             }
         }
 
+        let networkRafId = null;
+        let isNetworkVisible = true;
+
         function animate() {
+            if (!isNetworkVisible) return;
             ctx.clearRect(0, 0, width, height);
 
             // Actualizar y dibujar partículas
@@ -656,7 +703,7 @@ function initMainScript() {
                 }
             }
 
-            requestAnimationFrame(animate);
+            networkRafId = requestAnimationFrame(animate);
         }
 
         // Listeners
@@ -665,16 +712,30 @@ function initMainScript() {
         });
 
         const heroElement = document.getElementById('home');
-        heroElement.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top;
-        });
+        if (heroElement) {
+            heroElement.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+            });
 
-        heroElement.addEventListener('mouseleave', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
+            heroElement.addEventListener('mouseleave', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+
+            // Observer para pausar cuando no esté visible el Hero
+            const heroObs = new IntersectionObserver((entries) => {
+                isNetworkVisible = entries[0].isIntersecting;
+                if (isNetworkVisible) {
+                    cancelAnimationFrame(networkRafId);
+                    animate();
+                } else {
+                    cancelAnimationFrame(networkRafId);
+                }
+            }, { threshold: 0.05 });
+            heroObs.observe(heroElement);
+        }
 
         // Lanzar
         init();
@@ -1505,6 +1566,34 @@ COMMIT;`
     if (modalOverlay) {
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) closeModal();
+        });
+    }
+
+    // Botón "Cotizar este sistema" en el modal
+    const modalContactBtn = document.getElementById('modalContact');
+    if (modalContactBtn) {
+        modalContactBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const projectTitle = modalTitle ? modalTitle.textContent.trim() : 'Sistema VANTA';
+            closeModal();
+
+            const waMsgEl = document.getElementById('waMensaje');
+            if (waMsgEl) {
+                waMsgEl.value = `¡Hola! Me gustaría cotizar e implementar una arquitectura basada en el proyecto: ${projectTitle}.`;
+            }
+
+            if (window.showHudToast) {
+                window.showHudToast(`[PROYECTO SELECCIONADO // ${projectTitle.toUpperCase()}]`);
+            }
+
+            const contactSec = document.getElementById('contact');
+            if (contactSec) {
+                contactSec.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => {
+                    const nameInput = document.getElementById('waNombre');
+                    if (nameInput) nameInput.focus();
+                }, 500);
+            }
         });
     }
 
@@ -2566,19 +2655,6 @@ COMMIT;`
                 logoMaterial.opacity = 0;
             }
 
-            // --- TERRAIN DE OLAS (siempre activo en toda la página) ---
-            flowOffset += 0.012 + clampedVelocity * 0.0018;
-            const amplitudeFactor = 0.4 + clampedVelocity * 0.007;
-
-            const terrainPos = terrainGeometry.getAttribute('position');
-            for (let i = 0; i < terrainPos.count; i++) {
-                const x = terrainPos.getX(i);
-                const y = terrainPos.getY(i);
-                const waveHeight = Math.sin(x * 0.18 + y * 0.14 - flowOffset) * amplitudeFactor;
-                terrainPos.setZ(i, originalZ[i] + waveHeight);
-            }
-            terrainPos.needsUpdate = true;
-
             // Opacidad del terreno de olas 3D: NUNCA en el Hero ni al scrollear en Hero/Filosofía.
             // Se activa únicamente al entrar al apartado "Nuestro Trabajo" (#portfolio)
             const portfolioEl = document.getElementById('portfolio');
@@ -2597,9 +2673,27 @@ COMMIT;`
                 }
             }
             terrainMaterial.opacity = terrainOpacity;
-            terrainMesh.rotation.x = -Math.PI / 2.2 + clampedVelocity * 0.0006;
 
-            renderer.render(scene, camera);
+            // --- TERRAIN DE OLAS: Solo mutar vértices si el terreno tiene opacidad visible ---
+            if (terrainOpacity > 0.005) {
+                flowOffset += 0.012 + clampedVelocity * 0.0018;
+                const amplitudeFactor = 0.4 + clampedVelocity * 0.007;
+
+                const terrainPos = terrainGeometry.getAttribute('position');
+                for (let i = 0; i < terrainPos.count; i++) {
+                    const x = terrainPos.getX(i);
+                    const y = terrainPos.getY(i);
+                    const waveHeight = Math.sin(x * 0.18 + y * 0.14 - flowOffset) * amplitudeFactor;
+                    terrainPos.setZ(i, originalZ[i] + waveHeight);
+                }
+                terrainPos.needsUpdate = true;
+                terrainMesh.rotation.x = -Math.PI / 2.2 + clampedVelocity * 0.0006;
+            }
+
+            // Solo renderizar si el Logo V o el Terreno están visibles
+            if (inHero || terrainOpacity > 0.005) {
+                renderer.render(scene, camera);
+            }
         }
 
         animate();
@@ -3158,12 +3252,17 @@ COMMIT;`
         function init() {
             resize();
             particles = [];
-            for (let i = 0; i < 450; i++) {
+            const count = window.innerWidth < 768 ? 160 : 300;
+            for (let i = 0; i < count; i++) {
                 particles.push(new NeuralParticle());
             }
         }
 
+        let neuralRafId = null;
+        let isNeuralVisible = false;
+
         function animate() {
+            if (!isNeuralVisible) return;
             ctx.fillStyle = 'rgba(5, 8, 16, 0.15)';
             ctx.fillRect(0, 0, width, height);
 
@@ -3171,24 +3270,39 @@ COMMIT;`
                 p.update();
                 p.draw();
             });
-            requestAnimationFrame(animate);
+            neuralRafId = requestAnimationFrame(animate);
         }
 
         init();
-        animate();
 
-        window.addEventListener('resize', resize);
-        const section = canvas.parentElement;
-        if (section) {
-            section.addEventListener('mousemove', (e) => {
+        window.addEventListener('resize', () => {
+            resize();
+            init();
+        });
+
+        const contactSec = document.getElementById('contact') || canvas.parentElement;
+        if (contactSec) {
+            contactSec.addEventListener('mousemove', (e) => {
                 const r = canvas.getBoundingClientRect();
                 mouse.x = e.clientX - r.left;
                 mouse.y = e.clientY - r.top;
             });
-            section.addEventListener('mouseleave', () => {
+            contactSec.addEventListener('mouseleave', () => {
                 mouse.x = -1000;
                 mouse.y = -1000;
             });
+
+            // IntersectionObserver para pausar el canvas de contacto cuando no esté en pantalla
+            const contactObs = new IntersectionObserver((entries) => {
+                isNeuralVisible = entries[0].isIntersecting;
+                if (isNeuralVisible) {
+                    cancelAnimationFrame(neuralRafId);
+                    animate();
+                } else {
+                    cancelAnimationFrame(neuralRafId);
+                }
+            }, { threshold: 0.05 });
+            contactObs.observe(contactSec);
         }
     }
 

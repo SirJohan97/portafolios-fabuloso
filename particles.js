@@ -18,10 +18,11 @@
     /* ══════════════════════════════════════════════════════════════
        1. CONFIGURACIÓN
        ══════════════════════════════════════════════════════════════ */
+    const isMobileDevice = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
     const CONFIG = {
 
         // ── Cantidad de partículas ────────────────────────────────
-        COUNT: 55,          // Reducido a 55 para mejor rendimiento
+        COUNT: isMobileDevice ? 24 : 50,    // Optimizado para 60 FPS estables en móviles y desktop
 
         // ── Velocidad de deriva en idle ───────────────────────────
         // Cada partícula tiene su propia velocidad aleatoria dentro
@@ -262,6 +263,7 @@
         H = window.innerHeight;
         canvas.width  = W;
         canvas.height = H;
+        CONFIG.COUNT = (W < 768 || window.matchMedia('(pointer: coarse)').matches) ? 24 : 50;
         initParticles();
     }, { passive: true });
 
