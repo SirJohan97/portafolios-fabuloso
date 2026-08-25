@@ -437,57 +437,107 @@
 }
 
 /* -------------------------------------------------------
-   CURSOR MORPH
+   ADAPTIVE MORPHING CURSOR (AWWWARDS MULTI-MODE 2026)
    ------------------------------------------------------- */
 .cursor {
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: visible;
+    pointer-events: none;
+    z-index: 99999;
+    transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.25s ease,
+                border-color 0.25s ease,
+                border-radius 0.3s ease;
 }
 
 .cursor-label {
     position: absolute;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.5rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    color: #0a0a0a;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.52rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: #03080e;
     text-transform: uppercase;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transform: scale(0.85);
+    transition: opacity 0.22s ease, transform 0.22s ease;
     white-space: nowrap;
     user-select: none;
-    z-index: 1;
+    z-index: 2;
 }
 
-.cursor--view {
+/* Modo 1: Project Card Glass Lens */
+.cursor--project {
+    width: 74px !important;
+    height: 74px !important;
+    background: rgba(17, 212, 131, 0.92) !important;
+    border: 2px solid rgba(255, 255, 255, 0.9) !important;
+    box-shadow: 0 0 25px rgba(17, 212, 131, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.4) !important;
+    mix-blend-mode: normal !important;
+    border-radius: 50% !important;
+}
+.cursor--project .cursor-label {
+    opacity: 1;
+    transform: scale(1);
+    color: #020b08 !important;
+}
+
+/* Modo 2: Code & Terminal HUD Precision Reticle */
+.cursor--code {
     width: 60px !important;
     height: 60px !important;
-    background: rgba(var(--primary-rgb), 0.9) !important;
-    border-color: transparent !important;
-    mix-blend-mode: normal !important;
-    transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                background 0.2s ease !important;
+    background: rgba(10, 20, 35, 0.65) !important;
+    backdrop-filter: blur(8px) !important;
+    border: 1px dashed rgba(0, 255, 255, 0.85) !important;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.2) !important;
+    border-radius: 6px !important;
 }
-
-.cursor--view .cursor-label {
+.cursor--code .cursor-label {
     opacity: 1;
+    transform: scale(0.95);
+    color: #00ffff !important;
+    font-size: 0.48rem;
 }
 
-.cursor--click {
-    width: 18px !important;
-    height: 18px !important;
+/* Modo 3: 3D Orbit Compass for Table and 3D Canvas */
+.cursor--orbit {
+    width: 68px !important;
+    height: 68px !important;
+    background: rgba(240, 192, 48, 0.18) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 2px solid #f0c030 !important;
+    box-shadow: 0 0 25px rgba(240, 192, 48, 0.5) !important;
+    border-radius: 50% !important;
+    animation: cursorOrbitSpin 8s linear infinite;
+}
+.cursor--orbit .cursor-label {
+    opacity: 1;
+    transform: scale(1);
+    color: #f0c030 !important;
+    animation: cursorOrbitCounterSpin 8s linear infinite;
+}
+
+@keyframes cursorOrbitSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+@keyframes cursorOrbitCounterSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(-360deg); }
+}
+
+/* Modo 4: Action / Button Magnetic State */
+.cursor--click,
+.cursor--link {
+    width: 22px !important;
+    height: 22px !important;
     background: rgba(var(--primary-rgb), 1) !important;
     border-color: transparent !important;
-    transition: width 0.2s ease, height 0.2s ease !important;
-}
-
-.cursor--link {
-    border-color: rgba(var(--primary-rgb), 0.8) !important;
-    background: rgba(var(--primary-rgb), 0.08) !important;
+    box-shadow: 0 0 15px rgba(17, 212, 131, 0.7) !important;
 }
 
 .btn,

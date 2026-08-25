@@ -1,0 +1,289 @@
+/* ================================================================
+   VA-OS v4.0 INTERACTIVE LIVE TERMINAL & CYBER NOTEPAD CHEAT-SHEET
+   ────────────────────────────────────────────────────────────────
+   • Dual-Column Layout: Live REPL Terminal + Sticky Cheat-Sheet
+   • CRT Scanlines, Sub-pixel Typography & Glowing Output Buffer
+   • Interactive Prompt with Blinking Cursor & Command Auto-Type
+   • WebGL / Canvas Micro-Benchmark Visualizer Integration
+   ================================================================ */
+
+.terminal-interactive-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    max-width: 1220px;
+    width: 100%;
+    margin: 3.5rem auto 1rem;
+    align-items: start;
+    position: relative;
+    z-index: 10;
+}
+
+/* ─── 1. TERMINAL CONTAINER ──────────────────────────────────── */
+.vanta-live-terminal {
+    background: rgba(6, 12, 22, 0.94);
+    border: 1px solid rgba(17, 212, 131, 0.4);
+    border-radius: 14px;
+    box-shadow: 
+        0 25px 70px rgba(0, 0, 0, 0.9),
+        0 0 30px rgba(17, 212, 131, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.vanta-live-terminal .terminal-header {
+    background: rgba(12, 20, 35, 0.95);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(17, 212, 131, 0.2);
+}
+
+.terminal-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.terminal-title-text {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.terminal-header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.terminal-telemetry {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.68rem;
+    color: rgba(17, 212, 131, 0.85);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.telemetry-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #11d483;
+    box-shadow: 0 0 8px #11d483;
+    animation: telePulse 1.8s infinite alternate;
+}
+
+@keyframes telePulse {
+    from { opacity: 0.4; transform: scale(0.9); }
+    to   { opacity: 1.0; transform: scale(1.2); }
+}
+
+/* Terminal Body */
+.vanta-terminal-screen {
+    padding: 22px 24px;
+    min-height: 310px;
+    max-height: 440px;
+    overflow-y: auto;
+    font-family: 'JetBrains Mono', 'Space Grotesk', monospace;
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: #e2f9ee;
+    background: 
+        linear-gradient(rgba(17, 212, 131, 0.02) 50%, rgba(0, 0, 0, 0.3) 50%),
+        radial-gradient(ellipse at center, rgba(10, 20, 36, 0.6) 0%, rgba(3, 7, 14, 0.95) 100%);
+    background-size: 100% 4px, 100% 100%;
+}
+
+.vanta-terminal-screen::-webkit-scrollbar {
+    width: 6px;
+}
+.vanta-terminal-screen::-webkit-scrollbar-thumb {
+    background: rgba(17, 212, 131, 0.3);
+    border-radius: 4px;
+}
+
+/* Terminal Output Lines */
+.term-out-line {
+    margin-bottom: 6px;
+    word-break: break-word;
+}
+.term-out-line.sys { color: rgba(17, 212, 131, 0.7); }
+.term-out-line.success { color: #11d483; text-shadow: 0 0 8px rgba(17, 212, 131, 0.4); }
+.term-out-line.highlight { color: #f0c030; text-shadow: 0 0 8px rgba(240, 192, 48, 0.3); }
+.term-out-line.info { color: #00ffff; }
+.term-out-line.warn { color: #ff5f56; }
+.term-out-line.sub { color: rgba(255, 255, 255, 0.55); font-size: 0.78rem; padding-left: 14px; }
+
+/* Interactive Input Line */
+.vanta-prompt-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(17, 212, 131, 0.2);
+}
+
+.prompt-symbol {
+    color: #11d483;
+    font-weight: 700;
+    white-space: nowrap;
+    font-size: 0.85rem;
+}
+
+.vanta-term-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 0.85rem;
+    caret-color: #11d483;
+    width: 100%;
+}
+
+/* ─── 2. CYBER NOTEPAD / CHEAT-SHEET ─────────────────────────── */
+.cyber-notepad-card {
+    background: rgba(12, 22, 38, 0.85);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 25px rgba(0, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.notepad-paper-clip {
+    position: absolute;
+    top: -6px;
+    left: 24px;
+    width: 22px;
+    height: 38px;
+    border: 3px solid #00ffff;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.7);
+    pointer-events: none;
+    z-index: 5;
+}
+
+.notepad-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.notepad-title {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: #00ffff;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notepad-sub-hint {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 14px;
+    line-height: 1.4;
+}
+
+.notepad-commands-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notepad-cmd-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-align: left;
+    width: 100%;
+}
+
+.notepad-cmd-item:hover {
+    background: rgba(17, 212, 131, 0.12);
+    border-color: rgba(17, 212, 131, 0.5);
+    transform: translateX(4px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.notepad-cmd-badge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cmd-badge-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #11d483;
+}
+
+.cmd-badge-action {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.55rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.notepad-cmd-item:hover .cmd-badge-action {
+    color: #00ffff;
+}
+
+.cmd-desc {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.3;
+}
+
+/* Benchmark Canvas Screen in Terminal */
+.term-bench-canvas-wrap {
+    margin: 12px 0;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(17, 212, 131, 0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .terminal-interactive-wrapper {
+        grid-template-columns: 1fr;
+    }
+}

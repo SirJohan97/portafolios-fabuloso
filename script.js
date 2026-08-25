@@ -2352,8 +2352,8 @@ COMMIT;`
             return tex;
         }
 
-        // 2. Configuración de 1,200 Partículas del V-Shockwave Core (Optimizado para 60 FPS)
-        const particleCount = 1200; 
+        // 2. Configuración de 2,400 Partículas Gravitacionales de Alta Densidad (Optimizado para 60/120 FPS)
+        const particleCount = 2400; 
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
@@ -2365,27 +2365,39 @@ COMMIT;`
         const maxHomeRadius = 5.0;
         let shockwaves = [];             // Cola de ondas expansivas
 
-        // Generar coordenadas tridimensionales de la V y offsets
+        // Generar coordenadas tridimensionales de la V y envolvente cuántica
         for (let i = 0; i < particleCount; i++) {
             let x, y, z;
-            if (i < particleCount / 2) {
+            const isHalo = i >= 1800; // 600 partículas para aura de stardust ambiental
+
+            if (isHalo) {
+                // Aura estelar sutil alrededor de la V
+                const ang = Math.random() * Math.PI * 2;
+                const rad = 0.4 + Math.random() * 2.2;
+                x = Math.cos(ang) * rad * 0.9;
+                y = (Math.sin(ang) * rad * 1.1) - 0.2;
+                z = (Math.random() - 0.5) * 1.2;
+            } else if (i < 900) {
                 // Rama izquierda de la V (t de 0 a 1)
-                const t = i / (particleCount / 2);
-                x = -1.3 * (1 - t);
-                y = 1.9 * (1 - t) - 1.5 * t;
+                const t = i / 900;
+                x = -1.35 * (1 - t);
+                y = 1.95 * (1 - t) - 1.55 * t;
+                const rOffset = Math.random() * 0.18;
+                const thetaOffset = Math.random() * Math.PI * 2;
+                x += Math.cos(thetaOffset) * rOffset;
+                y += Math.sin(thetaOffset) * rOffset;
+                z = (Math.random() - 0.5) * 0.45;
             } else {
                 // Rama derecha de la V (t de 0 a 1)
-                const t = (i - particleCount / 2) / (particleCount / 2);
-                x = 1.3 * (1 - t);
-                y = 1.9 * (1 - t) - 1.5 * t;
+                const t = (i - 900) / 900;
+                x = 1.35 * (1 - t);
+                y = 1.95 * (1 - t) - 1.55 * t;
+                const rOffset = Math.random() * 0.18;
+                const thetaOffset = Math.random() * Math.PI * 2;
+                x += Math.cos(thetaOffset) * rOffset;
+                y += Math.sin(thetaOffset) * rOffset;
+                z = (Math.random() - 0.5) * 0.45;
             }
-
-            // Dispersión radial suave (grosor de trazo)
-            const rOffset = Math.random() * 0.16;
-            const thetaOffset = Math.random() * Math.PI * 2;
-            x += Math.cos(thetaOffset) * rOffset;
-            y += Math.sin(thetaOffset) * rOffset;
-            z = (Math.random() - 0.5) * 0.4;
 
             positions[i * 3] = x;
             positions[i * 3 + 1] = y;
@@ -2393,14 +2405,12 @@ COMMIT;`
 
             const vec = new THREE.Vector3(x, y, z);
             nodeData.push(vec);
-            homeDistances[i] = vec.length() + 1e-6; // Precalcular distancia de origen
+            homeDistances[i] = vec.length() + 1e-6;
 
-            // Colores por defecto (verde/blanco neón)
             colors[i * 3] = 0.5;
             colors[i * 3 + 1] = 1.0;
             colors[i * 3 + 2] = 0.7;
 
-            // Offsets de disolución cíclica radiales
             const offsetStrength = 5.0 + Math.random() * 6.0;
             const phi = Math.random() * Math.PI * 2;
             const theta = Math.acos(2 * Math.random() - 1);
@@ -2538,6 +2548,21 @@ COMMIT;`
  
         let animationFrameId = null;
 
+        // Viewport Auto-Sleep Engine (Zero GPU usage when off-screen)
+        let isSceneVisible = true;
+        if ('IntersectionObserver' in window && container) {
+            const sceneObserver = new IntersectionObserver((entries) => {
+                isSceneVisible = entries[0].isIntersecting;
+                if (!isSceneVisible && animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                } else if (isSceneVisible && !animationFrameId && !document.hidden) {
+                    animate();
+                }
+            }, { threshold: 0.01 });
+            sceneObserver.observe(container);
+        }
+
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 if (animationFrameId) {
@@ -2545,7 +2570,7 @@ COMMIT;`
                     animationFrameId = null;
                 }
             } else {
-                if (!animationFrameId) {
+                if (!animationFrameId && isSceneVisible) {
                     animate();
                 }
             }
@@ -2602,6 +2627,10 @@ COMMIT;`
                 const pulseLength = 1.1;
                 const pulseCenter = -1.6 + ((time * pulseSpeed) % (3.6 + pulseLength));
 
+                // Cursor Gravitational Interaction Coordinates
+                const mouseWorldX = (mouseX / 0.0006) * 0.004;
+                const mouseWorldY = (-mouseY / 0.0006) * 0.004;
+
                 for (let i = 0; i < particleCount; i++) {
                     const i3 = i * 3;
                     const home = nodeData[i];
@@ -2620,6 +2649,17 @@ COMMIT;`
                     const pulseDisplace = pulseFactor * 0.07;
                     const dirX = home.x > 0 ? 1.0 : -1.0;
 
+                    // Micro-gravitational swirl near mouse
+                    const dx = posArray[i3] - mouseWorldX;
+                    const dy = posArray[i3 + 1] - mouseWorldY;
+                    const mDistSq = dx * dx + dy * dy + 0.15;
+                    let gravX = 0, gravY = 0;
+                    if (mDistSq < 4.0) {
+                        const mForce = 0.12 / mDistSq;
+                        gravX = -dy * mForce * 0.8 + dx * mForce * 0.4;
+                        gravY = dx * mForce * 0.8 + dy * mForce * 0.4;
+                    }
+
                     let addX = 0, addY = 0, addZ = 0;
                     for (let w = 0; w < shockwaves.length; w++) {
                         const sw = shockwaves[w];
@@ -2635,8 +2675,8 @@ COMMIT;`
                     }
 
                     const lerpFactor = 0.085;
-                    posArray[i3]     += (home.x + waveX + (dirX * pulseDisplace) + addX - posArray[i3]) * lerpFactor;
-                    posArray[i3 + 1] += (home.y + waveY + addY - posArray[i3 + 1]) * lerpFactor;
+                    posArray[i3]     += (home.x + waveX + (dirX * pulseDisplace) + addX + gravX - posArray[i3]) * lerpFactor;
+                    posArray[i3 + 1] += (home.y + waveY + addY + gravY - posArray[i3 + 1]) * lerpFactor;
                     posArray[i3 + 2] += (home.z + waveZ + addZ - posArray[i3 + 2]) * lerpFactor;
 
                     let bright = 0.55 + Math.sin(time * 2.2 + (i % 8)) * 0.12 + pulseFactor * 1.1;

@@ -74,7 +74,9 @@
 
     <!-- ESTILOS -->
     <link rel="stylesheet" href="styles.css?v=270">
-    <link rel="stylesheet" href="effects.css?v=200">
+    <link rel="stylesheet" href="effects.css?v=210">
+    <link rel="stylesheet" href="liquid-glass.css?v=100">
+    <link rel="stylesheet" href="vanta-terminal.css?v=100">
     <link rel="stylesheet" href="css/all.min.css">
 
 </head>
@@ -1077,20 +1079,107 @@
 
         </div>
 
-        <!-- CONSOLA DE DIAGNÓSTICO INTERACTIVA "VA-OS" -->
-        <div class="team-terminal-container">
-            <div class="terminal-header">
-                <div class="terminal-buttons">
-                    <span class="term-btn close"></span>
-                    <span class="term-btn minimize"></span>
-                    <span class="term-btn expand"></span>
+        <!-- CONSOLA INTERACTIVA "VA-OS v4.0" & HOJA DE NOTAS / CHEAT-SHEET -->
+        <div class="terminal-interactive-wrapper">
+            <!-- Left: Live REPL Terminal -->
+            <div class="vanta-live-terminal">
+                <div class="terminal-header">
+                    <div class="terminal-header-left">
+                        <div class="terminal-buttons">
+                            <span class="term-btn close"></span>
+                            <span class="term-btn minimize"></span>
+                            <span class="term-btn expand"></span>
+                        </div>
+                        <span class="terminal-title-text">VA-OS v4.0 // LIVE CLI SANDBOX</span>
+                    </div>
+                    <div class="terminal-header-right">
+                        <div class="terminal-telemetry">
+                            <span class="telemetry-dot"></span>
+                            <span id="termFpsVal">60 FPS</span>
+                            <span>•</span>
+                            <span id="termUptimeVal">UP: 00:00</span>
+                        </div>
+                    </div>
                 </div>
-                <span class="terminal-title">VA-OS v3.1.2 — Diagnostic Console</span>
-                <span class="terminal-status">ONLINE</span>
+
+                <div class="vanta-terminal-screen" id="vantaTermScreen">
+                    <div class="term-out-line sys">════════════════════════════════════════════════════════</div>
+                    <div class="term-out-line highlight">  VA-OS v4.0 // TERMINAL DE INGENIERÍA EN VIVO</div>
+                    <div class="term-out-line sys">════════════════════════════════════════════════════════</div>
+                    <div class="term-out-line info">Bienvenido al núcleo de VANTA. Escribe un comando o haz clic en la hoja de notas lateral.</div>
+                    <div class="term-out-line sub">Pasa el cursor por los perfiles del equipo para autodiagnóstico o escribe <span class="highlight">help</span>.</div>
+                </div>
+
+                <div class="vanta-prompt-row" style="padding: 12px 20px; background: rgba(8, 14, 25, 0.95);">
+                    <span class="prompt-symbol">user@vanta:~$</span>
+                    <input type="text" id="vantaTermInput" class="vanta-term-input" placeholder="Escribe un comando (ej: bench, ai, stack)..." autocomplete="off" spellcheck="false">
+                </div>
             </div>
-            <div class="terminal-body" id="teamTerminalBody">
-                <div class="terminal-line"><span class="term-prompt">></span> Esperando selección de agente...</div>
-                <div class="terminal-line"><span class="term-prompt">></span> Pasa el cursor o haz clic en una tarjeta del equipo para inicializar diagnóstico de perfil.</div>
+
+            <!-- Right: Cyber Notepad / Cheat Sheet -->
+            <div class="cyber-notepad-card">
+                <div class="notepad-paper-clip"></div>
+                <div class="notepad-header">
+                    <span class="notepad-title"><i class="fas fa-sticky-note"></i> GUÍA DE COMANDOS</span>
+                </div>
+                <p class="notepad-sub-hint">Haz clic en cualquier comando para autoejecutarlo:</p>
+                <div class="notepad-commands-list">
+                    <button class="notepad-cmd-item" data-cmd="bench">
+                        <div class="notepad-cmd-badge">
+                            <span class="cmd-badge-code">bench</span>
+                            <span class="cmd-badge-action">EJECUTAR ⚡</span>
+                        </div>
+                        <span class="cmd-desc">Mide la potencia y GFLOPS de tu GPU con fractal 3D.</span>
+                    </button>
+
+                    <button class="notepad-cmd-item" data-cmd="ai">
+                        <div class="notepad-cmd-badge">
+                            <span class="cmd-badge-code">ai</span>
+                            <span class="cmd-badge-action">STREAM 🤖</span>
+                        </div>
+                        <span class="cmd-desc">Simula inferencia LLM token a token en tiempo real.</span>
+                    </button>
+
+                    <button class="notepad-cmd-item" data-cmd="theme cyan">
+                        <div class="notepad-cmd-badge">
+                            <span class="cmd-badge-code">theme cyan</span>
+                            <span class="cmd-badge-action">COLOR 🎨</span>
+                        </div>
+                        <span class="cmd-desc">Cambia todo el sitio web a temática Azul Cyber.</span>
+                    </button>
+
+                    <button class="notepad-cmd-item" data-cmd="theme gold">
+                        <div class="notepad-cmd-badge">
+                            <span class="cmd-badge-code">theme gold</span>
+                            <span class="cmd-badge-action">COLOR 💎</span>
+                        </div>
+                        <span class="cmd-desc">Cambia la iluminación a Dorado Royale.</span>
+                    </button>
+
+                    <button class="notepad-cmd-item" data-cmd="theme emerald">
+                        <div class="notepad-cmd-badge">
+                            <span class="cmd-badge-code">theme emerald</span>
+                            <span class="cmd-badge-action">RESET 🌿</span>
+                        </div>
+                        <span class="cmd-desc">Restaura la paleta Verde Neón insignia.</span>
+                    </button>
+
+                    <button class="notepad-cmd-item" data-cmd="stack">
+                        <div class="notepad-cmd-badge">
+                            <span class="cmd-badge-code">stack</span>
+                            <span class="cmd-badge-action">INFO 🛠️</span>
+                        </div>
+                        <span class="cmd-desc">Compara las especialidades de Andrés & Johan.</span>
+                    </button>
+
+                    <button class="notepad-cmd-item" data-cmd="clear">
+                        <div class="notepad-cmd-badge">
+                            <span class="cmd-badge-code">clear</span>
+                            <span class="cmd-badge-action">LIMPIAR 🧹</span>
+                        </div>
+                        <span class="cmd-desc">Limpia la pantalla de la terminal.</span>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -1608,10 +1697,13 @@
     
 
     
+    <script src="sound-engine.js?v=110"></script>
+    <script src="liquid-glass.js?v=110"></script>
+    <script src="vanta-terminal.js?v=110"></script>
     <script src="preloader-v.js?v=200"></script>
-    <script src="script.js?v=1200"></script>
+    <script src="script.js?v=1300"></script>
     <script src="particles.js?v=200"></script>
-    <script src="effects.js?v=1900"></script>
+    <script src="effects.js?v=2200"></script>
     <script src="slime-text.js?v=200"></script>
 </body>
 

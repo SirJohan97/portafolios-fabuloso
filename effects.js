@@ -10,6 +10,53 @@
    ============================================================= */
 
 function initEffectsScript() {
+    /* ============================================================
+       0. HERO KINETIC VARIABLE TYPOGRAPHY ENGINE (AWWWARDS 2026)
+       ============================================================ */
+    (function initHeroKineticTypography() {
+        const titleGroup = document.querySelector('.hero-title-group');
+        if (!titleGroup || window.matchMedia('(pointer: coarse)').matches) return;
+
+        let mouseX = 0, mouseY = 0;
+        let currentX = 0, currentY = 0;
+        let isHovered = false;
+
+        const titles = titleGroup.querySelectorAll('.hero-title-main');
+
+        titleGroup.addEventListener('mouseenter', () => { isHovered = true; });
+        titleGroup.addEventListener('mousemove', (e) => {
+            const rect = titleGroup.getBoundingClientRect();
+            mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2; // -1 to 1
+            mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+        });
+        titleGroup.addEventListener('mouseleave', () => {
+            isHovered = false;
+            mouseX = 0;
+            mouseY = 0;
+        });
+
+        function kineticLoop() {
+            currentX += (mouseX - currentX) * 0.08;
+            currentY += (mouseY - currentY) * 0.08;
+
+            if (Math.abs(currentX) > 0.001 || Math.abs(currentY) > 0.001 || isHovered) {
+                titles.forEach((t, i) => {
+                    const depth = (i + 1) * 6;
+                    const rotY = currentX * 7;
+                    const rotX = -currentY * 5;
+                    t.style.transform = `perspective(1000px) rotateY(${rotY}deg) rotateX(${rotX}deg) translate3d(${currentX * depth}px, ${currentY * (depth * 0.5)}px, 0)`;
+                });
+            } else {
+                titles.forEach(t => {
+                    t.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translate3d(0, 0, 0)';
+                });
+            }
+            requestAnimationFrame(kineticLoop);
+        }
+        kineticLoop();
+    })();
+
+
 
     /* ============================================================
        1. ACTIVE NAV LINK & SECTION OBSERVER
@@ -138,7 +185,7 @@ function initEffectsScript() {
 
 
     /* ============================================================
-       4. MAGNETIC CURSOR & CURSOR MORPH (Throttled & Consolidated)
+       4. ADAPTIVE MORPHING CURSOR ENGINE (AWWWARDS MULTI-MODE 2026)
        ============================================================ */
     (function initConsolidatedCursor() {
         if (window.matchMedia('(pointer: coarse)').matches) return;
@@ -156,18 +203,58 @@ function initEffectsScript() {
             cursor.appendChild(label);
         }
 
-        // Elementos interactivos para morphing
-        document.querySelectorAll('.card, .testimonial-card-h').forEach(el => {
-            el.addEventListener('mouseenter', () => { cursor.classList.add('cursor--view'); label.textContent = 'VER'; });
-            el.addEventListener('mouseleave', () => { cursor.classList.remove('cursor--view'); label.textContent = ''; });
+        function resetCursorModes() {
+            cursor.classList.remove('cursor--project', 'cursor--code', 'cursor--orbit', 'cursor--click', 'cursor--link', 'cursor--view');
+            label.textContent = '';
+        }
+
+        // Modo 1: Project Cards (Explorar ↗)
+        document.querySelectorAll('.horizontal-track .card, .testimonial-card-h').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                resetCursorModes();
+                cursor.classList.add('cursor--project');
+                label.textContent = 'EXPLORAR ↗';
+                if (window.VANTA_AUDIO) window.VANTA_AUDIO.playChirp(0, 620);
+            });
+            el.addEventListener('mouseleave', resetCursorModes);
         });
 
-        document.querySelectorAll('.btn, .btn-outline, .magnetic-btn, .wa-orbital-btn').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('cursor--click'));
+        // Modo 2: Code & Terminals ([INSPECT])
+        document.querySelectorAll('.cyber-terminal, #teamTerminalBody, .code-diagram, .hud-label, .console-screen').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                resetCursorModes();
+                cursor.classList.add('cursor--code');
+                label.textContent = '[INSPECT]';
+                if (window.VANTA_AUDIO) window.VANTA_AUDIO.playGlitch(840);
+            });
+            el.addEventListener('mouseleave', resetCursorModes);
+        });
+
+        // Modo 3: 3D Orbit Compass (Poker Table & Bento Canvas)
+        document.querySelectorAll('.poker-table-container, #poker-felt-stage, #bento-universe-canvas-wrap').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                resetCursorModes();
+                cursor.classList.add('cursor--orbit');
+                label.textContent = '3D_ORBIT';
+                if (window.VANTA_AUDIO) window.VANTA_AUDIO.playChirp(0, 720);
+            });
+            el.addEventListener('mouseleave', resetCursorModes);
+        });
+
+        // Modo 4: Buttons & Action Links (Micro-Switch Click)
+        document.querySelectorAll('.btn, .btn-outline, .magnetic-btn, .poker-inspect-btn, .nav-links a, .audio-toggle-btn').forEach(el => {
+            el.addEventListener('mouseenter', (e) => {
+                cursor.classList.add('cursor--click');
+                if (window.VANTA_AUDIO) {
+                    const pan = (e.clientX / window.innerWidth) * 2 - 1;
+                    window.VANTA_AUDIO.playChirp(pan, 660);
+                }
+            });
             el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--click'));
+            el.addEventListener('click', () => {
+                if (window.VANTA_AUDIO) window.VANTA_AUDIO.playSwitch(1.0);
+            });
         });
-
-// (Botón magnetismo removido para permitir botones estables y cursor totalmente fluido)
     })();
 
 
@@ -644,7 +731,7 @@ function initEffectsScript() {
        ============================================================ */
     (function initTeamTerminal() {
         const teamCards = document.querySelectorAll('.team-card');
-        const terminalBody = document.getElementById('teamTerminalBody');
+        const terminalBody = document.getElementById('vantaTermScreen') || document.getElementById('teamTerminalBody');
         let terminalInterval = null;
 
         const teamData = {
