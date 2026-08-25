@@ -597,10 +597,11 @@ function initMainScript() {
         let width, height;
         let particles = [];
         
-        // Configuración de la Red
-        const particleCount = 70; // Cantidad de nodos
-        const connectionDistance = 120; // Distancia máxima para conectar nodos
-        const mouseConnectionDistance = 160; // Distancia de interacción con el mouse
+        // Configuración de la Red (Ultra-optimizado para 60 FPS estables)
+        const isMob = window.innerWidth < 768;
+        const particleCount = isMob ? 24 : 40; // Nodos balanceados
+        const connectionDistance = isMob ? 90 : 110; // Distancia máxima para conectar nodos
+        const mouseConnectionDistance = 140; // Distancia de interacción con el mouse
 
         // Live color object — mutated by window.setVantaTheme()
         window.constellationColors = {
@@ -1666,7 +1667,7 @@ COMMIT;`
                 const ctx = canvas.getContext('2d');
                 if (!ctx) return;
                 let W, H, rafId, lastTs = 0;
-                const THROTTLE = 50;
+                const THROTTLE = 100; // 10 FPS para el fondo difuminado (Cero impacto en GPU)
                 const blobs = [
                     { x:0.2, y:0.15, r:0.55, sp:0.00018, ph:0 },
                     { x:0.8, y:0.25, r:0.48, sp:0.00023, ph:1.3 },
@@ -1696,8 +1697,8 @@ COMMIT;`
                     }, { threshold: 0.35 }).observe(sec);
                 });
                 function resize() {
-                    W = canvas.width  = Math.ceil(window.innerWidth / 3);
-                    H = canvas.height = Math.ceil(window.innerHeight / 3);
+                    W = canvas.width  = Math.ceil(window.innerWidth / 4);
+                    H = canvas.height = Math.ceil(window.innerHeight / 4);
                 }
                 function draw(ts) {
                     if (ts - lastTs < THROTTLE) return;
@@ -1706,7 +1707,7 @@ COMMIT;`
                     ctx.fillStyle = '#050508';
                     ctx.fillRect(0, 0, W, H);
                     blobs.forEach((b, i) => {
-                        colors[i] = colors[i].map((c, j) => c + (target[i][j] - c) * 0.025);
+                        colors[i] = colors[i].map((c, j) => c + (target[i][j] - c) * 0.05);
                         const t  = ts * b.sp + b.ph;
                         const bx = (b.x + Math.sin(t) * 0.18) * W;
                         const by = (b.y + Math.cos(t * 1.3) * 0.12) * H;
@@ -1724,7 +1725,7 @@ COMMIT;`
                 window.addEventListener('resize', resize, { passive: true });
                 document.addEventListener('visibilitychange', () => {
                     if (document.hidden) { cancelAnimationFrame(rafId); rafId = null; }
-                    else rafId = requestAnimationFrame(loop);
+                    else if (!rafId) rafId = requestAnimationFrame(loop);
                 });
                 rafId = requestAnimationFrame(loop);
             })();
@@ -2550,17 +2551,37 @@ COMMIT;`
 
         // Viewport Auto-Sleep Engine (Zero GPU usage when off-screen)
         let isSceneVisible = true;
-        if ('IntersectionObserver' in window && container) {
-            const sceneObserver = new IntersectionObserver((entries) => {
-                isSceneVisible = entries[0].isIntersecting;
+        const heroSectionEl = document.getElementById('home');
+        const portfolioSectionEl = document.getElementById('portfolio');
+        let heroInView = true;
+        let portfolioInView = false;
+
+        function checkSceneActive() {
+            const shouldBeActive = (heroInView || portfolioInView) && !document.hidden;
+            if (shouldBeActive !== isSceneVisible) {
+                isSceneVisible = shouldBeActive;
                 if (!isSceneVisible && animationFrameId) {
                     cancelAnimationFrame(animationFrameId);
                     animationFrameId = null;
-                } else if (isSceneVisible && !animationFrameId && !document.hidden) {
+                } else if (isSceneVisible && !animationFrameId) {
                     animate();
                 }
-            }, { threshold: 0.01 });
-            sceneObserver.observe(container);
+            }
+        }
+
+        if ('IntersectionObserver' in window) {
+            if (heroSectionEl) {
+                new IntersectionObserver((entries) => {
+                    heroInView = entries[0].isIntersecting;
+                    checkSceneActive();
+                }, { threshold: 0.01 }).observe(heroSectionEl);
+            }
+            if (portfolioSectionEl) {
+                new IntersectionObserver((entries) => {
+                    portfolioInView = entries[0].isIntersecting;
+                    checkSceneActive();
+                }, { threshold: 0.01 }).observe(portfolioSectionEl);
+            }
         }
 
         document.addEventListener('visibilitychange', () => {
@@ -2761,11 +2782,22 @@ COMMIT;`
             lenis.stop();
         }
 
-        function raf(time) {
-            lenis.raf(time);
+        // Sincronización oficial GSAP Ticker + Lenis (Zero Jitter / 60 FPS unificado)
+        if (typeof ScrollTrigger !== 'undefined') {
+            lenis.on('scroll', ScrollTrigger.update);
+        }
+        if (typeof gsap !== 'undefined') {
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+        } else {
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
             requestAnimationFrame(raf);
         }
-        requestAnimationFrame(raf);
 
         // Enlaces de navegación con scroll suave vía Lenis
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

@@ -22,7 +22,7 @@
     const CONFIG = {
 
         // ── Cantidad de partículas ────────────────────────────────
-        COUNT: isMobileDevice ? 24 : 50,    // Optimizado para 60 FPS estables en móviles y desktop
+        COUNT: isMobileDevice ? 16 : 28,    // 60 FPS estables y fluidos
 
         // ── Velocidad de deriva en idle ───────────────────────────
         // Cada partícula tiene su propia velocidad aleatoria dentro

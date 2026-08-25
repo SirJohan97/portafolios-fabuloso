@@ -23,11 +23,23 @@ function initEffectsScript() {
 
         const titles = titleGroup.querySelectorAll('.hero-title-main');
 
-        titleGroup.addEventListener('mouseenter', () => { isHovered = true; });
+        let kineticRafId = null;
+        let isKineticActive = false;
+        let isHomeVisible = true;
+
+        function startKinetic() {
+            if (!isKineticActive && isHomeVisible && !document.hidden) {
+                isKineticActive = true;
+                kineticLoop();
+            }
+        }
+
+        titleGroup.addEventListener('mouseenter', () => { isHovered = true; startKinetic(); });
         titleGroup.addEventListener('mousemove', (e) => {
             const rect = titleGroup.getBoundingClientRect();
-            mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2; // -1 to 1
+            mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
             mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+            startKinetic();
         });
         titleGroup.addEventListener('mouseleave', () => {
             isHovered = false;
@@ -36,6 +48,12 @@ function initEffectsScript() {
         });
 
         function kineticLoop() {
+            if (!isHomeVisible || document.hidden) {
+                isKineticActive = false;
+                kineticRafId = null;
+                return;
+            }
+
             currentX += (mouseX - currentX) * 0.08;
             currentY += (mouseY - currentY) * 0.08;
 
@@ -46,14 +64,27 @@ function initEffectsScript() {
                     const rotX = -currentY * 5;
                     t.style.transform = `perspective(1000px) rotateY(${rotY}deg) rotateX(${rotX}deg) translate3d(${currentX * depth}px, ${currentY * (depth * 0.5)}px, 0)`;
                 });
+                kineticRafId = requestAnimationFrame(kineticLoop);
             } else {
                 titles.forEach(t => {
                     t.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translate3d(0, 0, 0)';
                 });
+                isKineticActive = false;
+                kineticRafId = null;
             }
-            requestAnimationFrame(kineticLoop);
         }
-        kineticLoop();
+
+        const heroEl = document.getElementById('home');
+        if (heroEl && 'IntersectionObserver' in window) {
+            new IntersectionObserver((entries) => {
+                isHomeVisible = entries[0].isIntersecting;
+                if (!isHomeVisible && kineticRafId) {
+                    cancelAnimationFrame(kineticRafId);
+                    kineticRafId = null;
+                    isKineticActive = false;
+                }
+            }, { threshold: 0.05 }).observe(heroEl);
+        }
     })();
 
 
@@ -2274,7 +2305,14 @@ function initEffectsScript() {
         window.addEventListener('resize', resize);
 
         let time = 0;
+        let isFeltVisible = false;
+        let feltRafId = null;
+
         function renderFelt() {
+            if (!isFeltVisible || document.hidden) {
+                feltRafId = null;
+                return;
+            }
             const W = canvas.width;
             const H = canvas.height;
             ctx.clearRect(0, 0, W, H);
@@ -2291,7 +2329,7 @@ function initEffectsScript() {
             ctx.lineWidth = 1;
 
             // Vertical perspective lines
-            const cols = 28;
+            const cols = 20;
             for (let i = -cols; i <= cols; i++) {
                 const bx = cx + i * (W / cols) * 0.5;
                 ctx.beginPath();
@@ -2301,7 +2339,7 @@ function initEffectsScript() {
             }
 
             // Horizontal lines (perspective-spaced)
-            const rows = 12;
+            const rows = 10;
             for (let j = 0; j <= rows; j++) {
                 const t  = j / rows;
                 const py = tableTop + Math.pow(t, 1.6) * (tableBottom - tableTop);
@@ -2325,7 +2363,7 @@ function initEffectsScript() {
             ctx.strokeStyle = `rgba(17, 212, 131, ${glowAlpha})`;
             ctx.lineWidth = 2;
             ctx.shadowColor = '#11d483';
-            ctx.shadowBlur  = 16;
+            ctx.shadowBlur  = 12;
             ctx.stroke();
 
             ctx.beginPath();
@@ -2336,10 +2374,24 @@ function initEffectsScript() {
             ctx.stroke();
             ctx.restore();
 
-            requestAnimationFrame(renderFelt);
+            feltRafId = requestAnimationFrame(renderFelt);
         }
 
-        renderFelt();
+        const pokerSec = document.getElementById('poker-dealer') || document.getElementById('tech-matrix');
+        if (pokerSec && 'IntersectionObserver' in window) {
+            new IntersectionObserver((entries) => {
+                isFeltVisible = entries[0].isIntersecting;
+                if (isFeltVisible && !feltRafId) {
+                    renderFelt();
+                } else if (!isFeltVisible && feltRafId) {
+                    cancelAnimationFrame(feltRafId);
+                    feltRafId = null;
+                }
+            }, { threshold: 0.05 }).observe(pokerSec);
+        } else {
+            isFeltVisible = true;
+            renderFelt();
+        }
     })();
 
                     /* ============================================================
