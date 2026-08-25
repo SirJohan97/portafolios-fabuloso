@@ -7993,3 +7993,67 @@ body {
         letter-spacing: -1.5px;
     }
 }
+
+/* ======================================================
+   ⚡ PERFORMANCE LAYER — GPU Compositing & Paint Hints
+   ====================================================== */
+
+/* Promote all canvas elements to their own GPU layer */
+#canvas-network,
+#mesh-gradient-canvas,
+#canvas-3d-container canvas,
+#bento-universe-canvas,
+#film-grain-canvas,
+#neural-canvas,
+#electric-canvas,
+#poker-felt-canvas,
+#entropy-canvas,
+#sparkles-canvas {
+    will-change: contents;
+    transform: translateZ(0);
+    isolation: isolate;
+}
+
+/* Promote bg particle canvas (particles.js) */
+#bg-particle-canvas {
+    will-change: contents;
+    transform: translateZ(0);
+}
+
+/* Ensure scroll container composites independently */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+/* Precompute composite layer for nav (animates every scroll) */
+.nav-container,
+.navbar {
+    will-change: transform, background-color;
+    transform: translateZ(0);
+}
+
+/* Cards: avoid backdrop-filter trigger on scroll — only apply on hover */
+.card:not(:hover),
+.bento-card:not(:hover),
+.service-card:not(:hover),
+.tech-bento-card:not(:hover) {
+    will-change: auto;
+}
+
+/* Reduce render cost: remove box-shadow during active scroll */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+    #canvas-network,
+    #bento-universe-canvas,
+    #neural-canvas,
+    #sparkles-canvas {
+        display: none !important;
+    }
+}

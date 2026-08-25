@@ -654,25 +654,33 @@ function initMainScript() {
         }
 
         let networkRafId = null;
-        let isNetworkVisible = true;
+        let isNetworkVisible = false; // starts false, observer sets it true when hero is in view
+
+        function startNetwork() {
+            if (networkRafId) return; // already running
+            networkRafId = requestAnimationFrame(animate);
+        }
+
+        function stopNetwork() {
+            if (networkRafId) {
+                cancelAnimationFrame(networkRafId);
+                networkRafId = null;
+            }
+        }
 
         function animate() {
-            if (!isNetworkVisible) return;
+            networkRafId = requestAnimationFrame(animate);
             ctx.clearRect(0, 0, width, height);
 
-            // Actualizar y dibujar partículas
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
+            particles.forEach(p => { p.update(); p.draw(); });
 
-            // Dibujar lineas (Red)
+            // Batch all strokes in one pass to minimize state changes
+            ctx.lineWidth = 1;
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
-
                     if (dist < connectionDistance) {
                         ctx.beginPath();
                         ctx.strokeStyle = window.constellationColors.line;
@@ -683,12 +691,10 @@ function initMainScript() {
                     }
                 }
 
-                // Interacción con mouse
                 if (mouse.x !== null && mouse.y !== null) {
                     const dxm = particles[i].x - mouse.x;
                     const dym = particles[i].y - mouse.y;
                     const distMouse = Math.sqrt(dxm * dxm + dym * dym);
-
                     if (distMouse < mouseConnectionDistance) {
                         ctx.beginPath();
                         ctx.strokeStyle = window.constellationColors.mouseLine;
@@ -696,21 +702,14 @@ function initMainScript() {
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(mouse.x, mouse.y);
                         ctx.stroke();
-                        
-                        // Pequeña atracción magnética al mouse
                         particles[i].x -= dxm * 0.015;
                         particles[i].y -= dym * 0.015;
                     }
                 }
             }
-
-            networkRafId = requestAnimationFrame(animate);
         }
 
-        // Listeners
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-        });
+        window.addEventListener('resize', resizeCanvas);
 
         const heroElement = document.getElementById('home');
         if (heroElement) {
@@ -719,28 +718,30 @@ function initMainScript() {
                 mouse.x = e.clientX - rect.left;
                 mouse.y = e.clientY - rect.top;
             });
+            heroElement.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
 
-            heroElement.addEventListener('mouseleave', () => {
-                mouse.x = null;
-                mouse.y = null;
-            });
-
-            // Observer para pausar cuando no esté visible el Hero
-            const heroObs = new IntersectionObserver((entries) => {
+            new IntersectionObserver((entries) => {
                 isNetworkVisible = entries[0].isIntersecting;
-                if (isNetworkVisible) {
-                    cancelAnimationFrame(networkRafId);
-                    animate();
-                } else {
-                    cancelAnimationFrame(networkRafId);
-                }
-            }, { threshold: 0.05 });
-            heroObs.observe(heroElement);
+                if (isNetworkVisible && !document.hidden) startNetwork();
+                else stopNetwork();
+            }, { threshold: 0.05 }).observe(heroElement);
         }
 
-        // Lanzar
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) stopNetwork();
+            else if (isNetworkVisible) startNetwork();
+        });
+
         init();
-        animate();
+        // Don't call animate() directly — let the IntersectionObserver handle it
+        // Fallback: if hero is already visible on load (above the fold), start immediately
+        if (heroElement) {
+            const rect = heroElement.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+                isNetworkVisible = true;
+                startNetwork();
+            }
+        }
     }
 
     /* =========================================
@@ -2757,7 +2758,12 @@ COMMIT;`
             }
         }
 
-        animate();
+        // Inicio inteligente: verificar si hero ya está en viewport antes de lanzar
+        const _heroRect = heroSectionEl ? heroSectionEl.getBoundingClientRect() : null;
+        const _heroAlreadyVisible = _heroRect && _heroRect.top < window.innerHeight && _heroRect.bottom > 0;
+        heroInView = !!_heroAlreadyVisible;
+        isSceneVisible = heroInView || portfolioInView;
+        if (isSceneVisible) animate();
     }
     /* =========================================================
        12. LENIS SMOOTH SCROLL (INERCIAL UNIFICADO)
@@ -3231,23 +3237,36 @@ COMMIT;`
         function init() {
             resize();
             particles = [];
-            for (let i = 0; i < 250; i++) {
+            for (let i = 0; i < 60; i++) { // 250→60 partículas, invisible de cerca
                 particles.push(new Sparkle());
             }
         }
 
+        let sparklesRafId = null;
+        let sparklesVisible = false;
+
         function animate() {
             ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animate);
+            particles.forEach(p => { p.update(); p.draw(); });
+            sparklesRafId = requestAnimationFrame(animate);
         }
 
         init();
-        animate();
         window.addEventListener('resize', resize);
+
+        if (canvas.parentElement && 'IntersectionObserver' in window) {
+            new IntersectionObserver((entries) => {
+                sparklesVisible = entries[0].isIntersecting;
+                if (sparklesVisible && !sparklesRafId) {
+                    animate();
+                } else if (!sparklesVisible && sparklesRafId) {
+                    cancelAnimationFrame(sparklesRafId);
+                    sparklesRafId = null;
+                }
+            }, { threshold: 0.05 }).observe(canvas.parentElement);
+        } else {
+            animate(); // fallback
+        }
     }
 
     // ─── 🧠 NEURAL FLOW FIELD CANVAS (final.tsx) ───
@@ -3324,7 +3343,7 @@ COMMIT;`
         function init() {
             resize();
             particles = [];
-            const count = window.innerWidth < 768 ? 160 : 300;
+            const count = window.innerWidth < 768 ? 60 : 120; // 300→120
             for (let i = 0; i < count; i++) {
                 particles.push(new NeuralParticle());
             }
@@ -3333,24 +3352,24 @@ COMMIT;`
         let neuralRafId = null;
         let isNeuralVisible = false;
 
+        function startNeural() {
+            if (neuralRafId) return;
+            neuralRafId = requestAnimationFrame(animate);
+        }
+        function stopNeural() {
+            if (neuralRafId) { cancelAnimationFrame(neuralRafId); neuralRafId = null; }
+        }
+
         function animate() {
-            if (!isNeuralVisible) return;
             ctx.fillStyle = 'rgba(5, 8, 16, 0.15)';
             ctx.fillRect(0, 0, width, height);
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
+            particles.forEach(p => { p.update(); p.draw(); });
             neuralRafId = requestAnimationFrame(animate);
         }
 
         init();
 
-        window.addEventListener('resize', () => {
-            resize();
-            init();
-        });
+        window.addEventListener('resize', () => { resize(); init(); });
 
         const contactSec = document.getElementById('contact') || canvas.parentElement;
         if (contactSec) {
@@ -3359,22 +3378,18 @@ COMMIT;`
                 mouse.x = e.clientX - r.left;
                 mouse.y = e.clientY - r.top;
             });
-            contactSec.addEventListener('mouseleave', () => {
-                mouse.x = -1000;
-                mouse.y = -1000;
-            });
+            contactSec.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
 
-            // IntersectionObserver para pausar el canvas de contacto cuando no esté en pantalla
-            const contactObs = new IntersectionObserver((entries) => {
+            new IntersectionObserver((entries) => {
                 isNeuralVisible = entries[0].isIntersecting;
-                if (isNeuralVisible) {
-                    cancelAnimationFrame(neuralRafId);
-                    animate();
-                } else {
-                    cancelAnimationFrame(neuralRafId);
-                }
-            }, { threshold: 0.05 });
-            contactObs.observe(contactSec);
+                if (isNeuralVisible && !document.hidden) startNeural();
+                else stopNeural();
+            }, { threshold: 0.05 }).observe(contactSec);
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) stopNeural();
+                else if (isNeuralVisible) startNeural();
+            });
         }
     }
 

@@ -121,6 +121,18 @@
         mouse.y = -9999;
     });
     
+    let fluidoRafId = null;
+    let fluidoVisible = false;
+
+    function startFluido() {
+        if (fluidoRafId) return;
+        time++;
+        fluidoRafId = requestAnimationFrame(animate);
+    }
+    function stopFluido() {
+        if (fluidoRafId) { cancelAnimationFrame(fluidoRafId); fluidoRafId = null; }
+    }
+
     let time = 0;
     
     function animate() {
@@ -132,7 +144,6 @@
         
         const currentColor = getParticleColor();
         
-        // Repulsion to mouse
         particles.forEach(p => {
             if (mouse.x > 0 && mouse.y > 0) {
                 const dist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
@@ -143,11 +154,8 @@
                     p.y += Math.sin(angle) * force;
                 }
             }
-            
             p.update();
             p.draw(currentColor);
-            
-            // Draw lines
             p.neighbors.forEach(n => {
                 const dist = Math.hypot(p.x - n.x, p.y - n.y);
                 if (dist < 32) {
@@ -162,7 +170,6 @@
             });
         });
         
-        // Draw center division line
         ctx.strokeStyle = currentColor;
         ctx.globalAlpha = 0.22;
         ctx.lineWidth = 0.5;
@@ -172,9 +179,19 @@
         ctx.stroke();
         
         time++;
-        requestAnimationFrame(animate);
+        fluidoRafId = requestAnimationFrame(animate);
     }
     
     updateNeighbors();
-    animate();
+
+    new IntersectionObserver((entries) => {
+        fluidoVisible = entries[0].isIntersecting;
+        if (fluidoVisible && !fluidoRafId) startFluido();
+        else if (!fluidoVisible) stopFluido();
+    }, { threshold: 0.05 }).observe(canvas);
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stopFluido();
+        else if (fluidoVisible) startFluido();
+    });
 })();
