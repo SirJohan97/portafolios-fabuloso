@@ -1702,8 +1702,6 @@ COMMIT;`
                     H = canvas.height = Math.ceil(window.innerHeight / 4);
                 }
                 function draw(ts) {
-                    if (ts - lastTs < THROTTLE) return;
-                    lastTs = ts;
                     ctx.clearRect(0, 0, W, H);
                     ctx.fillStyle = '#050508';
                     ctx.fillRect(0, 0, W, H);
@@ -1721,14 +1719,21 @@ COMMIT;`
                         ctx.fillRect(0, 0, W, H);
                     });
                 }
-                function loop(ts) { rafId = requestAnimationFrame(loop); draw(ts); }
+                let timerId = null;
+                function startGradient() {
+                    if (timerId) return;
+                    timerId = setInterval(() => draw(performance.now()), THROTTLE);
+                }
+                function stopGradient() {
+                    if (timerId) { clearInterval(timerId); timerId = null; }
+                }
                 resize();
                 window.addEventListener('resize', resize, { passive: true });
                 document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) { cancelAnimationFrame(rafId); rafId = null; }
-                    else if (!rafId) rafId = requestAnimationFrame(loop);
+                    if (document.hidden) stopGradient();
+                    else startGradient();
                 });
-                rafId = requestAnimationFrame(loop);
+                startGradient();
             })();
 
 
@@ -2719,16 +2724,15 @@ COMMIT;`
 
             // Opacidad del terreno de olas 3D: NUNCA en el Hero ni al scrollear en Hero/Filosofía.
             // Se activa únicamente al entrar al apartado "Nuestro Trabajo" (#portfolio)
-            const portfolioEl = document.getElementById('portfolio');
+            // Ultra-optimizado: cálculo puramente matemático sin getBoundingClientRect() en bucle 60 FPS
             let terrainOpacity = 0;
-            if (portfolioEl) {
-                const rect = portfolioEl.getBoundingClientRect();
+            if (portfolioHeight > 0) {
                 const windowH = window.innerHeight;
-                if (rect.top < windowH && rect.bottom > 0) {
-                    // Entrando o dentro del apartado Nuestro Trabajo (#portfolio)
-                    const enteringProgress = Math.min(1.0, Math.max(0, (windowH - rect.top) / (windowH * 0.6)));
+                const relTop = portfolioTop - currentScroll;
+                if (relTop < windowH && (relTop + portfolioHeight) > 0) {
+                    const enteringProgress = Math.min(1.0, Math.max(0, (windowH - relTop) / (windowH * 0.6)));
                     terrainOpacity = enteringProgress * 0.22;
-                } else if (rect.bottom <= 0) {
+                } else if ((relTop + portfolioHeight) <= 0) {
                     terrainOpacity = 0.22; // En secciones posteriores a Nuestro Trabajo
                 } else {
                     terrainOpacity = 0; // Arriba de #portfolio (Hero y Filosofía) -> CERO olas
@@ -2851,8 +2855,14 @@ COMMIT;`
             return;
         }
 
+        const vpH = window.innerHeight;
+        // Viewport Culling: salir de inmediato si el scroll está fuera del rango del portafolio
+        if (scrollY < portfolioTop - vpH || scrollY > portfolioTop + portfolioHeight) {
+            return;
+        }
+
         const startOffset = scrollY - portfolioTop;
-        const maxScroll = portfolioHeight - window.innerHeight;
+        const maxScroll = portfolioHeight - vpH;
         
         let progress = startOffset / maxScroll;
         progress = Math.max(0, Math.min(1, progress));
@@ -2860,22 +2870,24 @@ COMMIT;`
         const translateX = -progress * maxTranslate;
         horizontalTrack.style.transform = `translate3d(${translateX}px, 0, 0)`;
 
-        // Parallax horizontal multicapa para los elementos de las tarjetas
-        const cards = horizontalTrack.querySelectorAll('.card');
+        // Parallax horizontal multicapa matemático (Cero getBoundingClientRect / Cero Reflow)
+        const cards = horizontalTrack.children;
         const viewportW = window.innerWidth;
-
-        cards.forEach(card => {
-            const cardRect = card.getBoundingClientRect();
-            const cardCenterX = cardRect.left + cardRect.width / 2;
-            const viewportCenterX = viewportW / 2;
-
-            let offset = (cardCenterX - viewportCenterX) / (viewportW / 2);
-            offset = Math.max(-1.5, Math.min(1.5, offset));
-
-            // Inyectar variables en la tarjeta
-            card.style.setProperty('--card-parallax-bg', `${offset * 30}px`);
-            card.style.setProperty('--card-parallax-fg', `${offset * -45}px`);
-        });
+        const totalCards = cards.length;
+        if (totalCards > 0) {
+            const cardWidth = (horizontalTrack.scrollWidth / totalCards);
+            for (let i = 0; i < totalCards; i++) {
+                const card = cards[i];
+                const cardCenterX = i * cardWidth + translateX + cardWidth / 2;
+                // Solo calcular si la tarjeta está cerca de la pantalla
+                if (cardCenterX > -cardWidth && cardCenterX < viewportW + cardWidth) {
+                    let offset = (cardCenterX - viewportW / 2) / (viewportW / 2);
+                    offset = Math.max(-1.5, Math.min(1.5, offset));
+                    card.style.setProperty('--card-parallax-bg', `${(offset * 30).toFixed(1)}px`);
+                    card.style.setProperty('--card-parallax-fg', `${(offset * -45).toFixed(1)}px`);
+                }
+            }
+        }
     }
 
     /* =========================================================
@@ -2900,14 +2912,21 @@ COMMIT;`
         servicesHeight = servicesContainer.offsetHeight;
     }
 
+    let lastServicesIndex = -1;
     function handleInvertedScroll(scrollY) {
         if (!servicesContainer || !invertedTrack || window.innerWidth <= 991) {
             if (invertedTrack) invertedTrack.style.transform = 'none';
             return;
         }
 
+        const vpH = window.innerHeight;
+        // Viewport Culling
+        if (scrollY < servicesTop - vpH || scrollY > servicesTop + servicesHeight) {
+            return;
+        }
+
         const startOffset = scrollY - servicesTop;
-        const maxScroll = servicesHeight - window.innerHeight;
+        const maxScroll = servicesHeight - vpH;
         
         let progress = startOffset / maxScroll;
         progress = Math.max(0, Math.min(1, progress));
@@ -2922,13 +2941,16 @@ COMMIT;`
             activeIndex = 2;
         }
 
-        textItems.forEach((item, index) => {
-            if (index === activeIndex) {
-                if (!item.classList.contains('active')) item.classList.add('active');
-            } else {
-                if (item.classList.contains('active')) item.classList.remove('active');
-            }
-        });
+        if (activeIndex !== lastServicesIndex) {
+            lastServicesIndex = activeIndex;
+            textItems.forEach((item, index) => {
+                if (index === activeIndex) {
+                    if (!item.classList.contains('active')) item.classList.add('active');
+                } else {
+                    if (item.classList.contains('active')) item.classList.remove('active');
+                }
+            });
+        }
     }
 
     /* =========================================================
@@ -2954,21 +2976,28 @@ COMMIT;`
         methodologyHeight = methodologyContainer.offsetHeight;
     }
 
+    let lastMethodStep = -1;
     function handleMethodologyScroll(scrollY) {
         if (!methodologyContainer || window.innerWidth <= 991) {
             methodSteps.forEach(step => step.classList.add('active'));
             return;
         }
 
+        const vpH = window.innerHeight;
+        // Viewport Culling
+        if (scrollY < methodologyTop - vpH || scrollY > methodologyTop + methodologyHeight) {
+            return;
+        }
+
         const startOffset = scrollY - methodologyTop;
-        const maxScroll = methodologyHeight - window.innerHeight;
+        const maxScroll = methodologyHeight - vpH;
         
         let progress = startOffset / maxScroll;
         progress = Math.max(0, Math.min(1, progress));
 
         // Actualizar barra de progreso vertical
         if (pipelineProgress) {
-            pipelineProgress.style.height = (progress * 100) + '%';
+            pipelineProgress.style.height = (progress * 100).toFixed(1) + '%';
         }
 
         // Determinar paso activo (4 pasos en total: dividimos por rangos de 0.25)
@@ -2981,25 +3010,28 @@ COMMIT;`
             activeStep = 4;
         }
 
-        // Activar la tarjeta de paso correspondiente
-        methodSteps.forEach(step => {
-            const stepNum = parseInt(step.getAttribute('data-step'), 10);
-            if (stepNum === activeStep) {
-                step.classList.add('active');
-            } else {
-                step.classList.remove('active');
-            }
-        });
+        if (activeStep !== lastMethodStep) {
+            lastMethodStep = activeStep;
+            // Activar la tarjeta de paso correspondiente
+            methodSteps.forEach(step => {
+                const stepNum = parseInt(step.getAttribute('data-step'), 10);
+                if (stepNum === activeStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
 
-        // Activar la pantalla de la terminal correspondiente
-        consoleScreens.forEach(screen => {
-            const screenNum = parseInt(screen.getAttribute('data-console-step'), 10);
-            if (screenNum === activeStep) {
-                screen.classList.add('active');
-            } else {
-                screen.classList.remove('active');
-            }
-        });
+            // Activar la pantalla de la terminal correspondiente
+            consoleScreens.forEach(screen => {
+                const screenNum = parseInt(screen.getAttribute('data-console-step'), 10);
+                if (screenNum === activeStep) {
+                    screen.classList.add('active');
+                } else {
+                    screen.classList.remove('active');
+                }
+            });
+        }
     }
 
     // Calcular layouts iniciales y en cada resize

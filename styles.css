@@ -3793,7 +3793,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
         width: 75%;
         height: 100vh;
         background: var(--dark-overlay);
-        backdrop-filter: blur(20px);
+        backdrop-filter: blur(10px);
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -4357,8 +4357,8 @@ body.custom-cursor-active * {
         transform: translate3d(-50%, 0, 0);
         top: 20px;
         background: rgba(10, 10, 10, 0.45);
-        backdrop-filter: blur(22px);
-        -webkit-backdrop-filter: blur(22px);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.05);
         border-radius: 100px;
         z-index: 1000;
@@ -4398,8 +4398,8 @@ body.custom-cursor-active * {
         top: 48px;
         left: 20px;
         background: rgba(8, 10, 15, 0.94);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        backdrop-filter: blur(10px) saturate(180%);
+        -webkit-backdrop-filter: blur(10px) saturate(180%);
         border: 1px solid rgba(var(--primary-rgb), 0.3);
         border-radius: 50px;
         padding: 0.6rem 1.6rem;
@@ -5817,8 +5817,8 @@ body {
     gap: 12px;
     padding: 12px 20px;
     background: rgba(5, 8, 16, 0.92);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(17, 212, 131, 0.6);
     border-radius: 8px;
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(17, 212, 131, 0.25);
@@ -7589,7 +7589,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 1rem 1.8rem;
     border-radius: 16px;
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(10px);
     pointer-events: auto;
 }
 
@@ -7663,7 +7663,7 @@ body {
     justify-content: center;
     padding: 1.5rem;
     background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(10px);
     transition: opacity 0.3s ease;
 }
 

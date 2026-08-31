@@ -648,7 +648,7 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       13. TESTIMONIALS HORIZONTAL PINNED SCROLL
+       13. TESTIMONIALS HORIZONTAL PINNED SCROLL (Ultra-Optimized)
        ============================================================ */
     (function initTestimonialsHorizontalScroll() {
         const testimonialsSection = document.querySelector('.testimonials-section');
@@ -657,45 +657,62 @@ function initEffectsScript() {
         const testimonialCards    = document.querySelectorAll('.testimonial-card-h');
         
         if (testimonialsSection && testimonialsTrack && window.innerWidth >= 768) {
+            let sectionTop = 0;
+            let sectionH = 0;
+            function cacheLayout() {
+                let top = 0;
+                let obj = testimonialsSection;
+                while (obj) {
+                    top += obj.offsetTop;
+                    obj = obj.offsetParent;
+                }
+                sectionTop = top;
+                sectionH = testimonialsSection.offsetHeight;
+            }
+            cacheLayout();
+            window.addEventListener('resize', cacheLayout, { passive: true });
+
+            let lastActiveIndex = -1;
             function updateTestimonialsScroll() {
-                const rect     = testimonialsSection.getBoundingClientRect();
-                const sectionH = testimonialsSection.offsetHeight;
-                const vpH      = window.innerHeight;
+                const scrollY = window.scrollY || window.pageYOffset || 0;
+                const vpH = window.innerHeight;
 
-                const scrolled = -rect.top; 
+                // Viewport Culling
+                if (scrollY < sectionTop - vpH || scrollY > sectionTop + sectionH) return;
+
+                const scrolled = scrollY - sectionTop; 
                 const scrollable = sectionH - vpH; 
+                if (scrollable <= 0) return;
 
-                // Forzar límites de 0 a 1 para evitar congelamientos antes/después del tramo
                 let progress = scrolled / scrollable; 
                 progress = Math.max(0, Math.min(1, progress));
 
                 const totalTranslate = (testimonialCards.length - 1) * window.innerWidth;
                 const translateX = progress * totalTranslate;
 
-                testimonialsTrack.style.transform = `translate3d(-${translateX}px, 0, 0)`;
+                testimonialsTrack.style.transform = `translate3d(-${translateX.toFixed(1)}px, 0, 0)`;
 
                 if (testimonialsProgress) {
-                    testimonialsProgress.style.width = (progress * 100) + '%';
+                    testimonialsProgress.style.width = (progress * 100).toFixed(1) + '%';
                 }
 
                 const activeIndex = Math.round(progress * (testimonialCards.length - 1));
-                testimonialCards.forEach((card, i) => {
-                    if (i === activeIndex) {
-                        card.classList.add('in-view');
-                    } else {
-                        card.classList.remove('in-view');
-                    }
-                });
+                if (activeIndex !== lastActiveIndex) {
+                    lastActiveIndex = activeIndex;
+                    testimonialCards.forEach((card, i) => {
+                        if (i === activeIndex) card.classList.add('in-view');
+                        else card.classList.remove('in-view');
+                    });
+                }
             }
 
-            // Escuchar tanto scroll de ventana nativo (Lenis actualiza las coordenadas nativas) para compatibilidad
-            window.addEventListener('scroll', updateTestimonialsScroll, { passive: true });
             if (window.lenis) {
                 window.lenis.on('scroll', updateTestimonialsScroll);
+            } else {
+                window.addEventListener('scroll', updateTestimonialsScroll, { passive: true });
             }
 
             updateTestimonialsScroll();
-
             if (testimonialCards[0]) testimonialCards[0].classList.add('in-view');
         } else if (testimonialCards.length > 0) {
             testimonialCards.forEach(c => c.classList.add('in-view'));
@@ -957,16 +974,29 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       14. BUS DE DATOS SVG (Scroll-Drawing Fiber Path)
+       14. BUS DE DATOS SVG (Scroll-Drawing Fiber Path — Pre-Sampled O(1))
        ============================================================ */
     (function initVantaFiberPath() {
         const path = document.getElementById('vanta-fiber-path');
         const pointer = document.getElementById('vanta-hud-pointer');
         const svg = document.getElementById('vanta-fiber-svg');
-        if (!path || !pointer || !svg) return;
+        if (!path || !pointer || !svg || typeof ScrollTrigger === 'undefined') return;
 
         const pathLength = path.getTotalLength();
         gsap.set(path, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
+
+        // Pre-muestrear 100 puntos en el inicio para evitar path.getPointAtLength() en scroll
+        const SAMPLE_COUNT = 100;
+        const precomputedPoints = [];
+        for (let i = 0; i <= SAMPLE_COUNT; i++) {
+            const pt = path.getPointAtLength((i / SAMPLE_COUNT) * pathLength);
+            precomputedPoints.push({ x: pt.x, y: pt.y });
+        }
+
+        let svgRect = svg.getBoundingClientRect();
+        window.addEventListener('resize', () => {
+            svgRect = svg.getBoundingClientRect();
+        }, { passive: true });
 
         ScrollTrigger.create({
             trigger: document.body,
@@ -977,10 +1007,12 @@ function initEffectsScript() {
                 const progress = self.progress;
                 gsap.set(path, { strokeDashoffset: pathLength * (1 - progress) });
 
-                const point = path.getPointAtLength(progress * pathLength);
-                const svgRect = svg.getBoundingClientRect();
+                const index = Math.min(SAMPLE_COUNT, Math.max(0, Math.round(progress * SAMPLE_COUNT)));
+                const point = precomputedPoints[index];
+                if (!point) return;
+
                 const globalX = svgRect.left + (point.x / 100) * svgRect.width;
-                const globalY = window.scrollY + svgRect.top + (point.y / 1000) * svgRect.height;
+                const globalY = (window.scrollY || window.pageYOffset || 0) + svgRect.top + (point.y / 1000) * svgRect.height;
 
                 gsap.set(pointer, {
                     x: globalX,
@@ -989,61 +1021,6 @@ function initEffectsScript() {
                 });
             }
         });
-    })();
-
-    /* ============================================================
-       13. TESTIMONIALS HORIZONTAL PINNED SCROLL
-       ============================================================ */
-    (function initTestimonialsHorizontalScroll() {
-        const testimonialsSection = document.querySelector('.testimonials-section');
-        const testimonialsTrack   = document.getElementById('testimonialsTrack');
-        const testimonialsProgress = document.getElementById('testimonialsProgress');
-        const testimonialCards    = document.querySelectorAll('.testimonial-card-h');
-        
-        if (testimonialsSection && testimonialsTrack && window.innerWidth >= 768) {
-            function updateTestimonialsScroll() {
-                const rect     = testimonialsSection.getBoundingClientRect();
-                const sectionH = testimonialsSection.offsetHeight;
-                const vpH      = window.innerHeight;
-
-                const scrolled = -rect.top; 
-                const scrollable = sectionH - vpH; 
-
-                // Forzar límites de 0 a 1 para evitar congelamientos antes/después del tramo
-                let progress = scrolled / scrollable; 
-                progress = Math.max(0, Math.min(1, progress));
-
-                const totalTranslate = (testimonialCards.length - 1) * window.innerWidth;
-                const translateX = progress * totalTranslate;
-
-                testimonialsTrack.style.transform = `translate3d(-${translateX}px, 0, 0)`;
-
-                if (testimonialsProgress) {
-                    testimonialsProgress.style.width = (progress * 100) + '%';
-                }
-
-                const activeIndex = Math.round(progress * (testimonialCards.length - 1));
-                testimonialCards.forEach((card, i) => {
-                    if (i === activeIndex) {
-                        card.classList.add('in-view');
-                    } else {
-                        card.classList.remove('in-view');
-                    }
-                });
-            }
-
-            // Escuchar tanto scroll de ventana nativo (Lenis actualiza las coordenadas nativas) para compatibilidad
-            window.addEventListener('scroll', updateTestimonialsScroll, { passive: true });
-            if (window.lenis) {
-                window.lenis.on('scroll', updateTestimonialsScroll);
-            }
-
-            updateTestimonialsScroll();
-
-            if (testimonialCards[0]) testimonialCards[0].classList.add('in-view');
-        } else if (testimonialCards.length > 0) {
-            testimonialCards.forEach(c => c.classList.add('in-view'));
-        }
     })();
 
 
@@ -1561,14 +1538,27 @@ function initEffectsScript() {
 
         const currentN = counter.querySelector('.current-n');
 
-        // Read horizontal scroll progress via GSAP ScrollTrigger
+        let portTop = 0;
+        let portH = 0;
+        function cachePort() {
+            let top = 0;
+            let obj = portfolioSection;
+            while (obj) {
+                top += obj.offsetTop;
+                obj = obj.offsetParent;
+            }
+            portTop = top;
+            portH = portfolioSection.offsetHeight;
+        }
+        cachePort();
+        window.addEventListener('resize', cachePort, { passive: true });
+
         function getActiveCard() {
-            const track = document.querySelector('.horizontal-track');
-            if (!track) return 0;
-            const trackRect = track.getBoundingClientRect();
-            const cardWidth = cards[0].offsetWidth + 32; // including gap
-            const scrolled = -trackRect.left;
-            const index = Math.round(scrolled / cardWidth);
+            const scrollY = window.scrollY || window.pageYOffset || 0;
+            const maxScroll = portH - window.innerHeight;
+            if (maxScroll <= 0) return 0;
+            const progress = Math.max(0, Math.min(1, (scrollY - portTop) / maxScroll));
+            const index = Math.round(progress * (cards.length - 1));
             return Math.max(0, Math.min(cards.length - 1, index));
         }
 

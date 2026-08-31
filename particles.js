@@ -263,7 +263,7 @@
         H = window.innerHeight;
         canvas.width  = W;
         canvas.height = H;
-        CONFIG.COUNT = (W < 768 || window.matchMedia('(pointer: coarse)').matches) ? 24 : 50;
+        CONFIG.COUNT = (W < 768 || window.matchMedia('(pointer: coarse)').matches) ? 16 : 28;
         initParticles();
     }, { passive: true });
 
