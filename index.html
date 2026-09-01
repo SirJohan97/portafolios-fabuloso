@@ -78,7 +78,7 @@
 
     <!-- ESTILOS -->
     <link rel="stylesheet" href="styles.css?v=310">
-    <link rel="stylesheet" href="effects.css?v=310">
+    <link rel="stylesheet" href="effects.css?v=320">
     <link rel="stylesheet" href="liquid-glass.css?v=110">
     <link rel="stylesheet" href="vanta-terminal.css?v=110">
     <link rel="stylesheet" href="css/all.min.css">
@@ -1357,34 +1357,7 @@
         </div>
     </section>
 
-    <!-- ===== BENTO GRID — ORBITING DATA UNIVERSE ===== -->
-    <section class="bento-section bento-universe" id="bento" aria-label="Por qué VANTA">
-        <div class="bento-universe-left">
-            <span class="bento-eyebrow">// WHY_VANTA.EXE</span>
-            <h2 class="bento-title">Por qué nos eligen</h2>
-            <p class="bento-universe-sub">Cada órbita representa una razón por la que nuestros clientes nos eligen sobre cualquier agencia tradicional.</p>
-            <div class="bento-universe-metrics">
-                <div class="bum" data-val="8" data-suffix="+" data-label="Proyectos en producción"></div>
-                <div class="bum" data-val="100" data-suffix="%" data-label="Código propio"></div>
-                <div class="bum" data-val="5" data-suffix="" data-label="Agentes IA activos"></div>
-                <div class="bum" data-val="24" data-suffix="h" data-label="Tiempo de respuesta"></div>
-            </div>
-        </div>
-        <div class="bento-universe-right" id="bento-universe-canvas-wrap" aria-hidden="true">
-            <canvas id="bento-universe-canvas"></canvas>
-            <!-- Orbe labels — posicionados por JS -->
-            <div class="orb-label" id="orb-0"><span>CORE_VALUE</span><small>Programamos el futuro</small></div>
-            <div class="orb-label" id="orb-1"><span>TECH_STACK</span><small>Python · FastAPI · Three.js</small></div>
-            <div class="orb-label" id="orb-2"><span>AI_AGENTS</span><small>5 agentes activos</small></div>
-            <div class="orb-label" id="orb-3"><span>RESPONSE</span><small>&lt;24h siempre</small></div>
-            <div class="orb-label" id="orb-4"><span>REACH</span><small>LATAM → Global</small></div>
-            <div class="orb-label" id="orb-5"><span>DEPLOYED</span><small>8+ en producción</small></div>
-        </div>
-    </section>
-
-
-
-    <!-- ===== EQUIPO ===== -->
+    <!-- ===== EQUIPO DE FUNDADORES ===== -->
     <section id="team" class="team-section">
         <!-- Canvas de pulsos eléctricos -->
         <canvas id="electric-canvas"></canvas>
@@ -1392,66 +1365,68 @@
         <!-- Marquesina deslizante infinita de fondo -->
         <div class="team-marquee" aria-hidden="true">
             <div class="marquee-track">
-                <span>VANTA SOFTWARE ENGINEERS • CORE ARCHITECTS • INNOVATION • DEVELOPMENT • SYSTEM ARCHITECTS • WEB ENGINEERS • </span>
-                <span>VANTA SOFTWARE ENGINEERS • CORE ARCHITECTS • INNOVATION • DEVELOPMENT • SYSTEM ARCHITECTS • WEB ENGINEERS • </span>
+                <span>VANTA SOFTWARE ENGINEERS • CORE ARCHITECTS • SYSTEMS ARCHITECTURE • UI/UX ENGINEERING • FULL-STACK LEADERSHIP • </span>
+                <span>VANTA SOFTWARE ENGINEERS • CORE ARCHITECTS • SYSTEMS ARCHITECTURE • UI/UX ENGINEERING • FULL-STACK LEADERSHIP • </span>
             </div>
         </div>
 
-        <h2 class="section-title hidden"><span class="reveal-word">El</span> <span class="reveal-word">Equipo</span></h2>
-        <p class="section-subtitle hidden">Ingenieros de sistemas y diseñadores expertos colaborando para crear el futuro.</p>
+        <div class="section-header-team text-center">
+            <span class="cap-eyebrow">// FOUNDING_ENGINEERS.SYS</span>
+            <h2 class="section-title"><span class="reveal-word">Liderazgo</span> <span class="reveal-word">Técnico</span></h2>
+            <p class="section-subtitle">Arquitectos de software y diseñadores construyendo sistemas que no fallan.</p>
+        </div>
 
-        <div class="team-grid">
+        <div class="team-grid team-grid--founders">
 
-            <div class="team-card tilt-card hidden delay-100" data-project="andres" data-spec="[ SYSTEMS ARCHITECT ]">
-                <div class="avatar-wrapper">
-                    <div class="team-avatar avatar-andres">AM</div>
+            <!-- Card Andrés Morales -->
+            <div class="team-card team-card--holographic vanta-spotlight-card vanta-spotlight-card--cyber" data-project="andres" data-spec="[ SYSTEMS ARCHITECT ]">
+                <div class="avatar-wrapper avatar-wrapper--photo">
+                    <img src="img/team/andres-johan-sviva.jpeg" alt="Andrés Morales — Systems Architect & Backend Lead" class="team-avatar-img team-avatar-img--andres" loading="lazy">
                     <div class="scan-laser"></div>
+                    <div class="avatar-status-pill">
+                        <span class="asp-dot"></span>
+                        <span class="asp-text">SYSTEMS ARCHITECT</span>
+                    </div>
                 </div>
-                <h3>Andrés Morales</h3>
-                <p class="team-role">Desarrollo & Arquitectura</p>
-                <p class="team-bio">Arquitectura de software, bases de datos relacionales y despliegue técnico en la nube. Especialista en soluciones backend robustas.</p>
-                <div class="team-skills">
-                    <span>Python</span><span>SQL</span><span>DevOps</span>
+                <div class="team-card-info">
+                    <div class="team-card-header">
+                        <span class="team-tag">// BACKEND &amp; CLOUD</span>
+                        <h3>Andrés Morales</h3>
+                        <p class="team-role">Socio Fundador · Systems Architect &amp; Backend Lead</p>
+                    </div>
+                    <p class="team-bio">Diseño de arquitecturas backend de alta concurrencia, APIs REST asíncronas con FastAPI, microservicios, bases de datos PostgreSQL optimizadas y despliegues Zero-Trust en la nube.</p>
+                    <div class="team-skills-grid">
+                        <div class="tsk-item"><span>Python / FastAPI</span><small>Core</small></div>
+                        <div class="tsk-item"><span>PostgreSQL &amp; RLS</span><small>Data</small></div>
+                        <div class="tsk-item"><span>Cloudflare Zero Trust</span><small>Infra</small></div>
+                        <div class="tsk-item"><span>Docker &amp; Linux</span><small>DevOps</small></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="team-card tilt-card hidden delay-200" data-project="johan" data-spec="[ UI/UX DESIGNER ]">
-                <div class="avatar-wrapper">
-                    <div class="team-avatar avatar-johan">JF</div>
+            <!-- Card Johan Fernández -->
+            <div class="team-card team-card--holographic vanta-spotlight-card vanta-spotlight-card--ai" data-project="johan" data-spec="[ UI/UX ENGINEERING & AI ]">
+                <div class="avatar-wrapper avatar-wrapper--photo">
+                    <img src="img/team/johanandresexpo.jpeg" alt="Johan Fernández — UI/UX Engineering & AI Lead" class="team-avatar-img team-avatar-img--johan" loading="lazy">
                     <div class="scan-laser"></div>
+                    <div class="avatar-status-pill">
+                        <span class="asp-dot asp-dot--ai"></span>
+                        <span class="asp-text">UI/UX &amp; AI LEAD</span>
+                    </div>
                 </div>
-                <h3>Johan Fernández</h3>
-                <p class="team-role">Socio · UI/UX & Frontend</p>
-                <p class="team-bio">Identidad corporativa, sistemas de diseño, paletas de colores y experiencia de usuario centrada en conversión y retención.</p>
-                <div class="team-skills">
-                    <span>UI/UX</span><span>HTML/CSS</span><span>Branding</span>
-                </div>
-            </div>
-
-            <div class="team-card tilt-card team-card--mascot hidden delay-300" data-project="pana" data-spec="[ EMOTIONAL SUPPORT ]">
-                <div class="avatar-wrapper">
-                    <img src="img/pana-fresco.jpeg" alt="Mascota de la empresa" class="team-avatar-img" loading="lazy">
-                    <div class="scan-laser"></div>
-                </div>
-                <h3>El Pana Fresco</h3>
-                <p class="team-role">Director de Serenidad</p>
-                <p class="team-bio">Experto en equilibrio emocional del equipo. Mantiene la calma cuando los servidores fallan a las 3am.</p>
-                <div class="team-skills">
-                    <span>Motivación</span><span>Resiliencia</span>
-                </div>
-            </div>
-
-            <!-- Isaac Ortiz -->
-            <div class="team-card tilt-card hidden delay-300" data-project="isaac" data-spec="[ COFFEE SUPPLY ]">
-                <div class="avatar-wrapper">
-                    <div class="team-avatar" style="background: linear-gradient(135deg, #2c1a0e, #7B4F2E);">IO</div>
-                    <div class="scan-laser"></div>
-                </div>
-                <h3>Isaac Ortiz</h3>
-                <p class="team-role">Secretario General de la Cafetería</p>
-                <p class="team-bio">Responsable del suministro estratégico de café. Sin él, el código no compila. Su método Scrum se basa en "tómese un tinto y piénselo bien".</p>
-                <div class="team-skills">
-                    <span>☕ Café</span><span>Diplomacia</span><span>Puntualidad*</span>
+                <div class="team-card-info">
+                    <div class="team-card-header">
+                        <span class="team-tag team-tag--ai">// UI/UX &amp; COMPUTER VISION</span>
+                        <h3>Johan Fernández</h3>
+                        <p class="team-role">Socio Fundador · UI/UX Engineer &amp; AI Vision Lead</p>
+                    </div>
+                    <p class="team-bio">Especialista en experiencias web inmersivas de estándar Awwwards, pipelines de Computer Vision con YOLOv8 en el Edge, integración de Google Gemini API y diseño centrado en conversión.</p>
+                    <div class="team-skills-grid">
+                        <div class="tsk-item"><span>Computer Vision (YOLO)</span><small>AI</small></div>
+                        <div class="tsk-item"><span>Three.js &amp; WebGL</span><small>3D</small></div>
+                        <div class="tsk-item"><span>UI/UX &amp; GSAP</span><small>Design</small></div>
+                        <div class="tsk-item"><span>LLM / Gemini API</span><small>Agents</small></div>
+                    </div>
                 </div>
             </div>
 
@@ -1485,12 +1460,12 @@
                     <div class="term-out-line highlight">  VA-OS v4.0 // TERMINAL DE INGENIERÍA EN VIVO</div>
                     <div class="term-out-line sys">════════════════════════════════════════════════════════</div>
                     <div class="term-out-line info">Bienvenido al núcleo de VANTA. Escribe un comando o haz clic en la hoja de notas lateral.</div>
-                    <div class="term-out-line sub">Pasa el cursor por los perfiles del equipo para autodiagnóstico o escribe <span class="highlight">help</span>.</div>
+                    <div class="term-out-line sub">Prueba <span class="highlight">scan</span> para auditoría de seguridad o <span class="highlight">cv</span> para simulación táctica.</div>
                 </div>
 
                 <div class="vanta-prompt-row" style="padding: 12px 20px; background: rgba(8, 14, 25, 0.95);">
                     <span class="prompt-symbol">user@vanta:~$</span>
-                    <input type="text" id="vantaTermInput" class="vanta-term-input" placeholder="Escribe un comando (ej: bench, ai, stack)..." autocomplete="off" spellcheck="false">
+                    <input type="text" id="vantaTermInput" class="vanta-term-input" placeholder="Escribe un comando (ej: scan, cv, bench, ai, stack)..." autocomplete="off" spellcheck="false">
                 </div>
             </div>
 
@@ -1502,44 +1477,36 @@
                 </div>
                 <p class="notepad-sub-hint">Haz clic en cualquier comando para autoejecutarlo:</p>
                 <div class="notepad-commands-list">
+                    <button class="notepad-cmd-item" data-cmd="scan">
+                        <div class="notepad-cmd-badge">
+                            <span class="cmd-badge-code">scan</span>
+                            <span class="cmd-badge-action">AUDIT 🛡️</span>
+                        </div>
+                        <span class="cmd-desc">Simula auditoría de seguridad web OWASP Top 10.</span>
+                    </button>
+
+                    <button class="notepad-cmd-item" data-cmd="cv">
+                        <div class="notepad-cmd-badge">
+                            <span class="cmd-badge-code">cv</span>
+                            <span class="cmd-badge-action">EDGE AI 👁️</span>
+                        </div>
+                        <span class="cmd-desc">Simula inferencia táctica YOLOv8 a 60 FPS (SVIVA).</span>
+                    </button>
+
                     <button class="notepad-cmd-item" data-cmd="bench">
                         <div class="notepad-cmd-badge">
                             <span class="cmd-badge-code">bench</span>
-                            <span class="cmd-badge-action">EJECUTAR ⚡</span>
+                            <span class="cmd-badge-action">GPU ⚡</span>
                         </div>
-                        <span class="cmd-desc">Mide la potencia y GFLOPS de tu GPU con fractal 3D.</span>
+                        <span class="cmd-desc">Mide potencia y GFLOPS con fractal 3D interactivo.</span>
                     </button>
 
                     <button class="notepad-cmd-item" data-cmd="ai">
                         <div class="notepad-cmd-badge">
                             <span class="cmd-badge-code">ai</span>
-                            <span class="cmd-badge-action">STREAM 🤖</span>
+                            <span class="cmd-badge-action">LLM 🤖</span>
                         </div>
-                        <span class="cmd-desc">Simula inferencia LLM token a token en tiempo real.</span>
-                    </button>
-
-                    <button class="notepad-cmd-item" data-cmd="theme cyan">
-                        <div class="notepad-cmd-badge">
-                            <span class="cmd-badge-code">theme cyan</span>
-                            <span class="cmd-badge-action">COLOR 🎨</span>
-                        </div>
-                        <span class="cmd-desc">Cambia todo el sitio web a temática Azul Cyber.</span>
-                    </button>
-
-                    <button class="notepad-cmd-item" data-cmd="theme gold">
-                        <div class="notepad-cmd-badge">
-                            <span class="cmd-badge-code">theme gold</span>
-                            <span class="cmd-badge-action">COLOR 💎</span>
-                        </div>
-                        <span class="cmd-desc">Cambia la iluminación a Dorado Royale.</span>
-                    </button>
-
-                    <button class="notepad-cmd-item" data-cmd="theme emerald">
-                        <div class="notepad-cmd-badge">
-                            <span class="cmd-badge-code">theme emerald</span>
-                            <span class="cmd-badge-action">RESET 🌿</span>
-                        </div>
-                        <span class="cmd-desc">Restaura la paleta Verde Neón insignia.</span>
+                        <span class="cmd-desc">Inferencia de IA token a token en tiempo real.</span>
                     </button>
 
                     <button class="notepad-cmd-item" data-cmd="stack">
@@ -1547,7 +1514,15 @@
                             <span class="cmd-badge-code">stack</span>
                             <span class="cmd-badge-action">INFO 🛠️</span>
                         </div>
-                        <span class="cmd-desc">Compara las especialidades de Andrés & Johan.</span>
+                        <span class="cmd-desc">Especialidades de ingeniería de Andrés &amp; Johan.</span>
+                    </button>
+
+                    <button class="notepad-cmd-item" data-cmd="mascot">
+                        <div class="notepad-cmd-badge">
+                            <span class="cmd-badge-code">mascot</span>
+                            <span class="cmd-badge-action">SECRET 🔐</span>
+                        </div>
+                        <span class="cmd-desc">Desbloquea el archivo secreto del Pana Fresco.</span>
                     </button>
 
                     <button class="notepad-cmd-item" data-cmd="clear">
@@ -1813,49 +1788,82 @@
 
     <!-- ===== CONTACTO ===== -->
     <section id="contact" class="contact-section">
-        <!-- ===== NEURAL FLOW FIELD CANVAS BACKGROUND (final.tsx) ===== -->
+        <!-- ===== NEURAL FLOW FIELD CANVAS BACKGROUND ===== -->
         <canvas id="neural-canvas" class="bg-neural-canvas"></canvas>
 
-        <h2 class="section-title hidden"><span class="reveal-word">Hablemos</span> <span class="reveal-word">de</span> <span class="reveal-word">tu</span> <span class="reveal-word">Proyecto</span></h2>
+        <div class="contact-header text-center">
+            <span class="cap-eyebrow">// INITIATE_DEPLOYMENT.SYS</span>
+            <h2 class="section-title"><span class="reveal-word">Hablemos</span> <span class="reveal-word">de</span> <span class="reveal-word">tu</span> <span class="reveal-word">Proyecto</span></h2>
+            <p class="section-subtitle">Diseñamos propuestas técnicas personalizadas en menos de 24 horas.</p>
+        </div>
 
         <div class="contact-reveal-container">
             <div class="contact-wrapper" id="contactWrapper">
                 <div class="contact-info">
-                    <h3 class="contact-headline" id="contactHeadline">¿Tienes una idea? La hacemos realidad.</h3>
-                    <p>Cuéntanos qué necesitas y en menos de 24 horas te damos una propuesta personalizada.</p>
+                    <h3 class="contact-headline" id="contactHeadline">Construyamos software que sobreviva a su propio éxito.</h3>
+                    <p>Selecciona tus requerimientos y conecta directamente con los ingenieros fundadores de VANTA.</p>
                     <ul class="contact-details">
                         <li class="contact-detail-item"><i class="fab fa-whatsapp"></i> +58 412-712-1162</li>
-                        <li class="contact-detail-item"><i class="fas fa-map-marker-alt"></i> Venezuela — Disponibles remotamente</li>
-                        <li class="contact-detail-item"><i class="fas fa-clock"></i> Respuesta en &lt; 24h</li>
+                        <li class="contact-detail-item"><i class="fas fa-envelope"></i> vantac0rpaj@gmail.com</li>
+                        <li class="contact-detail-item"><i class="fas fa-bolt"></i> Respuesta técnica en &lt; 24h</li>
+                        <li class="contact-detail-item"><i class="fas fa-shield-alt"></i> NDA y Confidencialidad garantizada</li>
                     </ul>
                     <div class="contact-cta-wa">
-                        <a href="https://wa.me/584127121162" class="wa-orbital-btn" target="_blank" rel="noopener noreferrer">
+                        <a href="https://wa.me/584127121162" class="wa-orbital-btn" target="_blank" rel="noopener noreferrer" id="directWaBtn">
                             <span class="orbital-ring or-1"></span>
                             <span class="orbital-ring or-2"></span>
                             <span class="orbital-ring or-3"></span>
                             <i class="fab fa-whatsapp"></i>
                             <span>WhatsApp Directo</span>
                         </a>
-                        <button type="button" class="btn-outline email-copy-btn" id="emailCopyBtn" title="Copiar correo de contacto">
+                        <button type="button" class="btn-outline email-copy-btn" id="emailCopyBtn" title="Copiar correo oficial de VANTA" onclick="navigator.clipboard.writeText('vantac0rpaj@gmail.com'); const t=document.getElementById('vanta-hud-toast'); if(t){ t.querySelector('#toastMsg').textContent='CORREO COPIADO: vantac0rpaj@gmail.com'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }">
                             <i class="fas fa-copy"></i>
-                            <span id="emailCopyText">Copiar Correo</span>
+                            <span id="emailCopyText">vantac0rpaj@gmail.com</span>
                         </button>
                     </div>
                 </div>
+
                 <form id="formContactoWa" class="contact-form">
+                    <!-- Selector interactivo de tipo de proyecto -->
                     <div class="form-group form-reveal">
-                        <label for="waNombre">Nombre o Empresa</label>
-                        <input type="text" id="waNombre" required placeholder="Ej. Empresa ABC">
+                        <label class="contact-field-label">// 01. TIPO DE PROYECTO</label>
+                        <div class="contact-chips-group" id="projectTypeChips">
+                            <button type="button" class="contact-chip-btn active" data-type="Web App / SaaS">Web App / SaaS</button>
+                            <button type="button" class="contact-chip-btn" data-type="Ciberseguridad & Pentest">Ciberseguridad</button>
+                            <button type="button" class="contact-chip-btn" data-type="Computer Vision / IA">Computer Vision / IA</button>
+                            <button type="button" class="contact-chip-btn" data-type="Sistemas Backend">Sistemas Backend</button>
+                        </div>
                     </div>
+
+                    <!-- Selector interactivo de rango de inversión -->
                     <div class="form-group form-reveal">
-                        <label for="waEmail">Correo Electrónico</label>
+                        <label class="contact-field-label">// 02. INVERSIÓN ESTIMADA</label>
+                        <div class="contact-chips-group" id="budgetChips">
+                            <button type="button" class="contact-chip-btn active" data-budget="Plan Básico (< $300)">Básico (&lt; $300)</button>
+                            <button type="button" class="contact-chip-btn" data-budget="Profesional ($300 - $1,500)">Pro ($300 - $1,500)</button>
+                            <button type="button" class="contact-chip-btn" data-budget="Empresarial ($1,500+)">Empresarial ($1,500+)</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-reveal">
+                        <label for="waNombre" class="contact-field-label">// 03. NOMBRE O EMPRESA</label>
+                        <input type="text" id="waNombre" required placeholder="Ej. TechCorp / Juan Pérez">
+                    </div>
+
+                    <div class="form-group form-reveal">
+                        <label for="waEmail" class="contact-field-label">// 04. CORREO ELECTRÓNICO</label>
                         <input type="email" id="waEmail" required placeholder="tu@correo.com">
                     </div>
+
                     <div class="form-group form-reveal">
-                        <label for="waMensaje">¿Qué necesitas?</label>
-                        <textarea id="waMensaje" rows="4" required placeholder="Describe tu proyecto o servicio que necesitas..."></textarea>
+                        <label for="waMensaje" class="contact-field-label">// 05. DETALLES DEL SISTEMA</label>
+                        <textarea id="waMensaje" rows="3" required placeholder="Describe brevemente los objetivos de tu proyecto..."></textarea>
                     </div>
-                    <button type="submit" class="btn form-reveal">Enviar por WhatsApp <i class="fab fa-whatsapp"></i></button>
+
+                    <button type="submit" class="btn form-reveal btn-submit-wa" style="width: 100%;">
+                        <span>Solicitar Propuesta por WhatsApp</span>
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
                 </form>
             </div>
         </div>
@@ -2077,14 +2085,14 @@
     
     <script src="sound-engine.js?v=120"></script>
     <script src="liquid-glass.js?v=120"></script>
-    <script src="vanta-terminal.js?v=120"></script>
+    <script src="vanta-terminal.js?v=130"></script>
     <script src="preloader-v.js?v=200"></script>
     <script src="script.js?v=1500"></script>
     <script src="particles.js?v=200"></script>
     <script src="effects.js?v=2300"></script>
     <script src="slime-text.js?v=210"></script>
     <script src="spotlight.js?v=110"></script>
-    <script src="nuevas-secciones.js?v=110"></script>
+    <script src="nuevas-secciones.js?v=120"></script>
 </body>
 
 </html>

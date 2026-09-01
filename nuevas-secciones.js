@@ -94,10 +94,74 @@
         document.addEventListener("keydown", function esc(e) { if (e.key === "Escape") { overlay.remove(); document.removeEventListener("keydown", esc); } });
     }
 
+    /* --- INTERACTIVE CONTACT FORM --- */
+    function initInteractiveContactForm() {
+        // Project Type Chips
+        var typeChips = document.querySelectorAll('#projectTypeChips .contact-chip-btn');
+        typeChips.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                typeChips.forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+            });
+        });
+
+        // Budget Chips
+        var budgetChips = document.querySelectorAll('#budgetChips .contact-chip-btn');
+        budgetChips.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                budgetChips.forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+            });
+        });
+
+        // Form Submit
+        var form = document.getElementById('formContactoWa');
+        if (!form) return;
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            var nombre = (document.getElementById('waNombre') || {}).value || '';
+            var email = (document.getElementById('waEmail') || {}).value || '';
+            var mensaje = (document.getElementById('waMensaje') || {}).value || '';
+
+            var activeType = document.querySelector('#projectTypeChips .contact-chip-btn.active');
+            var selectedType = activeType ? activeType.getAttribute('data-type') : 'General';
+
+            var activeBudget = document.querySelector('#budgetChips .contact-chip-btn.active');
+            var selectedBudget = activeBudget ? activeBudget.getAttribute('data-budget') : 'Por definir';
+
+            var waPayload = "🚀 *SOLICITUD DE PROYECTO // VANTA STUDIO*\n\n" +
+                "👤 *Cliente / Empresa:* " + nombre + "\n" +
+                "📧 *Correo:* " + email + "\n" +
+                "🛠️ *Tipo de Proyecto:* " + selectedType + "\n" +
+                "💰 *Inversión Estimada:* " + selectedBudget + "\n\n" +
+                "📝 *Detalles del Sistema:*\n" + mensaje + "\n\n" +
+                "---\n_Enviado desde vanta.studio_";
+
+            var waUrl = "https://wa.me/584127121162?text=" + encodeURIComponent(waPayload);
+
+            // Trigger HUD toast feedback
+            var toast = document.getElementById('vanta-hud-toast');
+            if (toast) {
+                var msg = toast.querySelector('#toastMsg');
+                if (msg) msg.textContent = 'CONECTANDO CON WHATSAPP // VANTA CORE';
+                toast.classList.add('show');
+                setTimeout(function () { toast.classList.remove('show'); }, 3500);
+            }
+
+            // Open WhatsApp
+            window.open(waUrl, '_blank', 'noopener,noreferrer');
+        });
+
+        console.log("[VANTA] Interactive contact form OK");
+    }
+
     /* --- INIT --- */
     function init() {
         initSvivaPipeline();
         initMascotEasterEgg();
+        initInteractiveContactForm();
         if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
             initNewSectionReveals();
         } else {

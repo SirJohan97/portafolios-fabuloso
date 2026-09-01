@@ -2650,3 +2650,221 @@
         grid-template-columns: 1fr 1fr;
     }
 }
+
+/* =============================================================
+   VANTA REDESIGN FASE 4 — FOUNDING ENGINEERS & PROTOCOL & CONTACT
+   ============================================================= */
+
+/* === FOUNDERS TEAM SECTION === */
+.team-grid--founders {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 3.5rem auto 4rem;
+    position: relative;
+    z-index: 2;
+}
+
+.team-card--holographic {
+    background: #0D1017;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 2.2rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.4s ease;
+}
+
+.team-card--holographic:hover {
+    transform: translateY(-6px);
+}
+
+.avatar-wrapper--photo {
+    width: 100%;
+    height: 280px;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #07090E;
+}
+
+.team-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: grayscale(35%) contrast(1.1);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+.team-avatar-img--andres {
+    object-position: center 20%;
+}
+
+.team-avatar-img--johan {
+    object-position: center 15%;
+}
+
+.team-card--holographic:hover .team-avatar-img {
+    transform: scale(1.04);
+    filter: grayscale(0%) contrast(1.05);
+}
+
+.avatar-status-pill {
+    position: absolute;
+    bottom: 0.85rem;
+    left: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.65rem;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    color: #fff;
+    z-index: 3;
+}
+
+.asp-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00E5FF;
+    box-shadow: 0 0 6px #00E5FF;
+}
+
+.asp-dot--ai {
+    background: #8B5CF6;
+    box-shadow: 0 0 6px #8B5CF6;
+}
+
+.team-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    flex: 1;
+}
+
+.team-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: #00E5FF;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.team-tag--ai {
+    color: #8B5CF6;
+}
+
+.team-card-header h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #E8EAF0;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.25rem;
+}
+
+.team-card-header .team-role {
+    font-size: 0.85rem;
+    color: #11D483;
+    font-weight: 500;
+    margin: 0;
+}
+
+.team-card-info .team-bio {
+    font-size: 0.88rem;
+    color: #8A92A6;
+    line-height: 1.65;
+    margin: 0;
+}
+
+.team-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.tsk-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.45rem 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    font-size: 0.76rem;
+    color: #D1D5DB;
+}
+
+.tsk-item small {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+}
+
+/* === INTERACTIVE CONTACT FLOW === */
+.contact-chips-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.contact-chip-btn {
+    padding: 0.45rem 0.9rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: inherit;
+}
+
+.contact-chip-btn:hover {
+    border-color: rgba(17, 212, 131, 0.4);
+    color: #fff;
+    background: rgba(17, 212, 131, 0.06);
+}
+
+.contact-chip-btn.active {
+    background: rgba(17, 212, 131, 0.15);
+    border-color: #11D483;
+    color: #11D483;
+    font-weight: 600;
+    box-shadow: 0 0 12px rgba(17, 212, 131, 0.25);
+}
+
+.contact-field-label {
+    display: block;
+    font-size: 0.78rem;
+    font-family: 'Space Mono', monospace;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+    .team-grid--founders {
+        grid-template-columns: 1fr;
+    }
+    .avatar-wrapper--photo {
+        height: 240px;
+    }
+}

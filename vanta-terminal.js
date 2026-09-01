@@ -108,7 +108,7 @@
 
         autocomplete() {
             const val = this.inputEl.value.trim().toLowerCase();
-            const commands = ['help', 'bench', 'ai', 'stack', 'theme', 'projects', 'contact', 'clear', 'team'];
+            const commands = ['help', 'scan', 'cv', 'bench', 'ai', 'stack', 'theme', 'projects', 'contact', 'clear', 'team', 'mascot'];
             const match = commands.find(c => c.startsWith(val));
             if (match) {
                 this.inputEl.value = match;
@@ -171,6 +171,27 @@
                 case 'ai':
                     this.runAiStream(args.join(' ') || 'Diseña una arquitectura de microservicios resiliente');
                     break;
+                case 'scan':
+                case 'pentest':
+                case 'vanta-scan':
+                    this.runSecurityScan(args[0] || 'https://vanta-demo.app');
+                    break;
+                case 'cv':
+                case 'sviva':
+                case 'vision':
+                    this.runCvSimulation();
+                    break;
+                case 'mascot':
+                case 'pana':
+                case 'panafresco':
+                    this.printLine(`[CLASSIFIED] Desbloqueando archivo confidencial del personal...`, 'highlight');
+                    if (typeof window.showMascotEgg === 'function') {
+                        window.showMascotEgg();
+                    } else {
+                        const evt = new KeyboardEvent('keydown', { key: 'M', ctrlKey: true, shiftKey: true, bubbles: true });
+                        document.dispatchEvent(evt);
+                    }
+                    break;
                 case 'stack':
                     this.printStack();
                     break;
@@ -191,7 +212,7 @@
                     this.screenEl.innerHTML = '';
                     break;
                 case 'team':
-                    this.printLine(`[CORE_AGENTS] Johan Fernández (AI & 3D) · Andrés Morales (Cloud & Backend)`, 'info');
+                    this.printLine(`[FOUNDERS] Johan Fernández (UI/UX Engineering & AI) · Andrés Morales (Systems Architect & Backend)`, 'info');
                     break;
                 default:
                     this.printLine(`Comando no reconocido: "${cmd}". Escribe <span class="highlight">help</span> o haz clic en la hoja de notas.`, 'warn');
@@ -203,11 +224,17 @@
             this.printLine(`════════════════════════════════════════════════════════`, 'sys');
             this.printLine(`  <span class="highlight">VA-OS v4.0 CLI // MANUAL DE INGENIERÍA</span>`, 'highlight');
             this.printLine(`════════════════════════════════════════════════════════`, 'sys');
+            this.printLine(`  <span class="success">scan [url]</span>   - Simula auditoría de seguridad OWASP Top 10`, 'sub');
+            this.printLine(`  <span class="success">cv</span>           - Simula inferencia de Visión por Computadora (SVIVA)`, 'sub');
             this.printLine(`  <span class="success">bench</span>        - Ejecuta benchmark WebGL GPU en tiempo real`, 'sub');
             this.printLine(`  <span class="success">ai [prompt]</span>  - Simula inferencia de IA token por token con TTFT`, 'sub');
             this.printLine(`  <span class="success">theme [color]</span>- Cambia paleta: <span class="info">emerald</span> | <span class="info">cyan</span> | <span class="info">gold</span>`, 'sub');
-            this.printLine(`  <span class="success">stack</span>        - Muestra capacidades técnicas de Andrés & Johan`, 'sub');
+            this.printLine(`  <span class="success">stack</span>        - Capacidades de ingeniería de Andrés & Johan`, 'sub');
             this.printLine(`  <span class="success">projects</span>     - Lista los 8 sistemas desplegados en producción`, 'sub');
+            this.printLine(`  <span class="success">mascot</span>       - Acceso clasificado a la mascota del equipo`, 'sub');
+            this.printLine(`  <span class="success">clear</span>        - Limpia el buffer de la terminal`, 'sub');
+            this.printLine(`════════════════════════════════════════════════════════`, 'sys');
+        }
             this.printLine(`  <span class="success">clear</span>        - Limpia el buffer de la terminal`, 'sub');
             this.printLine(`════════════════════════════════════════════════════════`, 'sys');
         }
@@ -293,16 +320,59 @@
             }, 65);
         }
 
-        printStack() {
-            this.printLine(`┌────────────────────────────────────────────────────────────┐`, 'sys');
-            this.printLine(`│  <span class="highlight">VANTA ENGINEERING MATRIX (Andrés Morales & Johan F.)</span>    │`, 'highlight');
-            this.printLine(`├─────────────────────────────┬──────────────────────────────┤`, 'sys');
-            this.printLine(`│ <span class="info">ANDRÉS (Full-Stack & Cloud)</span> │ <span class="info">JOHAN (AI Vision & 3D)</span>       │`, 'info');
-            this.printLine(`│ • FastAPI Async REST APIs   │ • YOLOv8 Local Vision AI     │`, 'sub');
-            this.printLine(`│ • Supabase Cloud & Postgres │ • Machine Learning Models    │`, 'sub');
-            this.printLine(`│ • Node.js & Vercel Edge     │ • Three.js 3D & GLSL Shaders │`, 'sub');
-            this.printLine(`│ • Docker CI/CD & C++ Native │ • Cloudflare Zero Trust Mesh │`, 'sub');
-            this.printLine(`└─────────────────────────────┴──────────────────────────────┘`, 'sys');
+        runSecurityScan(target) {
+            this.printLine(`[SEC_AUDIT] Iniciando escaneo de seguridad en: <span class="highlight">${target}</span>`, 'info');
+            this.printLine(`[RECON] Mapeando vectores de ataque OWASP Top 10 + TLS 1.3 Audit...`, 'sys');
+
+            const checks = [
+                { name: 'A01: Broken Access Control', status: 'PASS', time: '14ms' },
+                { name: 'A02: Cryptographic Failures', status: 'PASS (TLS 1.3 / AES-256-GCM)', time: '8ms' },
+                { name: 'A03: SQL & Command Injection', status: 'PASS (Parameterized Queries)', time: '12ms' },
+                { name: 'A04: Insecure Design & Rate Limits', status: 'PASS (Cloudflare Zero-Trust)', time: '6ms' },
+                { name: 'A05: Security Misconfiguration', status: 'PASS (Strict CSP / HSTS / XFO)', time: '9ms' }
+            ];
+
+            let i = 0;
+            const scanInterval = setInterval(() => {
+                if (i < checks.length) {
+                    const c = checks[i];
+                    this.printLine(`  ✔ <span class="info">[${c.status}]</span> ${c.name} <span class="sub">(${c.time})</span>`, 'success');
+                    if (window.VANTA_AUDIO) window.VANTA_AUDIO.playSwitch(1.4 + i * 0.1);
+                    this.screenEl.scrollTop = this.screenEl.scrollHeight;
+                    i++;
+                } else {
+                    clearInterval(scanInterval);
+                    this.printLine(`════════════════════════════════════════════════════════`, 'sys');
+                    this.printLine(`✔ <span class="highlight">[DIAGNÓSTICO EXITOSO]</span> 0 Vulnerabilidades Críticas // 100% Blindado`, 'highlight');
+                    this.printLine(`  <span class="sub">Metodología aplicada: OWASP Top 10 + MITRE ATT&CK Framework</span>`, 'sub');
+                }
+            }, 180);
+        }
+
+        runCvSimulation() {
+            this.printLine(`[SVIVA_CORE] Inicializando pipeline de inferencia táctica en el Edge...`, 'info');
+            this.printLine(`[MODEL_LOAD] YOLOv8 Custom Weights loaded (TensorRT INT8) · Latency: 12.4ms`, 'sys');
+
+            const frames = [
+                "CAM_01 [ENTRADA]   : 60 FPS | Obj: Persona (98.4%) | Threat: NONE",
+                "CAM_02 [PASILLO N] : 60 FPS | Obj: Persona (99.1%) | Threat: NONE",
+                "CAM_04 [LOBBY E]   : 60 FPS | [!] THREAT DETECTED: Concealed Handgun (99.1%)",
+                "ALERT PROTOCOL     : Automated SMS Dispatch + Perimeter Lock TRIGGERED"
+            ];
+
+            let fIdx = 0;
+            const cvInterval = setInterval(() => {
+                if (fIdx < frames.length) {
+                    const lineClass = fIdx === 2 ? 'warn' : (fIdx === 3 ? 'highlight' : 'sub');
+                    this.printLine(`  → ${frames[fIdx]}`, lineClass);
+                    if (window.VANTA_AUDIO) window.VANTA_AUDIO.playSwitch(1.8);
+                    this.screenEl.scrollTop = this.screenEl.scrollHeight;
+                    fIdx++;
+                } else {
+                    clearInterval(cvInterval);
+                    this.printLine(`✔ [STATUS] Pipeline SVIVA operativo en tiempo real a 60 FPS sin dependencia en la nube.`, 'success');
+                }
+            }, 250);
         }
 
         setTheme(colorName) {
