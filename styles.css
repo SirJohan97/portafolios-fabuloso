@@ -4484,24 +4484,24 @@ body {
 .hero-center-layout .hero-content {
     align-items: flex-start;
     text-align: left;
-    max-width: 1000px;
+    max-width: 1100px;
     width: 100%;
 }
 .hero-title-main {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: 4.1rem;
-    line-height: 0.95;
-    letter-spacing: -3px;
+    font-size: clamp(2rem, 4.4vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
     color: var(--light);
     text-transform: uppercase;
 }
 .hero-title-outline {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: 4.1rem;
-    line-height: 0.95;
-    letter-spacing: -3px;
+    font-size: clamp(2rem, 4.4vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
     text-transform: uppercase;
 }
 .italic-outline {
@@ -4512,9 +4512,10 @@ body {
 }
 .font-accent {
     position: relative;
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
+    display: block;
+    font-size: clamp(1.85rem, 4.2vw, 3.6rem);
+    letter-spacing: -0.02em;
+    width: 100%;
 }
 .tech-tag {
     font-family: 'Orbitron', monospace;
@@ -8066,7 +8067,23 @@ html.lenis body {
     font-family: 'Instrument Serif', Georgia, serif !important;
     font-style: italic;
     font-weight: 400;
-    letter-spacing: -0.02em;
+    font-size: clamp(2.4rem, 5.5vw, 4.8rem) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.01em !important;
+    display: block;
+    margin-bottom: 0.15rem;
+}
+
+.hero-title-group {
+    max-width: 100%;
+    overflow: visible;
+}
+
+.split-line-wrap {
+    overflow: visible !important;
+    display: block;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* Hero mini-bento stats row */
@@ -8132,48 +8149,42 @@ html.lenis body {
     margin-left: 0.75rem;
 }
 
-/* Navbar Availability Badge */
-.nav-availability-badge {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.35rem 0.75rem;
-    background: rgba(17, 212, 131, 0.06);
-    border: 1px solid rgba(17, 212, 131, 0.2);
-    border-radius: 100px;
-    font-family: 'Space Mono', 'Courier New', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.05em;
-    color: rgba(17, 212, 131, 0.75);
-    white-space: nowrap;
-    transition: all 0.3s ease;
-    cursor: default;
-    margin-right: auto;
-    margin-left: 1.5rem;
+/* Minimalist Navbar Enhancements */
+.navbar {
+    background: rgba(7, 9, 14, 0.65) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    padding: 0.9rem 5% !important;
 }
 
-.nav-availability-badge:hover {
-    background: rgba(17, 212, 131, 0.12);
-    border-color: rgba(17, 212, 131, 0.4);
-    color: #11d483;
+.navbar .nav-links {
+    gap: 1.75rem;
 }
 
-.nav-avail-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #11d483;
-    flex-shrink: 0;
-    animation: hmb-pulse 2s ease-in-out infinite;
+.navbar .nav-links a {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.02em;
+    transition: color 0.25s ease;
 }
 
-.nav-avail-text {
-    text-transform: uppercase;
+.navbar .nav-links a:hover {
+    color: #fff;
 }
 
-/* En mobile, ocultar el badge de disponibilidad --*/
-@media (max-width: 900px) {
-    .nav-availability-badge {
-        display: none;
-    }
+.navbar .nav-links a.nav-cta {
+    font-size: 0.82rem;
+    padding: 6px 18px;
+    letter-spacing: 0.04em;
+    background: #11D483;
+    color: #05070a;
+    font-weight: 700;
+}
+
+.navbar .nav-links a.nav-cta:hover {
+    background: #15f498;
+    box-shadow: 0 0 20px rgba(17, 212, 131, 0.4);
+    transform: translateY(-1px);
 }

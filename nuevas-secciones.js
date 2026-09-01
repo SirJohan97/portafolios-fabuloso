@@ -1,46 +1,9 @@
-﻿/* =============================================================
+/* =============================================================
    VANTA REDESIGN — NUEVAS SECCIONES JS
    Hero Typing Effect, SVIVA Pipeline Animation, ScrollTrigger reveals
    ============================================================= */
 (function () {
     "use strict";
-
-    /* --- HERO TYPING SUBTITLE --- */
-    function initHeroTyping() {
-        var el = document.getElementById("liquid-text");
-        if (!el) return;
-
-        var words = [
-            "Ingenieria de Software de Elite",
-            "Computer Vision & Edge AI",
-            "Ciberseguridad Ofensiva",
-            "LLM & Gemini API Integration",
-            "Machine Learning en Produccion",
-            "Arquitectura de Sistemas"
-        ];
-
-        var wordIndex = 0, charIndex = 0, isDeleting = false, typingSpeed = 60;
-        el.style.borderRight = "2px solid #11d483";
-        el.style.paddingRight = "2px";
-
-        function type() {
-            var currentWord = words[wordIndex];
-            if (isDeleting) {
-                el.textContent = currentWord.substring(0, charIndex - 1);
-                charIndex--;
-                typingSpeed = 30;
-            } else {
-                el.textContent = currentWord.substring(0, charIndex + 1);
-                charIndex++;
-                typingSpeed = 65;
-            }
-            if (!isDeleting && charIndex === currentWord.length) { isDeleting = true; typingSpeed = 2000; }
-            else if (isDeleting && charIndex === 0) { isDeleting = false; wordIndex = (wordIndex + 1) % words.length; typingSpeed = 400; }
-            setTimeout(type, typingSpeed);
-        }
-        setTimeout(type, 2800);
-        console.log("[VANTA] Hero typing OK");
-    }
 
     /* --- SVIVA PIPELINE ANIMATION --- */
     function initSvivaPipeline() {
@@ -133,7 +96,6 @@
 
     /* --- INIT --- */
     function init() {
-        initHeroTyping();
         initSvivaPipeline();
         initMascotEasterEgg();
         if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {

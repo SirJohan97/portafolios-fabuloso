@@ -8,13 +8,15 @@
     // ─── WORDS ────────────────────────────────────────────────
     const WORDS = [
         'APLICACIONES WEB',
-        'SISTEMAS BACKEND',
+        'CIBERSEGURIDAD & PENTESTING',
         'INTELIGENCIA ARTIFICIAL',
-        'AUTOMATIZACIÓN',
+        'COMPUTER VISION & EDGE AI',
+        'SISTEMAS BACKEND',
+        'AUTOMATIZACIÓN CON IA',
     ];
 
     // ─── TIMING ───────────────────────────────────────────────
-    const DISPLAY_MS  = 4600;   // idle display time
+    const DISPLAY_MS  = 3800;   // idle display time
     const SAG_MS      = 400;    // viscous sag start
     const DRIP_MS     = 1000;   // warp + fade + drip
     const EMPTY_MS    = 200;    // brief clear canvas pause
