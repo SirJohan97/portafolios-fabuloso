@@ -116,9 +116,14 @@ function initEffectsScript() {
     function applyTilt(cards) {
         cards.forEach(card => {
             card.classList.add('tilt-card');
+            let rect = null;
+
+            card.addEventListener('mouseenter', () => {
+                rect = card.getBoundingClientRect();
+            }, { passive: true });
 
             card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
+                if (!rect) rect = card.getBoundingClientRect();
                 const cx   = rect.left + rect.width  / 2;
                 const cy   = rect.top  + rect.height / 2;
                 const dx   = (e.clientX - cx) / (rect.width  / 2);
@@ -127,22 +132,17 @@ function initEffectsScript() {
                 const rotY =  dx * TILT_MAX;
                 const rotX = -dy * TILT_MAX;
 
-                card.style.setProperty('--rotX', rotX + 'deg');
-                card.style.setProperty('--rotY', rotY + 'deg');
-
-                const mx = ((e.clientX - rect.left) / rect.width)  * 100;
-                const my = ((e.clientY - rect.top)  / rect.height) * 100;
-                card.style.setProperty('--mx', mx + '%');
-                card.style.setProperty('--my', my + '%');
-
+                card.style.setProperty('--rotX', rotX.toFixed(2) + 'deg');
+                card.style.setProperty('--rotY', rotY.toFixed(2) + 'deg');
                 card.classList.remove('tilt-reset');
-            });
+            }, { passive: true });
 
             card.addEventListener('mouseleave', () => {
+                rect = null;
                 card.classList.add('tilt-reset');
                 card.style.setProperty('--rotX', '0deg');
                 card.style.setProperty('--rotY', '0deg');
-            });
+            }, { passive: true });
         });
     }
 

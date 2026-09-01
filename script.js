@@ -227,11 +227,10 @@ function initMainScript() {
     const cursor  = document.querySelector('.cursor');
     const cursor2 = document.querySelector('.cursor2');
 
-    // Capturar coordenadas globales del mouse y setear variables CSS
-    document.addEventListener('mousemove', e => {
-        document.documentElement.style.setProperty('--mouse-x', e.clientX + 'px');
-        document.documentElement.style.setProperty('--mouse-y', e.clientY + 'px');
-    });
+    // Variables compartidas de layout para evitar lecturas de DOM desincronizadas
+    let portfolioTop = 0;
+    let portfolioHeight = 0;
+    let maxTranslate = 0;
 
     // Indicador deslizante (cápsula) de la barra de navegación
     function initNavbarIndicator() {
@@ -330,15 +329,15 @@ function initMainScript() {
             const diff2X = mouseX - c2X;
             const diff2Y = mouseY - c2Y;
 
-            c1X += diff1X * 0.17;
-            c1Y += diff1Y * 0.17;
-            c2X += diff2X * 0.8;
-            c2Y += diff2Y * 0.8;
+            c1X += diff1X * 0.22;
+            c1Y += diff1Y * 0.22;
+            c2X += diff2X * 0.85;
+            c2Y += diff2Y * 0.85;
  
             cursor.style.transform = `translate3d(calc(${c1X}px - 50%), calc(${c1Y}px - 50%), 0)`;
             cursor2.style.transform = `translate3d(calc(${c2X}px - 50%), calc(${c2Y}px - 50%), 0)`;
  
-            if (Math.abs(diff1X) < 0.1 && Math.abs(diff1Y) < 0.1 && Math.abs(diff2X) < 0.1 && Math.abs(diff2Y) < 0.1) {
+            if (Math.abs(diff1X) < 0.05 && Math.abs(diff1Y) < 0.05 && Math.abs(diff2X) < 0.05 && Math.abs(diff2Y) < 0.05) {
                 isCursorRunning = false;
                 cursorRafId = null;
             } else {
@@ -2555,41 +2554,7 @@ COMMIT;`
  
         let animationFrameId = null;
 
-        // Viewport Auto-Sleep Engine (Zero GPU usage when off-screen)
-        let isSceneVisible = true;
-        const heroSectionEl = document.getElementById('home');
-        const portfolioSectionEl = document.getElementById('portfolio');
-        let heroInView = true;
-        let portfolioInView = false;
-
-        function checkSceneActive() {
-            const shouldBeActive = (heroInView || portfolioInView) && !document.hidden;
-            if (shouldBeActive !== isSceneVisible) {
-                isSceneVisible = shouldBeActive;
-                if (!isSceneVisible && animationFrameId) {
-                    cancelAnimationFrame(animationFrameId);
-                    animationFrameId = null;
-                } else if (isSceneVisible && !animationFrameId) {
-                    animate();
-                }
-            }
-        }
-
-        if ('IntersectionObserver' in window) {
-            if (heroSectionEl) {
-                new IntersectionObserver((entries) => {
-                    heroInView = entries[0].isIntersecting;
-                    checkSceneActive();
-                }, { threshold: 0.01 }).observe(heroSectionEl);
-            }
-            if (portfolioSectionEl) {
-                new IntersectionObserver((entries) => {
-                    portfolioInView = entries[0].isIntersecting;
-                    checkSceneActive();
-                }, { threshold: 0.01 }).observe(portfolioSectionEl);
-            }
-        }
-
+        // Gestor de ciclo de vida 3D (Se ejecuta continuamente en pestaña activa)
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 if (animationFrameId) {
@@ -2597,7 +2562,7 @@ COMMIT;`
                     animationFrameId = null;
                 }
             } else {
-                if (!animationFrameId && isSceneVisible) {
+                if (!animationFrameId) {
                     animate();
                 }
             }
@@ -2762,12 +2727,8 @@ COMMIT;`
             }
         }
 
-        // Inicio inteligente: verificar si hero ya está en viewport antes de lanzar
-        const _heroRect = heroSectionEl ? heroSectionEl.getBoundingClientRect() : null;
-        const _heroAlreadyVisible = _heroRect && _heroRect.top < window.innerHeight && _heroRect.bottom > 0;
-        heroInView = !!_heroAlreadyVisible;
-        isSceneVisible = heroInView || portfolioInView;
-        if (isSceneVisible) animate();
+        // Iniciar bucle de renderizado 3D continuo
+        animate();
     }
     /* =========================================================
        12. LENIS SMOOTH SCROLL (INERCIAL UNIFICADO)
@@ -2830,10 +2791,7 @@ COMMIT;`
     const portfolioContainer = document.querySelector('.portfolio-scroll-container');
     const horizontalTrack    = document.querySelector('.horizontal-track');
     
-    // Cache de dimensiones para evitar getBoundingClientRect en scroll
-    let portfolioTop = 0;
-    let portfolioHeight = 0;
-    let maxTranslate = 0;
+    // Cache de dimensiones para evitar getBoundingClientRect en scroll (ya declaradas en scope global)
 
     function cachePortfolioLayout() {
         if (!portfolioContainer || !horizontalTrack) return;

@@ -1,8 +1,8 @@
 /* ================================================================
-   LIQUID GLASS ENGINE & OPTICAL SPECULAR CONTROLLER
+   LIQUID GLASS & SENSORIAL ENGINE (HIGH PERFORMANCE)
    ────────────────────────────────────────────────────────────────
-   • High-Performance Mouse Specular Tracking via GSAP quickTo
-   • Physical Multi-Layer Refraction Lighting (Zero GC Allocations)
+   • Zero Layout Thrashing / Zero DOM Reflows
+   • Sound Engine Integration on Hover & Click
    • Automatic Neural Sub-Drone Trigger in AI & Engineering Sections
    • Scroll Velocity Doppler Trigger via Lenis integration
    ================================================================ */
@@ -10,44 +10,19 @@
 (function () {
     "use strict";
 
-    function initLiquidGlassEngine() {
-        // Collect all glass-enabled cards and modals
-        const glassElements = document.querySelectorAll(
+    function initSensorialEngine() {
+        // Audio hover feedback for interactive cards without layout thrashing
+        const interactiveCards = document.querySelectorAll(
             '.horizontal-track .card, .liquid-glass-card, .poker-modal-content, .service-visual-card .visual-wrapper, .team-card'
         );
 
-        if (!glassElements.length) return;
-
-        glassElements.forEach((el) => {
-            let isHovered = false;
-
+        interactiveCards.forEach((el) => {
             el.addEventListener('mouseenter', (e) => {
-                isHovered = true;
-                const rect = el.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                el.style.setProperty('--mouse-x', `${x}px`);
-                el.style.setProperty('--mouse-y', `${y}px`);
-
-                // Play tactile spatial hover chirp
                 if (window.VANTA_AUDIO) {
-                    const pan = (e.clientX / window.innerWidth) * 2 - 1; // -1 to 1
+                    const pan = (e.clientX / (window.innerWidth || 1920)) * 2 - 1; // -1 to 1
                     window.VANTA_AUDIO.playChirp(pan, 580);
                 }
-            });
-
-            el.addEventListener('mousemove', (e) => {
-                if (!isHovered) return;
-                const rect = el.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                el.style.setProperty('--mouse-x', `${x}px`);
-                el.style.setProperty('--mouse-y', `${y}px`);
-            });
-
-            el.addEventListener('mouseleave', () => {
-                isHovered = false;
-            });
+            }, { passive: true });
 
             el.addEventListener('click', () => {
                 if (window.VANTA_AUDIO) {
@@ -90,8 +65,8 @@
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initLiquidGlassEngine);
+        document.addEventListener('DOMContentLoaded', initSensorialEngine);
     } else {
-        initLiquidGlassEngine();
+        initSensorialEngine();
     }
 })();
