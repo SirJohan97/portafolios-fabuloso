@@ -1,4 +1,4 @@
-﻿/* =============================================================
+/* =============================================================
    PHASE 1 — AWWWARDS QUICK WINS
    1. Lenis Smooth Scroll (fundacion)
    2. Magnetic Cursor (botones que atraen el puntero)
@@ -281,5 +281,52 @@
         // DOMContentLoaded ya paso, ejecutar en el siguiente tick
         setTimeout(init, 0);
     }
+
+    /* ============================================================
+       VELOCITY-BASED GLOBAL TEXT SKEW (Awwwards Kinetic Typography)
+       El texto de titulares se distorsiona suavemente con la velocidad del scroll
+       ============================================================ */
+    function initScrollVelocitySkew() {
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        // Seleccionamos los titulares principales
+        const skewTargets = document.querySelectorAll(
+            '.hero-title-main, .section-title, .bento-title, .ph-chapter-title, .poker-card-title'
+        );
+        if (!skewTargets.length) return;
+
+        const skewSetters = Array.from(skewTargets).map(el => ({
+            el,
+            setter: gsap.quickTo(el, 'skewY', { duration: 0.6, ease: 'power3.out' })
+        }));
+
+        const clamp = gsap.utils.clamp(-4, 4); // max 4 grados (sutil y elegante)
+
+        let lastVelocity = 0;
+        ScrollTrigger.create({
+            onUpdate: (self) => {
+                const vel = clamp(self.getVelocity() / 500);
+                if (Math.abs(vel - lastVelocity) > 0.1) {
+                    lastVelocity = vel;
+                    skewSetters.forEach(({ setter }) => setter(vel));
+                }
+            }
+        });
+
+        // Reseteo cuando el scroll se detiene
+        let resetTimer;
+        window.addEventListener('scroll', () => {
+            clearTimeout(resetTimer);
+            resetTimer = setTimeout(() => {
+                skewSetters.forEach(({ setter }) => setter(0));
+                lastVelocity = 0;
+            }, 150);
+        }, { passive: true });
+
+        console.log('[VANTA] Velocity-based skew OK');
+    }
+
+    initScrollVelocitySkew();
 
 })();

@@ -1712,4 +1712,941 @@
     will-change: transform, filter;
 }
 
+/* =============================================================
+   SPOTLIGHT MOUSE EFFECT â€” Global Bento Cards
+   Gradiente radial que sigue el mouse en cada tarjeta
+   ============================================================= */
+.vanta-spotlight-card {
+    position: relative;
+    background: #0F1219;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
 
+.vanta-spotlight-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(
+        500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(17, 212, 131, 0.07),
+        transparent 70%
+    );
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+}
+
+.vanta-spotlight-card:hover::before {
+    opacity: 1;
+}
+
+.vanta-spotlight-card:hover {
+    border-color: rgba(17, 212, 131, 0.2);
+    box-shadow: 0 0 30px rgba(17, 212, 131, 0.05), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+
+/* Variante cian para tarjetas de ciberseguridad */
+.vanta-spotlight-card--cyber::before {
+    background: radial-gradient(
+        500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(0, 229, 255, 0.07),
+        transparent 70%
+    );
+}
+.vanta-spotlight-card--cyber:hover {
+    border-color: rgba(0, 229, 255, 0.2);
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.05), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+
+/* Variante violeta para tarjetas de IA/ML */
+.vanta-spotlight-card--ai::before {
+    background: radial-gradient(
+        500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(139, 92, 246, 0.08),
+        transparent 70%
+    );
+}
+.vanta-spotlight-card--ai:hover {
+    border-color: rgba(139, 92, 246, 0.25);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.06), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+
+/* =============================================================
+   VANTA REDESIGN FASE 2 — SVIVA SOC SHOWCASE
+   ============================================================= */
+
+/* === SVIVA SECTION === */
+.sviva-showcase-section {
+    position: relative;
+    padding: 8rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* Fondo scanlines sutil */
+.sviva-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,229,255,0.015) 3px,
+        rgba(0,229,255,0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+.sviva-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 4rem;
+    z-index: 1;
+}
+
+.sviva-eyebrow {
+    display: inline-block;
+    font-family: 'Space Mono', 'Courier New', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: rgba(0,229,255,0.6);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.sviva-title {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #E8EAF0;
+    margin-bottom: 1rem;
+}
+
+.sviva-title-accent {
+    color: rgba(0,229,255,0.85);
+    font-weight: 400;
+}
+
+.sviva-subtitle {
+    font-size: 1.05rem;
+    color: #7A8099;
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* SOC wrapper: dos columnas */
+.sviva-soc-wrapper {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2rem;
+    z-index: 1;
+}
+
+/* Panel de cámara (izquierdo) */
+.sviva-feed-panel {
+    background: rgba(0, 10, 15, 0.95);
+    border: 1px solid rgba(0,229,255,0.25);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(0,229,255,0.08), inset 0 1px 0 rgba(0,229,255,0.15);
+    position: relative;
+}
+
+.sviva-feed-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(0,229,255,0.05);
+    border-bottom: 1px solid rgba(0,229,255,0.15);
+}
+
+.sviva-feed-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.sviva-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ff4444;
+    animation: sviva-live-pulse 1.2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes sviva-live-pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 4px #ff4444; }
+    50% { opacity: 0.5; box-shadow: 0 0 10px rgba(255,68,68,0.6); }
+}
+
+.sviva-live-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: #ff4444;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+}
+
+.sviva-cam-id {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.06em;
+    margin-left: auto;
+}
+
+.sviva-status-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.sviva-threat {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #F59E0B;
+    animation: sviva-threat-pulse 2s ease-in-out infinite;
+}
+
+@keyframes sviva-threat-pulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(245,158,11,0.3); }
+    50% { box-shadow: 0 0 14px rgba(245,158,11,0.6); }
+}
+
+/* Área de video simulado */
+.sviva-video-area {
+    position: relative;
+    min-height: 320px;
+    background: #01070a;
+    overflow: hidden;
+}
+
+/* Grilla táctica de coordenadas */
+.sviva-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0,229,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 1;
+}
+
+/* Bounding Box animado */
+.sviva-bb-container {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sviva-bounding-box {
+    position: relative;
+    width: 140px;
+    height: 200px;
+    animation: sviva-bb-float 3s ease-in-out infinite;
+}
+
+@keyframes sviva-bb-float {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(15px, -8px); }
+    66% { transform: translate(-8px, 10px); }
+}
+
+.sviva-bb-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: #F59E0B;
+    border-style: solid;
+    animation: sviva-corner-blink 2s ease-in-out infinite;
+}
+
+.sviva-bb-tl { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.sviva-bb-tr { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.sviva-bb-bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+.sviva-bb-br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+@keyframes sviva-corner-blink {
+    0%, 80%, 100% { opacity: 1; }
+    90% { opacity: 0.4; }
+}
+
+.sviva-bb-label {
+    position: absolute;
+    top: -32px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.sviva-class {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #F59E0B;
+    letter-spacing: 0.05em;
+    background: rgba(245,158,11,0.15);
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+}
+
+.sviva-conf {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.05em;
+}
+
+/* HUD de métricas en overlay */
+.sviva-hud-overlay {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    z-index: 3;
+}
+
+.sviva-metric-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.55rem;
+    background: rgba(0,0,0,0.75);
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+}
+
+.smc-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.5rem;
+    color: rgba(0,229,255,0.6);
+    letter-spacing: 0.1em;
+}
+
+.smc-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: #E8EAF0;
+    font-weight: 700;
+}
+
+/* Timeline de eventos */
+.sviva-timeline {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    z-index: 3;
+    padding: 0 1rem;
+}
+
+.sviva-tl-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.35rem 0.6rem;
+    background: rgba(0,0,0,0.8);
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.sviva-tl-time {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.52rem;
+    color: rgba(255,255,255,0.5);
+}
+
+.sviva-tl-event {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.sviva-tl-pre .sviva-tl-event { color: rgba(255,255,255,0.6); }
+.sviva-tl-detect .sviva-tl-event { color: #F59E0B; }
+.sviva-tl-lock .sviva-tl-event { color: #ff4444; }
+
+.sviva-tl-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+    min-width: 20px;
+}
+
+/* Panel de info (derecho) */
+.sviva-info-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.sviva-panel-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: rgba(0,229,255,0.7);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+}
+
+.sviva-pipeline-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.sviva-pipe-step {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 0.75rem;
+    padding: 0.85rem 0;
+    border-left: 2px solid rgba(255,255,255,0.08);
+    padding-left: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.sviva-pipe-step.active {
+    border-left-color: rgba(0,229,255,0.5);
+}
+
+.sviva-pipe-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(0,229,255,0.5);
+    font-weight: 700;
+    line-height: 1.6;
+    letter-spacing: 0.05em;
+}
+
+.sviva-pipe-step.active .sviva-pipe-num {
+    color: #00E5FF;
+}
+
+.sviva-pipe-body strong {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: #E8EAF0;
+    margin-bottom: 0.2rem;
+}
+
+.sviva-pipe-body p {
+    font-size: 0.82rem;
+    color: #7A8099;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Métricas clave */
+.sviva-metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.sviva-metric-card {
+    padding: 0.85rem 1rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    transition: border-color 0.3s ease;
+}
+
+.sviva-metric-card:hover {
+    border-color: rgba(0,229,255,0.2);
+}
+
+.sviva-metric-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #00E5FF;
+    letter-spacing: -0.01em;
+}
+
+.sviva-metric-desc {
+    font-size: 0.78rem;
+    color: #7A8099;
+}
+
+.sviva-metric-highlight {
+    border-color: rgba(17,212,131,0.2);
+    background: rgba(17,212,131,0.04);
+}
+
+.sviva-metric-highlight .sviva-metric-val {
+    color: #11D483;
+}
+
+.sviva-cta-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* === CAPABILITIES BENTO GRID === */
+.capabilities-section {
+    padding: 8rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.cap-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.cap-eyebrow {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: rgba(17,212,131,0.6);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.cap-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #E8EAF0;
+    margin-bottom: 0.75rem;
+}
+
+.cap-title-accent { color: #11D483; }
+
+.cap-subtitle {
+    font-size: 1rem;
+    color: #7A8099;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+/* Bento Grid */
+.cap-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1rem;
+}
+
+.cap-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: transform 0.3s ease;
+    cursor: default;
+}
+
+.cap-card:hover {
+    transform: translateY(-2px);
+}
+
+.cap-card-bg-icon {
+    position: absolute;
+    bottom: -0.5rem;
+    right: 1rem;
+    font-size: 5rem;
+    opacity: 0.04;
+    color: #fff;
+    line-height: 1;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.4s ease;
+}
+
+.cap-card:hover .cap-card-bg-icon {
+    opacity: 0.07;
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* Tamaños de cards */
+.cap-card--large { grid-column: span 2; grid-row: span 2; }
+.cap-card--wide  { grid-column: span 2; }
+.cap-card--small { grid-column: span 1; }
+.cap-card--tall  { grid-column: span 1; grid-row: span 2; }
+
+.cap-card-content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.cap-tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.6);
+    width: fit-content;
+    text-transform: uppercase;
+}
+
+.cap-tag--ai {
+    background: rgba(139,92,246,0.12);
+    border-color: rgba(139,92,246,0.3);
+    color: rgba(139,92,246,0.9);
+}
+
+.cap-tag--cyber {
+    background: rgba(0,229,255,0.08);
+    border-color: rgba(0,229,255,0.25);
+    color: rgba(0,229,255,0.85);
+}
+
+.cap-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #E8EAF0;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+}
+
+.cap-card--large .cap-card-title {
+    font-size: 1.4rem;
+}
+
+.cap-card-desc {
+    font-size: 0.88rem;
+    color: #7A8099;
+    line-height: 1.65;
+    flex: 1;
+}
+
+.cap-card-metrics {
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 0.5rem;
+}
+
+.cap-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.cap-metric span {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #11D483;
+    letter-spacing: -0.02em;
+}
+
+.cap-card--ai .cap-metric span { color: #8B5CF6; }
+
+.cap-metric small {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.cap-card-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: auto;
+}
+
+.cap-card-stack span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.04em;
+}
+
+/* === CYBER_SEC MODULE === */
+.cybersec-section {
+    position: relative;
+    padding: 8rem 2rem;
+    overflow: hidden;
+    background: rgba(0, 5, 10, 0.4);
+}
+
+.cybersec-bg-nodes {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cybersec-node-svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+}
+
+/* Animación de los nodos */
+.csn { animation: csn-float 4s ease-in-out infinite; }
+.csn-1 { animation-delay: 0s; }
+.csn-2 { animation-delay: 0.8s; }
+.csn-3 { animation-delay: 1.6s; }
+.csn-4 { animation-delay: 0.4s; }
+.csn-5 { animation-delay: 1.2s; }
+.csn-6 { animation-delay: 2s; }
+
+@keyframes csn-float {
+    0%, 100% { opacity: 0.4; r: var(--base-r, 3); }
+    50% { opacity: 1; }
+}
+
+.cybersec-layout {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    z-index: 1;
+    align-items: start;
+}
+
+.cybersec-eyebrow {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: rgba(0,229,255,0.6);
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+}
+
+.cybersec-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #E8EAF0;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+}
+
+.cybersec-title-accent {
+    color: #00E5FF;
+}
+
+.cybersec-desc {
+    font-size: 0.95rem;
+    color: #7A8099;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+/* Trust Badges */
+.cybersec-trust-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.ctb-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.65);
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.ctb-badge:hover {
+    border-color: rgba(0,229,255,0.3);
+    color: rgba(0,229,255,0.9);
+    background: rgba(0,229,255,0.05);
+}
+
+.ctb-badge--highlight {
+    border-color: rgba(17,212,131,0.3);
+    color: rgba(17,212,131,0.85);
+    background: rgba(17,212,131,0.06);
+}
+
+.ctb-icon {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+.cybersec-cta {
+    font-size: 0.85rem;
+    padding: 0.85rem 1.5rem;
+    letter-spacing: 0.02em;
+}
+
+/* OWASP Matrix */
+.cybersec-matrix-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: rgba(0,229,255,0.7);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.25rem;
+}
+
+.owasp-matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.owasp-card {
+    padding: 1.1rem;
+    border-radius: 10px;
+    cursor: default;
+    transition: transform 0.3s ease;
+}
+
+.owasp-card:hover {
+    transform: translateY(-2px);
+}
+
+.owasp-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+}
+
+.owasp-severity {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+}
+
+.owasp-critical {
+    background: rgba(245,68,68,0.15);
+    border: 1px solid rgba(245,68,68,0.3);
+    color: #f87171;
+}
+
+.owasp-high {
+    background: rgba(245,158,11,0.15);
+    border: 1px solid rgba(245,158,11,0.3);
+    color: #fbbf24;
+}
+
+.owasp-medium {
+    background: rgba(251,191,36,0.1);
+    border: 1px solid rgba(251,191,36,0.25);
+    color: #fde68a;
+}
+
+.owasp-rank {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(0,229,255,0.5);
+    letter-spacing: 0.08em;
+}
+
+.owasp-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #E8EAF0;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+}
+
+.owasp-desc {
+    font-size: 0.78rem;
+    color: #7A8099;
+    line-height: 1.5;
+    margin-bottom: 0.6rem;
+}
+
+.owasp-fix-preview {
+    padding: 0.3rem 0.55rem;
+    background: rgba(0,229,255,0.05);
+    border: 1px solid rgba(0,229,255,0.12);
+    border-radius: 4px;
+}
+
+.owasp-fix-preview code {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    color: rgba(0,229,255,0.8);
+    letter-spacing: 0.03em;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .sviva-soc-wrapper {
+        grid-template-columns: 1fr;
+    }
+    .cap-bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .cap-card--large { grid-column: span 2; }
+    .cap-card--wide  { grid-column: span 2; }
+    .cap-card--tall  { grid-column: span 1; }
+    .cybersec-layout {
+        grid-template-columns: 1fr;
+    }
+    .owasp-matrix-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .cap-bento-grid {
+        grid-template-columns: 1fr;
+    }
+    .cap-card--large,
+    .cap-card--wide,
+    .cap-card--tall { grid-column: span 1; grid-row: span 1; }
+    .owasp-matrix-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .sviva-metrics-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}

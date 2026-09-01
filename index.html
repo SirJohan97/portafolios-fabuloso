@@ -59,6 +59,10 @@
 
     <!-- FUENTES (Served Locally) -->
     <link rel="stylesheet" href="css/fonts.css">
+    <!-- Tipografía Editorial para títulos epónimos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
     <!-- Silent Production Error Monitor (Active at boot to catch all errors) -->
     <div id="debug-err" style="position: fixed; top: 10px; left: 10px; z-index: 10000; background: rgba(255,0,0,0.85); color: white; padding: 10px; font-family: monospace; font-size: 14px; border-radius: 4px; display: none;"></div>
@@ -73,8 +77,8 @@
     </script>
 
     <!-- ESTILOS -->
-    <link rel="stylesheet" href="styles.css?v=280">
-    <link rel="stylesheet" href="effects.css?v=220">
+    <link rel="stylesheet" href="styles.css?v=290">
+    <link rel="stylesheet" href="effects.css?v=300">
     <link rel="stylesheet" href="liquid-glass.css?v=110">
     <link rel="stylesheet" href="vanta-terminal.css?v=110">
     <link rel="stylesheet" href="css/all.min.css">
@@ -170,14 +174,11 @@
                             <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
                         </filter>
                     </defs>
-                    <!-- Diamond frame -->
                     <polygon points="18,1.5 34.5,18 18,34.5 1.5,18"
                              stroke="#11d483" stroke-width="1" fill="rgba(17,212,131,0.05)"
                              stroke-linejoin="round"/>
-                    <!-- Corner ticks -->
                     <line x1="18" y1="1.5" x2="18" y2="5.5" stroke="rgba(17,212,131,0.6)" stroke-width="1"/>
                     <line x1="18" y1="30.5" x2="18" y2="34.5" stroke="rgba(17,212,131,0.6)" stroke-width="1"/>
-                    <!-- V chevron -->
                     <polyline points="9,12 18,25 27,12"
                               stroke="#11d483" stroke-width="2.2"
                               stroke-linecap="round" stroke-linejoin="round"
@@ -194,14 +195,22 @@
                 </span>
             </span>
         </a>
+
+        <!-- Badge de disponibilidad -->
+        <div class="nav-availability-badge">
+            <span class="nav-avail-dot"></span>
+            <span class="nav-avail-text">Disponibles Q4 2026</span>
+        </div>
+
         <ul class="nav-links">
             <div class="nav-indicator-capsule"></div>
             <li><a href="#home">Inicio</a></li>
-            <li><a href="#portfolio">Proyectos</a></li>
-            <li><a href="#services">Servicios</a></li>
+            <li><a href="#portfolio">Obras</a></li>
+            <li><a href="#services">Capacidades</a></li>
             <li><a href="#pricing">Planes</a></li>
-            <li><a href="#contact" class="nav-cta">Contacto</a></li>
+            <li><a href="#contact" class="nav-cta">Iniciar Proyecto</a></li>
         </ul>
+
         <!-- Audio UI Toggle -->
         <button id="audio-toggle-btn" class="audio-toggle-btn" aria-label="Activar sonido" title="Sonido">
             <span class="audio-icon-off"><i class="fas fa-volume-mute"></i></span>
@@ -224,19 +233,20 @@
         <!-- Curtain Reveal Overlays -->
         <div class="hero-curtain curtain-a"></div>
         <div class="hero-curtain curtain-b"></div>
-        
+
         <div class="hero-center-layout">
             <div class="hero-content">
                 <div class="hero-title-group">
-                    <!-- Cada palabra se convierte en split-text al cargar -->
+                    <!-- Tagline nuevo: 2 líneas con tipografía editorial -->
                     <div class="split-line-wrap">
-                        <h1 class="hero-title-main split-target">INGENIERÍA DE <span class="brand-green italic-outline">SOFTWARE</span></h1>
+                        <h1 class="hero-title-main hero-editorial split-target">SISTEMAS QUE <span class="brand-green italic-outline">SOBREVIVEN</span></h1>
                     </div>
                     <div class="split-line-wrap">
-                        <h1 class="hero-title-main font-accent split-target">DE ÉLITE <span class="tech-tag">[ V.04 ]</span></h1>
+                        <h1 class="hero-title-main font-accent split-target">A SU PROPIO ÉXITO. <span class="tech-tag">[ V.05 ]</span></h1>
                     </div>
                 </div>
 
+                <!-- Subtipo editorial con especializaciones -->
                 <div class="hero-sub-row">
                     <div class="hero-typing-subtitle-wrap">
                         <span class="subtitle-static">Especialistas en</span>
@@ -244,8 +254,25 @@
                     </div>
                 </div>
 
+                <!-- Bento mini-stats row (nuevo) -->
+                <div class="hero-mini-bento" aria-label="Estado del estudio">
+                    <div class="hmb-card">
+                        <span class="hmb-dot hmb-dot--green"></span>
+                        <span class="hmb-label">LATAM_EDGE &bull; EST_2026</span>
+                    </div>
+                    <div class="hmb-card">
+                        <span class="hmb-dot hmb-dot--cyan"></span>
+                        <span class="hmb-label">5 AI AGENTS DEPLOYED</span>
+                    </div>
+                    <div class="hmb-card hmb-avail">
+                        <span class="hmb-dot hmb-dot--pulse"></span>
+                        <span class="hmb-label">TOMANDO PROYECTOS Q4 2026</span>
+                    </div>
+                </div>
+
                 <div class="hero-btns">
-                    <a href="#portfolio" class="btn magnetic-btn">Ver Proyectos</a>
+                    <a href="#portfolio" class="btn magnetic-btn">Ver Obras</a>
+                    <a href="#contact" class="btn-outline magnetic-btn hero-btn-contact">Iniciar Proyecto <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -458,8 +485,366 @@
         </div>
     </section>
 
-    <!-- ===== STATS — VANTA EN NÚMEROS ===== -->
-    <section class="vanta-stats-section" id="stats" aria-label="VANTA en números">
+    <!-- ===== SVIVA DEEP DIVE — SOC COMMAND CENTER ===== -->
+    <section class="sviva-showcase-section" id="sviva-showcase" aria-label="SVIVA — Sistema de Videovigilancia Inteligente">
+
+        <div class="sviva-scanlines" aria-hidden="true"></div>
+
+        <div class="sviva-header">
+            <span class="sviva-eyebrow">// VANTA_FLAGSHIP_PROJECT.SYS</span>
+            <h2 class="sviva-title">SVIVA <span class="sviva-title-accent">— Visión Artificial en el Borde</span></h2>
+            <p class="sviva-subtitle">De píxeles crudos a decisiones tácticas en menos de 15 milisegundos. Sistema de videovigilancia inteligente con detección de armas por ML, 100% local.</p>
+        </div>
+
+        <div class="sviva-soc-wrapper">
+
+            <div class="sviva-feed-panel">
+                <div class="sviva-feed-header">
+                    <div class="sviva-feed-indicator">
+                        <span class="sviva-live-dot"></span>
+                        <span class="sviva-live-label">LIVE FEED</span>
+                    </div>
+                    <span class="sviva-cam-id">CAM_04 // LOBBY_EAST</span>
+                    <div class="sviva-status-badge sviva-threat">
+                        <span>● THREAT CONFIRMED</span>
+                    </div>
+                </div>
+
+                <div class="sviva-video-area">
+                    <div class="sviva-grid-overlay" aria-hidden="true"></div>
+
+                    <div class="sviva-bb-container">
+                        <div class="sviva-bounding-box" id="svivaBB">
+                            <span class="sviva-bb-corner sviva-bb-tl"></span>
+                            <span class="sviva-bb-corner sviva-bb-tr"></span>
+                            <span class="sviva-bb-corner sviva-bb-bl"></span>
+                            <span class="sviva-bb-corner sviva-bb-br"></span>
+                            <div class="sviva-bb-label">
+                                <span class="sviva-class">Concealed Handgun</span>
+                                <span class="sviva-conf">CONF: 99.1%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sviva-hud-overlay" aria-label="Métricas de inferencia">
+                        <div class="sviva-metric-chip">
+                            <span class="smc-label">FPS</span>
+                            <span class="smc-val">60</span>
+                        </div>
+                        <div class="sviva-metric-chip">
+                            <span class="smc-label">LATENCY</span>
+                            <span class="smc-val">14.2ms</span>
+                        </div>
+                        <div class="sviva-metric-chip">
+                            <span class="smc-label">MODEL</span>
+                            <span class="smc-val">YOLOv8</span>
+                        </div>
+                    </div>
+
+                    <div class="sviva-timeline">
+                        <div class="sviva-tl-item sviva-tl-pre">
+                            <span class="sviva-tl-time">00:14:02</span>
+                            <span class="sviva-tl-event">PRE-EVENT</span>
+                        </div>
+                        <div class="sviva-tl-line"></div>
+                        <div class="sviva-tl-item sviva-tl-detect">
+                            <span class="sviva-tl-time">00:14:05</span>
+                            <span class="sviva-tl-event">DETECTED</span>
+                        </div>
+                        <div class="sviva-tl-line"></div>
+                        <div class="sviva-tl-item sviva-tl-lock">
+                            <span class="sviva-tl-time">00:14:06</span>
+                            <span class="sviva-tl-event">LOCKED + SMS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sviva-info-panel">
+                <div class="sviva-pipeline">
+                    <h3 class="sviva-panel-title">// DETECTION_PIPELINE.SYS</h3>
+                    <div class="sviva-pipeline-steps">
+                        <div class="sviva-pipe-step active" data-step="1">
+                            <div class="sviva-pipe-num">01</div>
+                            <div class="sviva-pipe-body">
+                                <strong>INGESTION</strong>
+                                <p>Captura RTSP/WebRTC multi-cámara a 60 FPS en tiempo real</p>
+                            </div>
+                        </div>
+                        <div class="sviva-pipe-step" data-step="2">
+                            <div class="sviva-pipe-num">02</div>
+                            <div class="sviva-pipe-body">
+                                <strong>EDGE INFERENCE</strong>
+                                <p>Detección con YOLOv8 + ML en hardware local. Sin internet.</p>
+                            </div>
+                        </div>
+                        <div class="sviva-pipe-step" data-step="3">
+                            <div class="sviva-pipe-num">03</div>
+                            <div class="sviva-pipe-body">
+                                <strong>CONTEXT REASONING</strong>
+                                <p>Reducción de falsos positivos analizando postura y contexto</p>
+                            </div>
+                        </div>
+                        <div class="sviva-pipe-step" data-step="4">
+                            <div class="sviva-pipe-num">04</div>
+                            <div class="sviva-pipe-body">
+                                <strong>INSTANT TELEMETRY</strong>
+                                <p>Webhooks + alertas SMS + cierre perimetral automático</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sviva-metrics-grid">
+                    <div class="sviva-metric-card">
+                        <span class="sviva-metric-val">&lt;&nbsp;15ms</span>
+                        <span class="sviva-metric-desc">Inferencia por frame</span>
+                    </div>
+                    <div class="sviva-metric-card">
+                        <span class="sviva-metric-val">99.2%</span>
+                        <span class="sviva-metric-desc">Precisión mAP@0.5</span>
+                    </div>
+                    <div class="sviva-metric-card">
+                        <span class="sviva-metric-val">0.01%</span>
+                        <span class="sviva-metric-desc">Falsos positivos</span>
+                    </div>
+                    <div class="sviva-metric-card sviva-metric-highlight">
+                        <span class="sviva-metric-val">ZERO</span>
+                        <span class="sviva-metric-desc">Cloud Dependency</span>
+                    </div>
+                </div>
+
+                <div class="sviva-cta-row">
+                    <button class="btn-outline info-btn" data-info="sviva">Ver Arquitectura</button>
+                    <a href="#contact" class="btn magnetic-btn">Solicitar Demo Táctica</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CAPABILITIES BENTO GRID ===== -->
+    <section class="capabilities-section" id="capabilities" aria-label="Capacidades de VANTA">
+
+        <div class="cap-header">
+            <span class="cap-eyebrow">// VANTA_OPERATIONAL_CAPABILITIES</span>
+            <h2 class="cap-title">Capacidades <span class="cap-title-accent">Operativas</span></h2>
+            <p class="cap-subtitle">Ingeniería de élite en seis disciplinas. Cada una probada en producción.</p>
+        </div>
+
+        <div class="cap-bento-grid">
+
+            <div class="cap-card cap-card--large vanta-spotlight-card vanta-spotlight-card--ai" id="cap-cv">
+                <div class="cap-card-bg-icon" aria-hidden="true"><i class="fas fa-eye"></i></div>
+                <div class="cap-card-content">
+                    <span class="cap-tag cap-tag--ai">AI · COMPUTER VISION</span>
+                    <h3 class="cap-card-title">Computer Vision &amp; Edge AI</h3>
+                    <p class="cap-card-desc">Modelos YOLOv8 personalizados. Inferencia local sin nube. Detección de objetos, personas y armas en tiempo real a 60 FPS.</p>
+                    <div class="cap-card-metrics">
+                        <div class="cap-metric"><span>&lt;15ms</span><small>Latencia</small></div>
+                        <div class="cap-metric"><span>99.2%</span><small>Precisión</small></div>
+                        <div class="cap-metric"><span>60 FPS</span><small>Inferencia</small></div>
+                    </div>
+                    <div class="cap-card-stack">
+                        <span>YOLOv8</span><span>OpenCV</span><span>TensorRT</span><span>Python</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cap-card cap-card--wide vanta-spotlight-card vanta-spotlight-card--cyber" id="cap-pentest">
+                <div class="cap-card-bg-icon" aria-hidden="true"><i class="fas fa-shield-alt"></i></div>
+                <div class="cap-card-content">
+                    <span class="cap-tag cap-tag--cyber">SECURITY · OFFENSIVE</span>
+                    <h3 class="cap-card-title">Web &amp; API Pentesting</h3>
+                    <p class="cap-card-desc">Evaluaciones ofensivas bajo metodología OWASP Top 10. Encontramos brechas antes que los atacantes.</p>
+                    <div class="cap-card-stack">
+                        <span>OWASP</span><span>Burp Suite</span><span>MITRE ATT&amp;CK</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cap-card cap-card--wide vanta-spotlight-card vanta-spotlight-card--ai" id="cap-llm">
+                <div class="cap-card-bg-icon" aria-hidden="true"><i class="fas fa-brain"></i></div>
+                <div class="cap-card-content">
+                    <span class="cap-tag cap-tag--ai">AI · LLM · AGENTS</span>
+                    <h3 class="cap-card-title">LLM &amp; Gemini API</h3>
+                    <p class="cap-card-desc">Agentes autónomos, RAG pipelines e integración multi-modal con Google Gemini. Producción real.</p>
+                    <div class="cap-card-stack">
+                        <span>Gemini</span><span>FastAPI</span><span>RAG</span><span>Agents</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cap-card cap-card--small vanta-spotlight-card" id="cap-net">
+                <div class="cap-card-content">
+                    <span class="cap-tag">NETWORK</span>
+                    <h3 class="cap-card-title">Network &amp; Infrastructure</h3>
+                    <p class="cap-card-desc">VLANs, Cloudflare Zero Trust y hardening de servidores.</p>
+                    <div class="cap-card-stack">
+                        <span>Cloudflare</span><span>Cisco</span><span>VLANs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cap-card cap-card--small vanta-spotlight-card" id="cap-fullstack">
+                <div class="cap-card-content">
+                    <span class="cap-tag">FULL-STACK</span>
+                    <h3 class="cap-card-title">Full-Stack Engineering</h3>
+                    <p class="cap-card-desc">Aplicaciones web end-to-end con Python, FastAPI, React y PostgreSQL.</p>
+                    <div class="cap-card-stack">
+                        <span>Python</span><span>React</span><span>PostgreSQL</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cap-card cap-card--tall vanta-spotlight-card vanta-spotlight-card--ai" id="cap-ml">
+                <div class="cap-card-bg-icon" aria-hidden="true"><i class="fas fa-chart-line"></i></div>
+                <div class="cap-card-content">
+                    <span class="cap-tag cap-tag--ai">ML · DATA SCIENCE</span>
+                    <h3 class="cap-card-title">ML Predictivo &amp; Data</h3>
+                    <p class="cap-card-desc">Modelos de detección de anomalías, análisis predictivo y visualización de datos en tiempo real.</p>
+                    <div class="cap-card-metrics">
+                        <div class="cap-metric"><span>94.7%</span><small>Accuracy</small></div>
+                        <div class="cap-metric"><span>0.032</span><small>RMSE</small></div>
+                    </div>
+                    <div class="cap-card-stack">
+                        <span>scikit-learn</span><span>Pandas</span><span>TensorFlow</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== CYBER_SEC MODULE ===== -->
+    <section class="cybersec-section" id="cybersec" aria-label="Ciberseguridad y Hacking Ético">
+
+        <div class="cybersec-bg-nodes" aria-hidden="true">
+            <svg class="cybersec-node-svg" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                <circle cx="100" cy="80"  r="3" fill="rgba(0,229,255,0.4)" class="csn csn-1"/>
+                <circle cx="350" cy="150" r="2" fill="rgba(0,229,255,0.3)" class="csn csn-2"/>
+                <circle cx="600" cy="60"  r="4" fill="rgba(0,229,255,0.5)" class="csn csn-3"/>
+                <circle cx="200" cy="300" r="2" fill="rgba(0,229,255,0.2)" class="csn csn-4"/>
+                <circle cx="500" cy="280" r="3" fill="rgba(0,229,255,0.4)" class="csn csn-5"/>
+                <circle cx="700" cy="200" r="2" fill="rgba(0,229,255,0.3)" class="csn csn-6"/>
+                <line x1="100" y1="80"  x2="350" y2="150" stroke="rgba(0,229,255,0.1)" stroke-width="1"/>
+                <line x1="350" y1="150" x2="600" y2="60"  stroke="rgba(0,229,255,0.1)" stroke-width="1"/>
+                <line x1="200" y1="300" x2="500" y2="280" stroke="rgba(0,229,255,0.07)" stroke-width="1"/>
+                <line x1="500" y1="280" x2="700" y2="200" stroke="rgba(0,229,255,0.08)" stroke-width="1"/>
+                <line x1="350" y1="150" x2="200" y2="300" stroke="rgba(0,229,255,0.07)" stroke-width="1"/>
+            </svg>
+        </div>
+
+        <div class="cybersec-layout">
+
+            <div class="cybersec-left">
+                <span class="cybersec-eyebrow">// OFFENSIVE_SECURITY_DIVISION</span>
+                <h2 class="cybersec-title">Encontramos las brechas<br><span class="cybersec-title-accent">antes que los atacantes.</span></h2>
+                <p class="cybersec-desc">Evaluaciones ofensivas basadas en metodologías OWASP y simulaciones de adversarios reales. Vulnerabilidades con vector de ataque, impacto de negocio y guía de remediación accionable.</p>
+
+                <div class="cybersec-trust-badges">
+                    <div class="ctb-badge">
+                        <i class="fas fa-shield-alt ctb-icon"></i>
+                        <span>OWASP Top 10</span>
+                    </div>
+                    <div class="ctb-badge">
+                        <i class="fas fa-crosshairs ctb-icon"></i>
+                        <span>MITRE ATT&amp;CK</span>
+                    </div>
+                    <div class="ctb-badge">
+                        <i class="fas fa-lock ctb-icon"></i>
+                        <span>NIST CSF</span>
+                    </div>
+                    <div class="ctb-badge ctb-badge--highlight">
+                        <i class="fas fa-file-contract ctb-icon"></i>
+                        <span>NDA First</span>
+                    </div>
+                    <div class="ctb-badge">
+                        <i class="fas fa-trash-alt ctb-icon"></i>
+                        <span>Zero Data Retention</span>
+                    </div>
+                    <div class="ctb-badge">
+                        <i class="fas fa-server ctb-icon"></i>
+                        <span>Air-Gapped Testing</span>
+                    </div>
+                </div>
+
+                <a href="#contact" class="btn magnetic-btn cybersec-cta">
+                    Agendar Diagnóstico de Superficie de Ataque
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="cybersec-right">
+                <h3 class="cybersec-matrix-title">// OWASP_THREAT_MATRIX</h3>
+                <div class="owasp-matrix-grid">
+
+                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="sqli">
+                        <div class="owasp-card-top">
+                            <span class="owasp-severity owasp-critical">CRÍTICO</span>
+                            <span class="owasp-rank">A03</span>
+                        </div>
+                        <h4 class="owasp-name">SQL Injection</h4>
+                        <p class="owasp-desc">Exfiltración de base de datos completa via queries maliciosos.</p>
+                        <div class="owasp-fix-preview"><code>sqlalchemy.text() + bind params</code></div>
+                    </div>
+
+                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="bac">
+                        <div class="owasp-card-top">
+                            <span class="owasp-severity owasp-critical">CRÍTICO</span>
+                            <span class="owasp-rank">A01</span>
+                        </div>
+                        <h4 class="owasp-name">Broken Access Control</h4>
+                        <p class="owasp-desc">Escalación de privilegios y acceso no autorizado a endpoints.</p>
+                        <div class="owasp-fix-preview"><code>RBAC + JWT scope validation</code></div>
+                    </div>
+
+                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="ssrf">
+                        <div class="owasp-card-top">
+                            <span class="owasp-severity owasp-high">ALTO</span>
+                            <span class="owasp-rank">A10</span>
+                        </div>
+                        <h4 class="owasp-name">SSRF</h4>
+                        <p class="owasp-desc">Server-Side Request Forgery hacia metadatos cloud internos.</p>
+                        <div class="owasp-fix-preview"><code>Allowlist + DNS rebinding protection</code></div>
+                    </div>
+
+                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="crypto">
+                        <div class="owasp-card-top">
+                            <span class="owasp-severity owasp-high">ALTO</span>
+                            <span class="owasp-rank">A02</span>
+                        </div>
+                        <h4 class="owasp-name">Cryptographic Failures</h4>
+                        <p class="owasp-desc">Datos sensibles sin cifrado adecuado en tránsito o en reposo.</p>
+                        <div class="owasp-fix-preview"><code>AES-256-GCM + TLS 1.3 enforced</code></div>
+                    </div>
+
+                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="injection">
+                        <div class="owasp-card-top">
+                            <span class="owasp-severity owasp-high">ALTO</span>
+                            <span class="owasp-rank">A03</span>
+                        </div>
+                        <h4 class="owasp-name">Command Injection</h4>
+                        <p class="owasp-desc">Ejecución arbitraria de código del sistema vía inputs no sanitizados.</p>
+                        <div class="owasp-fix-preview"><code>subprocess.run(args, shell=False)</code></div>
+                    </div>
+
+                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="misconfig">
+                        <div class="owasp-card-top">
+                            <span class="owasp-severity owasp-medium">MEDIO</span>
+                            <span class="owasp-rank">A05</span>
+                        </div>
+                        <h4 class="owasp-name">Security Misconfiguration</h4>
+                        <p class="owasp-desc">Headers HTTP faltantes, CORS abierto, debug mode en producción.</p>
+                        <div class="owasp-fix-preview"><code>CSP + HSTS + X-Frame-Options</code></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STATS — OCULTO (datos integrados en secciones nuevas) ===== -->
+    <section class="vanta-stats-section" id="stats" aria-label="VANTA en números" style="display:none">
         <!-- Fondo grid HUD decorativo -->
         <div class="stats-hud-grid" aria-hidden="true"></div>
 
@@ -1705,6 +2090,8 @@
     <script src="particles.js?v=200"></script>
     <script src="effects.js?v=2300"></script>
     <script src="slime-text.js?v=200"></script>
+    <script src="spotlight.js?v=100"></script>
+    <script src="nuevas-secciones.js?v=100"></script>
 </body>
 
 </html>
