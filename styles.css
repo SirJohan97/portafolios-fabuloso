@@ -4484,37 +4484,38 @@ body {
 .hero-center-layout .hero-content {
     align-items: flex-start;
     text-align: left;
-    max-width: 1100px;
+    max-width: 1200px;
     width: 100%;
 }
 .hero-title-main {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(2rem, 4.4vw, 3.8rem);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
+    font-size: clamp(2rem, 3.8vw, 3.6rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     color: var(--light);
     text-transform: uppercase;
 }
 .hero-title-outline {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(2rem, 4.4vw, 3.8rem);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
+    font-size: clamp(2rem, 3.8vw, 3.6rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     text-transform: uppercase;
 }
 .italic-outline {
     font-style: italic;
-    color: transparent !important;
-    -webkit-text-stroke: 1.5px var(--primary);
-    filter: drop-shadow(0 0 12px rgba(var(--primary-rgb), 0.4));
+    color: #11D483 !important;
+    -webkit-text-fill-color: #11D483 !important;
+    text-shadow: 0 0 20px rgba(17, 212, 131, 0.7), 0 0 40px rgba(17, 212, 131, 0.35);
 }
 .font-accent {
     position: relative;
     display: block;
-    font-size: clamp(1.85rem, 4.2vw, 3.6rem);
+    font-size: clamp(1.85rem, 3.6vw, 3.4rem);
     letter-spacing: -0.02em;
+    white-space: nowrap;
     width: 100%;
 }
 .tech-tag {
@@ -6880,7 +6881,6 @@ body {
     opacity: 0.45;
 }
 
-/* High-resolution vector slime text with SVG turbulence filter */
 .subtitle-liquid-word {
     visibility: visible !important;
     display: inline-block;
@@ -6893,10 +6893,8 @@ body {
     user-select: none;
     pointer-events: none;
     color: #11d483;
-    text-shadow: 0 0 8px rgba(17, 212, 131, 0.85), 0 0 16px rgba(17, 212, 131, 0.4);
-    filter: url('#vanta-slime-filter');
-    padding: 12px 30px;
-    margin: -12px -30px; /* padding prevents standard SVG clipping */
+    text-shadow: 0 0 10px rgba(17, 212, 131, 0.6), 0 0 20px rgba(17, 212, 131, 0.25);
+    padding: 6px 12px;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
@@ -8067,11 +8065,12 @@ html.lenis body {
     font-family: 'Instrument Serif', Georgia, serif !important;
     font-style: italic;
     font-weight: 400;
-    font-size: clamp(2.4rem, 5.5vw, 4.8rem) !important;
+    font-size: clamp(2.2rem, 4.2vw, 4.0rem) !important;
     line-height: 1.05 !important;
     letter-spacing: -0.01em !important;
     display: block;
     margin-bottom: 0.15rem;
+    white-space: nowrap;
 }
 
 .hero-title-group {
@@ -8174,17 +8173,43 @@ html.lenis body {
     color: #fff;
 }
 
-.navbar .nav-links a.nav-cta {
-    font-size: 0.82rem;
-    padding: 6px 18px;
-    letter-spacing: 0.04em;
-    background: #11D483;
-    color: #05070a;
-    font-weight: 700;
+.navbar .nav-links a.nav-cta,
+.navbar a.nav-cta {
+    font-size: 0.8rem !important;
+    padding: 7px 18px !important;
+    letter-spacing: 0.05em !important;
+    background: #11D483 !important;
+    color: #07090E !important;
+    font-weight: 800 !important;
+    border-radius: 100px !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 0 20px rgba(17, 212, 131, 0.45) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+    transition: all 0.25s ease !important;
 }
 
-.navbar .nav-links a.nav-cta:hover {
-    background: #15f498;
-    box-shadow: 0 0 20px rgba(17, 212, 131, 0.4);
-    transform: translateY(-1px);
+.navbar .nav-links a.nav-cta:hover,
+.navbar a.nav-cta:hover {
+    background: #18F69B !important;
+    color: #000000 !important;
+    box-shadow: 0 0 30px rgba(17, 212, 131, 0.75) !important;
+    transform: translateY(-2px) scale(1.03) !important;
+}
+
+/* High contrast section titles & subtitles */
+.section-title,
+.section-title span,
+.section-title .reveal-word {
+    color: #FFFFFF !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+.section-subtitle {
+    color: rgba(255, 255, 255, 0.75) !important;
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
 }

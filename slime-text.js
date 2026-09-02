@@ -16,11 +16,11 @@
     ];
 
     // ─── TIMING ───────────────────────────────────────────────
-    const DISPLAY_MS  = 3800;   // idle display time
-    const SAG_MS      = 400;    // viscous sag start
-    const DRIP_MS     = 1000;   // warp + fade + drip
-    const EMPTY_MS    = 200;    // brief clear canvas pause
-    const CREATE_MS   = 1000;   // crystallize new word from liquid
+    const DISPLAY_MS  = 3000;   // idle display time
+    const SAG_MS      = 200;    // fast subtle warp
+    const DRIP_MS     = 350;    // smooth slide out
+    const EMPTY_MS    = 100;    // brief clear pause
+    const CREATE_MS   = 400;    // smooth crystallize into new word
 
     // ─── STATE ────────────────────────────────────────────────
     let canvas, ctx;
@@ -150,24 +150,7 @@
     function startDrip() {
         phase = 'drip';
         phaseStart = performance.now();
-        
-        // Spawn green dripping particles along the width of the text
-        const rect = anchorEl.getBoundingClientRect();
-        const textW = rect.width;
-        const particleCount = Math.min(25, Math.floor(textW / 12));
-
-        particles = [];
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: 60 + Math.random() * textW,
-                y: 35 + Math.random() * 8, // start just below top edge
-                vx: (Math.random() - 0.5) * 1.5,
-                vy: 0.5 + Math.random() * 2,
-                r: 2.2 + Math.random() * 2.8,
-                dripDelay: Math.random() * 0.4,
-                alpha: 1
-            });
-        }
+        particles = []; // No stray dots
     }
 
     function startEmpty() {
@@ -204,32 +187,32 @@
         } else if (phase === 'sag') {
             const t = Math.min(elapsed / SAG_MS, 1);
             
-            // viscous sag: scale starts warping, blur increases
-            const scaleVal = 3 + t * 20; // scale goes up to 23
+            // Subtle viscous sag: gentle fluid warp
+            const scaleVal = t * 10;
             filterDisp.setAttribute('scale', scaleVal);
             
             if (filterBlur) {
-                const blurVal = 0.4 + t * 2.8; // blur goes up to 3.2
+                const blurVal = t * 1.0;
                 filterBlur.setAttribute('stdDeviation', blurVal.toString());
             }
             
             // Translate HTML text down slightly
-            anchorEl.style.transform = `translateY(${t * 6}px)`;
+            anchorEl.style.transform = `translateY(${t * 4}px)`;
             
             if (t >= 1) startDrip();
 
         } else if (phase === 'drip') {
             const t = Math.min(elapsed / DRIP_MS, 1);
             
-            // Extreme liquid warp and dissolve
-            const scaleVal = 23 + t * 77; // goes up to 100
+            // Clean liquid transition
+            const scaleVal = 10 + t * 15;
             filterDisp.setAttribute('scale', scaleVal);
             
-            if (filterBlur) filterBlur.setAttribute('stdDeviation', '3.2');
+            if (filterBlur) filterBlur.setAttribute('stdDeviation', '1.0');
             
             // Fade out HTML text
             anchorEl.style.opacity = (1 - t).toString();
-            anchorEl.style.transform = `translateY(${6 + t * 18}px)`;
+            anchorEl.style.transform = `translateY(${4 + t * 14}px)`;
 
             // Update dripping particles
             particles.forEach(p => {
@@ -250,28 +233,26 @@
             if (t >= 1) startEmpty();
 
         } else if (phase === 'empty') {
-            filterDisp.setAttribute('scale', '100');
-            if (filterBlur) filterBlur.setAttribute('stdDeviation', '3.2');
+            filterDisp.setAttribute('scale', '25');
+            if (filterBlur) filterBlur.setAttribute('stdDeviation', '1.0');
             anchorEl.style.opacity = '0';
             
             if (elapsed >= EMPTY_MS) startCreate();
 
         } else if (phase === 'create') {
             const t = Math.min(elapsed / CREATE_MS, 1);
-            const eased = easeOutBack(t);
             
-            // Crystallize: scale goes from 100 down to 3
-            const scaleVal = 100 - eased * 97;
-            filterDisp.setAttribute('scale', scaleVal.toString());
+            // Smoothly crystallize into crisp new word
+            const scaleVal = (1 - t) * 20;
+            filterDisp.setAttribute('scale', scaleVal);
             
             if (filterBlur) {
-                const blurVal = 3.2 - eased * 2.8; // blur goes down to 0.4
+                const blurVal = (1 - t) * 1.0;
                 filterBlur.setAttribute('stdDeviation', blurVal.toString());
             }
             
-            // Fade in and lift up to position
-            anchorEl.style.opacity = eased.toString();
-            anchorEl.style.transform = `translateY(${-12 + eased * 12}px)`;
+            anchorEl.style.opacity   = t.toString();
+            anchorEl.style.transform = `translateY(${(1 - t) * -8}px)`;
 
             if (t >= 1) {
                 phase = 'idle';

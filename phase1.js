@@ -269,7 +269,7 @@
     function init() {
         initLenis();
         initMagneticCursor();
-        initTextScramble();
+        // initTextScramble(); disabled to prevent title glitch corruption
         initTechMarquee();
         initCursorMorph();
         console.log('[VANTA] Phase 1 completo OK');

@@ -2868,3 +2868,436 @@
         height: 240px;
     }
 }
+
+/* =============================================================
+   SVIVA TACTICAL CCTV SIMULATOR & FOUNDERS MASTERPIECE STYLES
+   ============================================================= */
+
+/* Section background isolation for maximum contrast */
+.sviva-showcase-section,
+.capabilities-section,
+.cybersec-section,
+.team-section,
+.methodology-scroll-container,
+.pricing-section,
+.contact-section {
+    background: #07090E !important;
+    position: relative;
+    z-index: 10;
+}
+
+/* SVIVA Tactical CCTV Viewport */
+.sviva-video-area {
+    position: relative;
+    min-height: 420px;
+    background: radial-gradient(circle at center, #0B101D 0%, #05070B 100%);
+    border: 1px solid rgba(0, 229, 255, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem;
+}
+
+.sviva-tactical-scene {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.cctv-perspective-lines {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.6;
+}
+
+/* CCTV Targets */
+.cctv-target {
+    position: absolute;
+    transition: all 0.4s ease;
+}
+
+.cctv-target--person-1 {
+    top: 25%;
+    left: 14%;
+    width: 130px;
+    height: 220px;
+}
+
+.cctv-target--person-2 {
+    top: 20%;
+    right: 22%;
+    width: 140px;
+    height: 230px;
+}
+
+.cctv-target--threat {
+    top: 35%;
+    left: 42%;
+    width: 180px;
+    height: 190px;
+}
+
+.cctv-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 1px dashed rgba(0, 229, 255, 0.4);
+    border-radius: 4px;
+    background: rgba(0, 229, 255, 0.03);
+}
+
+.cctv-box--cyan {
+    border-color: rgba(0, 229, 255, 0.6);
+}
+
+.cctv-box--threat {
+    border: 1.5px solid #FF3B30;
+    background: rgba(255, 59, 48, 0.08);
+    box-shadow: 0 0 25px rgba(255, 59, 48, 0.25), inset 0 0 15px rgba(255, 59, 48, 0.15);
+    animation: threatPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes threatPulse {
+    0%, 100% { border-color: #FF3B30; box-shadow: 0 0 20px rgba(255, 59, 48, 0.25); }
+    50% { border-color: #FF9500; box-shadow: 0 0 35px rgba(255, 149, 0, 0.45); }
+}
+
+.cctv-corner {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #00E5FF;
+}
+
+.cctv-box--threat .cctv-corner {
+    border-color: #FF3B30;
+}
+
+.cctv-corner.tl { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+.cctv-corner.tr { top: -2px; right: -2px; border-left: 0; border-bottom: 0; }
+.cctv-corner.bl { bottom: -2px; left: -2px; border-right: 0; border-top: 0; }
+.cctv-corner.br { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+
+.cctv-tag {
+    position: absolute;
+    top: -1.4rem;
+    left: 0;
+    background: rgba(0, 229, 255, 0.15);
+    border: 1px solid rgba(0, 229, 255, 0.4);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    color: #00E5FF;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+}
+
+.cctv-threat-label {
+    position: absolute;
+    top: -2.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 59, 48, 0.9);
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    box-shadow: 0 0 12px rgba(255, 59, 48, 0.6);
+}
+
+.ctl-warning {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.06em;
+}
+
+.ctl-info {
+    font-size: 0.55rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: 'Space Mono', monospace;
+}
+
+.cctv-reticle-cross {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(255, 59, 48, 0.6);
+    border-radius: 50%;
+}
+
+.cctv-reticle-cross::before,
+.cctv-reticle-cross::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 59, 48, 0.8);
+}
+
+.cctv-reticle-cross::before { top: 50%; left: -6px; right: -6px; height: 1px; }
+.cctv-reticle-cross::after { left: 50%; top: -6px; bottom: -6px; width: 1px; }
+
+/* Tactical Radar Widget */
+.cctv-radar-widget {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    background: rgba(0, 229, 255, 0.05);
+    overflow: hidden;
+    z-index: 4;
+}
+
+.crw-sweep {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, rgba(0, 229, 255, 0.4) 0deg, transparent 60deg);
+    animation: radarSweep 3s linear infinite;
+}
+
+@keyframes radarSweep {
+    to { transform: rotate(360deg); }
+}
+
+.crw-blip {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #00E5FF;
+    box-shadow: 0 0 6px #00E5FF;
+}
+
+.crw-blip.b1 { top: 30%; left: 25%; }
+.crw-blip.b2 { top: 40%; right: 30%; }
+.crw-blip.b-threat { top: 60%; left: 50%; background: #FF3B30; box-shadow: 0 0 6px #FF3B30; }
+
+.crw-label {
+    position: absolute;
+    bottom: 2px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.45rem;
+    color: rgba(0, 229, 255, 0.7);
+    letter-spacing: 0.05em;
+}
+
+/* Timecode */
+.cctv-timecode {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(0, 0, 0, 0.6);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 4;
+}
+
+.ctc-rec {
+    color: #FF3B30;
+    font-weight: 700;
+    animation: recBlink 1s infinite;
+}
+
+@keyframes recBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* === FOUNDERS MASTERPIECE SHOWCASE === */
+.founders-masterpiece-wrapper {
+    max-width: 1200px;
+    margin: 3.5rem auto 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.founders-hero-card {
+    background: #0D1017;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.fhc-photo-wrap {
+    position: relative;
+    min-height: 420px;
+    background: #000;
+    overflow: hidden;
+}
+
+.fhc-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    filter: contrast(1.08) brightness(0.95);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.founders-hero-card:hover .fhc-photo-img {
+    transform: scale(1.03);
+}
+
+.fhc-photo-badge {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.9rem;
+    background: rgba(7, 9, 14, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(17, 212, 131, 0.35);
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: #11D483;
+    letter-spacing: 0.06em;
+}
+
+.fhc-details {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.25rem;
+    background: linear-gradient(135deg, rgba(13, 16, 23, 0.95), rgba(9, 11, 16, 0.98));
+}
+
+.fhc-details-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: #11D483;
+    letter-spacing: 0.1em;
+}
+
+.fhc-details-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.fhc-details-desc {
+    font-size: 0.92rem;
+    color: #8A92A6;
+    line-height: 1.65;
+    margin: 0;
+}
+
+.founders-pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.founder-pillar-card {
+    background: #0D1017;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.founder-pillar-card:hover {
+    border-color: rgba(17, 212, 131, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.founder-pillar-card--cyber:hover {
+    border-color: rgba(0, 229, 255, 0.35);
+}
+
+.founder-pillar-card--ai:hover {
+    border-color: rgba(139, 92, 246, 0.35);
+}
+
+.fpc-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.fpc-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0 0 0.2rem;
+}
+
+.fpc-role {
+    font-size: 0.8rem;
+    font-family: 'Space Mono', monospace;
+    color: #11D483;
+    letter-spacing: 0.04em;
+}
+
+.founder-pillar-card--cyber .fpc-role { color: #00E5FF; }
+.founder-pillar-card--ai .fpc-role { color: #8B5CF6; }
+
+.fpc-bio {
+    font-size: 0.85rem;
+    color: #8A92A6;
+    line-height: 1.6;
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .founders-hero-card {
+        grid-template-columns: 1fr;
+    }
+    .fhc-photo-wrap {
+        min-height: 280px;
+    }
+    .founders-pillars-grid {
+        grid-template-columns: 1fr;
+    }
+    .cctv-target--person-1,
+    .cctv-target--person-2 {
+        display: none;
+    }
+    .cctv-target--threat {
+        width: 140px;
+        height: 150px;
+        left: 30%;
+    }
+}

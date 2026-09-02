@@ -427,20 +427,8 @@ function initEffectsScript() {
         tick();
     }
 
-    const scrambleTargets = document.querySelectorAll('.section-title, .hero-badge');
-    const scrambleObs = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-            const el = entry.target;
-            const words = el.querySelectorAll('.reveal-word');
-            const text = words.length > 0 ? Array.from(words).map(w => w.textContent).join(' ') : el.textContent.trim();
-            el.dataset.scrambleOriginal = text;
-            setTimeout(() => scrambleText(el), 500);
-            obs.unobserve(el);
-        });
-    }, { threshold: 0.5 });
-
-    scrambleTargets.forEach(el => scrambleObs.observe(el));
+    // Scramble targets observer disabled to preserve pristine typography
+    // scrambleTargets.forEach(el => scrambleObs.observe(el));
 
     // Logo hover scramble
     const logoText = document.querySelector('.logo-text');
@@ -735,28 +723,7 @@ function initEffectsScript() {
                     contactReveal.style.clipPath = 'circle(150% at 50% 50%)';
                     contactReveal.classList.add('revealed');
 
-                    // Scramble the headline title
-                    const headline = document.getElementById('contactHeadline');
-                    if (headline) {
-                        setTimeout(() => {
-                            if (typeof scrambleText === 'function') scrambleText(headline);
-                            else {
-                                const orig = headline.textContent;
-                                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&';
-                                let iter = 0;
-                                const total = orig.length * 2.5;
-                                const iv = setInterval(() => {
-                                    headline.textContent = orig.split('').map((c, i) => {
-                                        if (c === ' ') return ' ';
-                                        if (i < Math.floor(iter / 2.5)) return c;
-                                        return chars[Math.floor(Math.random() * chars.length)];
-                                    }).join('');
-                                    iter++;
-                                    if (iter >= total) { clearInterval(iv); headline.textContent = orig; }
-                                }, 35);
-                            }
-                        }, 500);
-                    }
+                    // contactHeadline scramble removed to maintain clean typography
 
                     obs.unobserve(entry.target);
                 });
@@ -1039,28 +1006,7 @@ function initEffectsScript() {
                     contactReveal.style.clipPath = 'circle(150% at 50% 50%)';
                     contactReveal.classList.add('revealed');
 
-                    // Scramble the headline title
-                    const headline = document.getElementById('contactHeadline');
-                    if (headline) {
-                        setTimeout(() => {
-                            if (typeof scrambleText === 'function') scrambleText(headline);
-                            else {
-                                const orig = headline.textContent;
-                                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&';
-                                let iter = 0;
-                                const total = orig.length * 2.5;
-                                const iv = setInterval(() => {
-                                    headline.textContent = orig.split('').map((c, i) => {
-                                        if (c === ' ') return ' ' ;
-                                        if (i < Math.floor(iter / 2.5)) return c;
-                                        return chars[Math.floor(Math.random() * chars.length)];
-                                    }).join('');
-                                    iter++;
-                                    if (iter >= total) { clearInterval(iv); headline.textContent = orig; }
-                                }, 35);
-                            }
-                        }, 500);
-                    }
+                    // contactHeadline scramble removed to maintain clean typography
 
                     obs.unobserve(entry.target);
                 });

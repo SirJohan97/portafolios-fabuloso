@@ -77,8 +77,8 @@
     </script>
 
     <!-- ESTILOS -->
-    <link rel="stylesheet" href="styles.css?v=310">
-    <link rel="stylesheet" href="effects.css?v=320">
+    <link rel="stylesheet" href="styles.css?v=330">
+    <link rel="stylesheet" href="effects.css?v=340">
     <link rel="stylesheet" href="liquid-glass.css?v=110">
     <link rel="stylesheet" href="vanta-terminal.css?v=110">
     <link rel="stylesheet" href="css/all.min.css">
@@ -232,10 +232,10 @@
                 <div class="hero-title-group">
                     <!-- Tagline nuevo: 2 líneas con tipografía editorial balanceada -->
                     <div class="split-line-wrap">
-                        <h1 class="hero-title-main hero-editorial split-target">SISTEMAS QUE <span class="brand-green italic-outline">SOBREVIVEN</span></h1>
+                        <h1 class="hero-title-main hero-editorial">SISTEMAS QUE <span class="brand-green italic-outline">SOBREVIVEN</span></h1>
                     </div>
                     <div class="split-line-wrap">
-                        <h1 class="hero-title-main font-accent split-target">A SU PROPIO ÉXITO.</h1>
+                        <h1 class="hero-title-main font-accent">A SU PROPIO ÉXITO.</h1>
                     </div>
                 </div>
 
@@ -505,32 +505,71 @@
 
                 <div class="sviva-video-area">
                     <div class="sviva-grid-overlay" aria-hidden="true"></div>
+                    
+                    <!-- Simulated Tactical CCTV Scene -->
+                    <div class="sviva-tactical-scene">
+                        <!-- Perspective hallway lines -->
+                        <div class="cctv-perspective-lines"></div>
 
-                    <div class="sviva-bb-container">
-                        <div class="sviva-bounding-box" id="svivaBB">
-                            <span class="sviva-bb-corner sviva-bb-tl"></span>
-                            <span class="sviva-bb-corner sviva-bb-tr"></span>
-                            <span class="sviva-bb-corner sviva-bb-bl"></span>
-                            <span class="sviva-bb-corner sviva-bb-br"></span>
-                            <div class="sviva-bb-label">
-                                <span class="sviva-class">Concealed Handgun</span>
-                                <span class="sviva-conf">CONF: 99.1%</span>
+                        <!-- Target 1: Person Left (Cyan) -->
+                        <div class="cctv-target cctv-target--person-1">
+                            <div class="cctv-box cctv-box--cyan">
+                                <span class="cctv-corner tl"></span><span class="cctv-corner tr"></span>
+                                <span class="cctv-corner bl"></span><span class="cctv-corner br"></span>
+                                <span class="cctv-tag">PERSON #0412 · 98.4%</span>
                             </div>
+                        </div>
+
+                        <!-- Target 2: Person Right (Cyan) -->
+                        <div class="cctv-target cctv-target--person-2">
+                            <div class="cctv-box cctv-box--cyan">
+                                <span class="cctv-corner tl"></span><span class="cctv-corner tr"></span>
+                                <span class="cctv-corner bl"></span><span class="cctv-corner br"></span>
+                                <span class="cctv-tag">PERSON #0413 · 97.8%</span>
+                            </div>
+                        </div>
+
+                        <!-- Target 3: Threat Lock (Amber/Red YOLOv8) -->
+                        <div class="cctv-target cctv-target--threat">
+                            <div class="cctv-box cctv-box--threat" id="svivaBB">
+                                <span class="cctv-corner tl"></span><span class="cctv-corner tr"></span>
+                                <span class="cctv-corner bl"></span><span class="cctv-corner br"></span>
+                                <div class="cctv-threat-label">
+                                    <span class="ctl-warning">⚠️ THREAT_LOCKED</span>
+                                    <span class="ctl-info">Concealed Weapon · 99.1%</span>
+                                </div>
+                                <div class="cctv-reticle-cross"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tactical Mini-Radar -->
+                        <div class="cctv-radar-widget">
+                            <div class="crw-sweep"></div>
+                            <div class="crw-blip b1"></div>
+                            <div class="crw-blip b2"></div>
+                            <div class="crw-blip b-threat"></div>
+                            <span class="crw-label">RADAR_2D</span>
+                        </div>
+
+                        <!-- Timecode Ticker -->
+                        <div class="cctv-timecode">
+                            <span class="ctc-rec">● REC</span>
+                            <span id="svivaTimecode">2026-09-02 08:55:42.184 UTC</span>
                         </div>
                     </div>
 
                     <div class="sviva-hud-overlay" aria-label="Métricas de inferencia">
                         <div class="sviva-metric-chip">
                             <span class="smc-label">FPS</span>
-                            <span class="smc-val">60</span>
+                            <span class="smc-val">60.0</span>
                         </div>
                         <div class="sviva-metric-chip">
                             <span class="smc-label">LATENCY</span>
-                            <span class="smc-val">14.2ms</span>
+                            <span class="smc-val">12.4ms</span>
                         </div>
                         <div class="sviva-metric-chip">
                             <span class="smc-label">MODEL</span>
-                            <span class="smc-val">YOLOv8</span>
+                            <span class="smc-val">YOLOv8 INT8</span>
                         </div>
                     </div>
 
@@ -1376,25 +1415,36 @@
             <p class="section-subtitle">Arquitectos de software y diseñadores construyendo sistemas que no fallan.</p>
         </div>
 
-        <div class="team-grid team-grid--founders">
+        <div class="founders-masterpiece-wrapper">
 
-            <!-- Card Andrés Morales -->
-            <div class="team-card team-card--holographic vanta-spotlight-card vanta-spotlight-card--cyber" data-project="andres" data-spec="[ SYSTEMS ARCHITECT ]">
-                <div class="avatar-wrapper avatar-wrapper--photo">
-                    <img src="img/team/andres-johan-sviva.jpeg" alt="Andrés Morales — Systems Architect & Backend Lead" class="team-avatar-img team-avatar-img--andres" loading="lazy">
-                    <div class="scan-laser"></div>
-                    <div class="avatar-status-pill">
+            <!-- Widescreen Executive Duo Card -->
+            <div class="founders-hero-card vanta-spotlight-card">
+                <div class="fhc-photo-wrap">
+                    <img src="img/team/andres-johan-sviva.jpeg" alt="Andrés Morales y Johan Fernández — Fundadores de VANTA Studio" class="fhc-photo-img" loading="lazy">
+                    <div class="fhc-photo-badge">
                         <span class="asp-dot"></span>
-                        <span class="asp-text">SYSTEMS ARCHITECT</span>
+                        <span>SOCIOS FUNDADORES // EST. 2026</span>
                     </div>
                 </div>
-                <div class="team-card-info">
-                    <div class="team-card-header">
-                        <span class="team-tag">// BACKEND &amp; CLOUD</span>
-                        <h3>Andrés Morales</h3>
-                        <p class="team-role">Socio Fundador · Systems Architect &amp; Backend Lead</p>
+                <div class="fhc-details">
+                    <span class="fhc-details-eyebrow">// DIRECTORES TÉCNICOS</span>
+                    <h3 class="fhc-details-title">Ingeniería Táctica y Visión de Producto</h3>
+                    <p class="fhc-details-desc">Construimos sistemas de software de alto impacto sin intermediarios ni templates. Desde arquitecturas backend resilientes con FastAPI y Cloudflare Zero Trust, hasta modelos de visión artificial en el borde y experiencias web con Three.js y WebGL.</p>
+                </div>
+            </div>
+
+            <!-- Two Specialized Pillar Cards -->
+            <div class="founders-pillars-grid">
+                
+                <!-- Andrés Morales Pillar -->
+                <div class="founder-pillar-card founder-pillar-card--cyber vanta-spotlight-card vanta-spotlight-card--cyber">
+                    <div class="fpc-header">
+                        <div>
+                            <h4 class="fpc-name">Andrés Morales</h4>
+                            <span class="fpc-role">// SYSTEMS ARCHITECT &amp; BACKEND LEAD</span>
+                        </div>
                     </div>
-                    <p class="team-bio">Diseño de arquitecturas backend de alta concurrencia, APIs REST asíncronas con FastAPI, microservicios, bases de datos PostgreSQL optimizadas y despliegues Zero-Trust en la nube.</p>
+                    <p class="fpc-bio">Especialista en arquitecturas distribuidas de alta concurrencia, microservicios asíncronos con FastAPI, bases de datos PostgreSQL optimizadas y seguridad perimetral Zero-Trust.</p>
                     <div class="team-skills-grid">
                         <div class="tsk-item"><span>Python / FastAPI</span><small>Core</small></div>
                         <div class="tsk-item"><span>PostgreSQL &amp; RLS</span><small>Data</small></div>
@@ -1402,25 +1452,16 @@
                         <div class="tsk-item"><span>Docker &amp; Linux</span><small>DevOps</small></div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Card Johan Fernández -->
-            <div class="team-card team-card--holographic vanta-spotlight-card vanta-spotlight-card--ai" data-project="johan" data-spec="[ UI/UX ENGINEERING & AI ]">
-                <div class="avatar-wrapper avatar-wrapper--photo">
-                    <img src="img/team/johanandresexpo.jpeg" alt="Johan Fernández — UI/UX Engineering & AI Lead" class="team-avatar-img team-avatar-img--johan" loading="lazy">
-                    <div class="scan-laser"></div>
-                    <div class="avatar-status-pill">
-                        <span class="asp-dot asp-dot--ai"></span>
-                        <span class="asp-text">UI/UX &amp; AI LEAD</span>
+                <!-- Johan Fernández Pillar -->
+                <div class="founder-pillar-card founder-pillar-card--ai vanta-spotlight-card vanta-spotlight-card--ai">
+                    <div class="fpc-header">
+                        <div>
+                            <h4 class="fpc-name">Johan Fernández</h4>
+                            <span class="fpc-role">// UI/UX ENGINEER &amp; AI VISION LEAD</span>
+                        </div>
                     </div>
-                </div>
-                <div class="team-card-info">
-                    <div class="team-card-header">
-                        <span class="team-tag team-tag--ai">// UI/UX &amp; COMPUTER VISION</span>
-                        <h3>Johan Fernández</h3>
-                        <p class="team-role">Socio Fundador · UI/UX Engineer &amp; AI Vision Lead</p>
-                    </div>
-                    <p class="team-bio">Especialista en experiencias web inmersivas de estándar Awwwards, pipelines de Computer Vision con YOLOv8 en el Edge, integración de Google Gemini API y diseño centrado en conversión.</p>
+                    <p class="fpc-bio">Especialista en experiencias interactivas inmersivas con Three.js y GSAP, pipelines de Visión Artificial con YOLOv8 en el Edge e integración de agentes autónomos con Gemini API.</p>
                     <div class="team-skills-grid">
                         <div class="tsk-item"><span>Computer Vision (YOLO)</span><small>AI</small></div>
                         <div class="tsk-item"><span>Three.js &amp; WebGL</span><small>3D</small></div>
@@ -1428,6 +1469,7 @@
                         <div class="tsk-item"><span>LLM / Gemini API</span><small>Agents</small></div>
                     </div>
                 </div>
+
             </div>
 
         </div>
@@ -2089,10 +2131,10 @@
     <script src="preloader-v.js?v=200"></script>
     <script src="script.js?v=1500"></script>
     <script src="particles.js?v=200"></script>
-    <script src="effects.js?v=2300"></script>
-    <script src="slime-text.js?v=210"></script>
+    <script src="effects.js?v=2400"></script>
+    <script src="slime-text.js?v=230"></script>
     <script src="spotlight.js?v=110"></script>
-    <script src="nuevas-secciones.js?v=120"></script>
+    <script src="nuevas-secciones.js?v=130"></script>
 </body>
 
 </html>

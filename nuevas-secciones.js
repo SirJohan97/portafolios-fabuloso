@@ -5,16 +5,30 @@
 (function () {
     "use strict";
 
-    /* --- SVIVA PIPELINE ANIMATION --- */
+    /* --- SVIVA PIPELINE & TACTICAL TIMECODE --- */
     function initSvivaPipeline() {
         var steps = document.querySelectorAll(".sviva-pipe-step");
-        if (!steps.length) return;
-        var currentStep = 0;
-        function activateStep(index) {
-            steps.forEach(function(s, i) { s.classList.toggle("active", i === index); });
+        if (steps.length) {
+            var currentStep = 0;
+            function activateStep(index) {
+                steps.forEach(function(s, i) { s.classList.toggle("active", i === index); });
+            }
+            setInterval(function() { currentStep = (currentStep + 1) % steps.length; activateStep(currentStep); }, 1800);
         }
-        setInterval(function() { currentStep = (currentStep + 1) % steps.length; activateStep(currentStep); }, 1800);
-        console.log("[VANTA] SVIVA pipeline OK");
+
+        // Live CCTV Timecode
+        var tcEl = document.getElementById("svivaTimecode");
+        if (tcEl) {
+            function updateTc() {
+                var now = new Date();
+                var iso = now.toISOString().replace('T', ' ').replace('Z', ' UTC');
+                tcEl.textContent = iso;
+                requestAnimationFrame(updateTc);
+            }
+            requestAnimationFrame(updateTc);
+        }
+
+        console.log("[VANTA] SVIVA tactical HUD OK");
     }
 
     /* --- SCROLL REVEALS NUEVAS SECCIONES --- */
