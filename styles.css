@@ -332,7 +332,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     text-transform: uppercase;
     letter-spacing: 0;
     white-space: nowrap;
-    font-family: 'Orbitron', var(--font-display);
+    font-family: 'Syne', sans-serif;
 }
 
 /* Estilo base para cada letra */
@@ -657,7 +657,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 /* HUD Widgets */
 .hud-widget {
     position: absolute;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.68rem;
     color: rgba(255, 255, 255, 0.3);
     letter-spacing: 0px;
@@ -1045,21 +1045,20 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 .section-title::after {
-    content: '';
-    display: block;
-    width: 50px;
-    height: 3px;
-    background: var(--primary);
-    margin: 12px auto 0;
-    border-radius: 2px;
+    display: none !important;
+    content: none !important;
 }
 
 .section-subtitle {
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.75) !important;
     text-align: center;
-    font-size: 1.05rem;
-    margin-bottom: 3.5rem;
-    max-width: 540px;
+    font-size: 1rem !important;
+    margin-top: 1rem !important;
+    margin-bottom: 3rem !important;
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
 }
 
 /* =========================================
@@ -2876,7 +2875,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 
 .method-step .method-number {
     position: relative;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 1.3rem;
     font-weight: 800;
     color: var(--primary);
@@ -2973,7 +2972,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     font-size: 0.65rem;
     color: rgba(255, 255, 255, 0.3);
     margin-left: 10px;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     letter-spacing: 1px;
 }
 
@@ -3696,7 +3695,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 
 .cursor.spec-active::after {
     content: attr(data-spec-text);
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.65rem;
     font-weight: 800;
     color: var(--dark);
@@ -4061,7 +4060,7 @@ body.custom-cursor-active * {
     line-height: 1.1;
     margin-bottom: 1.5rem;
     text-transform: uppercase;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Syne', sans-serif;
     color: var(--light);
 }
 
@@ -4164,7 +4163,7 @@ body.custom-cursor-active * {
 }
 
 .service-num-tag {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.8rem;
     color: var(--primary);
     letter-spacing: 3px;
@@ -4174,7 +4173,7 @@ body.custom-cursor-active * {
 
 .service-text-item h2 {
     font-size: 2.8rem;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Syne', sans-serif;
     color: var(--light);
     margin-bottom: 1.2rem;
     line-height: 1.1;
@@ -4254,7 +4253,7 @@ body.custom-cursor-active * {
 }
 
 .visual-wrapper .visual-title {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Syne', sans-serif;
     font-size: 0.9rem;
     letter-spacing: 6px;
     color: var(--light);
@@ -4292,7 +4291,7 @@ body.custom-cursor-active * {
     font-weight: 600;
     color: var(--primary);
     margin-bottom: 1.5rem;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Syne', sans-serif;
 }
 
 .hero-manifesto {
@@ -4519,7 +4518,7 @@ body {
     width: 100%;
 }
 .tech-tag {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.8rem;
     font-weight: 700;
     color: var(--primary);
@@ -4555,7 +4554,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.68rem;
     color: rgba(255, 255, 255, 0.3);
     letter-spacing: 1px;
@@ -4572,7 +4571,7 @@ body {
     font-weight: 700;
 }
 .hero-typing-subtitle {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 1.15rem;
     font-weight: 700;
     color: var(--primary);
@@ -4596,7 +4595,7 @@ body {
 /* HUD Crosshairs in Hero Corners */
 .hero-hud-decor {
     position: absolute;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 1rem;
     color: rgba(var(--primary-rgb), 0.45);
     pointer-events: none;
@@ -4668,7 +4667,7 @@ body {
 .btn span, .btn-outline span {
     color: rgba(255, 255, 255, 0.45) !important;
     margin-right: 8px;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.72rem;
     font-weight: 400;
 }
@@ -4724,7 +4723,7 @@ body {
 }
 .cursor.project-hover::after {
     content: 'VER';
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.65rem;
     font-weight: 900;
     color: var(--dark);
@@ -4818,7 +4817,7 @@ body {
     margin-bottom: 2rem;
 }
 .hud-header .modal-tag {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.72rem;
     color: var(--primary);
     letter-spacing: 0px;
@@ -4840,7 +4839,7 @@ body {
 }
 .hud-label {
     display: block;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.65rem;
     font-weight: 700;
     color: rgba(255, 255, 255, 0.35);
@@ -4889,7 +4888,7 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 .code-lang {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.65rem;
     color: rgba(255, 255, 255, 0.35);
     letter-spacing: 1px;
@@ -5862,7 +5861,7 @@ body {
 
 .toast-tag {
     color: #11d483;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-weight: 700;
     font-size: 0.75rem;
 }
@@ -6088,15 +6087,14 @@ body {
 
 /* 1. Scroll-Linked Text Reveal */
 .reveal-word {
-    opacity: 0.15;
-    transition: opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 1 !important;
+    color: #ffffff !important;
     display: inline-block;
     margin-right: 0.25em;
-    will-change: opacity;
 }
 .reveal-word.revealed {
-    opacity: 1;
-    color: #ffffff;
+    opacity: 1 !important;
+    color: #ffffff !important;
     text-shadow: 0 0 12px rgba(var(--primary-rgb), 0.2);
 }
 
@@ -6113,7 +6111,7 @@ body {
 }
 .cursor.flip-hover::after {
     content: 'FLIP';
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.65rem;
     font-weight: 900;
     color: var(--dark);
@@ -6132,7 +6130,7 @@ body {
 }
 .cursor.diag-hover::after {
     content: 'DIAG';
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.65rem;
     font-weight: 900;
     color: var(--dark);
@@ -6151,7 +6149,7 @@ body {
 }
 .toggle-label {
     font-size: 0.95rem;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Syne', sans-serif;
     color: var(--text-dim);
     transition: color 0.3s ease;
     user-select: none;
@@ -6277,7 +6275,7 @@ body {
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
 }
 .scope-sim-title {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Syne', sans-serif;
     font-size: 1.5rem;
     color: #fff;
     margin-bottom: 0.5rem;
@@ -6323,7 +6321,7 @@ body {
 }
 .control-value {
     color: var(--primary);
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-weight: 700;
     font-size: 0.95rem;
     text-shadow: 0 0 8px rgba(var(--primary-rgb), 0.3);
@@ -6417,7 +6415,7 @@ body {
     pointer-events: none;
 }
 .result-badge {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Syne', sans-serif;
     font-size: 0.65rem;
     color: var(--primary);
     border: 1px solid var(--primary);
@@ -6428,7 +6426,7 @@ body {
     font-weight: 700;
 }
 .suggested-plan-name {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Syne', sans-serif;
     font-size: 1.4rem;
     color: #fff;
     margin-bottom: 0.3rem;
@@ -6459,7 +6457,7 @@ body {
     text-transform: uppercase;
 }
 .metric-value {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 1.05rem;
     color: var(--primary);
     font-weight: 700;
@@ -6536,13 +6534,13 @@ body {
 .term-btn.minimize { background: #ffbd2e; }
 .term-btn.expand { background: #27c93f; }
 .terminal-title {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.75rem;
     color: #888;
     letter-spacing: 0.5px;
 }
 .terminal-status {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.7rem;
     color: var(--primary);
     font-weight: 700;
@@ -6745,7 +6743,7 @@ body {
     align-items: center;
     gap: 4px;
     margin-bottom: 10px;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Syne', sans-serif;
     font-weight: 700;
     pointer-events: auto;
 }
@@ -6820,7 +6818,7 @@ body {
     background: rgba(10, 10, 10, 0.9);
     border: 1px solid rgba(var(--primary-rgb), 0.2);
     color: #fff;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.55rem;
     padding: 4px 8px;
     border-radius: 4px;
@@ -7152,7 +7150,7 @@ body {
     display: block;
     font-size: 2rem;
     font-weight: 800;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     color: var(--primary);
     line-height: 1;
 }
@@ -7192,7 +7190,7 @@ body {
 }
 .orb-label span {
     display: block;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.55rem;
     font-weight: 700;
     color: var(--primary);
@@ -7340,7 +7338,7 @@ body {
 }
 .peo-tag {
     display: inline-block;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Space Mono', monospace;
     font-size: 0.65rem;
     letter-spacing: 0.12em;
     color: var(--primary);
@@ -8057,20 +8055,46 @@ html.lenis body {
 }
 
 /* =============================================================
-   VANTA REDESIGN — FASE 1: HERO + NAV REVAMP
+   VANTA REDESIGN — MONUMENTAL SYNE TYPOGRAPHY SYSTEM
    ============================================================= */
 
-/* Instrument Serif para titulares editoriales */
-.hero-editorial {
-    font-family: 'Instrument Serif', Georgia, serif !important;
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(2.2rem, 4.2vw, 4.0rem) !important;
-    line-height: 1.05 !important;
-    letter-spacing: -0.01em !important;
+/* Monumental Hero Title */
+.hero-eyebrow-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: #11D483;
+    display: inline-block;
+    margin-bottom: 0.85rem;
+    text-transform: uppercase;
+}
+
+.hero-title-monumental {
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: clamp(1.85rem, 3.8vw, 3.8rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.025em !important;
+    color: #FFFFFF !important;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    margin-bottom: 1rem;
+}
+
+.htm-line {
     display: block;
-    margin-bottom: 0.15rem;
-    white-space: nowrap;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.htm-highlight {
+    background: linear-gradient(135deg, #11D483 0%, #00E5FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(17, 212, 131, 0.45));
+    font-style: italic;
 }
 
 .hero-title-group {
@@ -8078,11 +8102,17 @@ html.lenis body {
     overflow: visible;
 }
 
-.split-line-wrap {
-    overflow: visible !important;
-    display: block;
-    width: 100%;
-    max-width: 100%;
+/* Global Section Titles */
+.section-title {
+    font-family: 'Plus Jakarta Sans', 'Syne', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: clamp(1.8rem, 3.4vw, 3.2rem) !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.15 !important;
+    color: #FFFFFF !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    max-width: 100% !important;
 }
 
 /* Hero mini-bento stats row */
@@ -8211,5 +8241,223 @@ html.lenis body {
 .section-subtitle {
     color: rgba(255, 255, 255, 0.75) !important;
     font-size: 1rem !important;
+    line-height: 1.6 !important;
+}
+
+/* =============================================================
+   VANTA THE PROTOCOL — 5-PHASE ENGINEERING LIFECYCLE
+   ============================================================= */
+.protocol-section {
+    padding: 7rem 2rem;
+    position: relative;
+    background: #07090E !important;
+    z-index: 10;
+}
+
+.section-header-protocol {
+    margin-bottom: 4.5rem !important;
+    text-align: center;
+}
+
+.section-header-protocol .section-title {
+    margin-bottom: 1.2rem !important;
+    display: block !important;
+    line-height: 1.2 !important;
+}
+
+.section-header-protocol .section-subtitle {
+    display: block !important;
+    max-width: 650px !important;
+    margin: 0 auto !important;
+    line-height: 1.6 !important;
+}
+
+.protocol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.protocol-card {
+    padding: 2.2rem 1.8rem;
+    background: #0D1017;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.protocol-card:hover {
+    border-color: rgba(17, 212, 131, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(17, 212, 131, 0.08);
+}
+
+.pc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+}
+
+.pc-phase-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: #11D483;
+    font-weight: 700;
+}
+
+.pc-duration {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.pc-title {
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 700;
+    font-size: 1.35rem;
+    color: #FFFFFF;
+    margin-bottom: 0.8rem;
+    line-height: 1.25;
+}
+
+.pc-desc {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.6;
+    margin-bottom: 1.8rem;
+    flex-grow: 1;
+}
+
+.pc-deliverable {
+    padding: 0.9rem 1.1rem;
+    background: rgba(17, 212, 131, 0.04);
+    border: 1px solid rgba(17, 212, 131, 0.15);
+    border-radius: 8px;
+    font-size: 0.78rem;
+}
+
+.pcd-label {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    color: #11D483;
+    margin-bottom: 0.25rem;
+}
+
+.pcd-val {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+/* =============================================================
+   VANTA LUXURY BENTO MATRIX & CYBERSEC ELEVATION
+   ============================================================= */
+.cap-card {
+    background: #0D1017 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.cap-card:hover {
+    border-color: rgba(17, 212, 131, 0.35) !important;
+    transform: translateY(-4px) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 30px rgba(17, 212, 131, 0.1) !important;
+}
+
+.cap-card-title {
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 1.35rem !important;
+    color: #FFFFFF !important;
+    margin: 0.8rem 0 0.5rem !important;
+    line-height: 1.25 !important;
+}
+
+.cap-card-desc {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 0.88rem !important;
+    line-height: 1.6 !important;
+}
+
+.owasp-card {
+    background: #0D1017 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 14px !important;
+    padding: 1.4rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.owasp-card:hover {
+    border-color: rgba(0, 229, 255, 0.35) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 229, 255, 0.1) !important;
+}
+
+.owasp-name {
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 1.15rem !important;
+    color: #FFFFFF !important;
+    margin: 0.5rem 0 0.3rem !important;
+}
+
+.owasp-desc {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+    font-size: 0.82rem !important;
+    line-height: 1.5 !important;
+}
+
+.owasp-fix-preview {
+    margin-top: 0.75rem !important;
+    background: rgba(0, 229, 255, 0.05) !important;
+    border: 1px solid rgba(0, 229, 255, 0.15) !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+}
+
+.owasp-fix-preview code {
+    font-family: 'Space Mono', monospace !important;
+    font-size: 0.72rem !important;
+    color: #00E5FF !important;
+}
+
+/* Section Headers Flow & Contrast */
+.contact-header,
+.section-header-team {
+    margin-bottom: 3.8rem !important;
+    position: relative;
+    z-index: 10;
+    text-align: center;
+}
+
+.contact-header .section-title,
+.section-header-team .section-title {
+    margin-bottom: 1rem !important;
+    display: block !important;
+    line-height: 1.15 !important;
+}
+
+.contact-header .section-subtitle,
+.section-header-team .section-subtitle {
+    display: block !important;
+    max-width: 620px !important;
+    margin: 0 auto !important;
+    color: rgba(255, 255, 255, 0.75) !important;
     line-height: 1.6 !important;
 }

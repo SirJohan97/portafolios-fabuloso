@@ -1183,21 +1183,8 @@ function initEffectsScript() {
             if (heroContent) revealSplitWords(heroContent);
         }, 1200);
 
-        // Section headings: trigger via IntersectionObserver
-        document.querySelectorAll('.section-title, .bento-title, .stats-headline').forEach(heading => {
-            if (!heading.classList.contains('split-target')) {
-                splitAndAnimate(heading, 0);
-            }
-            const obs = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => revealSplitWords(entry.target), 100);
-                        obs.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.3 });
-            obs.observe(heading);
-        });
+        // Section headings: kept clean and intact without breaking nested spans
+        // splitAndAnimate disabled for section-title to preserve pristine typography layout
     })();
 
     /* ============================================================

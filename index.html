@@ -57,12 +57,11 @@
     }
     </script>
 
-    <!-- FUENTES (Served Locally) -->
+    <!-- FUENTES DE ÉLITE (Syne + Plus Jakarta Sans + Space Mono) -->
     <link rel="stylesheet" href="css/fonts.css">
-    <!-- Tipografía Editorial para títulos epónimos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 
     <!-- Silent Production Error Monitor (Active at boot to catch all errors) -->
     <div id="debug-err" style="position: fixed; top: 10px; left: 10px; z-index: 10000; background: rgba(255,0,0,0.85); color: white; padding: 10px; font-family: monospace; font-size: 14px; border-radius: 4px; display: none;"></div>
@@ -77,8 +76,8 @@
     </script>
 
     <!-- ESTILOS -->
-    <link rel="stylesheet" href="styles.css?v=330">
-    <link rel="stylesheet" href="effects.css?v=340">
+    <link rel="stylesheet" href="styles.css?v=350">
+    <link rel="stylesheet" href="effects.css?v=360">
     <link rel="stylesheet" href="liquid-glass.css?v=110">
     <link rel="stylesheet" href="vanta-terminal.css?v=110">
     <link rel="stylesheet" href="css/all.min.css">
@@ -230,24 +229,22 @@
         <div class="hero-center-layout">
             <div class="hero-content">
                 <div class="hero-title-group">
-                    <!-- Tagline nuevo: 2 líneas con tipografía editorial balanceada -->
-                    <div class="split-line-wrap">
-                        <h1 class="hero-title-main hero-editorial">SISTEMAS QUE <span class="brand-green italic-outline">SOBREVIVEN</span></h1>
-                    </div>
-                    <div class="split-line-wrap">
-                        <h1 class="hero-title-main font-accent">A SU PROPIO ÉXITO.</h1>
-                    </div>
+                    <span class="hero-eyebrow-tag">// INGENIERÍA DE SOFTWARE &amp; INTELIGENCIA ARTIFICIAL</span>
+                    <h1 class="hero-title-monumental">
+                        <span class="htm-line">SISTEMAS QUE <span class="htm-highlight">SOBREVIVEN</span></span>
+                        <span class="htm-line">A SU PROPIO ÉXITO.</span>
+                    </h1>
                 </div>
 
                 <!-- Subtipo editorial con especializaciones -->
                 <div class="hero-sub-row">
                     <div class="hero-typing-subtitle-wrap">
                         <span class="subtitle-static">Especialistas en</span>
-                        <span class="subtitle-liquid-word" id="liquid-text"></span>
+                        <span class="subtitle-liquid-word" id="liquid-text">APLICACIONES WEB</span>
                     </div>
                 </div>
 
-                <!-- Bento mini-stats row (nuevo) -->
+                <!-- Bento mini-stats row -->
                 <div class="hero-mini-bento" aria-label="Estado del estudio">
                     <div class="hmb-card">
                         <span class="hmb-dot hmb-dot--green"></span>
@@ -264,7 +261,7 @@
                 </div>
 
                 <div class="hero-btns">
-                    <a href="#portfolio" class="btn magnetic-btn">Ver Obras</a>
+                    <a href="#portfolio" class="btn magnetic-btn">Explorar Obras</a>
                     <a href="#contact" class="btn-outline magnetic-btn hero-btn-contact">Iniciar Proyecto <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
@@ -1474,209 +1471,85 @@
 
         </div>
 
-        <!-- CONSOLA INTERACTIVA "VA-OS v4.0" & HOJA DE NOTAS / CHEAT-SHEET -->
-        <div class="terminal-interactive-wrapper">
-            <!-- Left: Live REPL Terminal -->
-            <div class="vanta-live-terminal">
-                <div class="terminal-header">
-                    <div class="terminal-header-left">
-                        <div class="terminal-buttons">
-                            <span class="term-btn close"></span>
-                            <span class="term-btn minimize"></span>
-                            <span class="term-btn expand"></span>
-                        </div>
-                        <span class="terminal-title-text">VA-OS v4.0 // LIVE CLI SANDBOX</span>
-                    </div>
-                    <div class="terminal-header-right">
-                        <div class="terminal-telemetry">
-                            <span class="telemetry-dot"></span>
-                            <span id="termFpsVal">60 FPS</span>
-                            <span>•</span>
-                            <span id="termUptimeVal">UP: 00:00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="vanta-terminal-screen" id="vantaTermScreen">
-                    <div class="term-out-line sys">════════════════════════════════════════════════════════</div>
-                    <div class="term-out-line highlight">  VA-OS v4.0 // TERMINAL DE INGENIERÍA EN VIVO</div>
-                    <div class="term-out-line sys">════════════════════════════════════════════════════════</div>
-                    <div class="term-out-line info">Bienvenido al núcleo de VANTA. Escribe un comando o haz clic en la hoja de notas lateral.</div>
-                    <div class="term-out-line sub">Prueba <span class="highlight">scan</span> para auditoría de seguridad o <span class="highlight">cv</span> para simulación táctica.</div>
-                </div>
-
-                <div class="vanta-prompt-row" style="padding: 12px 20px; background: rgba(8, 14, 25, 0.95);">
-                    <span class="prompt-symbol">user@vanta:~$</span>
-                    <input type="text" id="vantaTermInput" class="vanta-term-input" placeholder="Escribe un comando (ej: scan, cv, bench, ai, stack)..." autocomplete="off" spellcheck="false">
-                </div>
-            </div>
-
-            <!-- Right: Cyber Notepad / Cheat Sheet -->
-            <div class="cyber-notepad-card">
-                <div class="notepad-paper-clip"></div>
-                <div class="notepad-header">
-                    <span class="notepad-title"><i class="fas fa-sticky-note"></i> GUÍA DE COMANDOS</span>
-                </div>
-                <p class="notepad-sub-hint">Haz clic en cualquier comando para autoejecutarlo:</p>
-                <div class="notepad-commands-list">
-                    <button class="notepad-cmd-item" data-cmd="scan">
-                        <div class="notepad-cmd-badge">
-                            <span class="cmd-badge-code">scan</span>
-                            <span class="cmd-badge-action">AUDIT 🛡️</span>
-                        </div>
-                        <span class="cmd-desc">Simula auditoría de seguridad web OWASP Top 10.</span>
-                    </button>
-
-                    <button class="notepad-cmd-item" data-cmd="cv">
-                        <div class="notepad-cmd-badge">
-                            <span class="cmd-badge-code">cv</span>
-                            <span class="cmd-badge-action">EDGE AI 👁️</span>
-                        </div>
-                        <span class="cmd-desc">Simula inferencia táctica YOLOv8 a 60 FPS (SVIVA).</span>
-                    </button>
-
-                    <button class="notepad-cmd-item" data-cmd="bench">
-                        <div class="notepad-cmd-badge">
-                            <span class="cmd-badge-code">bench</span>
-                            <span class="cmd-badge-action">GPU ⚡</span>
-                        </div>
-                        <span class="cmd-desc">Mide potencia y GFLOPS con fractal 3D interactivo.</span>
-                    </button>
-
-                    <button class="notepad-cmd-item" data-cmd="ai">
-                        <div class="notepad-cmd-badge">
-                            <span class="cmd-badge-code">ai</span>
-                            <span class="cmd-badge-action">LLM 🤖</span>
-                        </div>
-                        <span class="cmd-desc">Inferencia de IA token a token en tiempo real.</span>
-                    </button>
-
-                    <button class="notepad-cmd-item" data-cmd="stack">
-                        <div class="notepad-cmd-badge">
-                            <span class="cmd-badge-code">stack</span>
-                            <span class="cmd-badge-action">INFO 🛠️</span>
-                        </div>
-                        <span class="cmd-desc">Especialidades de ingeniería de Andrés &amp; Johan.</span>
-                    </button>
-
-                    <button class="notepad-cmd-item" data-cmd="mascot">
-                        <div class="notepad-cmd-badge">
-                            <span class="cmd-badge-code">mascot</span>
-                            <span class="cmd-badge-action">SECRET 🔐</span>
-                        </div>
-                        <span class="cmd-desc">Desbloquea el archivo secreto del Pana Fresco.</span>
-                    </button>
-
-                    <button class="notepad-cmd-item" data-cmd="clear">
-                        <div class="notepad-cmd-badge">
-                            <span class="cmd-badge-code">clear</span>
-                            <span class="cmd-badge-action">LIMPIAR 🧹</span>
-                        </div>
-                        <span class="cmd-desc">Limpia la pantalla de la terminal.</span>
-                    </button>
-                </div>
-            </div>
-        </div>
     </section>
 
-    <!-- ===== METODOLOGÍA (SCROLL-LOCKED PIPELINE) ===== -->
-    <section id="metodologia" class="methodology-scroll-container">
-        <div class="sticky-wrapper">
-            <div class="methodology-layout">
-                <!-- Left: Pipeline Track and steps -->
-                <div class="methodology-left">
-                    <div class="section-header-method">
-                        <h2 class="section-title"><span class="reveal-word">Cómo</span> <span class="reveal-word">Trabajamos</span></h2>
-                        <p class="section-subtitle">El ciclo de ingeniería riguroso que garantiza la calidad de tu software.</p>
+    <!-- ===== EL PROTOCOLO (METODOLOGÍA DE INGENIERÍA) ===== -->
+    <section id="metodologia" class="protocol-section" aria-label="Protocolo de Ingeniería">
+        <div class="protocol-container">
+            <div class="section-header-protocol text-center">
+                <span class="cap-eyebrow">// INGENIERÍA RIGUROSA &amp; ENTREGABLES</span>
+                <h2 class="section-title">The Protocol: <span class="cap-title-accent">Ciclo de Élite</span></h2>
+                <p class="section-subtitle">Un flujo estructurado en cinco fases que elimina la fricción, garantiza seguridad por diseño y acelera el lanzamiento.</p>
+            </div>
+
+            <div class="protocol-grid">
+                <!-- Fase 01 -->
+                <div class="protocol-card vanta-spotlight-card">
+                    <div class="pc-header">
+                        <span class="pc-phase-num">PHASE // 01</span>
+                        <span class="pc-duration">SEMANA 1</span>
                     </div>
-                    
-                    <div class="pipeline-wrapper">
-                        <!-- Vertical glowing pipeline path -->
-                        <div class="pipeline-track">
-                            <div class="pipeline-progress-bar"></div>
-                        </div>
-                        
-                        <div class="pipeline-steps">
-                            <div class="method-step active" data-step="1">
-                                <div class="method-number">01</div>
-                                <div class="method-body">
-                                    <h3>Análisis y Arquitectura</h3>
-                                    <p>Estructuramos la lógica del negocio, diagramamos flujos de datos y diseñamos la arquitectura ideal.</p>
-                                </div>
-                            </div>
-                            <div class="method-step" data-step="2">
-                                <div class="method-number">02</div>
-                                <div class="method-body">
-                                    <h3>Desarrollo de Élite</h3>
-                                    <p>Escribimos código limpio, modular y escalable usando arquitecturas robustas sin comprometer la velocidad.</p>
-                                </div>
-                            </div>
-                            <div class="method-step" data-step="3">
-                                <div class="method-number">03</div>
-                                <div class="method-body">
-                                    <h3>Despliegue y CI/CD</h3>
-                                    <p>Automatizamos integraciones y despliegues en la nube de alta disponibilidad, reduciendo tiempos de lanzamiento.</p>
-                                </div>
-                            </div>
-                            <div class="method-step" data-step="4">
-                                <div class="method-number">04</div>
-                                <div class="method-body">
-                                    <h3>Monitoreo y Soporte</h3>
-                                    <p>Garantizamos el 99.9% de uptime mediante monitoreo proactivo y optimización de base de datos continua.</p>
-                                </div>
-                            </div>
-                        </div>
+                    <h3 class="pc-title">Discovery &amp; Threat Modeling</h3>
+                    <p class="pc-desc">Modelado de la lógica del negocio, análisis de vectores de ataque preliminares y diseño de diagramas de arquitectura C4.</p>
+                    <div class="pc-deliverable">
+                        <span class="pcd-label">ENTREGABLE CLAVE:</span>
+                        <span class="pcd-val">Blueprint Arquitectónico C4 + Matriz de Riesgos</span>
                     </div>
                 </div>
-                
-                <!-- Right: Cyber Terminal Output -->
-                <div class="methodology-right">
-                    <div class="cyber-terminal">
-                        <div class="terminal-header">
-                            <span class="terminal-dot red"></span>
-                            <span class="terminal-dot yellow"></span>
-                            <span class="terminal-dot green"></span>
-                            <span class="terminal-title">VANTA_CONSOLE // METODOLOGÍA</span>
-                        </div>
-                        <div class="terminal-body" id="methodology-console">
-                            <!-- Step 1 console -->
-                            <div class="console-screen active" data-console-step="1">
-                                <div class="console-log text-primary">&gt; vanta --init blueprint</div>
-                                <div class="console-log">&gt; Cargando mapa de arquitectura... [OK]</div>
-                                <div class="console-log">&gt; Diseñando flujos de datos relacionales...</div>
-                                <div class="console-diagram">
-                                    [USER] -> [API GATEWAY] -> [MICROSERVICES] -> [POSTGRESQL]
-                                </div>
-                                <div class="console-stat">LATENCY: 12ms // CORE_HEALTH: 100%</div>
-                            </div>
-                            <!-- Step 2 console -->
-                            <div class="console-screen" data-console-step="2">
-                                <div class="console-log text-primary">&gt; vanta --compile-all</div>
-                                <div class="console-log">&gt; Compilando módulos de software de élite...</div>
-                                <div class="console-log text-green">✔ app/core/main.py (compiled in 42ms)</div>
-                                <div class="console-log text-green">✔ app/models/agents.py (compiled in 18ms)</div>
-                                <div class="console-log text-green">✔ app/infra/router.py (compiled in 25ms)</div>
-                                <div class="console-log">&gt; Corriendo suite de pruebas unitarias... [100% PASS]</div>
-                            </div>
-                            <!-- Step 3 console -->
-                            <div class="console-screen" data-console-step="3">
-                                <div class="console-log text-primary">&gt; vanta --deploy prod-cluster</div>
-                                <div class="console-log">&gt; Preparando contenedores Docker... [OK]</div>
-                                <div class="console-log">&gt; Desplegando en Kubernetes (AWS EKS)...</div>
-                                <div class="console-loading-bar">[■■■■■■■■■■■■■■■■■■■■] 100%</div>
-                                <div class="console-log text-green">&gt; CLUSTER: ONLINE // LOAD_BALANCER: READY</div>
-                            </div>
-                            <!-- Step 4 console -->
-                            <div class="console-screen" data-console-step="4">
-                                <div class="console-log text-primary">&gt; vanta --monitor</div>
-                                <div class="console-log">&gt; Conectando a Grafana / Prometheus metrics...</div>
-                                <div class="console-log">&gt; CPU Usage: 4.8% // Mem: 1.2GB/16GB</div>
-                                <div class="console-graph">
-                                    PING: ▬▬▬▬▬▬▬▬▬ (22ms)
-                                </div>
-                                <div class="console-log text-green">&gt; SYSTEM OPERATIONAL. 0 ERRORS DETECTED.</div>
-                            </div>
-                        </div>
+
+                <!-- Fase 02 -->
+                <div class="protocol-card vanta-spotlight-card">
+                    <div class="pc-header">
+                        <span class="pc-phase-num">PHASE // 02</span>
+                        <span class="pc-duration">SEMANA 2</span>
+                    </div>
+                    <h3 class="pc-title">Core Backend &amp; Data Schema</h3>
+                    <p class="pc-desc">Construcción de APIs REST y WebSocket con FastAPI, esquemas PostgreSQL con Row Level Security y capas de caché distribuida en Redis.</p>
+                    <div class="pc-deliverable">
+                        <span class="pcd-label">ENTREGABLE CLAVE:</span>
+                        <span class="pcd-val">APIs Asíncronas Documentadas + Base de Datos Optimizada</span>
+                    </div>
+                </div>
+
+                <!-- Fase 03 -->
+                <div class="protocol-card vanta-spotlight-card">
+                    <div class="pc-header">
+                        <span class="pc-phase-num">PHASE // 03</span>
+                        <span class="pc-duration">SEMANA 3-4</span>
+                    </div>
+                    <h3 class="pc-title">Awwwards-Grade UI/UX &amp; 3D</h3>
+                    <p class="pc-desc">Desarrollo de interfaces inmersivas con Three.js, shaders WebGL optimizados a 60 FPS estables y microinteracciones de alta fidelidad.</p>
+                    <div class="pc-deliverable">
+                        <span class="pcd-label">ENTREGABLE CLAVE:</span>
+                        <span class="pcd-val">Frontend React/Three.js de Alto Impacto Visual</span>
+                    </div>
+                </div>
+
+                <!-- Fase 04 -->
+                <div class="protocol-card vanta-spotlight-card vanta-spotlight-card--cyber">
+                    <div class="pc-header">
+                        <span class="pc-phase-num">PHASE // 04</span>
+                        <span class="pc-duration">SEMANA 5</span>
+                    </div>
+                    <h3 class="pc-title">Offensive Hardening &amp; QA</h3>
+                    <p class="pc-desc">Auditoría de penetración ofensiva OWASP Top 10, pruebas de carga de alta concurrencia y validación estricta de headers y cifrado TLS 1.3.</p>
+                    <div class="pc-deliverable">
+                        <span class="pcd-label">ENTREGABLE CLAVE:</span>
+                        <span class="pcd-val">Informe de Pentesting + Certificación Zero-Defect</span>
+                    </div>
+                </div>
+
+                <!-- Fase 05 -->
+                <div class="protocol-card vanta-spotlight-card vanta-spotlight-card--ai">
+                    <div class="pc-header">
+                        <span class="pc-phase-num">PHASE // 05</span>
+                        <span class="pc-duration">PRODUCCIÓN</span>
+                    </div>
+                    <h3 class="pc-title">Edge Deployment &amp; Telemetría</h3>
+                    <p class="pc-desc">Despliegue automatizado con pipelines CI/CD, configuración de Cloudflare Zero Trust y telemetría de rendimiento 24/7 en tiempo real.</p>
+                    <div class="pc-deliverable">
+                        <span class="pcd-label">ENTREGABLE CLAVE:</span>
+                        <span class="pcd-val">Infraestructura Zero-Trust Activa + Monitoreo 99.9% Uptime</span>
                     </div>
                 </div>
             </div>
