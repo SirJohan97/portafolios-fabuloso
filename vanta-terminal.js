@@ -235,9 +235,6 @@
             this.printLine(`  <span class="success">clear</span>        - Limpia el buffer de la terminal`, 'sub');
             this.printLine(`════════════════════════════════════════════════════════`, 'sys');
         }
-            this.printLine(`  <span class="success">clear</span>        - Limpia el buffer de la terminal`, 'sub');
-            this.printLine(`════════════════════════════════════════════════════════`, 'sys');
-        }
 
         runGpuBenchmark() {
             this.printLine(`[BENCH] Inicializando pipeline WebGL GPU Stress Test...`, 'info');
