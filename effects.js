@@ -471,11 +471,11 @@ function initEffectsScript() {
             return div;
         }
 
-        const hero = document.getElementById('home') || document.querySelector('.hero');
+        const portfolio = document.getElementById('portfolio');
         const services = document.getElementById('services');
 
-        if (hero && hero.parentNode) {
-            hero.parentNode.insertBefore(createMarquee(techItems, '◈', false), hero.nextElementSibling);
+        if (portfolio && portfolio.parentNode) {
+            portfolio.parentNode.insertBefore(createMarquee(techItems, '•', false), portfolio.nextElementSibling);
         }
         if (services && services.parentNode) {
             services.parentNode.insertBefore(createMarquee(values, '▸', true), services.nextElementSibling);
@@ -546,78 +546,9 @@ function initEffectsScript() {
 
         /* ============================================================
        10. NARRATIVE PHILOSOPHY STORIES (Scroll Trigger)
+       Delegated to dedicated modular philosophy-scrollytelling.js
        ============================================================ */
-    (function initPhilosophyTimeline() {
-        const section = document.querySelector('.vanta-philosophy-section');
-        const container = document.querySelector('.philosophy-sticky-container');
-        if (!section || !container) return;
-
-        const chapters = gsap.utils.toArray('.ph-chapter');
-        const progressFill = document.querySelector('.philosophy-progress-fill');
-        const statusText = document.querySelector('.hud-status-text');
-        const led = document.querySelector('.hud-led');
-        const scrollState = window.__vantaPhilosophyScroll || { progress: 0 };
-
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: section,
-                start: 'top top',
-                end: 'bottom bottom',
-                scrub: 0.5,
-                pin: container,
-                pinSpacing: false,
-                onUpdate: (self) => {
-                    if (progressFill) progressFill.style.width = `${self.progress * 100}%`;
-                    scrollState.progress = self.progress;
-
-                    // Switch canvas activo — el engine centralizado en script.js maneja el resto
-                    let targetCanvas = 1;
-                    if (self.progress >= 0.35 && self.progress < 0.70) targetCanvas = 2;
-                    else if (self.progress >= 0.70) targetCanvas = 3;
-
-                    if (typeof window.switchPhCanvas === 'function') {
-                        window.switchPhCanvas(targetCanvas);
-                    }
-
-                    // Alimentar el canvas 3D global de fondo
-                    if (window.vanta3D) {
-                        window.vanta3D.progress = self.progress;
-                        window.vanta3D.glitch = (self.progress < 0.35)
-                            ? Math.sin((self.progress / 0.35) * Math.PI) * 0.95
-                            : 0;
-                    }
-
-                    if (statusText && led) {
-                        if (self.progress < 0.35) {
-                            statusText.textContent = 'VISUALIZER: CAOS_DIGITAL';
-                            statusText.style.color = '#e74c3c';
-                            led.style.background = '#e74c3c';
-                            led.style.boxShadow = '0 0 8px #e74c3c';
-                        } else if (self.progress < 0.70) {
-                            statusText.textContent = 'VISUALIZER: ARCHITECTURE_CRYSTAL';
-                            statusText.style.color = '#f1c40f';
-                            led.style.background = '#f1c40f';
-                            led.style.boxShadow = '0 0 8px #f1c40f';
-                        } else {
-                            statusText.textContent = 'VISUALIZER: NEURAL_NETWORK';
-                            statusText.style.color = '#11d483';
-                            led.style.background = '#11d483';
-                            led.style.boxShadow = '0 0 8px #11d483';
-                        }
-                    }
-                }
-            }
-        });
-
-        gsap.set(chapters[0], { opacity: 1, y: 0, scale: 1 });
-        gsap.set(chapters[1], { opacity: 0, y: 40, scale: 0.95 });
-        gsap.set(chapters[2], { opacity: 0, y: 40, scale: 0.95 });
-
-        tl.to(chapters[0], { opacity: 0, y: -40, scale: 0.96, duration: 0.8, ease: 'power2.inOut' }, 0.5);
-        tl.to(chapters[1], { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power2.inOut' }, 1.0);
-        tl.to(chapters[1], { opacity: 0, y: -40, scale: 0.96, duration: 0.8, ease: 'power2.inOut' }, 1.8);
-        tl.to(chapters[2], { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power2.inOut' }, 2.3);
-    })();
+    // initPhilosophyTimeline migrated to philosophy-scrollytelling.js for Awwwards-grade pinned storytelling
 
 
     /* ============================================================

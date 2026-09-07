@@ -8705,3 +8705,416 @@ html.lenis body {
     pointer-events: none;
     will-change: transform, opacity;
 }
+
+/* =============================================================
+   ACTO 02: FILOSOFÍA NARRATIVA (AWWWARDS SCROLLYTELLING)
+   ============================================================= */
+.vanta-philosophy-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    background: #07090E;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.philosophy-sticky-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at 50% 40%, rgba(17, 212, 131, 0.04) 0%, rgba(7, 9, 14, 0.95) 75%);
+    overflow: hidden;
+}
+
+/* Top HUD Bar */
+.ph-hud-topbar {
+    position: absolute;
+    top: 88px;
+    left: 5%;
+    right: 5%;
+    max-width: 1320px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 20;
+    pointer-events: auto;
+}
+
+.ph-hud-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px 14px;
+    border-radius: 100px;
+    backdrop-filter: blur(10px);
+}
+
+.ph-pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #11d483;
+    box-shadow: 0 0 8px #11d483;
+    animation: hmb-pulse 2s infinite;
+}
+
+.ph-chapter-stepper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(11, 15, 23, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 5px 14px;
+    border-radius: 100px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.ph-step {
+    background: none;
+    border: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 5px 10px;
+    border-radius: 100px;
+}
+
+.ph-step:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.ph-step.active {
+    color: #11d483;
+    background: rgba(17, 212, 131, 0.12);
+    border: 1px solid rgba(17, 212, 131, 0.3);
+    text-shadow: 0 0 10px rgba(17, 212, 131, 0.5);
+}
+
+.ph-step-divider {
+    color: rgba(255, 255, 255, 0.15);
+    font-size: 0.65rem;
+}
+
+.ph-hud-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.65);
+    background: rgba(11, 15, 23, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 6px 14px;
+    border-radius: 100px;
+    backdrop-filter: blur(10px);
+}
+
+/* Blueprint HUD Reticle Crosshairs */
+.ph-hud-decor {
+    position: absolute;
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    color: rgba(17, 212, 131, 0.4);
+    pointer-events: none;
+    z-index: 12;
+    line-height: 1;
+}
+.ph-hud-decor.decor-top-left { top: 25px; left: 25px; }
+.ph-hud-decor.decor-top-right { top: 25px; right: 25px; }
+.ph-hud-decor.decor-bottom-left { bottom: 25px; left: 25px; }
+.ph-hud-decor.decor-bottom-right { bottom: 25px; right: 25px; }
+
+/* Grid Layout */
+.philosophy-layout-grid {
+    display: grid !important;
+    grid-template-columns: 1.15fr 0.85fr !important;
+    width: 100% !important;
+    max-width: 1320px !important;
+    margin: 0 auto !important;
+    padding: 70px 5% 0 !important;
+    align-items: center !important;
+    gap: 50px !important;
+    position: relative !important;
+    z-index: 5 !important;
+}
+
+.ph-col-left {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.philosophy-chapters-stage {
+    position: relative;
+    width: 100%;
+    height: 420px;
+}
+
+.ph-chapter {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    opacity: 0;
+    pointer-events: none;
+    text-align: left;
+    will-change: transform, opacity, filter;
+}
+
+.ph-chapter.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.ph-chapter-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.ph-badge-red {
+    background: rgba(255, 51, 68, 0.1);
+    border: 1px solid rgba(255, 51, 68, 0.35);
+    color: #FF3344;
+    box-shadow: 0 0 16px rgba(255, 51, 68, 0.18);
+}
+
+.ph-badge-amber {
+    background: rgba(243, 156, 18, 0.1);
+    border: 1px solid rgba(243, 156, 18, 0.35);
+    color: #F39C12;
+    box-shadow: 0 0 16px rgba(243, 156, 18, 0.18);
+}
+
+.ph-badge-green {
+    background: rgba(17, 212, 131, 0.1);
+    border: 1px solid rgba(17, 212, 131, 0.35);
+    color: #11D483;
+    box-shadow: 0 0 16px rgba(17, 212, 131, 0.18);
+}
+
+.ph-chapter-title {
+    font-family: 'Syne', sans-serif !important;
+    font-size: clamp(1.8rem, 3.0vw, 2.6rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    color: #FFFFFF !important;
+    letter-spacing: -0.02em !important;
+    margin: 0 !important;
+    max-width: 650px !important;
+}
+
+.ph-chapter-desc {
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: clamp(0.92rem, 1.05vw, 1.05rem) !important;
+    line-height: 1.68 !important;
+    color: rgba(255, 255, 255, 0.68) !important;
+    max-width: 580px !important;
+    margin: 0 !important;
+}
+
+.ph-chapter-metrics {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.ph-metric-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.3s ease;
+}
+
+.ph-metric-chip.chip-red { border-color: rgba(255, 51, 68, 0.25); background: rgba(255, 51, 68, 0.03); }
+.ph-metric-chip.chip-amber { border-color: rgba(243, 156, 18, 0.25); background: rgba(243, 156, 18, 0.03); }
+.ph-metric-chip.chip-green { border-color: rgba(17, 212, 131, 0.25); background: rgba(17, 212, 131, 0.03); }
+
+.pmc-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.chip-red .pmc-val { color: #FF3344; }
+.chip-amber .pmc-val { color: #F39C12; }
+.chip-green .pmc-val { color: #11D483; }
+
+.pmc-lbl {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.66rem;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.04em;
+}
+
+/* Holographic Visualizer Viewfinder */
+.ph-col-right {
+    position: relative !important;
+    width: 100% !important;
+    height: 480px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+}
+
+.ph-visualizer-harness {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 14, 22, 0.85);
+    border: 1px solid rgba(17, 212, 131, 0.25);
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(17, 212, 131, 0.04);
+}
+
+.pvh-scanner-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(17, 212, 131, 0.85) 50%, transparent 100%);
+    box-shadow: 0 0 14px #11d483;
+    z-index: 8;
+    pointer-events: none;
+    animation: pvhScan 4s ease-in-out infinite;
+}
+
+@keyframes pvhScan {
+    0%, 100% { top: 0%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    98% { top: 98%; opacity: 0; }
+}
+
+.pvh-crosshairs {
+    position: absolute;
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    color: rgba(17, 212, 131, 0.6);
+    z-index: 9;
+    pointer-events: none;
+    line-height: 1;
+}
+
+.pvh-tl { top: 10px; left: 12px; }
+.pvh-tr { top: 10px; right: 12px; }
+.pvh-bl { bottom: 10px; left: 12px; }
+.pvh-br { bottom: 10px; right: 12px; }
+
+.pvh-badge {
+    position: absolute;
+    top: 12px;
+    left: 32px;
+    z-index: 10;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    color: rgba(17, 212, 131, 0.85);
+    background: rgba(17, 212, 131, 0.08);
+    border: 1px solid rgba(17, 212, 131, 0.25);
+    padding: 3px 8px;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+.ph-chapter-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.ph-chapter-canvas.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.philosophy-progress-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.04);
+    z-index: 15;
+}
+
+.philosophy-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #FF3344 0%, #F39C12 50%, #11D483 100%);
+    box-shadow: 0 0 10px rgba(17, 212, 131, 0.6);
+    transition: width 0.1s linear;
+}
+
+@media (max-width: 991px) {
+    .philosophy-layout-grid {
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
+        padding: 80px 5% 40px !important;
+    }
+    .ph-col-right {
+        height: 280px !important;
+    }
+    .ph-hud-topbar {
+        flex-direction: column;
+        gap: 10px;
+        top: 15px;
+    }
+    .philosophy-chapters-stage {
+        height: auto;
+        min-height: 320px;
+    }
+}
+

@@ -41,15 +41,15 @@
 
         // Global progress tracking for Three.js engine coupling
         window.__heroWarpProgress = 0.0;
-        window.__heroPinDistance = window.innerHeight * 1.4;
+        window.__heroPinDistance = window.innerHeight;
 
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: hero,
                 start: 'top top',
-                end: () => `+=${window.innerHeight * 1.4}`,
+                end: () => `+=${window.innerHeight}`,
                 pin: true,
-                pinSpacing: true,
+                pinSpacing: false,
                 scrub: 0.8,
                 anticipatePin: 1,
                 invalidateOnRefresh: true,

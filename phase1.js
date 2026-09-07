@@ -214,12 +214,11 @@
             return div;
         }
 
-        // Insertar marquee principal despues del hero
-        const hero = document.getElementById('home') || document.querySelector('.hero');
         const portfolio = document.getElementById('portfolio');
-
         const mainMarquee = createMarquee(techItems, '◈', false);
-        if (hero && hero.parentNode) {
+        if (portfolio && portfolio.parentNode) {
+            portfolio.parentNode.insertBefore(mainMarquee, portfolio.nextElementSibling);
+        } else if (hero && hero.parentNode) {
             hero.parentNode.insertBefore(mainMarquee, hero.nextElementSibling);
         }
 

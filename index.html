@@ -273,54 +273,121 @@
         </div>
     </header>
 
-    <!-- ===== FILOSOFÍA (NARRATIVE STORYTELLING PINNED) ===== -->
+    <!-- ===== FILOSOFÍA (NARRATIVE STORYTELLING PINNED — ACTO 02) ===== -->
     <section class="vanta-philosophy-section" id="philosophy">
         <div class="philosophy-sticky-container">
-            <div class="ph-hud-decor decor-1">+</div>
-            <div class="ph-hud-decor decor-2">+</div>
+            <!-- HUD Tactical Top Bar -->
+            <div class="ph-hud-topbar">
+                <div class="ph-hud-pill">
+                    <span class="ph-pill-dot"></span>
+                    <span class="ph-pill-title">MANIFIESTO // ACTO_02</span>
+                </div>
+                <div class="ph-chapter-stepper" aria-label="Navegación de capítulos">
+                    <button class="ph-step active" data-step="1" type="button">01. CAOS</button>
+                    <span class="ph-step-divider">/</span>
+                    <button class="ph-step" data-step="2" type="button">02. HIERRO</button>
+                    <span class="ph-step-divider">/</span>
+                    <button class="ph-step" data-step="3" type="button">03. ESCALA</button>
+                </div>
+                <div class="ph-hud-status">
+                    <span class="hud-led"></span>
+                    <span class="hud-status-text">SYS_DIAGNOSTIC: CAOS_DIGITAL</span>
+                </div>
+            </div>
+
+            <!-- HUD Blueprint Crosshairs -->
+            <div class="ph-hud-decor decor-top-left">+</div>
+            <div class="ph-hud-decor decor-top-right">+</div>
+            <div class="ph-hud-decor decor-bottom-left">+</div>
+            <div class="ph-hud-decor decor-bottom-right">+</div>
             
             <div class="philosophy-layout-grid">
-                <!-- Columna Izquierda: Texto Narrativo -->
+                <!-- Columna Izquierda: Texto Narrativo Cinético -->
                 <div class="ph-col-left">
-                    <div class="philosophy-chapters">
+                    <div class="philosophy-chapters-stage">
                         <!-- Capítulo 01 -->
-                        <div class="ph-chapter ph-chapter-1 active">
-                            <span class="ph-chapter-num">// CAPÍTULO_01 // CAOS_DIGITAL</span>
-                            <h3 class="ph-chapter-title font-display">La velocidad sin cimientos destruye valor.</h3>
-                            <p class="ph-chapter-desc">El 95% del software moderno falla en producción. Sistemas mal optimizados, frameworks inflados y código desechable son el estándar. Nosotros nos negamos a construir sobre arena.</p>
+                        <div class="ph-chapter ph-chapter-1" data-chapter="1">
+                            <div class="ph-chapter-badge ph-badge-red">
+                                <i class="fas fa-biohazard"></i>
+                                <span>CAPÍTULO_01 // CAOS_DIGITAL</span>
+                            </div>
+                            <h2 class="ph-chapter-title font-display">La velocidad sin cimientos destruye valor.</h2>
+                            <p class="ph-chapter-desc">El 95% del software moderno falla en producción bajo carga real. Frameworks inflados, dependencias frágiles y código desechable son el estándar de la industria. En VANTA nos negamos rotundamente a construir sobre arena.</p>
+                            <div class="ph-chapter-metrics">
+                                <div class="ph-metric-chip chip-red">
+                                    <span class="pmc-val">95%</span>
+                                    <span class="pmc-lbl">Tasa de fallo en picos de tráfico</span>
+                                </div>
+                                <div class="ph-metric-chip chip-red">
+                                    <span class="pmc-val">&gt;4.2s</span>
+                                    <span class="pmc-lbl">Latencia promedio por bloatware</span>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Capítulo 02 -->
-                        <div class="ph-chapter ph-chapter-2">
-                            <span class="ph-chapter-num">// CAPÍTULO_02 // OBSESIÓN_TÉCNICA</span>
-                            <h3 class="ph-chapter-title font-display">Construimos sobre hierro y código limpio.</h3>
-                            <p class="ph-chapter-desc">Diseñamos bases de datos optimizadas para latencias mínimas y arquitecturas escalables. Pensamos en cada consulta, en cada ciclo de CPU, en cada detalle que garantiza robustez.</p>
+                        <div class="ph-chapter ph-chapter-2" data-chapter="2">
+                            <div class="ph-chapter-badge ph-badge-amber">
+                                <i class="fas fa-layer-group"></i>
+                                <span>CAPÍTULO_02 // OBSESIÓN_TÉCNICA</span>
+                            </div>
+                            <h2 class="ph-chapter-title font-display">Construimos sobre hierro y código limpio.</h2>
+                            <p class="ph-chapter-desc">Diseñamos bases de datos relacionales blindadas, esquemas desacoplados y algoritmos con complejidad O(1) u O(log n). Pensamos en cada consulta SQL, en cada ciclo de procesador y en la integridad absoluta de cada transacción.</p>
+                            <div class="ph-chapter-metrics">
+                                <div class="ph-metric-chip chip-amber">
+                                    <span class="pmc-val">&lt;15ms</span>
+                                    <span class="pmc-lbl">Tiempo de respuesta en API Core</span>
+                                </div>
+                                <div class="ph-metric-chip chip-amber">
+                                    <span class="pmc-val">100%</span>
+                                    <span class="pmc-lbl">Arquitectura ACID &amp; RLS blindada</span>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Capítulo 03 -->
-                        <div class="ph-chapter ph-chapter-3">
-                            <span class="ph-chapter-num">// CAPÍTULO_03 // LA_META</span>
-                            <h3 class="ph-chapter-title font-display">Ecosistemas digitales listos para el futuro.</h3>
-                            <p class="ph-chapter-desc">Programamos el núcleo de tus sistemas usando Python de alta eficiencia, integraciones de IA autónomas e infraestructura de élite. Si buscas un sitio genérico, no somos tu opción.</p>
+                        <div class="ph-chapter ph-chapter-3" data-chapter="3">
+                            <div class="ph-chapter-badge ph-badge-green">
+                                <i class="fas fa-microchip"></i>
+                                <span>CAPÍTULO_03 // ESCALABILIDAD_PURA</span>
+                            </div>
+                            <h2 class="ph-chapter-title font-display">Ecosistemas digitales listos para el futuro.</h2>
+                            <p class="ph-chapter-desc">Integramos pipelines de Inteligencia Artificial en el borde (Edge AI), visión computacional en tiempo real y microservicios asíncronos de alta disponibilidad. Creamos sistemas que soportan su propio crecimiento exponencial.</p>
+                            <div class="ph-chapter-metrics">
+                                <div class="ph-metric-chip chip-green">
+                                    <span class="pmc-val">99.99%</span>
+                                    <span class="pmc-lbl">SLA de resiliencia operativa</span>
+                                </div>
+                                <div class="ph-metric-chip chip-green">
+                                    <span class="pmc-val">10x</span>
+                                    <span class="pmc-lbl">Capacidad de escalado horizontal</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Columna Derecha: 3 Canvas Únicos por Capítulo -->
+                <!-- Columna Derecha: Cámara Holográfica de Visualizadores 3D -->
                 <div class="ph-col-right" aria-hidden="true">
-                    <div class="canvas-hud-indicator">
-                        <span class="hud-led"></span>
-                        <span class="hud-status-text">SYSTEM_VISUALIZER: ACTIVE</span>
+                    <div class="ph-visualizer-harness">
+                        <div class="pvh-scanner-line"></div>
+                        <div class="pvh-crosshairs pvh-tl">+</div>
+                        <div class="pvh-crosshairs pvh-tr">+</div>
+                        <div class="pvh-crosshairs pvh-bl">+</div>
+                        <div class="pvh-crosshairs pvh-br">+</div>
+                        <div class="pvh-badge">HOLO_SIM // 60 FPS</div>
+
+                        <!-- Cap 01: CAOS_DIGITAL — Partículas de entropía y fragmentos -->
+                        <canvas id="ph-canvas-1" class="ph-chapter-canvas active"></canvas>
+                        <!-- Cap 02: OBSESIÓN_TÉCNICA — Dodecaedro Three.js con orbitales de datos -->
+                        <canvas id="ph-canvas-2" class="ph-chapter-canvas"></canvas>
+                        <!-- Cap 03: ESCALABILIDAD — Red neuronal Three.js interactiva -->
+                        <canvas id="ph-canvas-3" class="ph-chapter-canvas"></canvas>
                     </div>
-                    <!-- Cap 01: CAOS_DIGITAL — Texto entrópico Canvas2D -->
-                    <canvas id="ph-canvas-1" class="ph-chapter-canvas active"></canvas>
-                    <!-- Cap 02: OBSESIÓN_TÉCNICA — Cristal Three.js + circuito -->
-                    <canvas id="ph-canvas-2" class="ph-chapter-canvas"></canvas>
-                    <!-- Cap 03: LA_META — Red neuronal Three.js pulsante -->
-                    <canvas id="ph-canvas-3" class="ph-chapter-canvas"></canvas>
                 </div>
             </div>
             
+            <!-- Barra de Progreso Inferior Táctica -->
             <div class="philosophy-progress-track">
                 <div class="philosophy-progress-fill"></div>
             </div>
@@ -2008,6 +2075,7 @@
     <script src="spotlight.js?v=110"></script>
     <script src="nuevas-secciones.js?v=130"></script>
     <script src="hero-portal.js?v=100"></script>
+    <script src="philosophy-scrollytelling.js?v=100"></script>
 </body>
 
 </html>
