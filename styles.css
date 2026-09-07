@@ -8461,3 +8461,151 @@ html.lenis body {
     color: rgba(255, 255, 255, 0.75) !important;
     line-height: 1.6 !important;
 }
+
+/* =============================================================
+   HOLOGRAPHIC FOUNDER DOSSIERS — Gohan & Robin
+   ============================================================= */
+.fpc-avatar-podium {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    border-radius: 14px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    background: #090B10;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fpc-podium--robin {
+    border-color: rgba(0, 229, 255, 0.25);
+    background: radial-gradient(circle at 50% 30%, rgba(0, 229, 255, 0.12), transparent 70%), #090B10;
+}
+
+.fpc-podium--gohan {
+    border-color: rgba(139, 92, 246, 0.25);
+    background: radial-gradient(circle at 50% 30%, rgba(139, 92, 246, 0.15), transparent 70%), #090B10;
+}
+
+.fpc-avatar-aura {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.fpc-podium--robin .fpc-avatar-aura {
+    background: radial-gradient(circle at 50% 40%, rgba(0, 229, 255, 0.2) 0%, rgba(245, 158, 11, 0.08) 50%, transparent 80%);
+}
+
+.fpc-podium--gohan .fpc-avatar-aura {
+    background: radial-gradient(circle at 50% 40%, rgba(139, 92, 246, 0.22) 0%, rgba(17, 212, 131, 0.08) 50%, transparent 80%);
+}
+
+.fpc-avatar-img {
+    position: relative;
+    z-index: 2;
+    height: 95%;
+    max-width: 90%;
+    object-fit: contain;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.85));
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease;
+}
+
+.founder-pillar-card:hover .fpc-avatar-img {
+    transform: translateY(-8px) scale(1.03);
+}
+
+.founder-pillar-card--cyber:hover .fpc-avatar-img {
+    filter: drop-shadow(0 20px 35px rgba(0, 229, 255, 0.35)) drop-shadow(0 0 15px rgba(0, 229, 255, 0.25));
+}
+
+.founder-pillar-card--ai:hover .fpc-avatar-img {
+    filter: drop-shadow(0 20px 35px rgba(139, 92, 246, 0.4)) drop-shadow(0 0 15px rgba(17, 212, 131, 0.25));
+}
+
+.fpc-codename {
+    position: absolute;
+    bottom: 12px;
+    left: 14px;
+    z-index: 3;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    padding: 5px 10px;
+    border-radius: 6px;
+    backdrop-filter: blur(10px);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+}
+
+.fpc-codename--robin {
+    background: rgba(0, 229, 255, 0.12);
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    color: #00E5FF;
+}
+
+.fpc-codename--gohan {
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    color: #C084FC;
+}
+
+/* =============================================================
+   CERDIV FLAGSHIP HORIZONTAL CARD STYLING
+   ============================================================= */
+.card-flagship {
+    border-color: rgba(17, 212, 131, 0.3) !important;
+}
+
+.card-live-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(7, 9, 14, 0.85);
+    border: 1px solid rgba(17, 212, 131, 0.4);
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: #11D483;
+    backdrop-filter: blur(8px);
+}
+
+.card-live-badge .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #11D483;
+    box-shadow: 0 0 8px #11D483;
+    animation: hmb-pulse 2s infinite;
+}
+
+.card-mini-specs {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.card-mini-specs span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.06);
+    padding: 4px 9px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}

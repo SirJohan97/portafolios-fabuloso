@@ -184,15 +184,7 @@
                               filter="url(#vGlow)"/>
                 </svg>
             </span>
-            <span class="logo-text">
-                <span class="brand-letters">
-                    <span class="l keep">V</span>
-                    <span class="l hide">A</span>
-                    <span class="l hide">N</span>
-                    <span class="l hide">T</span>
-                    <span class="l keep">A</span>
-                </span>
-            </span>
+            <span class="logo-text">VANTA</span>
         </a>
 
         <ul class="nav-links">
@@ -344,23 +336,32 @@
                 </div>
             </div>
             <div class="horizontal-track">
-                <!-- PROYECTO 1: SVIVA (TESIS / DESTACADO) -->
-                <div class="card" data-project="sviva">
+                <!-- PROYECTO 1: CERDIV IUTA (FLAGSHIP WEB SYSTEM) -->
+                <div class="card card-flagship" data-project="iuta">
                     <div class="card-image-wrap">
-                        <img src="img/sviva/svivalogo.png" alt="SVIVA" data-cursor-thumb="img/sviva/svivalogo.png">
+                        <img src="img/cerdiv/cerdivweb.jpeg" alt="CERDIV IUTA — Centro de Recursos Digitales" data-cursor-thumb="img/cerdiv/cerdivweb.jpeg">
+                        <div class="card-live-badge">
+                            <span class="live-dot"></span>
+                            <span>EN PRODUCCIÓN // 3 SEDES</span>
+                        </div>
                     </div>
                     <div class="card-overlay">
-                        <span class="thesis-badge">¡PROYECTO DE TESIS! • EN DESARROLLO</span>
-                        <h3>SVIVA — Sistema de Videovigilancia Inteligente</h3>
-                        <p>IA operando íntegramente en hardware local. Detección, rastreo y analíticas avanzadas sin internet.</p>
+                        <span class="card-tag">Python · Flask · PostgreSQL · Multi-Tenant</span>
+                        <h3>CERDIV IUTA — Centro de Recursos Digitales</h3>
+                        <p>Plataforma centralizada de gestión bibliotecaria para 3 sedes universitarias (Central, Baralt y Jesuitas). Catálogo con indexación de 1,120+ volúmenes en tiempo real y arquitectura de consulta con cero latencia.</p>
+                        <div class="card-mini-specs">
+                            <span><i class="fas fa-university"></i> 3 Sedes Universitarias</span>
+                            <span><i class="fas fa-book"></i> 1,120+ Volúmenes</span>
+                            <span><i class="fas fa-database"></i> PostgreSQL RLS</span>
+                        </div>
                     </div>
                     <div class="card-menu">
-                        <button class="btn-outline info-btn" data-info="sviva">Ver Arquitectura</button>
-                        <a href="#contact" class="btn">Lanzamiento: Julio del 2026</a>
+                        <button class="btn-outline info-btn" data-info="iuta">Ficha Técnica</button>
+                        <a href="https://biblioteca-ashy-sigma.vercel.app" class="btn" target="_blank" rel="noopener noreferrer">Explorar Sistema <i class="fas fa-external-link-alt"></i></a>
                     </div>
                 </div>
 
-                <!-- PROYECTO 2: SVIVA WEB (NUEVO) -->
+                <!-- PROYECTO 2: SVIVA WEB -->
                 <div class="card" data-project="svivaweb">
                     <div class="card-image-wrap">
                         <img src="img/sviva/svivaindex.jpeg" alt="SVIVA Web" data-cursor-thumb="img/sviva/svivaindex.jpeg">
@@ -376,7 +377,7 @@
                     </div>
                 </div>
 
-                <!-- PROYECTO 3: KIOSKO AZUL (NUEVO) -->
+                <!-- PROYECTO 3: KIOSKO AZUL -->
                 <div class="card" data-project="kioskoazul">
                     <div class="card-image-wrap">
                         <img src="img/auracheck/auralogin.jpeg" alt="Kiosko Azul" data-cursor-thumb="img/auracheck/auralogin.jpeg">
@@ -389,22 +390,6 @@
                     <div class="card-menu">
                         <button class="btn-outline info-btn" data-info="kioskoazul">Saber más</button>
                         <a href="#contact" class="btn">Solicitar Demo <i class="fas fa-utensils"></i></a>
-                    </div>
-                </div>
-
-                <!-- PROYECTO 4: IUTA -->
-                <div class="card" data-project="iuta">
-                    <div class="card-image-wrap">
-                        <img src="img/cerdiv/cerdivweb.jpeg" alt="IUTA" data-cursor-thumb="img/cerdiv/cerdivweb.jpeg">
-                    </div>
-                    <div class="card-overlay">
-                        <span class="card-tag">Python · Flask · PostgreSQL</span>
-                        <h3>Sistema de Gestión Bibliotecaria IUTA</h3>
-                        <p>Herramienta robusta que moderniza el control bibliotecario del IUTA, transformando procesos manuales en un ecosistema digital eficiente.</p>
-                    </div>
-                    <div class="card-menu">
-                        <button class="btn-outline info-btn" data-info="iuta">Saber más</button>
-                        <a href="https://biblioteca-ashy-sigma.vercel.app" class="btn" target="_blank" rel="noopener noreferrer">Ir al proyecto <i class="fas fa-external-link-alt"></i></a>
                     </div>
                 </div>
 
@@ -1435,6 +1420,11 @@
                 
                 <!-- Andrés Morales Pillar -->
                 <div class="founder-pillar-card founder-pillar-card--cyber vanta-spotlight-card vanta-spotlight-card--cyber">
+                    <div class="fpc-avatar-podium fpc-podium--robin">
+                        <div class="fpc-avatar-aura"></div>
+                        <img src="img/team/andres_robin.png" alt="Andrés Morales // Robin" class="fpc-avatar-img" loading="lazy">
+                        <span class="fpc-codename fpc-codename--robin"><i class="fas fa-mask"></i> ALIAS: ROBIN // TACTICAL ARCHITECT</span>
+                    </div>
                     <div class="fpc-header">
                         <div>
                             <h4 class="fpc-name">Andrés Morales</h4>
@@ -1452,6 +1442,11 @@
 
                 <!-- Johan Fernández Pillar -->
                 <div class="founder-pillar-card founder-pillar-card--ai vanta-spotlight-card vanta-spotlight-card--ai">
+                    <div class="fpc-avatar-podium fpc-podium--gohan">
+                        <div class="fpc-avatar-aura"></div>
+                        <img src="img/team/johan_gohan.png" alt="Johan Fernández // Gohan" class="fpc-avatar-img" loading="lazy">
+                        <span class="fpc-codename fpc-codename--gohan"><i class="fas fa-bolt"></i> ALIAS: GOHAN // LATENT VISIONARY</span>
+                    </div>
                     <div class="fpc-header">
                         <div>
                             <h4 class="fpc-name">Johan Fernández</h4>
