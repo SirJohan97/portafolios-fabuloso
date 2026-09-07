@@ -191,7 +191,7 @@
             <div class="nav-indicator-capsule"></div>
             <li><a href="#home">Inicio</a></li>
             <li><a href="#portfolio">Obras</a></li>
-            <li><a href="#services">Capacidades</a></li>
+            <li><a href="#capabilities">Capacidades</a></li>
             <li><a href="#pricing">Planes</a></li>
             <li><a href="#contact" class="nav-cta">Iniciar Proyecto</a></li>
         </ul>
@@ -410,10 +410,23 @@
                 <!-- PROYECTO 1: CERDIV IUTA (FLAGSHIP WEB SYSTEM) -->
                 <div class="card card-flagship" data-project="iuta">
                     <div class="card-image-wrap">
-                        <img src="img/cerdiv/cerdivweb.jpeg" alt="CERDIV IUTA — Centro de Recursos Digitales" data-cursor-thumb="img/cerdiv/cerdivweb.jpeg">
-                        <div class="card-live-badge">
-                            <span class="live-dot"></span>
-                            <span>EN PRODUCCIÓN // 3 SEDES</span>
+                        <div class="titanium-mockup-frame">
+                            <div class="tmf-topbar">
+                                <div class="tmf-dots">
+                                    <span class="tmf-dot red"></span>
+                                    <span class="tmf-dot yellow"></span>
+                                    <span class="tmf-dot green"></span>
+                                </div>
+                                <div class="tmf-url-pill">
+                                    <i class="fas fa-lock"></i>
+                                    <span>biblioteca-ashy-sigma.vercel.app</span>
+                                </div>
+                                <div class="tmf-status-badge">PRODUCCIÓN // 3 SEDES</div>
+                            </div>
+                            <div class="tmf-screen">
+                                <img src="img/cerdiv/cerdivweb.jpeg" alt="CERDIV IUTA — Centro de Recursos Digitales" data-cursor-thumb="img/cerdiv/cerdivweb.jpeg">
+                                <div class="tmf-screen-vignette"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-overlay">
@@ -432,19 +445,44 @@
                     </div>
                 </div>
 
-                <!-- PROYECTO 2: SVIVA WEB -->
-                <div class="card" data-project="svivaweb">
+                <!-- PROYECTO 2: SVIVA CORE (FLAGSHIP AI & COMPUTER VISION) -->
+                <div class="card card-flagship card-flagship--ai" data-project="sviva">
                     <div class="card-image-wrap">
-                        <img src="img/sviva/svivaindex.jpeg" alt="SVIVA Web" data-cursor-thumb="img/sviva/svivaindex.jpeg">
+                        <div class="titanium-mockup-frame tmf--cctv">
+                            <div class="tmf-topbar">
+                                <div class="tmf-dots">
+                                    <span class="tmf-dot red"></span>
+                                    <span class="tmf-dot yellow"></span>
+                                    <span class="tmf-dot green"></span>
+                                </div>
+                                <div class="tmf-url-pill">
+                                    <i class="fas fa-shield-virus"></i>
+                                    <span>sviva-tactical.local:8080 // RTSP_FEED</span>
+                                </div>
+                                <div class="tmf-status-badge tmf-status--threat">THREAT_LOCKED</div>
+                            </div>
+                            <div class="tmf-screen">
+                                <img src="img/sviva/svivaconfig.jpeg" alt="SVIVA Core — Visión Artificial Táctica" data-cursor-thumb="img/sviva/svivaconfig.jpeg">
+                                <div class="tmf-hud-reticle">
+                                    <span class="thr-tag"><i class="fas fa-crosshairs"></i> YOLOv8 · 99.2% mAP</span>
+                                    <span class="thr-spec">&lt;15ms INFERENCE</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-overlay">
-                        <span class="card-tag">Vite · TypeScript · React</span>
-                        <h3>SVIVA Web — Showcase de Tesis</h3>
-                        <p>Landing page de alta inmersión diseñada para promocionar y distribuir el ejecutable de nuestra obra maestra de visión artificial.</p>
+                        <span class="card-tag">Python · YOLOv8 · OpenCV · TensorRT</span>
+                        <h3>SVIVA — Sistema de Videovigilancia Táctica</h3>
+                        <p>Detección de amenazas y armas en transmisiones de video en tiempo real sin conexión a internet. Inferencia ultrarrápida a 60 FPS en hardware local con telemetría perimetral instantánea.</p>
+                        <div class="card-mini-specs">
+                            <span><i class="fas fa-bolt"></i> &lt;15ms Inferencia</span>
+                            <span><i class="fas fa-brain"></i> YOLOv8 Custom INT8</span>
+                            <span><i class="fas fa-shield-alt"></i> Zero-Cloud Privacy</span>
+                        </div>
                     </div>
                     <div class="card-menu">
-                        <button class="btn-outline info-btn" data-info="svivaweb">Ver Detalles</button>
-                        <a href="#contact" class="btn">Obtener Instalador <i class="fas fa-download"></i></a>
+                        <button class="btn-outline info-btn" data-info="sviva">Ver Arquitectura</button>
+                        <a href="#contact" class="btn">Solicitar Demo Táctica <i class="fas fa-shield-alt"></i></a>
                     </div>
                 </div>
 
@@ -531,583 +569,226 @@
         </div>
     </section>
 
-    <!-- ===== SVIVA DEEP DIVE — SOC COMMAND CENTER ===== -->
-    <section class="sviva-showcase-section" id="sviva-showcase" aria-label="SVIVA — Sistema de Videovigilancia Inteligente">
+    <!-- ===== KINETIC CAPABILITIES SCROLLYTELLING ===== -->
+    <section class="kinetic-capabilities-section" id="capabilities" aria-label="Capacidades Técnicas de Vanguardia">
+        <div class="kc-ambient-grid" aria-hidden="true"></div>
+        <div class="kc-ambient-glow" aria-hidden="true"></div>
 
-        <div class="sviva-scanlines" aria-hidden="true"></div>
-
-        <div class="sviva-header">
-            <span class="sviva-eyebrow">// VANTA_FLAGSHIP_PROJECT.SYS</span>
-            <h2 class="sviva-title">SVIVA <span class="sviva-title-accent">— Visión Artificial en el Borde</span></h2>
-            <p class="sviva-subtitle">De píxeles crudos a decisiones tácticas en menos de 15 milisegundos. Sistema de videovigilancia inteligente con detección de armas por ML, 100% local.</p>
-        </div>
-
-        <div class="sviva-soc-wrapper">
-
-            <div class="sviva-feed-panel">
-                <div class="sviva-feed-header">
-                    <div class="sviva-feed-indicator">
-                        <span class="sviva-live-dot"></span>
-                        <span class="sviva-live-label">LIVE FEED</span>
-                    </div>
-                    <span class="sviva-cam-id">CAM_04 // LOBBY_EAST</span>
-                    <div class="sviva-status-badge sviva-threat">
-                        <span>● THREAT CONFIRMED</span>
-                    </div>
+        <div class="kc-pinned-stage">
+            <!-- Top HUD Header -->
+            <div class="kc-stage-header">
+                <div class="kc-breadcrumb">
+                    <span class="kc-status-pulse"></span>
+                    <span class="kc-eyebrow">// CORE_CAPABILITIES.V5 &bull; SCROLLYTELLING HARNESS</span>
                 </div>
+                <div class="kc-counter">
+                    <span class="kc-active-num" id="kcActiveNum">01</span>
+                    <span class="kc-total-num">/ 04</span>
+                </div>
+            </div>
 
-                <div class="sviva-video-area">
-                    <div class="sviva-grid-overlay" aria-hidden="true"></div>
+            <!-- Main Kinetic Grid: Left Vector List + Right Telemetry Harness -->
+            <div class="kc-viewport-layout">
+                
+                <!-- Left: Interactive Vector Track -->
+                <div class="kc-vector-track" id="kcVectorTrack">
                     
-                    <!-- Simulated Tactical CCTV Scene -->
-                    <div class="sviva-tactical-scene">
-                        <!-- Perspective hallway lines -->
-                        <div class="cctv-perspective-lines"></div>
-
-                        <!-- Target 1: Person Left (Cyan) -->
-                        <div class="cctv-target cctv-target--person-1">
-                            <div class="cctv-box cctv-box--cyan">
-                                <span class="cctv-corner tl"></span><span class="cctv-corner tr"></span>
-                                <span class="cctv-corner bl"></span><span class="cctv-corner br"></span>
-                                <span class="cctv-tag">PERSON #0412 · 98.4%</span>
-                            </div>
+                    <!-- Vector 01 -->
+                    <div class="kc-vector-item active" data-vector="0">
+                        <div class="kc-vector-header">
+                            <span class="kc-vector-idx">01 // VISIÓN COMPUTACIONAL &amp; EDGE AI</span>
+                            <span class="kc-vector-badge">EDGE_NATIVE</span>
                         </div>
-
-                        <!-- Target 2: Person Right (Cyan) -->
-                        <div class="cctv-target cctv-target--person-2">
-                            <div class="cctv-box cctv-box--cyan">
-                                <span class="cctv-corner tl"></span><span class="cctv-corner tr"></span>
-                                <span class="cctv-corner bl"></span><span class="cctv-corner br"></span>
-                                <span class="cctv-tag">PERSON #0413 · 97.8%</span>
-                            </div>
+                        <h3 class="kc-vector-title">Inferencia Táctica en el Borde. Latencia Cero.</h3>
+                        <p class="kc-vector-desc">Modelos ultraligeros YOLOv8 y OpenCV optimizados con TensorRT sobre hardware local. Procesamiento en tiempo real a 60 FPS sin dependencia de nubes externas ni filtración de datos sensibles.</p>
+                        <div class="kc-vector-tags">
+                            <span class="kcv-tag"><i class="fas fa-brain"></i> YOLOv8 Custom</span>
+                            <span class="kcv-tag"><i class="fas fa-microchip"></i> TensorRT INT8</span>
+                            <span class="kcv-tag"><i class="fas fa-bolt"></i> &lt;15ms P99</span>
                         </div>
+                        <div class="kc-vector-progress-bar"><div class="kcv-progress-fill"></div></div>
+                    </div>
 
-                        <!-- Target 3: Threat Lock (Amber/Red YOLOv8) -->
-                        <div class="cctv-target cctv-target--threat">
-                            <div class="cctv-box cctv-box--threat" id="svivaBB">
-                                <span class="cctv-corner tl"></span><span class="cctv-corner tr"></span>
-                                <span class="cctv-corner bl"></span><span class="cctv-corner br"></span>
-                                <div class="cctv-threat-label">
-                                    <span class="ctl-warning">⚠️ THREAT_LOCKED</span>
-                                    <span class="ctl-info">Concealed Weapon · 99.1%</span>
+                    <!-- Vector 02 -->
+                    <div class="kc-vector-item" data-vector="1">
+                        <div class="kc-vector-header">
+                            <span class="kc-vector-idx">02 // CIBERSEGURIDAD OFENSIVA &amp; AUDITORÍA</span>
+                            <span class="kc-vector-badge kc-vector-badge--cyber">ZERO_TRUST</span>
+                        </div>
+                        <h3 class="kc-vector-title">Encontramos las Brechas Antes que los Atacantes.</h3>
+                        <p class="kc-vector-desc">Pruebas de intrusión profunda, simulación de adversarios APT y auditorías de código bajo metodología OWASP Top 10. Blindamos infraestructura crítica con defensas perimetrales y Cloudflare Zero Trust.</p>
+                        <div class="kc-vector-tags">
+                            <span class="kcv-tag"><i class="fas fa-shield-alt"></i> Red Teaming</span>
+                            <span class="kcv-tag"><i class="fas fa-bug"></i> OWASP Top 10</span>
+                            <span class="kcv-tag"><i class="fas fa-network-wired"></i> Zero Trust</span>
+                        </div>
+                        <div class="kc-vector-progress-bar"><div class="kcv-progress-fill"></div></div>
+                    </div>
+
+                    <!-- Vector 03 -->
+                    <div class="kc-vector-item" data-vector="2">
+                        <div class="kc-vector-header">
+                            <span class="kc-vector-idx">03 // SISTEMAS DISTRIBUIDOS DE ALTA CONCURRENCIA</span>
+                            <span class="kc-vector-badge kc-vector-badge--infra">RESILIENT_CORE</span>
+                        </div>
+                        <h3 class="kc-vector-title">Arquitecturas Backend que Soportan Cargas Críticas.</h3>
+                        <p class="kc-vector-desc">Microservicios asíncronos en FastAPI, Rust y Go, orquestación contenerizada y PostgreSQL con Row Level Security. Diseñados para tolerar cientos de miles de peticiones simultáneas con uptime 99.99%.</p>
+                        <div class="kc-vector-tags">
+                            <span class="kcv-tag"><i class="fas fa-server"></i> FastAPI / Rust</span>
+                            <span class="kcv-tag"><i class="fas fa-database"></i> PostgreSQL RLS</span>
+                            <span class="kcv-tag"><i class="fas fa-cubes"></i> Docker Clusters</span>
+                        </div>
+                        <div class="kc-vector-progress-bar"><div class="kcv-progress-fill"></div></div>
+                    </div>
+
+                    <!-- Vector 04 -->
+                    <div class="kc-vector-item" data-vector="3">
+                        <div class="kc-vector-header">
+                            <span class="kc-vector-idx">04 // EXPERIENCIAS WEB AWWWARDS &amp; 3D</span>
+                            <span class="kc-vector-badge kc-vector-badge--design">AWWWARDS_GRADE</span>
+                        </div>
+                        <h3 class="kc-vector-title">Narrativas Digitales que Convierten y Cautivan.</h3>
+                        <p class="kc-vector-desc">WebGL, Three.js, shaders GLSL personalizados y scrollytelling cinemático con GSAP. Transformamos productos digitales ordinarios en obras de arte interactivas que proyectan máximo estatus corporativo.</p>
+                        <div class="kc-vector-tags">
+                            <span class="kcv-tag"><i class="fas fa-cube"></i> Three.js / WebGL</span>
+                            <span class="kcv-tag"><i class="fas fa-magic"></i> GLSL Shaders</span>
+                            <span class="kcv-tag"><i class="fas fa-film"></i> Scrollytelling GSAP</span>
+                        </div>
+                        <div class="kc-vector-progress-bar"><div class="kcv-progress-fill"></div></div>
+                    </div>
+
+                </div>
+
+                <!-- Right: Morphing Telemetry Stage Harness -->
+                <div class="kc-telemetry-harness">
+                    
+                    <!-- STAGE 01: Edge Computer Vision Tactical HUD -->
+                    <div class="kc-stage-panel active" id="kcStage0">
+                        <div class="kc-hud-window">
+                            <div class="kch-top">
+                                <div class="kch-dots"><span></span><span></span><span></span></div>
+                                <div class="kch-title"><i class="fas fa-crosshairs"></i> SVIVA_EDGE_TELEMETRY // FEED_ALPHA</div>
+                                <div class="kch-status-pill kch-status--live"><span class="kch-live-dot"></span> LIVE 60FPS</div>
+                            </div>
+                            <div class="kch-viewport kch-viewport--vision">
+                                <div class="vision-grid-lines"></div>
+                                <div class="vision-radar-sweep"></div>
+                                <!-- Target 1 -->
+                                <div class="vision-bbox" style="top: 24%; left: 20%; width: 28%; height: 46%;">
+                                    <div class="bbox-corner tl"></div><div class="bbox-corner tr"></div>
+                                    <div class="bbox-corner bl"></div><div class="bbox-corner br"></div>
+                                    <div class="bbox-tag">HUMAN_THREAT_01 // 99.4%</div>
+                                    <div class="bbox-coords">X: 420.4 Y: 812.1</div>
                                 </div>
-                                <div class="cctv-reticle-cross"></div>
-                            </div>
-                        </div>
-
-                        <!-- Tactical Mini-Radar -->
-                        <div class="cctv-radar-widget">
-                            <div class="crw-sweep"></div>
-                            <div class="crw-blip b1"></div>
-                            <div class="crw-blip b2"></div>
-                            <div class="crw-blip b-threat"></div>
-                            <span class="crw-label">RADAR_2D</span>
-                        </div>
-
-                        <!-- Timecode Ticker -->
-                        <div class="cctv-timecode">
-                            <span class="ctc-rec">● REC</span>
-                            <span id="svivaTimecode">2026-09-02 08:55:42.184 UTC</span>
-                        </div>
-                    </div>
-
-                    <div class="sviva-hud-overlay" aria-label="Métricas de inferencia">
-                        <div class="sviva-metric-chip">
-                            <span class="smc-label">FPS</span>
-                            <span class="smc-val">60.0</span>
-                        </div>
-                        <div class="sviva-metric-chip">
-                            <span class="smc-label">LATENCY</span>
-                            <span class="smc-val">12.4ms</span>
-                        </div>
-                        <div class="sviva-metric-chip">
-                            <span class="smc-label">MODEL</span>
-                            <span class="smc-val">YOLOv8 INT8</span>
-                        </div>
-                    </div>
-
-                    <div class="sviva-timeline">
-                        <div class="sviva-tl-item sviva-tl-pre">
-                            <span class="sviva-tl-time">00:14:02</span>
-                            <span class="sviva-tl-event">PRE-EVENT</span>
-                        </div>
-                        <div class="sviva-tl-line"></div>
-                        <div class="sviva-tl-item sviva-tl-detect">
-                            <span class="sviva-tl-time">00:14:05</span>
-                            <span class="sviva-tl-event">DETECTED</span>
-                        </div>
-                        <div class="sviva-tl-line"></div>
-                        <div class="sviva-tl-item sviva-tl-lock">
-                            <span class="sviva-tl-time">00:14:06</span>
-                            <span class="sviva-tl-event">LOCKED + SMS</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sviva-info-panel">
-                <div class="sviva-pipeline">
-                    <h3 class="sviva-panel-title">// DETECTION_PIPELINE.SYS</h3>
-                    <div class="sviva-pipeline-steps">
-                        <div class="sviva-pipe-step active" data-step="1">
-                            <div class="sviva-pipe-num">01</div>
-                            <div class="sviva-pipe-body">
-                                <strong>INGESTION</strong>
-                                <p>Captura RTSP/WebRTC multi-cámara a 60 FPS en tiempo real</p>
-                            </div>
-                        </div>
-                        <div class="sviva-pipe-step" data-step="2">
-                            <div class="sviva-pipe-num">02</div>
-                            <div class="sviva-pipe-body">
-                                <strong>EDGE INFERENCE</strong>
-                                <p>Detección con YOLOv8 + ML en hardware local. Sin internet.</p>
-                            </div>
-                        </div>
-                        <div class="sviva-pipe-step" data-step="3">
-                            <div class="sviva-pipe-num">03</div>
-                            <div class="sviva-pipe-body">
-                                <strong>CONTEXT REASONING</strong>
-                                <p>Reducción de falsos positivos analizando postura y contexto</p>
-                            </div>
-                        </div>
-                        <div class="sviva-pipe-step" data-step="4">
-                            <div class="sviva-pipe-num">04</div>
-                            <div class="sviva-pipe-body">
-                                <strong>INSTANT TELEMETRY</strong>
-                                <p>Webhooks + alertas SMS + cierre perimetral automático</p>
+                                <!-- Target 2: Weapon detection -->
+                                <div class="vision-bbox vision-bbox--danger" style="top: 48%; left: 42%; width: 22%; height: 22%;">
+                                    <div class="bbox-corner tl"></div><div class="bbox-corner tr"></div>
+                                    <div class="bbox-corner bl"></div><div class="bbox-corner br"></div>
+                                    <div class="bbox-tag bbox-tag--danger"><i class="fas fa-exclamation-triangle"></i> ARMA_DETECTADA 98.7%</div>
+                                </div>
+                                <div class="vision-hud-footer">
+                                    <div class="vhf-stat"><span>LATENCIA:</span><strong>11.4ms</strong></div>
+                                    <div class="vhf-stat"><span>NPU_LOAD:</span><strong>38%</strong></div>
+                                    <div class="vhf-stat"><span>ENGINE:</span><strong>TENSORRT INT8</strong></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="sviva-metrics-grid">
-                    <div class="sviva-metric-card">
-                        <span class="sviva-metric-val">&lt;&nbsp;15ms</span>
-                        <span class="sviva-metric-desc">Inferencia por frame</span>
+                    <!-- STAGE 02: Offensive Security Cyber Terminal -->
+                    <div class="kc-stage-panel" id="kcStage1">
+                        <div class="kc-hud-window kc-hud-window--cyber">
+                            <div class="kch-top">
+                                <div class="kch-dots"><span></span><span></span><span></span></div>
+                                <div class="kch-title"><i class="fas fa-terminal"></i> VANTA_SOC // RED_TEAM_AUDIT_TERMINAL</div>
+                                <div class="kch-status-pill kch-status--cyber"><i class="fas fa-shield-alt"></i> AUDITING</div>
+                            </div>
+                            <div class="kch-viewport kch-viewport--terminal">
+                                <div class="terminal-log-lines">
+                                    <div class="t-line dim">[03:41:12] INITIALIZING ADVERSARY SIMULATION SUITE v4.8...</div>
+                                    <div class="t-line">[03:41:13] SCANNING TARGET PORTS: 443/TLS, 8080/REST, 5432/PGSQL...</div>
+                                    <div class="t-line ok">[03:41:14] PORT 443: TLS 1.3 SECURED — CIPHER OK</div>
+                                    <div class="t-line warn">[03:41:15] AUDITING REST API ENDPOINTS: OWASP TOP 10 SIMULATION...</div>
+                                    <div class="t-line warn">&gt; INJECTION_TEST: 1,420 VECTORS ANALYZED &bull; 0 BREACHES FOUND</div>
+                                    <div class="t-line ok">[03:41:16] POSTGRESQL RLS ENFORCED: ROW-LEVEL TENANT ISOLATION 100%</div>
+                                    <div class="t-line cyber">[03:41:17] CLOUDFLARE ZERO-TRUST TUNNEL: ACTIVE [LATAM-EDGE-01]</div>
+                                    <div class="t-line ok-bright">&gt;&gt; VERDICT: ZERO HIGH/CRITICAL CVEs DETECTED. PERIMETER HARDENED.</div>
+                                </div>
+                                <div class="terminal-cipher-strip">
+                                    <span class="tcs-label">SHA256_INTEGRITY:</span>
+                                    <span class="tcs-hash" id="kcCipherHash">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="sviva-metric-card">
-                        <span class="sviva-metric-val">99.2%</span>
-                        <span class="sviva-metric-desc">Precisión mAP@0.5</span>
+
+                    <!-- STAGE 03: Distributed Cluster Mesh -->
+                    <div class="kc-stage-panel" id="kcStage2">
+                        <div class="kc-hud-window kc-hud-window--infra">
+                            <div class="kch-top">
+                                <div class="kch-dots"><span></span><span></span><span></span></div>
+                                <div class="kch-title"><i class="fas fa-network-wired"></i> DISTRIBUTED_CORE // MESH_MONITOR</div>
+                                <div class="kch-status-pill kch-status--infra">100K REQ/S</div>
+                            </div>
+                            <div class="kch-viewport kch-viewport--infra">
+                                <div class="mesh-cluster-grid">
+                                    <div class="mesh-node active">
+                                        <span class="mn-status"></span>
+                                        <span class="mn-name">EDGE_GW_01</span>
+                                        <span class="mn-load">1.2ms &bull; 99.99%</span>
+                                    </div>
+                                    <div class="mesh-node active">
+                                        <span class="mn-status"></span>
+                                        <span class="mn-name">FASTAPI_POD_A</span>
+                                        <span class="mn-load">12.4k rps</span>
+                                    </div>
+                                    <div class="mesh-node active">
+                                        <span class="mn-status"></span>
+                                        <span class="mn-name">FASTAPI_POD_B</span>
+                                        <span class="mn-load">14.1k rps</span>
+                                    </div>
+                                    <div class="mesh-node active">
+                                        <span class="mn-status"></span>
+                                        <span class="mn-name">PG_PRIMARY_RLS</span>
+                                        <span class="mn-load">Pool: 42/500</span>
+                                    </div>
+                                </div>
+                                <div class="mesh-waveform-wrap">
+                                    <canvas id="kcMeshCanvas" width="460" height="90"></canvas>
+                                </div>
+                                <div class="mesh-footer-metrics">
+                                    <div class="mfm-item"><span>TOTAL CONCURRENCY</span><strong>100,000 / sec</strong></div>
+                                    <div class="mfm-item"><span>P99 LATENCY</span><strong>1.8 ms</strong></div>
+                                    <div class="mfm-item"><span>UPTIME</span><strong>99.99%</strong></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="sviva-metric-card">
-                        <span class="sviva-metric-val">0.01%</span>
-                        <span class="sviva-metric-desc">Falsos positivos</span>
+
+                    <!-- STAGE 04: Awwwards WebGL Interactive Stage -->
+                    <div class="kc-stage-panel" id="kcStage3">
+                        <div class="kc-hud-window kc-hud-window--creative">
+                            <div class="kch-top">
+                                <div class="kch-dots"><span></span><span></span><span></span></div>
+                                <div class="kch-title"><i class="fas fa-cube"></i> WEBGL_RENDER_PIPELINE // GLSL_SHADERS</div>
+                                <div class="kch-status-pill kch-status--creative">60 FPS GPU</div>
+                            </div>
+                            <div class="kch-viewport kch-viewport--creative">
+                                <canvas id="kcCreativeCanvas" class="kc-creative-canvas"></canvas>
+                                <div class="creative-overlay-specs">
+                                    <div class="cos-badge">GSAP + THREE.JS + LENIS</div>
+                                    <div class="cos-detail">Interpolación elástica, deformación de mallas e interactividad magnética en tiempo real.</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="sviva-metric-card sviva-metric-highlight">
-                        <span class="sviva-metric-val">ZERO</span>
-                        <span class="sviva-metric-desc">Cloud Dependency</span>
-                    </div>
+
                 </div>
 
-                <div class="sviva-cta-row">
-                    <button class="btn-outline info-btn" data-info="sviva">Ver Arquitectura</button>
-                    <a href="#contact" class="btn magnetic-btn">Solicitar Demo Táctica</a>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== CAPABILITIES BENTO GRID ===== -->
-    <section class="capabilities-section" id="capabilities" aria-label="Capacidades de VANTA">
-
-        <div class="cap-header">
-            <span class="cap-eyebrow">// VANTA_OPERATIONAL_CAPABILITIES</span>
-            <h2 class="cap-title">Capacidades <span class="cap-title-accent">Operativas</span></h2>
-            <p class="cap-subtitle">Ingeniería de élite en seis disciplinas. Cada una probada en producción.</p>
-        </div>
-
-        <div class="cap-bento-grid">
-
-            <div class="cap-card cap-card--large vanta-spotlight-card vanta-spotlight-card--ai" id="cap-cv">
-                <div class="cap-card-bg-icon" aria-hidden="true"><i class="fas fa-eye"></i></div>
-                <div class="cap-card-content">
-                    <span class="cap-tag cap-tag--ai">AI · COMPUTER VISION</span>
-                    <h3 class="cap-card-title">Computer Vision &amp; Edge AI</h3>
-                    <p class="cap-card-desc">Modelos YOLOv8 personalizados. Inferencia local sin nube. Detección de objetos, personas y armas en tiempo real a 60 FPS.</p>
-                    <div class="cap-card-metrics">
-                        <div class="cap-metric"><span>&lt;15ms</span><small>Latencia</small></div>
-                        <div class="cap-metric"><span>99.2%</span><small>Precisión</small></div>
-                        <div class="cap-metric"><span>60 FPS</span><small>Inferencia</small></div>
-                    </div>
-                    <div class="cap-card-stack">
-                        <span>YOLOv8</span><span>OpenCV</span><span>TensorRT</span><span>Python</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cap-card cap-card--wide vanta-spotlight-card vanta-spotlight-card--cyber" id="cap-pentest">
-                <div class="cap-card-bg-icon" aria-hidden="true"><i class="fas fa-shield-alt"></i></div>
-                <div class="cap-card-content">
-                    <span class="cap-tag cap-tag--cyber">SECURITY · OFFENSIVE</span>
-                    <h3 class="cap-card-title">Web &amp; API Pentesting</h3>
-                    <p class="cap-card-desc">Evaluaciones ofensivas bajo metodología OWASP Top 10. Encontramos brechas antes que los atacantes.</p>
-                    <div class="cap-card-stack">
-                        <span>OWASP</span><span>Burp Suite</span><span>MITRE ATT&amp;CK</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cap-card cap-card--wide vanta-spotlight-card vanta-spotlight-card--ai" id="cap-llm">
-                <div class="cap-card-bg-icon" aria-hidden="true"><i class="fas fa-brain"></i></div>
-                <div class="cap-card-content">
-                    <span class="cap-tag cap-tag--ai">AI · LLM · AGENTS</span>
-                    <h3 class="cap-card-title">LLM &amp; Gemini API</h3>
-                    <p class="cap-card-desc">Agentes autónomos, RAG pipelines e integración multi-modal con Google Gemini. Producción real.</p>
-                    <div class="cap-card-stack">
-                        <span>Gemini</span><span>FastAPI</span><span>RAG</span><span>Agents</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cap-card cap-card--small vanta-spotlight-card" id="cap-net">
-                <div class="cap-card-content">
-                    <span class="cap-tag">NETWORK</span>
-                    <h3 class="cap-card-title">Network &amp; Infrastructure</h3>
-                    <p class="cap-card-desc">VLANs, Cloudflare Zero Trust y hardening de servidores.</p>
-                    <div class="cap-card-stack">
-                        <span>Cloudflare</span><span>Cisco</span><span>VLANs</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cap-card cap-card--small vanta-spotlight-card" id="cap-fullstack">
-                <div class="cap-card-content">
-                    <span class="cap-tag">FULL-STACK</span>
-                    <h3 class="cap-card-title">Full-Stack Engineering</h3>
-                    <p class="cap-card-desc">Aplicaciones web end-to-end con Python, FastAPI, React y PostgreSQL.</p>
-                    <div class="cap-card-stack">
-                        <span>Python</span><span>React</span><span>PostgreSQL</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cap-card cap-card--tall vanta-spotlight-card vanta-spotlight-card--ai" id="cap-ml">
-                <div class="cap-card-bg-icon" aria-hidden="true"><i class="fas fa-chart-line"></i></div>
-                <div class="cap-card-content">
-                    <span class="cap-tag cap-tag--ai">ML · DATA SCIENCE</span>
-                    <h3 class="cap-card-title">ML Predictivo &amp; Data</h3>
-                    <p class="cap-card-desc">Modelos de detección de anomalías, análisis predictivo y visualización de datos en tiempo real.</p>
-                    <div class="cap-card-metrics">
-                        <div class="cap-metric"><span>94.7%</span><small>Accuracy</small></div>
-                        <div class="cap-metric"><span>0.032</span><small>RMSE</small></div>
-                    </div>
-                    <div class="cap-card-stack">
-                        <span>scikit-learn</span><span>Pandas</span><span>TensorFlow</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ===== CYBER_SEC MODULE ===== -->
-    <section class="cybersec-section" id="cybersec" aria-label="Ciberseguridad y Hacking Ético">
-
-        <div class="cybersec-bg-nodes" aria-hidden="true">
-            <svg class="cybersec-node-svg" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-                <circle cx="100" cy="80"  r="3" fill="rgba(0,229,255,0.4)" class="csn csn-1"/>
-                <circle cx="350" cy="150" r="2" fill="rgba(0,229,255,0.3)" class="csn csn-2"/>
-                <circle cx="600" cy="60"  r="4" fill="rgba(0,229,255,0.5)" class="csn csn-3"/>
-                <circle cx="200" cy="300" r="2" fill="rgba(0,229,255,0.2)" class="csn csn-4"/>
-                <circle cx="500" cy="280" r="3" fill="rgba(0,229,255,0.4)" class="csn csn-5"/>
-                <circle cx="700" cy="200" r="2" fill="rgba(0,229,255,0.3)" class="csn csn-6"/>
-                <line x1="100" y1="80"  x2="350" y2="150" stroke="rgba(0,229,255,0.1)" stroke-width="1"/>
-                <line x1="350" y1="150" x2="600" y2="60"  stroke="rgba(0,229,255,0.1)" stroke-width="1"/>
-                <line x1="200" y1="300" x2="500" y2="280" stroke="rgba(0,229,255,0.07)" stroke-width="1"/>
-                <line x1="500" y1="280" x2="700" y2="200" stroke="rgba(0,229,255,0.08)" stroke-width="1"/>
-                <line x1="350" y1="150" x2="200" y2="300" stroke="rgba(0,229,255,0.07)" stroke-width="1"/>
-            </svg>
-        </div>
-
-        <div class="cybersec-layout">
-
-            <div class="cybersec-left">
-                <span class="cybersec-eyebrow">// OFFENSIVE_SECURITY_DIVISION</span>
-                <h2 class="cybersec-title">Encontramos las brechas<br><span class="cybersec-title-accent">antes que los atacantes.</span></h2>
-                <p class="cybersec-desc">Evaluaciones ofensivas basadas en metodologías OWASP y simulaciones de adversarios reales. Vulnerabilidades con vector de ataque, impacto de negocio y guía de remediación accionable.</p>
-
-                <div class="cybersec-trust-badges">
-                    <div class="ctb-badge">
-                        <i class="fas fa-shield-alt ctb-icon"></i>
-                        <span>OWASP Top 10</span>
-                    </div>
-                    <div class="ctb-badge">
-                        <i class="fas fa-crosshairs ctb-icon"></i>
-                        <span>MITRE ATT&amp;CK</span>
-                    </div>
-                    <div class="ctb-badge">
-                        <i class="fas fa-lock ctb-icon"></i>
-                        <span>NIST CSF</span>
-                    </div>
-                    <div class="ctb-badge ctb-badge--highlight">
-                        <i class="fas fa-file-contract ctb-icon"></i>
-                        <span>NDA First</span>
-                    </div>
-                    <div class="ctb-badge">
-                        <i class="fas fa-trash-alt ctb-icon"></i>
-                        <span>Zero Data Retention</span>
-                    </div>
-                    <div class="ctb-badge">
-                        <i class="fas fa-server ctb-icon"></i>
-                        <span>Air-Gapped Testing</span>
-                    </div>
-                </div>
-
-                <a href="#contact" class="btn magnetic-btn cybersec-cta">
-                    Agendar Diagnóstico de Superficie de Ataque
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <div class="cybersec-right">
-                <h3 class="cybersec-matrix-title">// OWASP_THREAT_MATRIX</h3>
-                <div class="owasp-matrix-grid">
-
-                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="sqli">
-                        <div class="owasp-card-top">
-                            <span class="owasp-severity owasp-critical">CRÍTICO</span>
-                            <span class="owasp-rank">A03</span>
-                        </div>
-                        <h4 class="owasp-name">SQL Injection</h4>
-                        <p class="owasp-desc">Exfiltración de base de datos completa via queries maliciosos.</p>
-                        <div class="owasp-fix-preview"><code>sqlalchemy.text() + bind params</code></div>
-                    </div>
-
-                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="bac">
-                        <div class="owasp-card-top">
-                            <span class="owasp-severity owasp-critical">CRÍTICO</span>
-                            <span class="owasp-rank">A01</span>
-                        </div>
-                        <h4 class="owasp-name">Broken Access Control</h4>
-                        <p class="owasp-desc">Escalación de privilegios y acceso no autorizado a endpoints.</p>
-                        <div class="owasp-fix-preview"><code>RBAC + JWT scope validation</code></div>
-                    </div>
-
-                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="ssrf">
-                        <div class="owasp-card-top">
-                            <span class="owasp-severity owasp-high">ALTO</span>
-                            <span class="owasp-rank">A10</span>
-                        </div>
-                        <h4 class="owasp-name">SSRF</h4>
-                        <p class="owasp-desc">Server-Side Request Forgery hacia metadatos cloud internos.</p>
-                        <div class="owasp-fix-preview"><code>Allowlist + DNS rebinding protection</code></div>
-                    </div>
-
-                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="crypto">
-                        <div class="owasp-card-top">
-                            <span class="owasp-severity owasp-high">ALTO</span>
-                            <span class="owasp-rank">A02</span>
-                        </div>
-                        <h4 class="owasp-name">Cryptographic Failures</h4>
-                        <p class="owasp-desc">Datos sensibles sin cifrado adecuado en tránsito o en reposo.</p>
-                        <div class="owasp-fix-preview"><code>AES-256-GCM + TLS 1.3 enforced</code></div>
-                    </div>
-
-                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="injection">
-                        <div class="owasp-card-top">
-                            <span class="owasp-severity owasp-high">ALTO</span>
-                            <span class="owasp-rank">A03</span>
-                        </div>
-                        <h4 class="owasp-name">Command Injection</h4>
-                        <p class="owasp-desc">Ejecución arbitraria de código del sistema vía inputs no sanitizados.</p>
-                        <div class="owasp-fix-preview"><code>subprocess.run(args, shell=False)</code></div>
-                    </div>
-
-                    <div class="owasp-card vanta-spotlight-card vanta-spotlight-card--cyber" data-owasp="misconfig">
-                        <div class="owasp-card-top">
-                            <span class="owasp-severity owasp-medium">MEDIO</span>
-                            <span class="owasp-rank">A05</span>
-                        </div>
-                        <h4 class="owasp-name">Security Misconfiguration</h4>
-                        <p class="owasp-desc">Headers HTTP faltantes, CORS abierto, debug mode en producción.</p>
-                        <div class="owasp-fix-preview"><code>CSP + HSTS + X-Frame-Options</code></div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== STATS — OCULTO (datos integrados en secciones nuevas) ===== -->
-    <section class="vanta-stats-section" id="stats" aria-label="VANTA en números" style="display:none">
-        <!-- Fondo grid HUD decorativo -->
-        <div class="stats-hud-grid" aria-hidden="true"></div>
-
-        <!-- Headline narrativo -->
-        <div class="stats-headline-wrap">
-            <p class="stats-eyebrow">// VANTA_METRICS.LOG</p>
-            <h2 class="stats-headline">
-                <span class="sh-line">El Software</span>
-                <span class="sh-line sh-accent">Habla por Sí Solo</span>
-            </h2>
-        </div>
-
-        <!-- Grid de métricas -->
-        <div class="stats-grid">
-
-            <div class="stat-card" data-delay="0">
-                <div class="stat-card-inner">
-                    <div class="stat-icon-ring">
-                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <polygon points="24,2 46,24 24,46 2,24" stroke="rgba(17,212,131,0.4)" stroke-width="1" fill="rgba(17,212,131,0.04)"/>
-                            <polygon points="24,10 38,24 24,38 10,24" stroke="rgba(17,212,131,0.6)" stroke-width="0.8" fill="none"/>
-                            <path d="M18 24h12M24 18v12" stroke="#11d483" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <div class="stat-value-wrap">
-                        <span class="stat-number" data-count="8" data-suffix="+">0+</span>
-                        <span class="stat-label">Proyectos<br>en Producción</span>
-                    </div>
-                    <div class="stat-progress-track"><div class="stat-progress-bar"></div></div>
-                </div>
-            </div>
-
-            <div class="stat-card" data-delay="120">
-                <div class="stat-card-inner">
-                    <div class="stat-icon-ring">
-                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <polygon points="24,2 46,24 24,46 2,24" stroke="rgba(17,212,131,0.4)" stroke-width="1" fill="rgba(17,212,131,0.04)"/>
-                            <polygon points="24,10 38,24 24,38 10,24" stroke="rgba(17,212,131,0.6)" stroke-width="0.8" fill="none"/>
-                            <circle cx="24" cy="24" r="6" stroke="#11d483" stroke-width="1.5" fill="none"/>
-                            <path d="M24 18v-4M24 34v-4M30 24h4M14 24h4" stroke="#11d483" stroke-width="1" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <div class="stat-value-wrap">
-                        <span class="stat-number" data-count="3" data-suffix=" años">0 años</span>
-                        <span class="stat-label">Experiencia<br>en Ingeniería</span>
-                    </div>
-                    <div class="stat-progress-track"><div class="stat-progress-bar"></div></div>
-                </div>
-            </div>
-
-            <div class="stat-card" data-delay="240">
-                <div class="stat-card-inner">
-                    <div class="stat-icon-ring">
-                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <polygon points="24,2 46,24 24,46 2,24" stroke="rgba(17,212,131,0.4)" stroke-width="1" fill="rgba(17,212,131,0.04)"/>
-                            <polygon points="24,10 38,24 24,38 10,24" stroke="rgba(17,212,131,0.6)" stroke-width="0.8" fill="none"/>
-                            <path d="M17 24l5 5 9-9" stroke="#11d483" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <div class="stat-value-wrap">
-                        <span class="stat-number" data-count="100" data-suffix="%">0%</span>
-                        <span class="stat-label">Proyectos<br>Desplegados</span>
-                    </div>
-                    <div class="stat-progress-track"><div class="stat-progress-bar"></div></div>
-                </div>
-            </div>
-
-            <div class="stat-card" data-delay="360">
-                <div class="stat-card-inner">
-                    <div class="stat-icon-ring">
-                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <polygon points="24,2 46,24 24,46 2,24" stroke="rgba(17,212,131,0.4)" stroke-width="1" fill="rgba(17,212,131,0.04)"/>
-                            <polygon points="24,10 38,24 24,38 10,24" stroke="rgba(17,212,131,0.6)" stroke-width="0.8" fill="none"/>
-                            <path d="M20 20h8v8h-8z" stroke="#11d483" stroke-width="1.2" fill="rgba(17,212,131,0.1)"/>
-                            <path d="M16 16l3 3M32 16l-3 3M16 32l3-3M32 32l-3-3" stroke="#11d483" stroke-width="1" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <div class="stat-value-wrap">
-                        <span class="stat-number" data-count="5" data-suffix=" IA">0 IA</span>
-                        <span class="stat-label">Agentes de IA<br>Desplegados</span>
-                    </div>
-                    <div class="stat-progress-track"><div class="stat-progress-bar"></div></div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Statement narrativo final -->
-        <div class="stats-statement">
-            <div class="statement-line"></div>
-            <p class="statement-text">
-                No creamos sitios web.<br>
-                <span class="statement-accent">Programamos el futuro.</span>
-            </p>
-            <div class="statement-line"></div>
-        </div>
-    </section>
-
-    <!-- ===== SERVICIOS (SCROLL INVERTIDO AWWWARDS) ===== -->
-    <section id="services" class="services-scroll-container">
-
-        <div class="services-sticky-wrapper">
-            <div class="services-left">
-                <div class="services-text-wrapper">
-                    <!-- Servicio 01 -->
-                    <div class="service-text-item active" data-index="0">
-                        <span class="service-num-tag">01 / SERVICIOS</span>
-                        <h2>Desarrollo de Software</h2>
-                        <p>Creación de aplicaciones web full-stack de alto rendimiento, sistemas de bases de datos relacionales y no relacionales optimizadas, e integraciones fluidas de APIs empresariales.</p>
-                        <ul class="service-tags">
-                            <li>Python</li>
-                            <li>JavaScript</li>
-                            <li>React</li>
-                            <li>Node.js</li>
-                        </ul>
-                    </div>
-                    <!-- Servicio 02 -->
-                    <div class="service-text-item" data-index="1">
-                        <span class="service-num-tag">02 / SERVICIOS</span>
-                        <h2>Integración de IA</h2>
-                        <p>Desarrollo de agentes inteligentes autónomos utilizando LLMs, automatizaciones avanzadas de flujos de trabajo e inferencia local para reducir latencia y optimizar recursos.</p>
-                        <ul class="service-tags">
-                            <li>Google Gemini</li>
-                            <li>Agentes IA</li>
-                            <li>Automatización</li>
-                            <li>FastAPI</li>
-                        </ul>
-                    </div>
-                    <!-- Servicio 03 -->
-                    <div class="service-text-item" data-index="2">
-                        <span class="service-num-tag">03 / SERVICIOS</span>
-                        <h2>Infraestructura y Redes</h2>
-                        <p>Diseño y simulación de topologías de red complejas, implementación de VLANs segmentadas y despliegue robusto en entornos en la nube con altos estándares de seguridad.</p>
-                        <ul class="service-tags">
-                            <li>Cisco</li>
-                            <li>VLANs</li>
-                            <li>Cloud Architecture</li>
-                            <li>DevOps</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="services-right">
-                <div class="services-inverted-track">
-                    <!-- NOTA: El orden físico está invertido para lograr el scroll en sentido opuesto en JS -->
-                    <!-- Visual 03 (Se muestra al final) -->
-                    <div class="service-visual-card" data-index="2">
-                        <div class="visual-wrapper networks-visual">
-                            <div class="glow-bg"></div>
-                            <div class="icon-box"><i class="fas fa-network-wired"></i></div>
-                            <span class="visual-title">INFRASTRUCTURE</span>
-                            <div class="dynamic-lines"></div>
-                        </div>
-                    </div>
-                    <!-- Visual 02 (Se muestra al medio) -->
-                    <div class="service-visual-card" data-index="1">
-                        <div class="visual-wrapper ai-visual">
-                            <div class="glow-bg"></div>
-                            <div class="icon-box"><i class="fas fa-robot"></i></div>
-                            <span class="visual-title">INTELLIGENCE</span>
-                            <div class="brain-pulses"></div>
-                        </div>
-                    </div>
-                    <!-- Visual 01 (Se muestra al inicio) -->
-                    <div class="service-visual-card" data-index="0">
-                        <div class="visual-wrapper code-visual">
-                            <div class="glow-bg"></div>
-                            <div class="icon-box"><i class="fas fa-code"></i></div>
-                            <span class="visual-title">ARCHITECTURE</span>
-                            <div class="code-glow-bars"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== AWWWARDS CYBERPUNK POKER TECH DECK DEAL SCROLLYTELLING ===== -->
     <section class="poker-dealer-section" id="tech-matrix" aria-label="Arquitectura tecnológica Cyberpunk Poker">
         <!-- 3D Cyber Felt Canvas (Tapete Holográfico + Anillo Neón VANTA) -->
                         <!-- Real 3D Rounded Poker Table Section -->
@@ -1471,21 +1152,6 @@
         <div class="founders-masterpiece-wrapper">
 
             <!-- Widescreen Executive Duo Card -->
-            <div class="founders-hero-card vanta-spotlight-card">
-                <div class="fhc-photo-wrap">
-                    <img src="img/team/andres-johan-sviva.jpeg" alt="Andrés Morales y Johan Fernández — Fundadores de VANTA Studio" class="fhc-photo-img" loading="lazy">
-                    <div class="fhc-photo-badge">
-                        <span class="asp-dot"></span>
-                        <span>SOCIOS FUNDADORES // EST. 2026</span>
-                    </div>
-                </div>
-                <div class="fhc-details">
-                    <span class="fhc-details-eyebrow">// DIRECTORES TÉCNICOS</span>
-                    <h3 class="fhc-details-title">Ingeniería Táctica y Visión de Producto</h3>
-                    <p class="fhc-details-desc">Construimos sistemas de software de alto impacto sin intermediarios ni templates. Desde arquitecturas backend resilientes con FastAPI y Cloudflare Zero Trust, hasta modelos de visión artificial en el borde y experiencias web con Three.js y WebGL.</p>
-                </div>
-            </div>
-
             <!-- Two Specialized Pillar Cards -->
             <div class="founders-pillars-grid">
                 
@@ -2076,6 +1742,7 @@
     <script src="nuevas-secciones.js?v=130"></script>
     <script src="hero-portal.js?v=100"></script>
     <script src="philosophy-scrollytelling.js?v=100"></script>
+    <script src="capabilities-scrollytelling.js?v=100"></script>
 </body>
 
 </html>
