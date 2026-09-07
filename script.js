@@ -2578,8 +2578,11 @@ COMMIT;`
             lastScrollY = currentScroll;
 
             const heroHeight = window.innerHeight;
-            const inHero = currentScroll <= heroHeight * 1.2;
-            const progress = Math.min(currentScroll / (heroHeight * 1.2), 1.0);
+            const isWarpActive = (typeof window.__heroWarpProgress === 'number');
+            const warpP = isWarpActive ? window.__heroWarpProgress : 0;
+            const heroPinSpan = window.__heroPinDistance || (heroHeight * 1.4);
+            const inHero = isWarpActive ? (warpP < 1.0 || currentScroll <= (heroHeight + heroPinSpan)) : (currentScroll <= heroHeight * 1.2);
+            const progress = isWarpActive ? warpP : Math.min(currentScroll / (heroHeight * 1.2), 1.0);
 
             scrollVelocity += (Math.abs(deltaScroll) - scrollVelocity) * 0.08;
             const clampedVelocity = Math.min(scrollVelocity, 120);
@@ -2596,15 +2599,51 @@ COMMIT;`
             mouseX += (targetX - mouseX) * 0.05;
             mouseY += (targetY - mouseY) * 0.05;
 
+            let warpBlast = 0;
             if (inHero) {
                 const swayY = Math.sin(time * 0.2) * 0.08;
                 const swayX = Math.cos(time * 0.15) * 0.04;
                 logoGroup.rotation.y = logoRotationObj.y + swayY + mouseX * 0.65;
                 logoGroup.rotation.x = swayX + mouseY * 0.55;
-                const logoOpacity = Math.max(0, 1.0 - progress * 2.5);
-                logoMaterial.opacity = logoOpacity * 0.85;
-                logoGroup.scale.setScalar(0.92 * (1.0 - progress * 0.35) * logoScaleObj.value);
-                logoGroup.position.y = -0.7 + progress * 3.2;
+
+                if (isWarpActive && warpP > 0) {
+                    // --- 3D WARP SPEED PORTAL DRIVE ---
+                    // 1. Centering the V as hyperspace initiates (0% to 35%)
+                    const centerFactor = Math.min(1.0, warpP / 0.35);
+                    const baseX = (window.innerWidth > 991 ? 3.3 : 0);
+                    logoGroup.position.x = baseX * (1.0 - centerFactor);
+                    logoGroup.position.y = -0.7 * (1.0 - centerFactor);
+
+                    // 2. Camera Plunge: accelerates forward through the V towards Z = -3.0
+                    const plunge = Math.pow(warpP, 1.8);
+                    camera.position.z = 7.5 - plunge * 10.5;
+
+                    // 3. Optical FOV expansion (hyper-tunnel distortion 50 -> 78)
+                    camera.fov = 50 + Math.pow(warpP, 1.5) * 28;
+                    camera.updateProjectionMatrix();
+
+                    // 4. Logo Scale & Opacity
+                    logoGroup.scale.setScalar(0.92 * (1.0 + warpP * 0.5) * logoScaleObj.value);
+                    const logoOpacity = (warpP < 0.72) ? 0.85 : Math.max(0, (1.0 - (warpP - 0.72) / 0.28) * 0.85);
+                    logoMaterial.opacity = logoOpacity;
+
+                    // 5. Hyperspace blast force for particle dispersal
+                    warpBlast = (warpP > 0.03) ? Math.pow(warpP, 2.3) * 24.0 : 0;
+                } else {
+                    // Standard hero idle state
+                    if (camera.position.z !== 7.5) {
+                        camera.position.set(0, 0, 7.5);
+                    }
+                    if (camera.fov !== 50) {
+                        camera.fov = 50;
+                        camera.updateProjectionMatrix();
+                    }
+                    updateLogoPosition();
+                    const logoOpacity = Math.max(0, 1.0 - progress * 2.5);
+                    logoMaterial.opacity = logoOpacity * 0.85;
+                    logoGroup.scale.setScalar(0.92 * (1.0 - progress * 0.35) * logoScaleObj.value);
+                    logoGroup.position.y = -0.7 + progress * 3.2;
+                }
 
                 // Partículas de la V
                 const posAttr = geometry.getAttribute('position');
@@ -2666,12 +2705,21 @@ COMMIT;`
                         addZ += (home.z / dist) * amp * 0.5;
                     }
 
-                    const lerpFactor = 0.085;
+                    if (warpBlast > 0) {
+                        addX += (home.x * 2.2 + disintegrationOffsets[i].x * 0.45) * warpBlast;
+                        addY += (home.y * 2.2 + disintegrationOffsets[i].y * 0.45) * warpBlast;
+                        addZ += (home.z * 1.5 + disintegrationOffsets[i].z * 1.3) * warpBlast;
+                    }
+
+                    const lerpFactor = (warpBlast > 0) ? 0.14 : 0.085;
                     posArray[i3]     += (home.x + waveX + (dirX * pulseDisplace) + addX + gravX - posArray[i3]) * lerpFactor;
                     posArray[i3 + 1] += (home.y + waveY + addY + gravY - posArray[i3 + 1]) * lerpFactor;
                     posArray[i3 + 2] += (home.z + waveZ + addZ - posArray[i3 + 2]) * lerpFactor;
 
                     let bright = 0.55 + Math.sin(time * 2.2 + (i % 8)) * 0.12 + pulseFactor * 1.1;
+                    if (warpBlast > 0) {
+                        bright *= (1.0 + Math.min(warpBlast * 0.15, 3.2));
+                    }
                     colArray[i3]     = logoMaterial.color.r * bright;
                     colArray[i3 + 1] = logoMaterial.color.g * bright;
                     colArray[i3 + 2] = logoMaterial.color.b * bright;
@@ -2685,6 +2733,11 @@ COMMIT;`
                 }
             } else {
                 logoMaterial.opacity = 0;
+                if (camera.position.z !== 7.5) {
+                    camera.position.set(0, 0, 7.5);
+                    camera.fov = 50;
+                    camera.updateProjectionMatrix();
+                }
             }
 
             // Opacidad del terreno de olas 3D: NUNCA en el Hero ni al scrollear en Hero/Filosofía.
