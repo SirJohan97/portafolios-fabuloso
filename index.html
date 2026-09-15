@@ -21,7 +21,7 @@
     <meta property="og:title" content="VANTA | Ingeniería de Software de Élite">
     <meta property="og:description" content="Transformamos ideas en ecosistemas digitales de alto impacto. Especialistas en Python, IA con Google Gemini, FastAPI, sistemas web y automatización. Proyectos reales en producción.">
     <meta property="og:url" content="https://vanta-tech.vercel.app/">
-    <meta property="og:image" content="https://vanta-tech.vercel.app/img/pana-fresco.jpeg">
+    <meta property="og:image" content="https://vanta-tech.vercel.app/img/vanta_logo.jpeg">
     <meta property="og:image:alt" content="VANTA Studio — Portafolio de Ingeniería de Software">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -31,7 +31,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="VANTA | Ingeniería de Software de Élite">
     <meta name="twitter:description" content="Transformamos ideas en ecosistemas digitales. Python · FastAPI · IA · PostgreSQL · Vercel. Proyectos reales en producción.">
-    <meta name="twitter:image" content="https://vanta-tech.vercel.app/img/pana-fresco.jpeg">
+    <meta name="twitter:image" content="https://vanta-tech.vercel.app/img/vanta_logo.jpeg">
     <meta name="twitter:image:alt" content="VANTA Studio — Software Engineering Portfolio">
 
     <!-- FAVICON -->
@@ -46,7 +46,7 @@
         "name": "VANTA Studio",
         "url": "https://vanta-tech.vercel.app/",
         "description": "Estudio de desarrollo de software premium especializado en aplicaciones web, automatización con IA, sistemas backend y arquitectura tecnológica a medida.",
-        "image": "https://vanta-tech.vercel.app/img/pana-fresco.jpeg",
+        "image": "https://vanta-tech.vercel.app/img/vanta_logo.jpeg",
         "founders": [
             { "@type": "Person", "name": "Johan Fernández" },
             { "@type": "Person", "name": "Andrés Morales" }
@@ -85,33 +85,9 @@
 </head>
 
 <body>
-    <!-- Film Grain Overlay Cinematográfico -->
-    <canvas id="film-grain-canvas" aria-hidden="true"></canvas>
-
-    <!-- Ambient Auroras / Glows de Fondo -->
+    <!-- Ambient Auroras / Luxury Depth Glows -->
     <div class="ambient-aurora aurora-1"></div>
     <div class="ambient-aurora aurora-2"></div>
-
-    <!-- Bus de Datos SVG (Scroll-Drawing Fiber Path) -->
-    <svg id="vanta-fiber-svg" viewBox="0 0 100 1000" preserveAspectRatio="none">
-        <path id="vanta-fiber-path" d="M 12,0 L 12,180 L 88,260 L 88,440 L 15,560 L 15,740 L 85,820 L 85,1000" />
-    </svg>
-    <div id="vanta-hud-pointer">
-        <span class="hud-crosshair">+</span>
-        <span class="hud-label">[CONNECT_ACTIVE]</span>
-    </div>
-    <!-- Mesh Gradient Background (WebGL-powered atmosphere) -->
-    <canvas id="mesh-gradient-canvas" aria-hidden="true"></canvas>
-
-    <!-- SVG Filters — hidden, GPU-composited water shimmer -->
-    <svg id="svg-filters" xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
-        <defs>
-            <filter id="water-ripple-filter" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
-                <feTurbulence id="water-turbulence" type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="2" result="noise"/>
-                <feDisplacementMap id="water-disp" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
-            </filter>
-        </defs>
-    </svg>
 
     <!-- Custom Cursor -->
     <div class="cursor"></div>
@@ -135,23 +111,8 @@
             <div class="peo-meta" id="peo-meta"></div>
         </div>
     </div>
-    <!-- SVG Filter for Awwwards Slime Liquid Distortion -->
-    <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0; pointer-events: none; opacity: 0; overflow: hidden;">
-        <defs>
-            <filter id="vanta-slime-filter" x="-40%" y="-40%" width="180%" height="180%">
-                <!-- Smooth Gaussian Blur -->
-                <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="blur" id="vanta-slime-blur" />
-                <!-- Alpha threshold matrix for clean organic gooey connections -->
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 17 -6" result="goo" />
-                <!-- Fractal noise for viscous slime ripples -->
-                <feTurbulence type="fractalNoise" baseFrequency="0.03 0.03" numOctaves="2" result="noise" seed="1" />
-                <!-- Displace coordinates based on noise -->
-                <feDisplacementMap in="goo" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" id="vanta-slime-displacement" />
-            </filter>
-        </defs>
-    </svg>
 
-    <!-- Canvas Background para Núcleo 3D de Three.js -->
+    <!-- Canvas Background para Núcleo 3D de Three.js (ÚNICO MOTOR WEBGL) -->
     <div id="canvas-3d-container"></div>
 
 
@@ -191,8 +152,8 @@
             <div class="nav-indicator-capsule"></div>
             <li><a href="#home">Inicio</a></li>
             <li><a href="#portfolio">Obras</a></li>
-            <li><a href="#capabilities">Capacidades</a></li>
-            <li><a href="#pricing">Planes</a></li>
+            <li><a href="#tech-matrix">Arquitectura</a></li>
+            <li><a href="#testimonials">Reportes</a></li>
             <li><a href="#contact" class="nav-cta">Iniciar Proyecto</a></li>
         </ul>
 
@@ -206,13 +167,8 @@
         </div>
     </nav>
 
-    <!-- ===== HERO ===== -->
+    <!-- ===== ACTO 01: HERO ===== -->
     <header id="home" class="hero">
-        <!-- HUD Blueprint Crosshairs -->
-        <div class="hero-hud-decor decor-top-left">+</div>
-        <div class="hero-hud-decor decor-top-right">+</div>
-        <div class="hero-hud-decor decor-bottom-left">+</div>
-        <div class="hero-hud-decor decor-bottom-right">+</div>
 
         <!-- Quantum Warp Speed Portal Stage -->
         <div class="hero-portal-stage" id="hero-portal-stage" aria-hidden="true">
@@ -273,129 +229,7 @@
         </div>
     </header>
 
-    <!-- ===== FILOSOFÍA (NARRATIVE STORYTELLING PINNED — ACTO 02) ===== -->
-    <section class="vanta-philosophy-section" id="philosophy">
-        <div class="philosophy-sticky-container">
-            <!-- HUD Tactical Top Bar -->
-            <div class="ph-hud-topbar">
-                <div class="ph-hud-pill">
-                    <span class="ph-pill-dot"></span>
-                    <span class="ph-pill-title">MANIFIESTO // ACTO_02</span>
-                </div>
-                <div class="ph-chapter-stepper" aria-label="Navegación de capítulos">
-                    <button class="ph-step active" data-step="1" type="button">01. CAOS</button>
-                    <span class="ph-step-divider">/</span>
-                    <button class="ph-step" data-step="2" type="button">02. HIERRO</button>
-                    <span class="ph-step-divider">/</span>
-                    <button class="ph-step" data-step="3" type="button">03. ESCALA</button>
-                </div>
-                <div class="ph-hud-status">
-                    <span class="hud-led"></span>
-                    <span class="hud-status-text">SYS_DIAGNOSTIC: CAOS_DIGITAL</span>
-                </div>
-            </div>
-
-            <!-- HUD Blueprint Crosshairs -->
-            <div class="ph-hud-decor decor-top-left">+</div>
-            <div class="ph-hud-decor decor-top-right">+</div>
-            <div class="ph-hud-decor decor-bottom-left">+</div>
-            <div class="ph-hud-decor decor-bottom-right">+</div>
-            
-            <div class="philosophy-layout-grid">
-                <!-- Columna Izquierda: Texto Narrativo Cinético -->
-                <div class="ph-col-left">
-                    <div class="philosophy-chapters-stage">
-                        <!-- Capítulo 01 -->
-                        <div class="ph-chapter ph-chapter-1" data-chapter="1">
-                            <div class="ph-chapter-badge ph-badge-red">
-                                <i class="fas fa-biohazard"></i>
-                                <span>CAPÍTULO_01 // CAOS_DIGITAL</span>
-                            </div>
-                            <h2 class="ph-chapter-title font-display">La velocidad sin cimientos destruye valor.</h2>
-                            <p class="ph-chapter-desc">El 95% del software moderno falla en producción bajo carga real. Frameworks inflados, dependencias frágiles y código desechable son el estándar de la industria. En VANTA nos negamos rotundamente a construir sobre arena.</p>
-                            <div class="ph-chapter-metrics">
-                                <div class="ph-metric-chip chip-red">
-                                    <span class="pmc-val">95%</span>
-                                    <span class="pmc-lbl">Tasa de fallo en picos de tráfico</span>
-                                </div>
-                                <div class="ph-metric-chip chip-red">
-                                    <span class="pmc-val">&gt;4.2s</span>
-                                    <span class="pmc-lbl">Latencia promedio por bloatware</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Capítulo 02 -->
-                        <div class="ph-chapter ph-chapter-2" data-chapter="2">
-                            <div class="ph-chapter-badge ph-badge-amber">
-                                <i class="fas fa-layer-group"></i>
-                                <span>CAPÍTULO_02 // OBSESIÓN_TÉCNICA</span>
-                            </div>
-                            <h2 class="ph-chapter-title font-display">Construimos sobre hierro y código limpio.</h2>
-                            <p class="ph-chapter-desc">Diseñamos bases de datos relacionales blindadas, esquemas desacoplados y algoritmos con complejidad O(1) u O(log n). Pensamos en cada consulta SQL, en cada ciclo de procesador y en la integridad absoluta de cada transacción.</p>
-                            <div class="ph-chapter-metrics">
-                                <div class="ph-metric-chip chip-amber">
-                                    <span class="pmc-val">&lt;15ms</span>
-                                    <span class="pmc-lbl">Tiempo de respuesta en API Core</span>
-                                </div>
-                                <div class="ph-metric-chip chip-amber">
-                                    <span class="pmc-val">100%</span>
-                                    <span class="pmc-lbl">Arquitectura ACID &amp; RLS blindada</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Capítulo 03 -->
-                        <div class="ph-chapter ph-chapter-3" data-chapter="3">
-                            <div class="ph-chapter-badge ph-badge-green">
-                                <i class="fas fa-microchip"></i>
-                                <span>CAPÍTULO_03 // ESCALABILIDAD_PURA</span>
-                            </div>
-                            <h2 class="ph-chapter-title font-display">Ecosistemas digitales listos para el futuro.</h2>
-                            <p class="ph-chapter-desc">Integramos pipelines de Inteligencia Artificial en el borde (Edge AI), visión computacional en tiempo real y microservicios asíncronos de alta disponibilidad. Creamos sistemas que soportan su propio crecimiento exponencial.</p>
-                            <div class="ph-chapter-metrics">
-                                <div class="ph-metric-chip chip-green">
-                                    <span class="pmc-val">99.99%</span>
-                                    <span class="pmc-lbl">SLA de resiliencia operativa</span>
-                                </div>
-                                <div class="ph-metric-chip chip-green">
-                                    <span class="pmc-val">10x</span>
-                                    <span class="pmc-lbl">Capacidad de escalado horizontal</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Columna Derecha: Cámara Holográfica de Visualizadores 3D -->
-                <div class="ph-col-right" aria-hidden="true">
-                    <div class="ph-visualizer-harness">
-                        <div class="pvh-scanner-line"></div>
-                        <div class="pvh-crosshairs pvh-tl">+</div>
-                        <div class="pvh-crosshairs pvh-tr">+</div>
-                        <div class="pvh-crosshairs pvh-bl">+</div>
-                        <div class="pvh-crosshairs pvh-br">+</div>
-                        <div class="pvh-badge">HOLO_SIM // 60 FPS</div>
-
-                        <!-- Cap 01: CAOS_DIGITAL — Partículas de entropía y fragmentos -->
-                        <canvas id="ph-canvas-1" class="ph-chapter-canvas active"></canvas>
-                        <!-- Cap 02: OBSESIÓN_TÉCNICA — Dodecaedro Three.js con orbitales de datos -->
-                        <canvas id="ph-canvas-2" class="ph-chapter-canvas"></canvas>
-                        <!-- Cap 03: ESCALABILIDAD — Red neuronal Three.js interactiva -->
-                        <canvas id="ph-canvas-3" class="ph-chapter-canvas"></canvas>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Barra de Progreso Inferior Táctica -->
-            <div class="philosophy-progress-track">
-                <div class="philosophy-progress-fill"></div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ===== PORTAFOLIO (SCROLL HORIZONTAL AWWWARDS) ===== -->
+    <!-- ===== ACTO 02: OBRAS FLAGSHIP (SCROLL HORIZONTAL AWWWARDS) ===== -->
     <section class="portfolio-scroll-container" id="portfolio">
         <div class="sticky-wrapper">
             <div class="portfolio-side-header">
@@ -548,247 +382,11 @@
                         <button class="btn-outline info-btn" data-info="ventastrack">Saber más</button>
                         <a href="#contact" class="btn">Cotizar Sistema <i class="fas fa-file-invoice-dollar"></i></a>
                     </div>
-                </div>
-
-                <!-- PROYECTO 8: INVENTARIO PRO -->
-                <div class="card" data-project="inventario">
-                    <div class="card-image-wrap">
-                        <img src="img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg" alt="Inventario" data-cursor-thumb="img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg">
-                    </div>
-                    <div class="card-overlay">
-                        <span class="promo-badge">¡OFERTA ESPECIAL!</span>
-                        <h3>Sistema de Inventario Profesional</h3>
-                        <p>Software robusto y 100% personalizable. Optimiza tu control de stock con una interfaz intuitiva y reportes avanzados.</p>
-                    </div>
-                    <div class="card-menu">
-                        <button class="btn-outline info-btn" data-info="inventario">Ver Promoción</button>
-                        <a href="#contact" class="btn">Cotizar ahora <i class="fas fa-shopping-cart"></i></a>
-                    </div>
-                </div>
-            </div>
+                </div></div>
         </div>
     </section>
 
-    <!-- ===== KINETIC CAPABILITIES SCROLLYTELLING ===== -->
-    <section class="kinetic-capabilities-section" id="capabilities" aria-label="Capacidades Técnicas de Vanguardia">
-        <div class="kc-ambient-grid" aria-hidden="true"></div>
-        <div class="kc-ambient-glow" aria-hidden="true"></div>
-
-        <div class="kc-pinned-stage">
-            <!-- Top HUD Header -->
-            <div class="kc-stage-header">
-                <div class="kc-breadcrumb">
-                    <span class="kc-status-pulse"></span>
-                    <span class="kc-eyebrow">// CORE_CAPABILITIES.V5 &bull; SCROLLYTELLING HARNESS</span>
-                </div>
-                <div class="kc-counter">
-                    <span class="kc-active-num" id="kcActiveNum">01</span>
-                    <span class="kc-total-num">/ 04</span>
-                </div>
-            </div>
-
-            <!-- Main Kinetic Grid: Left Vector List + Right Telemetry Harness -->
-            <div class="kc-viewport-layout">
-                
-                <!-- Left: Interactive Vector Track -->
-                <div class="kc-vector-track" id="kcVectorTrack">
-                    
-                    <!-- Vector 01 -->
-                    <div class="kc-vector-item active" data-vector="0">
-                        <div class="kc-vector-header">
-                            <span class="kc-vector-idx">01 // VISIÓN COMPUTACIONAL &amp; EDGE AI</span>
-                            <span class="kc-vector-badge">EDGE_NATIVE</span>
-                        </div>
-                        <h3 class="kc-vector-title">Inferencia Táctica en el Borde. Latencia Cero.</h3>
-                        <p class="kc-vector-desc">Modelos ultraligeros YOLOv8 y OpenCV optimizados con TensorRT sobre hardware local. Procesamiento en tiempo real a 60 FPS sin dependencia de nubes externas ni filtración de datos sensibles.</p>
-                        <div class="kc-vector-tags">
-                            <span class="kcv-tag"><i class="fas fa-brain"></i> YOLOv8 Custom</span>
-                            <span class="kcv-tag"><i class="fas fa-microchip"></i> TensorRT INT8</span>
-                            <span class="kcv-tag"><i class="fas fa-bolt"></i> &lt;15ms P99</span>
-                        </div>
-                        <div class="kc-vector-progress-bar"><div class="kcv-progress-fill"></div></div>
-                    </div>
-
-                    <!-- Vector 02 -->
-                    <div class="kc-vector-item" data-vector="1">
-                        <div class="kc-vector-header">
-                            <span class="kc-vector-idx">02 // CIBERSEGURIDAD OFENSIVA &amp; AUDITORÍA</span>
-                            <span class="kc-vector-badge kc-vector-badge--cyber">ZERO_TRUST</span>
-                        </div>
-                        <h3 class="kc-vector-title">Encontramos las Brechas Antes que los Atacantes.</h3>
-                        <p class="kc-vector-desc">Pruebas de intrusión profunda, simulación de adversarios APT y auditorías de código bajo metodología OWASP Top 10. Blindamos infraestructura crítica con defensas perimetrales y Cloudflare Zero Trust.</p>
-                        <div class="kc-vector-tags">
-                            <span class="kcv-tag"><i class="fas fa-shield-alt"></i> Red Teaming</span>
-                            <span class="kcv-tag"><i class="fas fa-bug"></i> OWASP Top 10</span>
-                            <span class="kcv-tag"><i class="fas fa-network-wired"></i> Zero Trust</span>
-                        </div>
-                        <div class="kc-vector-progress-bar"><div class="kcv-progress-fill"></div></div>
-                    </div>
-
-                    <!-- Vector 03 -->
-                    <div class="kc-vector-item" data-vector="2">
-                        <div class="kc-vector-header">
-                            <span class="kc-vector-idx">03 // SISTEMAS DISTRIBUIDOS DE ALTA CONCURRENCIA</span>
-                            <span class="kc-vector-badge kc-vector-badge--infra">RESILIENT_CORE</span>
-                        </div>
-                        <h3 class="kc-vector-title">Arquitecturas Backend que Soportan Cargas Críticas.</h3>
-                        <p class="kc-vector-desc">Microservicios asíncronos en FastAPI, Rust y Go, orquestación contenerizada y PostgreSQL con Row Level Security. Diseñados para tolerar cientos de miles de peticiones simultáneas con uptime 99.99%.</p>
-                        <div class="kc-vector-tags">
-                            <span class="kcv-tag"><i class="fas fa-server"></i> FastAPI / Rust</span>
-                            <span class="kcv-tag"><i class="fas fa-database"></i> PostgreSQL RLS</span>
-                            <span class="kcv-tag"><i class="fas fa-cubes"></i> Docker Clusters</span>
-                        </div>
-                        <div class="kc-vector-progress-bar"><div class="kcv-progress-fill"></div></div>
-                    </div>
-
-                    <!-- Vector 04 -->
-                    <div class="kc-vector-item" data-vector="3">
-                        <div class="kc-vector-header">
-                            <span class="kc-vector-idx">04 // EXPERIENCIAS WEB AWWWARDS &amp; 3D</span>
-                            <span class="kc-vector-badge kc-vector-badge--design">AWWWARDS_GRADE</span>
-                        </div>
-                        <h3 class="kc-vector-title">Narrativas Digitales que Convierten y Cautivan.</h3>
-                        <p class="kc-vector-desc">WebGL, Three.js, shaders GLSL personalizados y scrollytelling cinemático con GSAP. Transformamos productos digitales ordinarios en obras de arte interactivas que proyectan máximo estatus corporativo.</p>
-                        <div class="kc-vector-tags">
-                            <span class="kcv-tag"><i class="fas fa-cube"></i> Three.js / WebGL</span>
-                            <span class="kcv-tag"><i class="fas fa-magic"></i> GLSL Shaders</span>
-                            <span class="kcv-tag"><i class="fas fa-film"></i> Scrollytelling GSAP</span>
-                        </div>
-                        <div class="kc-vector-progress-bar"><div class="kcv-progress-fill"></div></div>
-                    </div>
-
-                </div>
-
-                <!-- Right: Morphing Telemetry Stage Harness -->
-                <div class="kc-telemetry-harness">
-                    
-                    <!-- STAGE 01: Edge Computer Vision Tactical HUD -->
-                    <div class="kc-stage-panel active" id="kcStage0">
-                        <div class="kc-hud-window">
-                            <div class="kch-top">
-                                <div class="kch-dots"><span></span><span></span><span></span></div>
-                                <div class="kch-title"><i class="fas fa-crosshairs"></i> SVIVA_EDGE_TELEMETRY // FEED_ALPHA</div>
-                                <div class="kch-status-pill kch-status--live"><span class="kch-live-dot"></span> LIVE 60FPS</div>
-                            </div>
-                            <div class="kch-viewport kch-viewport--vision">
-                                <div class="vision-grid-lines"></div>
-                                <div class="vision-radar-sweep"></div>
-                                <!-- Target 1 -->
-                                <div class="vision-bbox" style="top: 24%; left: 20%; width: 28%; height: 46%;">
-                                    <div class="bbox-corner tl"></div><div class="bbox-corner tr"></div>
-                                    <div class="bbox-corner bl"></div><div class="bbox-corner br"></div>
-                                    <div class="bbox-tag">HUMAN_THREAT_01 // 99.4%</div>
-                                    <div class="bbox-coords">X: 420.4 Y: 812.1</div>
-                                </div>
-                                <!-- Target 2: Weapon detection -->
-                                <div class="vision-bbox vision-bbox--danger" style="top: 48%; left: 42%; width: 22%; height: 22%;">
-                                    <div class="bbox-corner tl"></div><div class="bbox-corner tr"></div>
-                                    <div class="bbox-corner bl"></div><div class="bbox-corner br"></div>
-                                    <div class="bbox-tag bbox-tag--danger"><i class="fas fa-exclamation-triangle"></i> ARMA_DETECTADA 98.7%</div>
-                                </div>
-                                <div class="vision-hud-footer">
-                                    <div class="vhf-stat"><span>LATENCIA:</span><strong>11.4ms</strong></div>
-                                    <div class="vhf-stat"><span>NPU_LOAD:</span><strong>38%</strong></div>
-                                    <div class="vhf-stat"><span>ENGINE:</span><strong>TENSORRT INT8</strong></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- STAGE 02: Offensive Security Cyber Terminal -->
-                    <div class="kc-stage-panel" id="kcStage1">
-                        <div class="kc-hud-window kc-hud-window--cyber">
-                            <div class="kch-top">
-                                <div class="kch-dots"><span></span><span></span><span></span></div>
-                                <div class="kch-title"><i class="fas fa-terminal"></i> VANTA_SOC // RED_TEAM_AUDIT_TERMINAL</div>
-                                <div class="kch-status-pill kch-status--cyber"><i class="fas fa-shield-alt"></i> AUDITING</div>
-                            </div>
-                            <div class="kch-viewport kch-viewport--terminal">
-                                <div class="terminal-log-lines">
-                                    <div class="t-line dim">[03:41:12] INITIALIZING ADVERSARY SIMULATION SUITE v4.8...</div>
-                                    <div class="t-line">[03:41:13] SCANNING TARGET PORTS: 443/TLS, 8080/REST, 5432/PGSQL...</div>
-                                    <div class="t-line ok">[03:41:14] PORT 443: TLS 1.3 SECURED — CIPHER OK</div>
-                                    <div class="t-line warn">[03:41:15] AUDITING REST API ENDPOINTS: OWASP TOP 10 SIMULATION...</div>
-                                    <div class="t-line warn">&gt; INJECTION_TEST: 1,420 VECTORS ANALYZED &bull; 0 BREACHES FOUND</div>
-                                    <div class="t-line ok">[03:41:16] POSTGRESQL RLS ENFORCED: ROW-LEVEL TENANT ISOLATION 100%</div>
-                                    <div class="t-line cyber">[03:41:17] CLOUDFLARE ZERO-TRUST TUNNEL: ACTIVE [LATAM-EDGE-01]</div>
-                                    <div class="t-line ok-bright">&gt;&gt; VERDICT: ZERO HIGH/CRITICAL CVEs DETECTED. PERIMETER HARDENED.</div>
-                                </div>
-                                <div class="terminal-cipher-strip">
-                                    <span class="tcs-label">SHA256_INTEGRITY:</span>
-                                    <span class="tcs-hash" id="kcCipherHash">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- STAGE 03: Distributed Cluster Mesh -->
-                    <div class="kc-stage-panel" id="kcStage2">
-                        <div class="kc-hud-window kc-hud-window--infra">
-                            <div class="kch-top">
-                                <div class="kch-dots"><span></span><span></span><span></span></div>
-                                <div class="kch-title"><i class="fas fa-network-wired"></i> DISTRIBUTED_CORE // MESH_MONITOR</div>
-                                <div class="kch-status-pill kch-status--infra">100K REQ/S</div>
-                            </div>
-                            <div class="kch-viewport kch-viewport--infra">
-                                <div class="mesh-cluster-grid">
-                                    <div class="mesh-node active">
-                                        <span class="mn-status"></span>
-                                        <span class="mn-name">EDGE_GW_01</span>
-                                        <span class="mn-load">1.2ms &bull; 99.99%</span>
-                                    </div>
-                                    <div class="mesh-node active">
-                                        <span class="mn-status"></span>
-                                        <span class="mn-name">FASTAPI_POD_A</span>
-                                        <span class="mn-load">12.4k rps</span>
-                                    </div>
-                                    <div class="mesh-node active">
-                                        <span class="mn-status"></span>
-                                        <span class="mn-name">FASTAPI_POD_B</span>
-                                        <span class="mn-load">14.1k rps</span>
-                                    </div>
-                                    <div class="mesh-node active">
-                                        <span class="mn-status"></span>
-                                        <span class="mn-name">PG_PRIMARY_RLS</span>
-                                        <span class="mn-load">Pool: 42/500</span>
-                                    </div>
-                                </div>
-                                <div class="mesh-waveform-wrap">
-                                    <canvas id="kcMeshCanvas" width="460" height="90"></canvas>
-                                </div>
-                                <div class="mesh-footer-metrics">
-                                    <div class="mfm-item"><span>TOTAL CONCURRENCY</span><strong>100,000 / sec</strong></div>
-                                    <div class="mfm-item"><span>P99 LATENCY</span><strong>1.8 ms</strong></div>
-                                    <div class="mfm-item"><span>UPTIME</span><strong>99.99%</strong></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- STAGE 04: Awwwards WebGL Interactive Stage -->
-                    <div class="kc-stage-panel" id="kcStage3">
-                        <div class="kc-hud-window kc-hud-window--creative">
-                            <div class="kch-top">
-                                <div class="kch-dots"><span></span><span></span><span></span></div>
-                                <div class="kch-title"><i class="fas fa-cube"></i> WEBGL_RENDER_PIPELINE // GLSL_SHADERS</div>
-                                <div class="kch-status-pill kch-status--creative">60 FPS GPU</div>
-                            </div>
-                            <div class="kch-viewport kch-viewport--creative">
-                                <canvas id="kcCreativeCanvas" class="kc-creative-canvas"></canvas>
-                                <div class="creative-overlay-specs">
-                                    <div class="cos-badge">GSAP + THREE.JS + LENIS</div>
-                                    <div class="cos-detail">Interpolación elástica, deformación de mallas e interactividad magnética en tiempo real.</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </section>
-
+    <!-- ===== ACTO 03: THE POKER ARENA: INGENIERÍA & FUNDADORES (SCROLLYTELLING HEADS-UP) ===== -->
     <section class="poker-dealer-section" id="tech-matrix" aria-label="Arquitectura tecnológica Cyberpunk Poker">
         <!-- 3D Cyber Felt Canvas (Tapete Holográfico + Anillo Neón VANTA) -->
                         <!-- Real 3D Rounded Poker Table Section -->
@@ -1130,258 +728,7 @@
         </div>
     </section>
 
-    <!-- ===== EQUIPO DE FUNDADORES ===== -->
-    <section id="team" class="team-section">
-        <!-- Canvas de pulsos eléctricos -->
-        <canvas id="electric-canvas"></canvas>
-
-        <!-- Marquesina deslizante infinita de fondo -->
-        <div class="team-marquee" aria-hidden="true">
-            <div class="marquee-track">
-                <span>VANTA SOFTWARE ENGINEERS • CORE ARCHITECTS • SYSTEMS ARCHITECTURE • UI/UX ENGINEERING • FULL-STACK LEADERSHIP • </span>
-                <span>VANTA SOFTWARE ENGINEERS • CORE ARCHITECTS • SYSTEMS ARCHITECTURE • UI/UX ENGINEERING • FULL-STACK LEADERSHIP • </span>
-            </div>
-        </div>
-
-        <div class="section-header-team text-center">
-            <span class="cap-eyebrow">// FOUNDING_ENGINEERS.SYS</span>
-            <h2 class="section-title"><span class="reveal-word">Liderazgo</span> <span class="reveal-word">Técnico</span></h2>
-            <p class="section-subtitle">Arquitectos de software y diseñadores construyendo sistemas que no fallan.</p>
-        </div>
-
-        <div class="founders-masterpiece-wrapper">
-
-            <!-- Widescreen Executive Duo Card -->
-            <!-- Two Specialized Pillar Cards -->
-            <div class="founders-pillars-grid">
-                
-                <!-- Andrés Morales Pillar -->
-                <div class="founder-pillar-card founder-pillar-card--cyber vanta-spotlight-card vanta-spotlight-card--cyber">
-                    <div class="fpc-avatar-podium fpc-podium--robin">
-                        <div class="fpc-avatar-aura"></div>
-                        <img src="img/team/andres_robin.png" alt="Andrés Morales // Robin" class="fpc-avatar-img" loading="lazy">
-                        <span class="fpc-codename fpc-codename--robin"><i class="fas fa-mask"></i> ALIAS: ROBIN // TACTICAL ARCHITECT</span>
-                    </div>
-                    <div class="fpc-header">
-                        <div>
-                            <h4 class="fpc-name">Andrés Morales</h4>
-                            <span class="fpc-role">// SYSTEMS ARCHITECT &amp; BACKEND LEAD</span>
-                        </div>
-                    </div>
-                    <p class="fpc-bio">Especialista en arquitecturas distribuidas de alta concurrencia, microservicios asíncronos con FastAPI, bases de datos PostgreSQL optimizadas y seguridad perimetral Zero-Trust.</p>
-                    <div class="team-skills-grid">
-                        <div class="tsk-item"><span>Python / FastAPI</span><small>Core</small></div>
-                        <div class="tsk-item"><span>PostgreSQL &amp; RLS</span><small>Data</small></div>
-                        <div class="tsk-item"><span>Cloudflare Zero Trust</span><small>Infra</small></div>
-                        <div class="tsk-item"><span>Docker &amp; Linux</span><small>DevOps</small></div>
-                    </div>
-                </div>
-
-                <!-- Johan Fernández Pillar -->
-                <div class="founder-pillar-card founder-pillar-card--ai vanta-spotlight-card vanta-spotlight-card--ai">
-                    <div class="fpc-avatar-podium fpc-podium--gohan">
-                        <div class="fpc-avatar-aura"></div>
-                        <img src="img/team/johan_gohan.png" alt="Johan Fernández // Gohan" class="fpc-avatar-img" loading="lazy">
-                        <span class="fpc-codename fpc-codename--gohan"><i class="fas fa-bolt"></i> ALIAS: GOHAN // LATENT VISIONARY</span>
-                    </div>
-                    <div class="fpc-header">
-                        <div>
-                            <h4 class="fpc-name">Johan Fernández</h4>
-                            <span class="fpc-role">// UI/UX ENGINEER &amp; AI VISION LEAD</span>
-                        </div>
-                    </div>
-                    <p class="fpc-bio">Especialista en experiencias interactivas inmersivas con Three.js y GSAP, pipelines de Visión Artificial con YOLOv8 en el Edge e integración de agentes autónomos con Gemini API.</p>
-                    <div class="team-skills-grid">
-                        <div class="tsk-item"><span>Computer Vision (YOLO)</span><small>AI</small></div>
-                        <div class="tsk-item"><span>Three.js &amp; WebGL</span><small>3D</small></div>
-                        <div class="tsk-item"><span>UI/UX &amp; GSAP</span><small>Design</small></div>
-                        <div class="tsk-item"><span>LLM / Gemini API</span><small>Agents</small></div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-        <!-- ===== EL PROTOCOLO: BLUEPRINT CIRCUIT ===== -->
-    <section id="metodologia" class="protocol-section" aria-label="Protocolo de Ingeniería">
-        <div class="protocol-container">
-            <div class="section-header-protocol text-center">
-                <span class="cap-eyebrow">// BLUEPRINT_PIPELINE.SYS &bull; ZERO_DEFECT</span>
-                <h2 class="section-title"><span class="reveal-word">Protocolo</span> <span class="reveal-word">de</span> <span class="reveal-word">Ingeniería</span></h2>
-                <p class="section-subtitle">Cinco fases tácticas conectadas en un solo ciclo de ejecución continua.</p>
-            </div>
-
-            <div class="protocol-circuit-wrap">
-                <!-- Glowing Circuit Conductor Line -->
-                <div class="protocol-conductor-line">
-                    <div class="protocol-pulse-head"></div>
-                </div>
-
-                <div class="protocol-nodes-row">
-                    <!-- Node 01 -->
-                    <div class="protocol-node-item active" data-step="1">
-                        <div class="pni-marker">
-                            <span class="pni-num">01</span>
-                            <div class="pni-ring"></div>
-                        </div>
-                        <div class="pni-content">
-                            <span class="pni-duration">SEMANA 1</span>
-                            <h3 class="pni-title">Discovery &amp; Threat Model</h3>
-                            <p class="pni-desc">Modelado de lógica, vectores de ataque y blueprint C4.</p>
-                            <span class="pni-deliverable"><i class="fas fa-file-code"></i> Blueprint C4 + Riesgos</span>
-                        </div>
-                    </div>
-
-                    <!-- Node 02 -->
-                    <div class="protocol-node-item" data-step="2">
-                        <div class="pni-marker">
-                            <span class="pni-num">02</span>
-                            <div class="pni-ring"></div>
-                        </div>
-                        <div class="pni-content">
-                            <span class="pni-duration">SEMANA 2</span>
-                            <h3 class="pni-title">Core Backend &amp; Schema</h3>
-                            <p class="pni-desc">APIs asíncronas en FastAPI y PostgreSQL con RLS.</p>
-                            <span class="pni-deliverable"><i class="fas fa-database"></i> APIs Asíncronas + RLS</span>
-                        </div>
-                    </div>
-
-                    <!-- Node 03 -->
-                    <div class="protocol-node-item" data-step="3">
-                        <div class="pni-marker">
-                            <span class="pni-num">03</span>
-                            <div class="pni-ring"></div>
-                        </div>
-                        <div class="pni-content">
-                            <span class="pni-duration">SEMANA 3-4</span>
-                            <h3 class="pni-title">WebGL &amp; Kinetic UI</h3>
-                            <p class="pni-desc">Shaders GLSL, Three.js y scrollytelling a 60 FPS.</p>
-                            <span class="pni-deliverable"><i class="fas fa-cube"></i> UI Cinemática 60 FPS</span>
-                        </div>
-                    </div>
-
-                    <!-- Node 04 -->
-                    <div class="protocol-node-item" data-step="4">
-                        <div class="pni-marker">
-                            <span class="pni-num">04</span>
-                            <div class="pni-ring"></div>
-                        </div>
-                        <div class="pni-content">
-                            <span class="pni-duration">SEMANA 5</span>
-                            <h3 class="pni-title">Offensive Hardening</h3>
-                            <p class="pni-desc">Pentesting OWASP Top 10 y simulación APT.</p>
-                            <span class="pni-deliverable"><i class="fas fa-shield-alt"></i> Certificación Zero-Defect</span>
-                        </div>
-                    </div>
-
-                    <!-- Node 05 -->
-                    <div class="protocol-node-item" data-step="5">
-                        <div class="pni-marker">
-                            <span class="pni-num">05</span>
-                            <div class="pni-ring"></div>
-                        </div>
-                        <div class="pni-content">
-                            <span class="pni-duration">PRODUCCIÓN</span>
-                            <h3 class="pni-title">Edge Deployment</h3>
-                            <p class="pni-desc">Túneles Cloudflare Zero Trust y telemetría 24/7.</p>
-                            <span class="pni-deliverable"><i class="fas fa-satellite-dish"></i> Monitoreo 99.99%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== MODELOS DE COMPROMISO TÁCTICO ===== -->
-    <section id="pricing" class="portfolio pricing-section">
-        <div class="pricing-intro text-center">
-            <span class="cap-eyebrow">// ENGAGEMENT_MODELS.SYS &bull; SIN INTERMEDIARIOS</span>
-            <h2 class="section-title"><span class="reveal-word">Alianzas</span> <span class="reveal-word">y</span> <span class="reveal-word">Compromiso</span></h2>
-            <p class="section-subtitle">Modelos de ingeniería directa y transparente. Construimos software a medida diseñado para perdurar.</p>
-        </div>
-
-        <div class="engagement-models-grid">
-            
-            <!-- Modelo 01: Sprint Táctico -->
-            <div class="engagement-card vanta-spotlight-card">
-                <div class="ec-header">
-                    <span class="ec-idx">MODEL // 01</span>
-                    <span class="ec-tag">AGILE DEPLOY</span>
-                </div>
-                <h3 class="ec-title">Sprint Táctico</h3>
-                <p class="ec-desc">Para fundadores y empresas que necesitan lanzar un producto validado o una experiencia web interactiva en tiempo récord.</p>
-                <div class="ec-meta">
-                    <span class="ec-time"><i class="fas fa-stopwatch"></i> Ciclo de 2 Semanas</span>
-                    <span class="ec-scope"><i class="fas fa-check-circle"></i> MVP / High-End Web / Landing 3D</span>
-                </div>
-                <ul class="ec-deliverables">
-                    <li><i class="fas fa-check"></i> Arquitectura visual y maquetación cinemática</li>
-                    <li><i class="fas fa-check"></i> Integración backend asíncrono y base de datos</li>
-                    <li><i class="fas fa-check"></i> Despliegue en producción con CDN global</li>
-                    <li><i class="fas fa-check"></i> Optimización de rendimiento 60 FPS garantizada</li>
-                </ul>
-                <a href="https://wa.me/584127121162?text=Hola,%20me%20interesa%20conversar%20sobre%20el%20Sprint%20T%C3%A1ctico%20de%20VANTA" class="btn-outline ec-btn magnetic-btn" target="_blank" rel="noopener noreferrer">
-                    <span>Consultar Disponibilidad</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <!-- Modelo 02: Core Architecture (Destacado) -->
-            <div class="engagement-card engagement-card--featured vanta-spotlight-card">
-                <div class="ec-featured-badge">FLAGSHIP ARCHITECTURE</div>
-                <div class="ec-header">
-                    <span class="ec-idx">MODEL // 02</span>
-                    <span class="ec-tag ec-tag--green">FULL-SYSTEM</span>
-                </div>
-                <h3 class="ec-title">Core Architecture</h3>
-                <p class="ec-desc">Construcción integral de ecosistemas de software empresariales, pipelines de IA y plataformas multi-tenant de misión crítica.</p>
-                <div class="ec-meta">
-                    <span class="ec-time"><i class="fas fa-stopwatch"></i> Ciclo de 4 a 8 Semanas</span>
-                    <span class="ec-scope"><i class="fas fa-check-circle"></i> Sistema Integral End-to-End</span>
-                </div>
-                <ul class="ec-deliverables">
-                    <li><i class="fas fa-check"></i> Backend distribuido en FastAPI / Rust con PostgreSQL RLS</li>
-                    <li><i class="fas fa-check"></i> Modelos de Visión Artificial (YOLO) o IA Generativa (Gemini)</li>
-                    <li><i class="fas fa-check"></i> Túneles perimetrales Cloudflare Zero Trust</li>
-                    <li><i class="fas fa-check"></i> Interfaz frontend interactiva de estatus internacional</li>
-                    <li><i class="fas fa-check"></i> Código 100% propietario sin vendor lock-in</li>
-                </ul>
-                <a href="https://wa.me/584127121162?text=Hola,%20quiero%20cotizar%20un%20proyecto%20con%20Core%20Architecture%20en%20VANTA" class="btn ec-btn magnetic-btn" target="_blank" rel="noopener noreferrer">
-                    <span>Iniciar Consultoría Técnica</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <!-- Modelo 03: Escudo & Retainer -->
-            <div class="engagement-card vanta-spotlight-card">
-                <div class="ec-header">
-                    <span class="ec-idx">MODEL // 03</span>
-                    <span class="ec-tag ec-tag--cyber">CONTINUOUS DEFENSE</span>
-                </div>
-                <h3 class="ec-title">Escudo &amp; Hardening</h3>
-                <p class="ec-desc">Auditoría continua de seguridad, pruebas de penetración ofensiva y evolución tecnológica para infraestructuras operativas.</p>
-                <div class="ec-meta">
-                    <span class="ec-time"><i class="fas fa-stopwatch"></i> Retainer Mensual o Auditoría Puntual</span>
-                    <span class="ec-scope"><i class="fas fa-check-circle"></i> Red Teaming &amp; Hardening</span>
-                </div>
-                <ul class="ec-deliverables">
-                    <li><i class="fas fa-check"></i> Pentesting web bajo metodología OWASP Top 10</li>
-                    <li><i class="fas fa-check"></i> Análisis de vulnerabilidades y simulación de adversarios</li>
-                    <li><i class="fas fa-check"></i> Optimización de concurrencia y consultas de base de datos</li>
-                    <li><i class="fas fa-check"></i> SLA de respuesta prioritaria y soporte táctico</li>
-                </ul>
-                <a href="https://wa.me/584127121162?text=Hola,%20me%20gustar%C3%ADa%20evaluar%20el%20servicio%20de%20Escudo%20y%20Hardening%20con%20VANTA" class="btn-outline ec-btn magnetic-btn" target="_blank" rel="noopener noreferrer">
-                    <span>Solicitar Auditoría</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-        </div>
-    </section>
-
+    <!-- ===== ACTO 04: FIELD REPORTS (STACKABLE SWIPE DECK) ===== -->
     <!-- ===== TESTIMONIOS: STACKABLE SWIPE DECK ===== -->
     <section class="testimonials-section" id="testimonials" aria-label="Testimonios y Reportes de Campo">
         <div class="testi-ambient-glow" aria-hidden="true"></div>
@@ -1476,10 +823,8 @@
         </div>
     </section>
 
-    <!-- ===== CONTACTO ===== -->
+    <!-- ===== ACTO 05: LAUNCH TERMINAL & CINEMA FOOTER ===== -->
     <section id="contact" class="contact-section">
-        <!-- ===== NEURAL FLOW FIELD CANVAS BACKGROUND ===== -->
-        <canvas id="neural-canvas" class="bg-neural-canvas"></canvas>
 
         <div class="contact-header text-center">
             <span class="cap-eyebrow">// INITIATE_DEPLOYMENT.SYS</span>
@@ -1711,13 +1056,10 @@
         </div>
         <ul class="hud-dots">
             <li class="active" data-target="home" data-num="01" data-name="INICIO"></li>
-            <li data-target="philosophy" data-num="02" data-name="FILOSOFÍA"></li>
-            <li data-target="portfolio" data-num="03" data-name="TRABAJO"></li>
-            <li data-target="stats" data-num="04" data-name="MÉTRICAS"></li>
-            <li data-target="services" data-num="05" data-name="SERVICIOS"></li>
-            <li data-target="pricing" data-num="06" data-name="PLANES"></li>
-            <li data-target="team" data-num="07" data-name="EQUIPO"></li>
-            <li data-target="contact" data-num="08" data-name="CONTACTO"></li>
+            <li data-target="portfolio" data-num="02" data-name="OBRAS"></li>
+            <li data-target="tech-matrix" data-num="03" data-name="ARQUITECTURA"></li>
+            <li data-target="testimonials" data-num="04" data-name="REPORTES"></li>
+            <li data-target="contact" data-num="05" data-name="CONTACTO"></li>
         </ul>
     </div>
 
@@ -1775,17 +1117,10 @@
     
     <script src="sound-engine.js?v=120"></script>
     <script src="liquid-glass.js?v=120"></script>
-    <script src="vanta-terminal.js?v=140"></script>
     <script src="preloader-v.js?v=200"></script>
     <script src="script.js?v=1500"></script>
-    <script src="particles.js?v=200"></script>
     <script src="effects.js?v=2400"></script>
-    <script src="slime-text.js?v=230"></script>
     <script src="spotlight.js?v=110"></script>
-    <script src="nuevas-secciones.js?v=130"></script>
-    <script src="hero-portal.js?v=100"></script>
-    <script src="philosophy-scrollytelling.js?v=100"></script>
-    <script src="capabilities-scrollytelling.js?v=100"></script>
     <script src="testi-stack.js?v=100"></script>
 </body>
 

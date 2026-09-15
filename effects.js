@@ -1170,28 +1170,24 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       19. SCROLL COLOR THEMING — El acento cambia por sección
-           + actualización total de todos los renderers
+       19. SCROLL COLOR THEMING & 5-ACT SCROLLYTELLING HUD
+           + sincronización HUD Sidebar y 5 Actos de VANTA
        ============================================================ */
     (function initColorTheming() {
         const themes = [
-            { id: 'home',        primary: '#11d483', r:17,  g:212, b:131 },
-            { id: 'philosophy',  primary: '#00e5ff', r:0,   g:229, b:255 },
-            { id: 'portfolio',   primary: '#11d483', r:17,  g:212, b:131 },
-            { id: 'stats',       primary: '#b9ff4b', r:185, g:255, b:75  },
-            { id: 'services',    primary: '#11d483', r:17,  g:212, b:131 },
-            { id: 'bento',       primary: '#00cfff', r:0,   g:207, b:255 },
-            { id: 'team',        primary: '#a78bfa', r:167, g:139, b:250 },
-            { id: 'pricing',     primary: '#11d483', r:17,  g:212, b:131 },
-            { id: 'contact',     primary: '#fbbf24', r:251, g:191, b:36  },
+            { id: 'home',         num: '01', name: 'INICIO',       primary: '#11d483', r:17,  g:212, b:131 },
+            { id: 'portfolio',    num: '02', name: 'OBRAS',        primary: '#00e5ff', r:0,   g:229, b:255 },
+            { id: 'tech-matrix',  num: '03', name: 'ARQUITECTURA', primary: '#11d483', r:17,  g:212, b:131 },
+            { id: 'testimonials', num: '04', name: 'REPORTES',     primary: '#a78bfa', r:167, g:139, b:250 },
+            { id: 'contact',      num: '05', name: 'CONTACTO',     primary: '#11d483', r:17,  g:212, b:131 },
         ];
 
         const root = document.documentElement;
-        let currentId = 'home';
+        let currentId = '';
 
-        // ---- Global theme updater: drives ALL renderers ----
+        // ---- Global theme updater: drives ALL renderers & HUD ----
         window.setVantaTheme = function(theme) {
-            if (theme.id === currentId) return;
+            if (!theme || theme.id === currentId) return;
             currentId = theme.id;
 
             const hex = theme.primary;
@@ -1204,45 +1200,36 @@ function initEffectsScript() {
             root.style.setProperty('--theme-primary', hex);
             root.style.setProperty('--theme-glow',    `rgba(${r},${g},${b},0.18)`);
 
-            // 2. Constellation canvas colors (script.js exposes window.constellationColors)
+            // 2. Constellation canvas colors
             if (window.constellationColors) {
                 window.constellationColors.node      = `rgba(${r},${g},${b},0.9)`;
                 window.constellationColors.line      = `rgba(${r},${g},${b},0.25)`;
                 window.constellationColors.mouseLine = `rgba(${r},${g},${b},0.6)`;
             }
 
-            // 3. Particle confetti colors (particles.js exposes window.particleConfig)
-            if (window.particleConfig) {
-                // Generate harmonious palette from the theme color
-                const alpha = (a) => `rgba(${r},${g},${b},${a})`;
-                window.particleConfig.COLORS = [
-                    hex,
-                    alpha(0.8),
-                    alpha(0.6),
-                    alpha(0.5),
-                    '#ffffff',
-                    alpha(0.9),
-                ];
-            }
+            // 3. Three.js background and modal materials
+            if (window.bg3DNodeMaterial) window.bg3DNodeMaterial.color.setStyle(hex);
+            if (window.bg3DLineMaterial) window.bg3DLineMaterial.color.setStyle(hex);
+            if (window.modal3DMaterial) window.modal3DMaterial.color.setStyle(hex);
 
-            // 4. SVG Data Bus fiber color
-            const fiberPath = document.getElementById('vanta-fiber-path');
-            if (fiberPath) fiberPath.style.stroke = hex;
+            // 4. Update HUD sidebar active indicator & text
+            const hudNum = document.querySelector('.hud-section-num');
+            const hudName = document.querySelector('.hud-section-name');
+            if (hudNum) hudNum.textContent = `[ ${theme.num} ]`;
+            if (hudName) hudName.textContent = theme.name;
 
-            // 5. Three.js background and modal materials
-            if (window.bg3DNodeMaterial) {
-                window.bg3DNodeMaterial.color.setStyle(hex);
-            }
-            if (window.bg3DLineMaterial) {
-                window.bg3DLineMaterial.color.setStyle(hex);
-            }
-            if (window.modal3DMaterial) {
-                window.modal3DMaterial.color.setStyle(hex);
-            }
+            document.querySelectorAll('.hud-dots li').forEach(dot => {
+                const isActive = dot.getAttribute('data-target') === theme.id;
+                dot.classList.toggle('active', isActive);
+                if (isActive) dot.style.setProperty('--dot-active-color', hex);
+            });
 
-            // 6. HUD sidebar dots + nav active link
-            document.querySelectorAll('.hud-dots li.active, .nav-links a.active-section').forEach(el => {
-                el.style.setProperty('--dot-active-color', hex);
+            // 5. Nav active link
+            document.querySelectorAll('.nav-links a').forEach(a => {
+                const href = a.getAttribute('href');
+                const isCurrent = href === `#${theme.id}`;
+                a.classList.toggle('active-section', isCurrent);
+                if (isCurrent) a.style.setProperty('--dot-active-color', hex);
             });
         };
 
@@ -1253,12 +1240,39 @@ function initEffectsScript() {
                     if (t) window.setVantaTheme(t);
                 }
             });
-        }, { threshold: 0.35 });
+        }, { threshold: 0.25 });
 
         themes.forEach(t => {
             const el = document.getElementById(t.id);
             if (el) sectionObs.observe(el);
         });
+
+        // Click on HUD dots smooth scroll
+        document.querySelectorAll('.hud-dots li').forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = dot.getAttribute('data-target');
+                const target = document.getElementById(targetId);
+                if (target) {
+                    if (window.lenis) {
+                        window.lenis.scrollTo(target, { duration: 1.2 });
+                    } else {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // HUD scroll progress bar updater
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (docHeight > 0) {
+                const p = Math.min(1, Math.max(0, scrollTop / docHeight));
+                const fill = document.querySelector('.hud-progress-fill');
+                if (fill) fill.style.height = (p * 100).toFixed(1) + '%';
+            }
+        }, { passive: true });
 
         // Init with default
         window.setVantaTheme(themes[0]);
