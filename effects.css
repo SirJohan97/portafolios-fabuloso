@@ -3248,421 +3248,475 @@
 }
 
 /* =============================================================
-   ACTO 02: THE CINEMATIC SCROLLYTELLING STAGE (OPTION 1)
-   Atmosphere: Ambient Blackout + Letterbox 21:9 + Iris Shutter Wipe
+   ACTO 02: THE FULLSCREEN KEYNOTE SCROLLYTELLING STAGE
+   Minimalist Monumental Architecture (SOTY Level)
+   2-Phase Sequence: Tension Hook -> Masterpiece Reveal
    ============================================================= */
 
-/* 1. Global Cinema Atmosphere & Backdrop */
-.portfolio-scroll-container {
+/* 1. Scrollytelling Stage Container & Sticky Viewport */
+.keynote-scrolly-container {
     position: relative;
-    background: #020408 !important;
-    overflow: hidden;
+    width: 100%;
+    height: 480vh; /* Smooth, deep scroll distance */
+    background: #030508;
+    color: #FFFFFF;
+    z-index: 10;
 }
 
-.portfolio-cinema-backdrop {
+.keynote-sticky-viewport {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #030508;
+}
+
+/* 2. Reactive Ambient Atmosphere */
+.keynote-ambient-canvas {
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 1;
-    opacity: 0.95;
-    background: radial-gradient(circle at var(--cinema-glow-x, 60%) 45%, var(--cinema-glow-color, rgba(0, 229, 255, 0.12)) 0%, rgba(2, 4, 8, 0.95) 55%, #010204 100%);
-    transition: background 0.75s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.75s ease;
+    background: radial-gradient(circle 750px at 50% 50%, var(--keynote-glow, rgba(255, 59, 48, 0.22)), rgba(3, 5, 8, 0.95) 70%, #030508 100%);
+    transition: background 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+    opacity: 0.85;
 }
 
-/* 2. Cinema Letterbox Bars (Anamorphic 2.39:1 widescreen frame inside sticky wrapper) */
-.portfolio-scroll-container .sticky-wrapper {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    z-index: 5;
-}
-
-.cinema-letterbox {
+/* 3. Luxury Minimal HUD Tracker (Top) */
+.keynote-hud-tracker {
     position: absolute;
+    top: 5.2rem;
     left: 0;
     width: 100%;
-    height: 42px;
-    background: rgba(0, 0, 0, 0.94);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    z-index: 30;
+    padding: 0 4rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 3.5rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.64rem;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.5);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 25;
     pointer-events: none;
 }
 
-.cinema-letterbox--top {
-    top: 0;
-}
-
-.cinema-letterbox--bottom {
-    bottom: 0;
-    border-bottom: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.clb-rec-dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #FF3B30;
-    box-shadow: 0 0 8px #FF3B30;
-    margin-right: 8px;
-    animation: hmb-pulse 1.6s infinite;
-}
-
-.clb-scroll-hint {
-    color: rgba(255, 255, 255, 0.75);
-    display: inline-flex;
+.kht-left {
+    display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
 }
 
-/* 3. Flagship Card Container */
-.horizontal-track .card.card-flagship {
-    position: relative;
-    width: 540px;
-    min-width: 540px;
-    max-width: 580px;
-    height: 650px;
-    flex-shrink: 0;
-    background: #06080E;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    overflow: hidden;
+.kht-tag {
+    color: #11D483;
+    font-weight: 700;
+}
+
+.kht-title {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.kht-pills {
     display: flex;
-    flex-direction: column;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85);
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-                border-color 0.5s ease, 
-                box-shadow 0.5s ease;
-    cursor: pointer;
-}
-
-.horizontal-track .card.card-flagship:hover {
-    box-shadow: 0 35px 90px rgba(0, 0, 0, 0.95), 0 0 35px rgba(var(--primary-rgb), 0.15);
-}
-
-.horizontal-track .card.card-flagship.is-center-stage {
-    border-color: rgba(var(--primary-rgb), 0.4);
-    box-shadow: 0 35px 100px rgba(0, 0, 0, 0.95), 0 0 45px rgba(var(--primary-rgb), 0.2);
-}
-
-/* 4. LA INCÓGNITA: The Cinematic Shutter Shield (Iris Mask) */
-.cinema-shutter-curtain {
-    position: absolute;
-    inset: 0;
-    z-index: 12;
-    background: radial-gradient(circle at 50% 20%, #121824 0%, #06080D 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 2.6rem 2.4rem;
-    clip-path: circle(150% at 50% 50%);
-    transition: clip-path 0.85s cubic-bezier(0.19, 1, 0.22, 1),
-                opacity 0.65s cubic-bezier(0.19, 1, 0.22, 1),
-                transform 0.85s cubic-bezier(0.19, 1, 0.22, 1);
+    align-items: center;
+    gap: 8px;
+    background: rgba(10, 15, 24, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4px 6px;
+    border-radius: 100px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     pointer-events: auto;
 }
 
-/* When revealed: Iris contracts to center and curtain dissolves with cinematic scale */
-.horizontal-track .card.card-flagship.is-revealed .cinema-shutter-curtain {
-    clip-path: circle(0% at 50% 50%);
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(1.06);
-}
-
-.csc-ambient-glow {
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.22;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-}
-.csc-glow--cerdiv { background: #00E5FF; }
-.csc-glow--sviva  { background: #FF3B30; opacity: 0.35; }
-.csc-glow--ventas { background: #FF9500; }
-.csc-glow--aura   { background: #11D483; }
-
-.csc-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.csc-threat-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 5px 12px;
-    background: rgba(255, 59, 48, 0.12);
-    border: 1px solid rgba(255, 59, 48, 0.32);
-    border-radius: 100px;
+.kht-pill {
     font-family: 'Space Mono', monospace;
     font-size: 0.62rem;
     letter-spacing: 0.06em;
-    color: #FF6B6B;
-    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    padding: 5px 14px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
 }
 
-.csc-badge--amber {
-    background: rgba(255, 149, 0, 0.12);
-    border-color: rgba(255, 149, 0, 0.32);
-    color: #FFAA33;
-}
-.csc-badge--cyan {
-    background: rgba(0, 229, 255, 0.12);
-    border-color: rgba(0, 229, 255, 0.32);
-    color: #00E5FF;
-}
-.csc-badge--danger {
-    background: rgba(255, 59, 48, 0.15);
-    border-color: rgba(255, 59, 48, 0.38);
-    color: #FF5252;
+.kht-pill:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.06);
 }
 
-.csc-index {
+.kht-pill.active {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.kht-right {
+    display: flex;
+    align-items: center;
     font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
+    font-size: 0.62rem;
     letter-spacing: 0.08em;
     color: rgba(255, 255, 255, 0.4);
 }
 
-.csc-body {
-    margin: auto 0;
-}
-
-.csc-question {
-    font-family: 'Instrument Serif', Georgia, serif !important;
-    font-style: italic;
-    font-size: clamp(1.8rem, 2.4vw, 2.25rem);
-    line-height: 1.22;
-    color: #FFFFFF;
-    letter-spacing: -0.01em;
-    font-weight: 400;
-    margin-bottom: 1.2rem;
-    text-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
-}
-
-.csc-context {
-    font-size: 0.92rem;
-    line-height: 1.65;
-    color: rgba(255, 255, 255, 0.68);
-}
-
-.csc-footer {
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.csc-hint-trigger {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.65);
-    transition: color 0.3s ease;
-}
-
-.csc-pulse-ring {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #11D483;
-    box-shadow: 0 0 10px #11D483;
+.kht-scroll-indicator i {
+    margin-left: 6px;
+    color: #11D483;
     animation: hmb-pulse 1.8s infinite;
 }
 
-.card-flagship:hover .csc-hint-trigger {
-    color: #11D483;
+/* 4. Chapters Layout & Stage Stacking */
+.keynote-chapters-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
 }
 
-.csc-eye-icon {
-    font-size: 0.8rem;
-    margin-left: 2px;
-}
-
-.csc-scanline-fx {
+.keynote-chapter {
     position: absolute;
     inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     pointer-events: none;
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.12),
-        rgba(0, 0, 0, 0.12) 1px,
-        transparent 1px,
-        transparent 2px
-    );
-    opacity: 0.35;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
-/* 5. LA REVELACIÓN: Masterpiece Stage */
-.cinema-reveal-masterpiece {
-    position: relative;
-    z-index: 2;
-    padding: 1.3rem 1.5rem 1.5rem;
+.keynote-chapter.active {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 5. Phase A: The Hook (Monumental Tension Typography) */
+.keynote-hook {
+    position: absolute;
+    width: 100%;
+    max-width: 1050px;
+    padding: 0 2.5rem;
+    text-align: center;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    z-index: 12;
+    will-change: transform, opacity;
 }
 
-.crm-top-strip {
+.kh-meta-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.48);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+.kh-headline {
+    font-family: 'Instrument Serif', Georgia, serif !important;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(3rem, 6.5vw, 5.8rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+}
+
+.kh-subtitle {
+    font-family: 'Syne', sans-serif;
+    font-weight: 400;
+    font-size: clamp(1rem, 1.35vw, 1.25rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 720px;
+    margin: 0 auto 2rem;
+}
+
+.kh-telemetry-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.kh-pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+.kh-dot--red   { background: #FF3B30; box-shadow: 0 0 10px #FF3B30; animation: hmb-pulse 1.6s infinite; }
+.kh-dot--amber { background: #FF9500; box-shadow: 0 0 10px #FF9500; animation: hmb-pulse 1.6s infinite; }
+.kh-dot--cyan  { background: #00E5FF; box-shadow: 0 0 10px #00E5FF; animation: hmb-pulse 1.6s infinite; }
+.kh-dot--green { background: #11D483; box-shadow: 0 0 10px #11D483; animation: hmb-pulse 1.6s infinite; }
+
+/* 6. Phase B: The Masterpiece Reveal (Titanium Mockup + Live Specs) */
+.keynote-masterpiece {
+    position: absolute;
+    width: 100%;
+    max-width: 1080px;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+    will-change: transform, opacity;
+}
+
+.km-frame-wrap {
+    width: 100%;
+    max-width: 960px;
+    perspective: 1000px;
+}
+
+.km-titanium-frame {
+    position: relative;
+    background: #080C14;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 35px 90px rgba(0, 0, 0, 0.95), 0 0 50px rgba(255, 255, 255, 0.04);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.km-titanium-frame:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 40px 110px rgba(0, 0, 0, 0.98), 0 0 60px rgba(255, 255, 255, 0.08);
+}
+
+.km-frame-bar {
+    height: 38px;
+    background: rgba(15, 20, 30, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.7rem;
-}
-
-.crm-badge-active {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+    padding: 0 1.2rem;
     font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.05em;
-    color: #11D483;
-    text-transform: uppercase;
+    font-size: 0.65rem;
 }
 
-.crm-dot {
-    width: 5px;
-    height: 5px;
+.km-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.km-dot {
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
-    background: #11D483;
-    box-shadow: 0 0 6px #11D483;
 }
+.km-dot.red    { background: #FF5F56; }
+.km-dot.yellow { background: #FFBD2E; }
+.km-dot.green  { background: #27C93F; }
 
-.crm-toggle-back {
-    display: inline-flex;
+.km-url-pill {
+    display: flex;
     align-items: center;
-    gap: 5px;
-    padding: 4px 10px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 7px;
+    padding: 3px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 100px;
     color: rgba(255, 255, 255, 0.55);
-    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+}
+
+.km-status-pill {
+    padding: 3px 10px;
+    border-radius: 100px;
     font-size: 0.58rem;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    transition: all 0.25s ease;
+    letter-spacing: 0.06em;
+    font-weight: 700;
 }
 
-.crm-toggle-back:hover {
+.km-status--threat {
+    background: rgba(255, 59, 48, 0.15);
+    border: 1px solid rgba(255, 59, 48, 0.35);
     color: #FF6B6B;
-    border-color: rgba(255, 59, 48, 0.3);
-    background: rgba(255, 59, 48, 0.1);
 }
 
-.cinema-reveal-masterpiece .titanium-mockup-frame {
-    margin-bottom: 0.6rem;
+.km-status--ready {
+    background: rgba(17, 212, 131, 0.12);
+    border: 1px solid rgba(17, 212, 131, 0.35);
+    color: #11D483;
 }
 
-.cinema-reveal-masterpiece .tmf-screen {
-    height: 200px;
-    max-height: 200px;
+.km-screen {
+    position: relative;
+    width: 100%;
+    height: clamp(260px, 42vh, 440px);
+    background: #000000;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.crm-meta-details {
-    position: relative !important;
-    width: 100% !important;
-    height: auto !important;
-    opacity: 1 !important;
-    transform: none !important;
-    background: transparent !important;
-    display: flex !important;
-    flex-direction: column !important;
-    padding: 0 !important;
-    margin-bottom: 0.5rem !important;
+.km-screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.crm-tag {
+.km-titanium-frame:hover .km-screen img {
+    transform: scale(1.02);
+}
+
+.km-hud-overlay {
+    position: absolute;
+    bottom: 15px;
+    left: 18px;
+    right: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+}
+
+.km-hud-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 12px;
+    background: rgba(5, 8, 14, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 100px;
     font-family: 'Space Mono', monospace;
     font-size: 0.65rem;
     letter-spacing: 0.06em;
-    color: var(--primary);
+    color: #FFFFFF;
+    backdrop-filter: blur(10px);
+}
+
+.km-hud-spec {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    color: #11D483;
+    background: rgba(5, 8, 14, 0.85);
+    border: 1px solid rgba(17, 212, 131, 0.3);
+    padding: 5px 12px;
+    border-radius: 100px;
+    backdrop-filter: blur(10px);
+}
+
+.km-details-strip {
+    width: 100%;
+    max-width: 960px;
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.km-details-left {
+    flex: 1;
+}
+
+.km-tech-stack {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: #11D483;
     text-transform: uppercase;
     margin-bottom: 0.35rem;
 }
 
-.crm-title {
+.km-project-title {
     font-family: 'Syne', sans-serif;
     font-weight: 700;
-    font-size: 1.18rem;
+    font-size: clamp(1.25rem, 1.8vw, 1.65rem);
     color: #FFFFFF;
-    line-height: 1.25;
+    letter-spacing: -0.01em;
     margin-bottom: 0.4rem;
 }
 
-.crm-description {
-    font-size: 0.82rem;
-    line-height: 1.48;
-    color: rgba(255, 255, 255, 0.72);
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin-bottom: 0.6rem;
+.km-project-desc {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(0.82rem, 0.95vw, 0.92rem);
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 600px;
+    margin: 0;
 }
 
-.crm-mini-specs {
+.km-details-right {
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.62);
-    margin-bottom: 0.7rem;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
 }
 
-.crm-mini-specs span {
+.km-details-right .btn,
+.km-details-right .btn-outline {
+    padding: 0.65rem 1.2rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
 }
 
-.cinema-reveal-masterpiece .card-menu {
-    margin-top: auto;
-    padding-top: 0.4rem;
-}
-
-@media (max-width: 768px) {
-    .horizontal-track .card.card-flagship {
-        width: 88vw;
-        min-width: 88vw;
-        max-width: 92vw;
-        height: 620px;
+/* 7. Responsive Adaptations */
+@media (max-width: 900px) {
+    .keynote-scrolly-container {
+        height: 400vh;
     }
-    .cinema-shutter-curtain {
-        padding: 1.8rem 1.4rem;
+    .keynote-hud-tracker {
+        padding: 1.2rem 1.5rem;
     }
-    .csc-question {
-        font-size: 1.45rem;
+    .kht-right {
+        display: none;
     }
-    .cinema-letterbox {
-        padding: 0 1.2rem;
-        font-size: 0.55rem;
+    .kht-pills {
+        overflow-x: auto;
+        max-width: 70vw;
+    }
+    .kht-pill {
+        padding: 4px 10px;
+        font-size: 0.58rem;
+        white-space: nowrap;
+    }
+    .km-details-strip {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .km-details-right {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .km-screen {
+        height: 240px;
+    }
+    .kh-headline {
+        font-size: 2.5rem;
     }
 }

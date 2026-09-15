@@ -1240,7 +1240,7 @@ function initEffectsScript() {
                     if (t) window.setVantaTheme(t);
                 }
             });
-        }, { threshold: 0.25 });
+        }, { threshold: 0.02 });
 
         themes.forEach(t => {
             const el = document.getElementById(t.id);
@@ -2744,140 +2744,159 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       ACTO 02: THE CINEMATIC SCROLLYTELLING SHOWCASE (OPTION 1)
-       Dual-Beat: Ambient Blackout + Iris Shutter Wipe via Scroll & Touch
+       ACTO 02: THE FULLSCREEN KEYNOTE SCROLLYTELLING SHOWCASE
+       Dual-Phase Keynote Engine: Tension Hook -> Titanium Masterpiece
+       Pinned 100vh Scrollytelling powered by GSAP & ScrollTrigger
        ============================================================ */
-    (function initCinematicScrollytellingShowcase() {
+    (function initFullscreenKeynoteScrollytelling() {
         function setup() {
-            const portfolioSection = document.getElementById('portfolio');
-            const cards = document.querySelectorAll('.horizontal-track .card.card-flagship');
-            const backdrop = document.querySelector('.portfolio-cinema-backdrop');
-            if (!portfolioSection || !cards.length) return;
+            const container = document.querySelector('.keynote-scrolly-container');
+            const viewport = document.querySelector('.keynote-sticky-viewport');
+            const ambientCanvas = document.querySelector('.keynote-ambient-canvas');
+            const chapters = document.querySelectorAll('.keynote-chapter');
+            const pills = document.querySelectorAll('.kht-pill');
 
-            const glowThemes = {
-                danger: 'rgba(255, 59, 48, 0.24)',
-                amber:  'rgba(255, 149, 0, 0.22)',
-                cyan:   'rgba(0, 229, 255, 0.20)',
-                green:  'rgba(17, 212, 131, 0.22)'
-            };
+            if (!container || !viewport || !chapters.length) return;
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-            // 1. Interacción táctil directa: Clic en el telón desvela el proyecto
-            cards.forEach(card => {
-                const curtain   = card.querySelector('.cinema-shutter-curtain');
-                const toggleBack = card.querySelector('.crm-toggle-back');
-                const actionLinks = card.querySelectorAll('.cinema-reveal-masterpiece a, .cinema-reveal-masterpiece button:not(.crm-toggle-back)');
+            const chapterColors = [
+                'rgba(255, 59, 48, 0.26)',   // 01 SVIVA CORE (Red Alert)
+                'rgba(255, 149, 0, 0.24)',   // 02 VENTASTRACK (Amber B2B)
+                'rgba(0, 229, 255, 0.22)',   // 03 CERDIV IUTA (Cyan Cloud)
+                'rgba(17, 212, 131, 0.24)'   // 04 AURA CHECK (Emerald Bio)
+            ];
 
-                if (curtain) {
-                    curtain.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        card.classList.add('is-revealed');
-                        card.classList.add('is-center-stage');
-                        card.dataset.manualPin = 'true';
-                        if (window._vantaAudio && window._vantaAudio.playClick) {
-                            window._vantaAudio.playClick();
-                        }
-                    });
+            let activeChapterIndex = 0;
+
+            function setActivePill(index) {
+                if (index === activeChapterIndex) return;
+                activeChapterIndex = index;
+                pills.forEach((p, i) => {
+                    p.classList.toggle('active', i === index);
+                });
+                if (ambientCanvas && chapterColors[index]) {
+                    ambientCanvas.style.setProperty('--keynote-glow', chapterColors[index]);
                 }
-
-                if (toggleBack) {
-                    toggleBack.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        card.classList.remove('is-revealed');
-                        delete card.dataset.manualPin;
-                        if (window._vantaAudio && window._vantaAudio.playClick) {
-                            window._vantaAudio.playClick();
-                        }
-                    });
+                if (window._vantaAudio && window._vantaAudio.playHover) {
+                    window._vantaAudio.playHover();
                 }
+            }
 
-                // Asegurar que botones y enlaces internos funcionen sin interferencia
-                actionLinks.forEach(el => {
-                    el.addEventListener('click', (e) => e.stopPropagation());
+            // Click on HUD Pills to Jump directly to any Chapter
+            pills.forEach((pill) => {
+                pill.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = parseInt(pill.getAttribute('data-index') || '0', 10);
+                    if (st) {
+                        const targetProgress = idx * 0.25 + 0.12;
+                        const targetY = st.start + targetProgress * (st.end - st.start);
+                        if (window.lenis) {
+                            window.lenis.scrollTo(targetY, { duration: 1.2 });
+                        } else {
+                            window.scrollTo({ top: targetY, behavior: 'smooth' });
+                        }
+                    }
                 });
             });
 
-            // 2. Scrollytelling Orgánico: Detección continua de tarjeta en centro de encuadre
-            let ticking = false;
-            let currentActiveCard = null;
+            // Master GSAP Timeline with Scrubbed Pin
+            const masterTl = gsap.timeline({
+                defaults: { ease: 'power2.inOut' }
+            });
 
-            function onScrollCheck() {
-                if (window.innerWidth <= 900) return; // En pantallas táctiles móviles el usuario usa tap directo
-
-                const portRect = portfolioSection.getBoundingClientRect();
-                const vpH = window.innerHeight;
-                // Si el portafolio está fuera del viewport, no procesar
-                if (portRect.bottom < 0 || portRect.top > vpH) return;
-
-                const vpW = window.innerWidth;
-                const vpCenter = vpW / 2;
-
-                let closest = null;
-                let minDistance = Infinity;
-
-                cards.forEach(card => {
-                    const r = card.getBoundingClientRect();
-                    const cardCenter = r.left + r.width / 2;
-                    const dist = Math.abs(cardCenter - vpCenter);
-
-                    if (dist < minDistance) {
-                        minDistance = dist;
-                        closest = card;
-                    }
-                });
-
-                // Si la tarjeta más cercana está en el centro de visión (dentro de 300px del centro)
-                if (closest && minDistance < 300) {
-                    if (currentActiveCard !== closest) {
-                        currentActiveCard = closest;
-                        // Revelación orgánica de la tarjeta en foco
-                        cards.forEach(c => {
-                            if (c === closest) {
-                                c.classList.add('is-center-stage');
-                                c.classList.add('is-revealed');
-                            } else if (!c.dataset.manualPin) {
-                                c.classList.remove('is-center-stage');
-                                c.classList.remove('is-revealed');
-                            }
-                        });
-
-                        // Actualizar aura ambiental en el backdrop
-                        if (backdrop) {
-                            const theme = closest.getAttribute('data-theme-glow') || 'cyan';
-                            const color = glowThemes[theme] || glowThemes.cyan;
-                            backdrop.style.setProperty('--cinema-glow-color', color);
-                            backdrop.style.opacity = '1';
-                        }
-                    }
-                } else if (minDistance >= 400 && currentActiveCard) {
-                    // Si ninguna tarjeta está en el centro
-                    if (!currentActiveCard.dataset.manualPin) {
-                        currentActiveCard.classList.remove('is-center-stage');
-                        currentActiveCard.classList.remove('is-revealed');
-                    }
-                    currentActiveCard = null;
+            const st = ScrollTrigger.create({
+                trigger: container,
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 0.7,
+                animation: masterTl,
+                onUpdate: (self) => {
+                    const prog = self.progress;
+                    let curIdx = Math.min(3, Math.floor(prog * 4));
+                    setActivePill(curIdx);
                 }
-            }
+            });
 
-            function requestScrollTick() {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        onScrollCheck();
-                        ticking = false;
-                    });
-                    ticking = true;
+            // Prepare all chapters: initial states
+            chapters.forEach((chapter, i) => {
+                const hook = chapter.querySelector('.keynote-hook');
+                const masterpiece = chapter.querySelector('.keynote-masterpiece');
+
+                if (i === 0) {
+                    // Chapter 01 starts visible
+                    gsap.set(chapter, { autoAlpha: 1, zIndex: 10 });
+                    if (hook) gsap.set(hook, { autoAlpha: 1, scale: 1, y: 0 });
+                    if (masterpiece) gsap.set(masterpiece, { autoAlpha: 0, scale: 1.05, y: 35, pointerEvents: 'none' });
+                } else {
+                    // Subsequent chapters start hidden
+                    gsap.set(chapter, { autoAlpha: 0, zIndex: 5 });
+                    if (hook) gsap.set(hook, { autoAlpha: 0, scale: 1.05, y: 30 });
+                    if (masterpiece) gsap.set(masterpiece, { autoAlpha: 0, scale: 1.05, y: 35, pointerEvents: 'none' });
                 }
+            });
+
+            // Build Timeline Steps across the 4 Chapters (normalized duration: 4.0 total, 1.0 per chapter)
+            // Chapter 01: SVIVA (0.0 to 1.0)
+            const ch0 = chapters[0];
+            const hook0 = ch0 ? ch0.querySelector('.keynote-hook') : null;
+            const mp0 = ch0 ? ch0.querySelector('.keynote-masterpiece') : null;
+
+            if (hook0 && mp0) {
+                masterTl.to({}, { duration: 0.15 }) // Initial pause on hook
+                    .to(hook0, { autoAlpha: 0, scale: 0.93, y: -35, duration: 0.25 }, 'ch0_reveal')
+                    .to(mp0, { autoAlpha: 1, scale: 1, y: 0, pointerEvents: 'auto', duration: 0.3 }, 'ch0_reveal+=0.05')
+                    .to({}, { duration: 0.3 }) // Settle on masterpiece
+                    .to(mp0, { autoAlpha: 0, y: -30, duration: 0.2 }, 'ch0_exit')
+                    .to(ch0, { autoAlpha: 0, duration: 0.1 }, 'ch0_exit+=0.1');
             }
 
-            // Escuchar el evento de scroll nativo y de Lenis
-            window.addEventListener('scroll', requestScrollTick, { passive: true });
-            if (window.lenis) {
-                window.lenis.on('scroll', requestScrollTick);
+            // Chapter 02: VENTASTRACK (1.0 to 2.0)
+            const ch1 = chapters[1];
+            const hook1 = ch1 ? ch1.querySelector('.keynote-hook') : null;
+            const mp1 = ch1 ? ch1.querySelector('.keynote-masterpiece') : null;
+
+            if (ch1 && hook1 && mp1) {
+                masterTl.to(ch1, { autoAlpha: 1, zIndex: 10, duration: 0.05 }, 'ch1_enter')
+                    .to(hook1, { autoAlpha: 1, scale: 1, y: 0, duration: 0.25 }, 'ch1_enter')
+                    .to({}, { duration: 0.15 })
+                    .to(hook1, { autoAlpha: 0, scale: 0.93, y: -35, duration: 0.25 }, 'ch1_reveal')
+                    .to(mp1, { autoAlpha: 1, scale: 1, y: 0, pointerEvents: 'auto', duration: 0.3 }, 'ch1_reveal+=0.05')
+                    .to({}, { duration: 0.3 })
+                    .to(mp1, { autoAlpha: 0, y: -30, duration: 0.2 }, 'ch1_exit')
+                    .to(ch1, { autoAlpha: 0, duration: 0.1 }, 'ch1_exit+=0.1');
             }
 
-            // Inicializar el primer chequeo tras render
-            setTimeout(onScrollCheck, 500);
+            // Chapter 03: CERDIV IUTA (2.0 to 3.0)
+            const ch2 = chapters[2];
+            const hook2 = ch2 ? ch2.querySelector('.keynote-hook') : null;
+            const mp2 = ch2 ? ch2.querySelector('.keynote-masterpiece') : null;
 
-            console.log('[VANTA] Cinematic Scrollytelling Stage ready for', cards.length, 'flagships');
+            if (ch2 && hook2 && mp2) {
+                masterTl.to(ch2, { autoAlpha: 1, zIndex: 10, duration: 0.05 }, 'ch2_enter')
+                    .to(hook2, { autoAlpha: 1, scale: 1, y: 0, duration: 0.25 }, 'ch2_enter')
+                    .to({}, { duration: 0.15 })
+                    .to(hook2, { autoAlpha: 0, scale: 0.93, y: -35, duration: 0.25 }, 'ch2_reveal')
+                    .to(mp2, { autoAlpha: 1, scale: 1, y: 0, pointerEvents: 'auto', duration: 0.3 }, 'ch2_reveal+=0.05')
+                    .to({}, { duration: 0.3 })
+                    .to(mp2, { autoAlpha: 0, y: -30, duration: 0.2 }, 'ch2_exit')
+                    .to(ch2, { autoAlpha: 0, duration: 0.1 }, 'ch2_exit+=0.1');
+            }
+
+            // Chapter 04: AURA CHECK (3.0 to 4.0)
+            const ch3 = chapters[3];
+            const hook3 = ch3 ? ch3.querySelector('.keynote-hook') : null;
+            const mp3 = ch3 ? ch3.querySelector('.keynote-masterpiece') : null;
+
+            if (ch3 && hook3 && mp3) {
+                masterTl.to(ch3, { autoAlpha: 1, zIndex: 10, duration: 0.05 }, 'ch3_enter')
+                    .to(hook3, { autoAlpha: 1, scale: 1, y: 0, duration: 0.25 }, 'ch3_enter')
+                    .to({}, { duration: 0.15 })
+                    .to(hook3, { autoAlpha: 0, scale: 0.93, y: -35, duration: 0.25 }, 'ch3_reveal')
+                    .to(mp3, { autoAlpha: 1, scale: 1, y: 0, pointerEvents: 'auto', duration: 0.3 }, 'ch3_reveal+=0.05')
+                    .to({}, { duration: 0.35 }); // Settles firmly into the end of the section
+            }
+
+            console.log('[VANTA] Fullscreen Keynote Scrollytelling Stage initialized for', chapters.length, 'chapters');
         }
 
         if (document.readyState === 'loading') {
