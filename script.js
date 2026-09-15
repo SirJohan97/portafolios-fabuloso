@@ -837,7 +837,9 @@ export const generarFactura = async (req: Request, res: Response) => {
             url: '#',
             screenshots: [
                 'img/sviva/svivaindex.jpeg',
-                'img/sviva/svivacamaras.jpeg'
+                'img/sviva/svivacamaras.jpeg',
+                'img/sviva/svivatelegram.jpeg',
+                'img/sviva/svivagraficas.jpeg'
             ],
             code: `# Algoritmo de Visión Artificial YOLOv8 + ByteTrack
 import cv2
@@ -1006,16 +1008,18 @@ def consulta_medica_historica(pregunta: str):
     return soup.get_text()`
         },
         ventastrack: {
-            tag: 'Node.js · TypeScript · PostgreSQL · B2B',
-            title: 'VentasTrack B2B Commercial System',
-            description: 'Plataforma de ventas con roles y jerarquías, carrito de compras y módulo de facturación, sincronizada a diario con bases de datos del cliente.',
-            metrics: ['💼 B2B FACTURACIÓN', '🔄 SYNC DIARIO', '⚡ NODE.JS + TS', '📊 REPORTES SALES'],
+            tag: 'Node.js · TypeScript · PostgreSQL · B2B Enterprise',
+            title: 'VentasTrack B2B Commercial & Inventory Suite',
+            description: 'Ecosistema comercial B2B para distribución mayorista: control de inventario en almacenes múltiples, catálogos segmentados por clientes, roles jerárquicos y facturación transaccional en tiempo real con sincronización diaria a base de datos central.',
+            metrics: ['💼 B2B FACTURACIÓN', '🔄 SYNC AUTOMÁTICO', '⚡ NODE.JS + TS', '📊 INVENTARIO MULTI-SEDE'],
             pipeline: ['🛒 B2B Cart', '→', '⚡ Node.js Transaction', '→', '🐘 PostgreSQL ACID', '→', '📄 Invoice PDF'],
-            tech: ['Node.js', 'TypeScript', 'Vite', 'PostgreSQL', 'JWT Auth', 'Billing Engine'],
+            tech: ['Node.js', 'TypeScript', 'Vite', 'PostgreSQL', 'JWT Auth', 'Billing Engine', 'Multi-Warehouse'],
             url: '#',
             screenshots: [
-                'img/sviva/svivaconfig.jpeg',
-                'img/sviva/svivagraficas.jpeg'
+                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (8).jpeg',
+                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (1).jpeg',
+                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (2).jpeg',
+                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg'
             ],
             code: `// Node.js + TypeScript Transaction Handler
 import { Pool } from 'pg';

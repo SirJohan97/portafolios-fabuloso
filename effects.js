@@ -2528,14 +2528,14 @@ function initEffectsScript() {
             if (seatA) gsap.set(seatA, { opacity: 0, y: -10 });
             if (seatJ) gsap.set(seatJ, { opacity: 0, y:  10 });
 
-            // ─── ScrollTrigger Timeline ───────────────────────────────────
+            // ─── ScrollTrigger Timeline (Calibrado Awwwards: Snappy Dealer) ──
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: section,
                     start: "top top",
-                    end: "+=260%",
+                    end: "+=175%",
                     pin: true,
-                    scrub: 1.6,
+                    scrub: 1.2,
                     anticipatePin: 1
                 }
             });
@@ -2559,9 +2559,9 @@ function initEffectsScript() {
                 dealSequence.push({ card: johanCards[i],  spot: johanSpots[i],  player: 'johan',  idx: i });
             }
 
-            const DEAL_SPACING = 0.38; // time between each card being dealt (tight = snappy dealer)
-            const SLIDE_DUR    = 0.52; // how long the slide across the felt takes
-            const FLIP_DUR     = 0.38; // how long the card flip takes
+            const DEAL_SPACING = 0.28; // tight snappy dealer
+            const SLIDE_DUR    = 0.42; // crisp slide across felt
+            const FLIP_DUR     = 0.32; // snappy card flip
 
             dealSequence.forEach((deal, seqIdx) => {
                 const { card, spot, player, idx } = deal;
@@ -2741,6 +2741,49 @@ function initEffectsScript() {
         }
 
         setTimeout(setupPokerDealer, 200);
+    })();
+
+    /* ============================================================
+       INCÓGNITA CURTAIN SYSTEM (Tension & Release Narrative)
+       ============================================================ */
+    (function initIncognitaCurtainSystem() {
+        function setup() {
+            const cards = document.querySelectorAll('.card.card-flagship');
+            if (!cards.length) return;
+
+            cards.forEach(card => {
+                const revealBtn = card.querySelector('.pch-reveal-btn');
+                const closeBtn  = card.querySelector('.pch-close-btn');
+
+                if (revealBtn) {
+                    revealBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        card.classList.add('revealed');
+                        if (window._vantaAudio && window._vantaAudio.playClick) {
+                            window._vantaAudio.playClick();
+                        }
+                    });
+                }
+
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        card.classList.remove('revealed');
+                        if (window._vantaAudio && window._vantaAudio.playClick) {
+                            window._vantaAudio.playClick();
+                        }
+                    });
+                }
+            });
+
+            console.log('[VANTA] Incógnita Curtain System ready for', cards.length, 'flagships');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setup);
+        } else {
+            setup();
+        }
     })();
 
 }
