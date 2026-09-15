@@ -1,5 +1,5 @@
-/* =============================================================
-   EFFECTS.JS — Consolidated Elite Animations (Fases 1, 2, 3)
+﻿/* =============================================================
+   EFFECTS.JS â€” Consolidated Elite Animations (Fases 1, 2, 3)
    - Active Nav Link & 3D Tilt Cards
    - Magnetic Cursor (with GPU will-change & elastic snap)
    - Cursor Morph (States: VER, CLICK, LINK)
@@ -239,12 +239,12 @@ function initEffectsScript() {
             label.textContent = '';
         }
 
-        // Modo 1: Project Cards (Explorar ↗)
+        // Modo 1: Project Cards (Explorar â†—)
         document.querySelectorAll('.horizontal-track .card, .testimonial-card-h').forEach(el => {
             el.addEventListener('mouseenter', () => {
                 resetCursorModes();
                 cursor.classList.add('cursor--project');
-                label.textContent = 'EXPLORAR ↗';
+                label.textContent = 'EXPLORAR â†—';
                 if (window.VANTA_AUDIO) window.VANTA_AUDIO.playChirp(0, 620);
             });
             el.addEventListener('mouseleave', resetCursorModes);
@@ -475,10 +475,10 @@ function initEffectsScript() {
         const services = document.getElementById('services');
 
         if (portfolio && portfolio.parentNode) {
-            portfolio.parentNode.insertBefore(createMarquee(techItems, '•', false), portfolio.nextElementSibling);
+            portfolio.parentNode.insertBefore(createMarquee(techItems, 'â€¢', false), portfolio.nextElementSibling);
         }
         if (services && services.parentNode) {
-            services.parentNode.insertBefore(createMarquee(values, '▸', true), services.nextElementSibling);
+            services.parentNode.insertBefore(createMarquee(values, 'â–¸', true), services.nextElementSibling);
         }
     })();
 
@@ -682,30 +682,30 @@ function initEffectsScript() {
 
         const teamData = {
             andres: [
-                "> INICIALIZANDO PERFIL: ANDRÉS MORALES",
+                "> INICIALIZANDO PERFIL: ANDRÃ‰S MORALES",
                 "> ROL: SYSTEMS ARCHITECT & BACKEND LEADER",
                 "> HABILIDADES DETECTADAS:",
                 "  - Python / FastAPI / Flask: 98%",
                 "  - PostgreSQL / ACID Transactions: 95%",
                 "  - Docker / AWS Deployments: 90%",
                 "> ESTADO DEL AGENTE:",
-                "  - Consumo de café: Crítico (Reabastecer)",
+                "  - Consumo de cafÃ©: CrÃ­tico (Reabastecer)",
                 "  - Horas de insomnio: 14h",
                 "  - Tolerancia a bugs: 0.02%",
-                "> DIAGNÓSTICO: Listo para desplegar microservicios redundantes a las 3:00 AM."
+                "> DIAGNÃ“STICO: Listo para desplegar microservicios redundantes a las 3:00 AM."
             ],
             johan: [
-                "> INICIALIZANDO PERFIL: JOHAN FERNÁNDEZ",
+                "> INICIALIZANDO PERFIL: JOHAN FERNÃNDEZ",
                 "> ROL: UI/UX DESIGNER & FRONTEND ARCHITECT",
                 "> HABILIDADES DETECTADAS:",
                 "  - UI/UX & Figma Systematization: 99%",
                 "  - CSS Inmersivo (Awwwards Grade): 96%",
                 "  - Branding & Visual Storytelling: 94%",
                 "> ESTADO DEL AGENTE:",
-                "  - Obsesión por alineación: Máxima (0.5px de margen)",
+                "  - ObsesiÃ³n por alineaciÃ³n: MÃ¡xima (0.5px de margen)",
                 "  - Color favorito: #11D483",
                 "  - Figma open tabs: 47",
-                "> DIAGNÓSTICO: Refinando micro-interacciones de scroll para provocar el efecto 'Wow'."
+                "> DIAGNÃ“STICO: Refinando micro-interacciones de scroll para provocar el efecto 'Wow'."
             ],
             pana: [
                 "> INICIALIZANDO PERFIL: PANA FRESCO",
@@ -715,23 +715,23 @@ function initEffectsScript() {
                 "  - Sleeping on Keyboard: 97%",
                 "  - Bug Distraction: 92%",
                 "> ESTADO DEL AGENTE:",
-                "  - Nivel de estrés: 0%",
-                "  - Posición favorita: Encima del cargador de laptop caliente",
-                "  - Comida favorita: Atún premium",
-                "> DIAGNÓSTICO: Monitoreando vibraciones del sistema. Estatus: Todo bajo control."
+                "  - Nivel de estrÃ©s: 0%",
+                "  - PosiciÃ³n favorita: Encima del cargador de laptop caliente",
+                "  - Comida favorita: AtÃºn premium",
+                "> DIAGNÃ“STICO: Monitoreando vibraciones del sistema. Estatus: Todo bajo control."
             ],
             isaac: [
                 "> INICIALIZANDO PERFIL: ISAAC ORTIZ",
-                "> ROL: SECRETARIO GENERAL DE LA CAFETERÍA (COFFEE SUPPLY)",
+                "> ROL: SECRETARIO GENERAL DE LA CAFETERÃA (COFFEE SUPPLY)",
                 "> HABILIDADES DETECTADAS:",
                 "  - Coffee Brewing (V60 / Espresso): 100%",
                 "  - Scrum Coffee Standups: 95%",
                 "  - Diplomacia Organizacional: 90%",
                 "> ESTADO DEL AGENTE:",
-                "  - Método de desarrollo: 'Tómese un tinto y piénselo bien'",
+                "  - MÃ©todo de desarrollo: 'TÃ³mese un tinto y piÃ©nselo bien'",
                 "  - Puntualidad*: Relativa al primer sorbo",
                 "  - Granos tostados: 12,450g en stock",
-                "> DIAGNÓSTICO: Suministro de cafeína estable. El motor creativo sigue en marcha."
+                "> DIAGNÃ“STICO: Suministro de cafeÃ­na estable. El motor creativo sigue en marcha."
             ]
         };
 
@@ -784,7 +784,7 @@ function initEffectsScript() {
                     currentLineEl.innerHTML = coloredText;
                     charIdx++;
                     
-                    // Auto-scroll a la última línea en terminal
+                    // Auto-scroll a la Ãºltima lÃ­nea en terminal
                     terminalBody.scrollTop = terminalBody.scrollHeight;
                 } else {
                     lineIdx++;
@@ -872,7 +872,7 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       14. BUS DE DATOS SVG (Scroll-Drawing Fiber Path — Pre-Sampled O(1))
+       14. BUS DE DATOS SVG (Scroll-Drawing Fiber Path â€” Pre-Sampled O(1))
        ============================================================ */
     (function initVantaFiberPath() {
         const path = document.getElementById('vanta-fiber-path');
@@ -995,7 +995,7 @@ function initEffectsScript() {
         // Listen to scroll to wake it up
         window.addEventListener('scroll', wakeUp, { passive: true });
 
-        // Integración directa con Lenis si está activo
+        // IntegraciÃ³n directa con Lenis si estÃ¡ activo
         setTimeout(() => {
             if (window.lenis) {
                 window.lenis.on('scroll', (e) => {
@@ -1012,7 +1012,7 @@ function initEffectsScript() {
 
 
     /* ============================================================
-       16. FILM GRAIN CANVAS — Versión ultraligera (tiny canvas + CSS scale)
+       16. FILM GRAIN CANVAS â€” VersiÃ³n ultraligera (tiny canvas + CSS scale)
        ============================================================ */
     (function initFilmGrain() {
         const canvas = document.getElementById('film-grain-canvas');
@@ -1035,12 +1035,12 @@ function initEffectsScript() {
         }
         ctx.putImageData(imageData, 0, 0);
 
-        // Activamos la animación por CSS añadiendo la clase
+        // Activamos la animaciÃ³n por CSS aÃ±adiendo la clase
         canvas.parentElement.classList.add('grain-active');
     })();
 
     /* ============================================================
-       17. KINETIC SPLIT TEXT — Hero y headings
+       17. KINETIC SPLIT TEXT â€” Hero y headings
        ============================================================ */
     (function initSplitText() {
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1119,7 +1119,7 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       18. TEXT SCRAMBLE — Glitch reveal en section headings
+       18. TEXT SCRAMBLE â€” Glitch reveal en section headings
        ============================================================ */
     (function initTextScramble() {
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1171,7 +1171,7 @@ function initEffectsScript() {
 
     /* ============================================================
        19. SCROLL COLOR THEMING & 5-ACT SCROLLYTELLING HUD
-           + sincronización HUD Sidebar y 5 Actos de VANTA
+           + sincronizaciÃ³n HUD Sidebar y 5 Actos de VANTA
        ============================================================ */
     (function initColorTheming() {
         const themes = [
@@ -1194,7 +1194,7 @@ function initEffectsScript() {
             window.currentPrimaryColor = hex;
             const { r, g, b } = theme;
 
-            // 1. CSS variables — drive all CSS-based elements
+            // 1. CSS variables â€” drive all CSS-based elements
             root.style.setProperty('--primary-rgb',   `${r}, ${g}, ${b}`);
             root.style.setProperty('--primary',       hex);
             root.style.setProperty('--theme-primary', hex);
@@ -1279,7 +1279,7 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       20. HERO CURTAIN REVEAL — Iris opening after preloader
+       20. HERO CURTAIN REVEAL â€” Iris opening after preloader
        ============================================================ */
     (function initHeroCurtain() {
         const curtainA = document.querySelector('.hero-curtain.curtain-a');
@@ -1379,7 +1379,7 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       21. BENTO GRID — IntersectionObserver Stagger Reveal
+       21. BENTO GRID â€” IntersectionObserver Stagger Reveal
        ============================================================ */
     (function initBentoReveal() {
         const cards = document.querySelectorAll('.bento-reveal');
@@ -1401,7 +1401,7 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       22. PROJECT COUNTER FLIP — Número editorial en scroll horizontal
+       22. PROJECT COUNTER FLIP â€” NÃºmero editorial en scroll horizontal
        ============================================================ */
     (function initProjectCounter() {
         const portfolioSection = document.querySelector('.portfolio-scroll-container');
@@ -1583,60 +1583,60 @@ function initEffectsScript() {
 
         if (!featuresList || !planTabsGroup) return;
 
-        // Matriz de Datos de los 3 Planes con Descuento Estratégico en el Plan Básico
+        // Matriz de Datos de los 3 Planes con Descuento EstratÃ©gico en el Plan BÃ¡sico
         const PLANS_DATA = {
             basico: {
-                name: "Básico",
-                desc: "Ideal para despegar rápido con una landing page de alto impacto.",
-                offerBadge: "🔥 OFERTA ÚNICA - 31% DESCUENTO",
+                name: "BÃ¡sico",
+                desc: "Ideal para despegar rÃ¡pido con una landing page de alto impacto.",
+                offerBadge: "ðŸ”¥ OFERTA ÃšNICA - 31% DESCUENTO",
                 monthly: { price: 199, original: 290, period: "USD" },
                 annual: { price: 159, original: 230, period: "USD / mes" },
-                ctaText: "Adquirir Plan Básico",
+                ctaText: "Adquirir Plan BÃ¡sico",
                 waMsg: "Hola,%20quiero%20aprovechar%20la%20Oferta%20del%20Plan%20B%C3%A1sico",
                 features: [
-                    { name: "Landing page profesional de alta conversión", included: true },
-                    { name: "Diseño responsive adaptado a móvil y web", included: true },
+                    { name: "Landing page profesional de alta conversiÃ³n", included: true },
+                    { name: "DiseÃ±o responsive adaptado a mÃ³vil y web", included: true },
                     { name: "Formulario directo de contacto a WhatsApp", included: true },
-                    { name: "Dominio y despliegue rápido en la nube", included: true },
-                    { name: "Panel de administración CMS", included: false },
+                    { name: "Dominio y despliegue rÃ¡pido en la nube", included: true },
+                    { name: "Panel de administraciÃ³n CMS", included: false },
                     { name: "Base de datos y API Backend", included: false },
-                    { name: "Integraciones de IA autónomas", included: false }
+                    { name: "Integraciones de IA autÃ³nomas", included: false }
                 ]
             },
             pro: {
                 name: "Profesional",
-                desc: "Solución completa para negocios que requieren gestión de datos y panel admin.",
-                offerBadge: "⚡ PLAN MÁS POPULAR ENTRE STARTUPS",
+                desc: "SoluciÃ³n completa para negocios que requieren gestiÃ³n de datos y panel admin.",
+                offerBadge: "âš¡ PLAN MÃS POPULAR ENTRE STARTUPS",
                 monthly: { price: 499, original: 650, period: "USD" },
                 annual: { price: 399, original: 520, period: "USD / mes" },
                 ctaText: "Seleccionar Plan Profesional",
                 waMsg: "Hola,%20estoy%20interesado%20en%20el%20Plan%20Profesional",
                 features: [
-                    { name: "Web completa multi-página con micro-animaciones", included: true },
-                    { name: "Diseño responsive adaptado a móvil y web", included: true },
+                    { name: "Web completa multi-pÃ¡gina con micro-animaciones", included: true },
+                    { name: "DiseÃ±o responsive adaptado a mÃ³vil y web", included: true },
                     { name: "Formulario directo de contacto a WhatsApp", included: true },
-                    { name: "Dominio y despliegue rápido en la nube", included: true },
-                    { name: "Panel de administración CMS completo", included: true },
+                    { name: "Dominio y despliegue rÃ¡pido en la nube", included: true },
+                    { name: "Panel de administraciÃ³n CMS completo", included: true },
                     { name: "Base de datos escalable + API Backend", included: true },
-                    { name: "Integraciones de IA autónomas", included: false }
+                    { name: "Integraciones de IA autÃ³nomas", included: false }
                 ]
             },
             enterprise: {
                 name: "Empresarial",
-                desc: "Infraestructura a medida de alta escala con integración de Inteligencia Artificial.",
-                offerBadge: "🚀 INFRAESTRUCTURA DE ÉLITE A MEDIDA",
+                desc: "Infraestructura a medida de alta escala con integraciÃ³n de Inteligencia Artificial.",
+                offerBadge: "ðŸš€ INFRAESTRUCTURA DE Ã‰LITE A MEDIDA",
                 monthly: { price: "Custom", original: null, period: "" },
                 annual: { price: "Custom", original: null, period: "" },
-                ctaText: "Solicitar Cotización Personalizada",
+                ctaText: "Solicitar CotizaciÃ³n Personalizada",
                 waMsg: "Hola,%20necesito%20una%20cotizaci%C3%B3n%20para%20un%20proyecto%20Empresarial",
                 features: [
-                    { name: "Sistema a medida multi-módulo completo", included: true },
-                    { name: "Diseño responsive adaptado a móvil y web", included: true },
+                    { name: "Sistema a medida multi-mÃ³dulo completo", included: true },
+                    { name: "DiseÃ±o responsive adaptado a mÃ³vil y web", included: true },
                     { name: "Formulario directo de contacto a WhatsApp", included: true },
-                    { name: "Dominio y despliegue rápido en la nube", included: true },
-                    { name: "Panel de administración CMS completo", included: true },
+                    { name: "Dominio y despliegue rÃ¡pido en la nube", included: true },
+                    { name: "Panel de administraciÃ³n CMS completo", included: true },
                     { name: "Base de datos escalable + API Backend", included: true },
-                    { name: "Integraciones de IA autónomas y Agentes", included: true }
+                    { name: "Integraciones de IA autÃ³nomas y Agentes", included: true }
                 ]
             }
         };
@@ -1644,7 +1644,7 @@ function initEffectsScript() {
         let activePlanKey = 'basico';
         let activeCycleKey = 'monthly';
 
-        // Animación suave de cambio numérico (Odometer / NumberFlow)
+        // AnimaciÃ³n suave de cambio numÃ©rico (Odometer / NumberFlow)
         function animateValue(obj, start, end, duration) {
             if (isNaN(start) || isNaN(end)) {
                 obj.textContent = end;
@@ -1679,7 +1679,7 @@ function initEffectsScript() {
             offerBadge.textContent = plan.offerBadge;
             descText.textContent = plan.desc;
 
-            // 3. Precios y animación de números
+            // 3. Precios y animaciÃ³n de nÃºmeros
             if (typeof cycleData.price === 'number') {
                 currencyEl.style.display = 'inline';
                 periodEl.textContent = cycleData.period;
@@ -1695,9 +1695,9 @@ function initEffectsScript() {
                     slashedPriceWrap.style.display = 'none';
                 }
             } else {
-                // Caso Empresarial (Cotización Custom)
+                // Caso Empresarial (CotizaciÃ³n Custom)
                 currencyEl.style.display = 'none';
-                amountEl.textContent = "Cotización";
+                amountEl.textContent = "CotizaciÃ³n";
                 periodEl.textContent = "a medida";
                 slashedPriceWrap.style.display = 'none';
             }
@@ -1733,8 +1733,8 @@ function initEffectsScript() {
         // Feedback HUD al hacer click en adquirir plan
         ctaBtn.addEventListener('click', () => {
             if (window.showHudToast) {
-                const planName = activePlanKey === 'basico' ? 'PLAN BÁSICO' : (activePlanKey === 'pro' ? 'PLAN PROFESIONAL' : 'PLAN EMPRESARIAL');
-                window.showHudToast(`[COTIZACIÓN SELECCIONADA // ${planName}]`);
+                const planName = activePlanKey === 'basico' ? 'PLAN BÃSICO' : (activePlanKey === 'pro' ? 'PLAN PROFESIONAL' : 'PLAN EMPRESARIAL');
+                window.showHudToast(`[COTIZACIÃ“N SELECCIONADA // ${planName}]`);
             }
         });
 
@@ -1744,7 +1744,7 @@ function initEffectsScript() {
 
 
     /* ============================================================
-       PHASE 1 PREMIUM — AUDIO UI ENGINE (Web Audio API)
+       PHASE 1 PREMIUM â€” AUDIO UI ENGINE (Web Audio API)
        ============================================================ */
     (function initAudioUI() {
         const btn = document.getElementById('audio-toggle-btn');
@@ -1825,7 +1825,7 @@ function initEffectsScript() {
 
 
     /* ============================================================
-       PHASE 1 PREMIUM — TEXT SCRAMBLE EN TÍTULOS DE SECCIÓN
+       PHASE 1 PREMIUM â€” TEXT SCRAMBLE EN TÃTULOS DE SECCIÃ“N
        ============================================================ */
     (function initSectionTitleScramble() {
         const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&!';
@@ -1886,7 +1886,7 @@ function initEffectsScript() {
 
 
     /* ============================================================
-       PHASE 1 PREMIUM — PORTFOLIO CARD MAGNETIC HOVER + SPOTLIGHT
+       PHASE 1 PREMIUM â€” PORTFOLIO CARD MAGNETIC HOVER + SPOTLIGHT
        ============================================================ */
     (function initPortfolioCardMagneticHover() {
         const cards = document.querySelectorAll('.card');
@@ -1902,7 +1902,7 @@ function initEffectsScript() {
                 card.style.setProperty('--mx', `${x}px`);
                 card.style.setProperty('--my', `${y}px`);
 
-                // Spotlight radial update (h3 estático para respuesta limpia)
+                // Spotlight radial update (h3 estÃ¡tico para respuesta limpia)
             });
 
             card.addEventListener('mouseleave', () => {
@@ -1914,7 +1914,7 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       FASE 2 #4: CURSOR PREMIUM — THUMBNAIL + CLICK RIPPLE
+       FASE 2 #4: CURSOR PREMIUM â€” THUMBNAIL + CLICK RIPPLE
        ============================================================ */
     (function initCursorPremium() {
         if (window.matchMedia('(pointer: coarse)').matches) return;
@@ -2006,14 +2006,14 @@ function initEffectsScript() {
 
         // Project data map (from data-info)
         const DATA = {
-            sviva:       { tag: 'TESIS · IA · EDGE', title: 'SVIVA', desc: 'Sistema de Videovigilancia Inteligente. IA operando íntegramente en hardware local. Detección, rastreo y analíticas avanzadas sin internet ni nube.', img: 'img/sviva/svivalogo.png', stack: ['Python','OpenCV','YOLO','FastAPI','Edge Computing'] },
-            svivaweb:    { tag: 'Vite · TypeScript · React', title: 'SVIVA Web', desc: 'Landing page de alta inmersión diseñada para promocionar y distribuir el ejecutable de nuestra obra maestra de visión artificial.', img: 'img/sviva/svivaindex.jpeg', stack: ['Vite','TypeScript','React','Three.js','GSAP'] },
-            kioskoazul:  { tag: 'Python · Flask · SQLite', title: 'Kiosko Azul', desc: 'Menú digital, reservaciones en tiempo real y pedidos con un completo dashboard administrativo de estadísticas de órdenes.', img: 'img/auracheck/auralogin.jpeg', stack: ['Python','Flask','SQLite','HTML','CSS','JavaScript'] },
-            iuta:        { tag: 'Python · Flask · PostgreSQL', title: 'Sistema Bibliotecario IUTA', desc: 'Herramienta robusta que moderniza el control bibliotecario del IUTA, transformando procesos manuales en un ecosistema digital eficiente.', img: 'img/cerdiv/cerdivweb.jpeg', stack: ['Python','Flask','PostgreSQL','Bootstrap'] },
-            aura:        { tag: 'FastAPI · Biometría · Seguridad', title: 'Aura Check', desc: 'Panel de auditoría de seguridad biométrica que opera 100% en local — ningún dato sensible abandona el dispositivo del usuario.', img: 'img/auracheck/auralogin.jpeg', stack: ['FastAPI','Python','Biometría','LocalFirst'] },
-            cuerpo:      { tag: 'IA · FastAPI · Inmersivo', title: '¿Qué le pasa a mi cuerpo?', desc: 'Plataforma médica impulsada por IA que responde consultas de anatomía con la voz de un doctor victoriano de 1885.', img: 'img/quelepasacuerpo/cuerpologin.jpeg', stack: ['FastAPI','Gemini AI','TTS','Python'] },
-            ventastrack: { tag: 'Node.js · TS · PostgreSQL', title: 'VentasTrack B2B', desc: 'Plataforma de ventas con roles y jerarquías, carrito de compras y módulo de facturación, sincronizada a diario con bases de datos del cliente.', img: 'img/sviva/svivaconfig.jpeg', stack: ['Node.js','TypeScript','Vite','PostgreSQL'] },
-            inventario:  { tag: 'Sistema · Personalizable', title: 'Inventario Pro', desc: 'Software robusto y 100% personalizable. Optimiza tu control de stock con una interfaz intuitiva y reportes avanzados.', img: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg', stack: ['Python','FastAPI','React','PostgreSQL'] },
+            sviva:       { tag: 'TESIS Â· IA Â· EDGE', title: 'SVIVA', desc: 'Sistema de Videovigilancia Inteligente. IA operando Ã­ntegramente en hardware local. DetecciÃ³n, rastreo y analÃ­ticas avanzadas sin internet ni nube.', img: 'img/sviva/svivalogo.png', stack: ['Python','OpenCV','YOLO','FastAPI','Edge Computing'] },
+            svivaweb:    { tag: 'Vite Â· TypeScript Â· React', title: 'SVIVA Web', desc: 'Landing page de alta inmersiÃ³n diseÃ±ada para promocionar y distribuir el ejecutable de nuestra obra maestra de visiÃ³n artificial.', img: 'img/sviva/svivaindex.jpeg', stack: ['Vite','TypeScript','React','Three.js','GSAP'] },
+            kioskoazul:  { tag: 'Python Â· Flask Â· SQLite', title: 'Kiosko Azul', desc: 'MenÃº digital, reservaciones en tiempo real y pedidos con un completo dashboard administrativo de estadÃ­sticas de Ã³rdenes.', img: 'img/auracheck/auralogin.jpeg', stack: ['Python','Flask','SQLite','HTML','CSS','JavaScript'] },
+            iuta:        { tag: 'Python Â· Flask Â· PostgreSQL', title: 'Sistema Bibliotecario IUTA', desc: 'Herramienta robusta que moderniza el control bibliotecario del IUTA, transformando procesos manuales en un ecosistema digital eficiente.', img: 'img/cerdiv/cerdivweb.jpeg', stack: ['Python','Flask','PostgreSQL','Bootstrap'] },
+            aura:        { tag: 'FastAPI Â· BiometrÃ­a Â· Seguridad', title: 'Aura Check', desc: 'Panel de auditorÃ­a de seguridad biomÃ©trica que opera 100% en local â€” ningÃºn dato sensible abandona el dispositivo del usuario.', img: 'img/auracheck/auralogin.jpeg', stack: ['FastAPI','Python','BiometrÃ­a','LocalFirst'] },
+            cuerpo:      { tag: 'IA Â· FastAPI Â· Inmersivo', title: 'Â¿QuÃ© le pasa a mi cuerpo?', desc: 'Plataforma mÃ©dica impulsada por IA que responde consultas de anatomÃ­a con la voz de un doctor victoriano de 1885.', img: 'img/quelepasacuerpo/cuerpologin.jpeg', stack: ['FastAPI','Gemini AI','TTS','Python'] },
+            ventastrack: { tag: 'Node.js Â· TS Â· PostgreSQL', title: 'VentasTrack B2B', desc: 'Plataforma de ventas con roles y jerarquÃ­as, carrito de compras y mÃ³dulo de facturaciÃ³n, sincronizada a diario con bases de datos del cliente.', img: 'img/sviva/svivaconfig.jpeg', stack: ['Node.js','TypeScript','Vite','PostgreSQL'] },
+            inventario:  { tag: 'Sistema Â· Personalizable', title: 'Inventario Pro', desc: 'Software robusto y 100% personalizable. Optimiza tu control de stock con una interfaz intuitiva y reportes avanzados.', img: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg', stack: ['Python','FastAPI','React','PostgreSQL'] },
         };
 
         function openProject(key, originCard) {
@@ -2058,7 +2058,7 @@ function initEffectsScript() {
             }, 100);
         }
 
-        // Hook all info-btn buttons to 3D Warp Tunnel Experience → Rich Project Modal
+        // Hook all info-btn buttons to 3D Warp Tunnel Experience â†’ Rich Project Modal
         document.querySelectorAll('.info-btn[data-info]').forEach(btn => {
             btn.addEventListener('click', e => {
                 e.preventDefault();
@@ -2152,7 +2152,7 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       3D CYBER FELT CANVAS — Grid + VANTA Oval Ring (No shockwaves, pure background)
+       3D CYBER FELT CANVAS â€” Grid + VANTA Oval Ring (No shockwaves, pure background)
        ============================================================ */
     (function initPokerFeltCanvas() {
         const canvas = document.getElementById('poker-felt-canvas');
@@ -2263,21 +2263,21 @@ function initEffectsScript() {
     })();
 
                     /* ============================================================
-       AWWWARDS CYBERPUNK POKER TECH DECK — Real Heads-Up Game Sequence
-       Top Player: ANDRÉS ♠ (Full-Stack & Cloud)
-       Bottom Player: JOHAN ♦ (AI Vision & 3D Graphics)
+       AWWWARDS CYBERPUNK POKER TECH DECK â€” Real Heads-Up Game Sequence
+       Top Player: ANDRÃ‰S â™  (Full-Stack & Cloud)
+       Bottom Player: JOHAN â™¦ (AI Vision & 3D Graphics)
        Center Pot: THE WINNING RIVER CARD (VANTA Master Slam)
        ============================================================ */
         /* ============================================================
-       AWWWARDS CYBERPUNK POKER TECH DECK — Real Heads-Up Game Sequence
-       Top Player: ANDRÉS ♠ (Full-Stack & Cloud)
-       Bottom Player: JOHAN ♦ (AI Vision & 3D Graphics)
+       AWWWARDS CYBERPUNK POKER TECH DECK â€” Real Heads-Up Game Sequence
+       Top Player: ANDRÃ‰S â™  (Full-Stack & Cloud)
+       Bottom Player: JOHAN â™¦ (AI Vision & 3D Graphics)
        Center Pot: THE WINNING RIVER CARD (VANTA Master Slam)
        ============================================================ */
         /* ============================================================
-       AWWWARDS CYBERPUNK POKER TECH DECK — Real Heads-Up Dealer Sequence
-       Dealer: Central deck → alternating arc-slide deal (A J A J A J...)
-       Top Player: ANDRÉS ♠  |  Bottom Player: JOHAN ♦
+       AWWWARDS CYBERPUNK POKER TECH DECK â€” Real Heads-Up Dealer Sequence
+       Dealer: Central deck â†’ alternating arc-slide deal (A J A J A J...)
+       Top Player: ANDRÃ‰S â™   |  Bottom Player: JOHAN â™¦
        River: THE WINNING SLAM (VANTA Master)
        ============================================================ */
     (function initCyberpunkPokerDeckScrollytelling() {
@@ -2288,137 +2288,137 @@ function initEffectsScript() {
         const stage     = document.getElementById('poker-felt-stage');
         if (!section || !cards.length) return;
 
-        // ─── Complete Tech Specs Dataset for Modal ───────────────────────
+        // â”€â”€â”€ Complete Tech Specs Dataset for Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         const techSpecsData = {
             fastapi: {
                 badge: "BACKEND ENGINE", title: "FastAPI Async",
-                rank: "AS DE CORAZONES ♥", accent: "#059669", icon: "fas fa-bolt",
-                desc: "Arquitectura backend REST asíncrona de alta velocidad con tipado Pydantic v2 y OpenAPI v3.",
+                rank: "AS DE CORAZONES â™¥", accent: "#059669", icon: "fas fa-bolt",
+                desc: "Arquitectura backend REST asÃ­ncrona de alta velocidad con tipado Pydantic v2 y OpenAPI v3.",
                 projects: [
                     { icon: "fas fa-server", name: "Core API Gateway VANTA", desc: "Malla de microservicios procesando 10,000 req/sec." },
-                    { icon: "fas fa-shield-alt", name: "OAuth2 & JWT RS256", desc: "Validación criptográfica asimétrica sub-milisegundo." }
+                    { icon: "fas fa-shield-alt", name: "OAuth2 & JWT RS256", desc: "ValidaciÃ³n criptogrÃ¡fica asimÃ©trica sub-milisegundo." }
                 ],
                 metrics: [ { val: "10k Req/s", lbl: "Concurrencia" }, { val: "< 1.5ms", lbl: "Latencia" }, { val: "Pydantic v2", lbl: "Esquema Estricto" }, { val: "Uvicorn", lbl: "ASGI Core" } ]
             },
             supabase: {
                 badge: "CLOUD & BAAS", title: "Supabase Cloud",
-                rank: "REY DE PICAS ♠", accent: "#3ECF8E", icon: "fas fa-cloud-upload-alt",
-                desc: "Bases de datos relacionales Postgres en tiempo real con políticas RLS, Storage CDN y Edge Functions.",
+                rank: "REY DE PICAS â™ ", accent: "#3ECF8E", icon: "fas fa-cloud-upload-alt",
+                desc: "Bases de datos relacionales Postgres en tiempo real con polÃ­ticas RLS, Storage CDN y Edge Functions.",
                 projects: [
-                    { icon: "fas fa-database", name: "Base de Datos Multi-Tenant", desc: "Streaming WebSocket en vivo y triggers automáticos." },
+                    { icon: "fas fa-database", name: "Base de Datos Multi-Tenant", desc: "Streaming WebSocket en vivo y triggers automÃ¡ticos." },
                     { icon: "fas fa-lock", name: "Row Level Security (RLS)", desc: "Aislamiento granular de datos por cliente." }
                 ],
                 metrics: [ { val: "Realtime", lbl: "WebSockets" }, { val: "100% RLS", lbl: "Seguridad Granular" }, { val: "Edge CDN", lbl: "Global Cache" }, { val: "Postgres", lbl: "ACID Engine" } ]
             },
             react: {
                 badge: "UI FRONTEND", title: "React 19, TS & Core Web",
-                rank: "REINA DE DIAMANTES ♦", accent: "#61DAFB", icon: "fab fa-react",
+                rank: "REINA DE DIAMANTES â™¦", accent: "#61DAFB", icon: "fab fa-react",
                 desc: "Plataformas frontend modulares con React 19, Server Components, TypeScript estricto, HTML5, CSS3 y JS.",
                 projects: [
-                    { icon: "fas fa-desktop", name: "Plataforma Web Studio", desc: "Renderizado reactivo a 60 FPS con animaciones cinéticas." },
-                    { icon: "fas fa-code", name: "HTML5/CSS3/JS Moderno", desc: "Sin dependencias pesadas, optimización CSS atómica." }
+                    { icon: "fas fa-desktop", name: "Plataforma Web Studio", desc: "Renderizado reactivo a 60 FPS con animaciones cinÃ©ticas." },
+                    { icon: "fas fa-code", name: "HTML5/CSS3/JS Moderno", desc: "Sin dependencias pesadas, optimizaciÃ³n CSS atÃ³mica." }
                 ],
                 metrics: [ { val: "100/100", lbl: "Lighthouse" }, { val: "0.0s", lbl: "CLS Layout Shift" }, { val: "Strict TS", lbl: "Tipado Estricto" }, { val: "React 19", lbl: "Server Actions" } ]
             },
             nodejs: {
                 badge: "SERVERLESS ENGINE", title: "Node.js & Vercel Edge",
-                rank: "JOTA DE TRÉBOLES ♣", accent: "#68A063", icon: "fab fa-node-js",
-                desc: "Microservicios en Node.js asíncronos y canalización de despliegue serverless continuo en Vercel Edge Network.",
+                rank: "JOTA DE TRÃ‰BOLES â™£", accent: "#68A063", icon: "fab fa-node-js",
+                desc: "Microservicios en Node.js asÃ­ncronos y canalizaciÃ³n de despliegue serverless continuo en Vercel Edge Network.",
                 projects: [
-                    { icon: "fas fa-network-wired", name: "Edge Microservices Network", desc: "Despliegues globales instantáneos con latencia cero." },
-                    { icon: "fas fa-rocket", name: "Vercel CI/CD Pipeline", desc: "Compilación atomizada y vistas previas de ramas de Git." }
+                    { icon: "fas fa-network-wired", name: "Edge Microservices Network", desc: "Despliegues globales instantÃ¡neos con latencia cero." },
+                    { icon: "fas fa-rocket", name: "Vercel CI/CD Pipeline", desc: "CompilaciÃ³n atomizada y vistas previas de ramas de Git." }
                 ],
-                metrics: [ { val: "< 5ms", lbl: "Edge Response" }, { val: "Serverless", lbl: "Escalado Elástico" }, { val: "Node.js 20", lbl: "Runtime LTH" }, { val: "Vercel CDN", lbl: "Cobertura Mundial" } ]
+                metrics: [ { val: "< 5ms", lbl: "Edge Response" }, { val: "Serverless", lbl: "Escalado ElÃ¡stico" }, { val: "Node.js 20", lbl: "Runtime LTH" }, { val: "Vercel CDN", lbl: "Cobertura Mundial" } ]
             },
             python: {
                 badge: "CORE COMPUTING", title: "Python 3.11 & Flask",
-                rank: "AS DE ESPADAS ♠", accent: "#3776AB", icon: "fab fa-python",
-                desc: "Motor computacional en Python 3.11 para backend síncrono/asíncrono, micro-APIs en Flask y scripts de datos.",
+                rank: "AS DE ESPADAS â™ ", accent: "#3776AB", icon: "fab fa-python",
+                desc: "Motor computacional en Python 3.11 para backend sÃ­ncrono/asÃ­ncrono, micro-APIs en Flask y scripts de datos.",
                 projects: [
                     { icon: "fas fa-microchip", name: "Microservicios Flask", desc: "APIs ligeras de alto rendimiento para procesamiento paralelo." },
-                    { icon: "fas fa-cogs", name: "Orquestación de Datos", desc: "Pipelines de transformación y computación numérica." }
+                    { icon: "fas fa-cogs", name: "OrquestaciÃ³n de Datos", desc: "Pipelines de transformaciÃ³n y computaciÃ³n numÃ©rica." }
                 ],
                 metrics: [ { val: "Python 3.11", lbl: "CPython Async" }, { val: "Flask REST", lbl: "Micro-APIs" }, { val: "Zero-GIL", lbl: "Parallel Workers" }, { val: "100%", lbl: "Estabilidad Backend" } ]
             },
             andres_infra: {
                 badge: "INFRASTRUCTURE", title: "C++, Docker & Git",
-                rank: "DIEZ DE ESPADAS ♠", accent: "#00599C", icon: "fab fa-docker",
-                desc: "Contenedores Docker aislados, control de versiones colaborativo con Git y módulos de bajo nivel en C++.",
+                rank: "DIEZ DE ESPADAS â™ ", accent: "#00599C", icon: "fab fa-docker",
+                desc: "Contenedores Docker aislados, control de versiones colaborativo con Git y mÃ³dulos de bajo nivel en C++.",
                 projects: [
-                    { icon: "fas fa-box", name: "Dockerized Microservices", desc: "Contenedores multi-stage optimizados para producción." },
+                    { icon: "fas fa-box", name: "Dockerized Microservices", desc: "Contenedores multi-stage optimizados para producciÃ³n." },
                     { icon: "fas fa-code-branch", name: "Git Workflow Master", desc: "Pipelines CI/CD automatizados y control estricto de ramas." }
                 ],
-                metrics: [ { val: "Dockerized", lbl: "Aislamiento Total" }, { val: "C++ Native", lbl: "Cómputo Nativo" }, { val: "Git CI/CD", lbl: "Control Versiones" }, { val: "Multi-Cloud", lbl: "Compatibilidad" } ]
+                metrics: [ { val: "Dockerized", lbl: "Aislamiento Total" }, { val: "C++ Native", lbl: "CÃ³mputo Nativo" }, { val: "Git CI/CD", lbl: "Control Versiones" }, { val: "Multi-Cloud", lbl: "Compatibilidad" } ]
             },
             yolo: {
                 badge: "COMPUTER VISION", title: "YOLOv8 AI Vision",
-                rank: "REY DE DIAMANTES ♦", accent: "#11d483", icon: "fas fa-eye",
-                desc: "Redes convolucionales YOLOv8 para segmentación y detección de objetos en tiempo real 100% locales.",
+                rank: "REY DE DIAMANTES â™¦", accent: "#11d483", icon: "fas fa-eye",
+                desc: "Redes convolucionales YOLOv8 para segmentaciÃ³n y detecciÃ³n de objetos en tiempo real 100% locales.",
                 projects: [
-                    { icon: "fas fa-video", name: "Control de Calidad Industrial", desc: "Inspección automatizada con 99.4% de precisión." },
-                    { icon: "fas fa-camera", name: "Tracking Multicámara", desc: "32 objetos simultáneos sin latencia en la nube." }
+                    { icon: "fas fa-video", name: "Control de Calidad Industrial", desc: "InspecciÃ³n automatizada con 99.4% de precisiÃ³n." },
+                    { icon: "fas fa-camera", name: "Tracking MulticÃ¡mara", desc: "32 objetos simultÃ¡neos sin latencia en la nube." }
                 ],
-                metrics: [ { val: "99.4%", lbl: "Precisión mAP" }, { val: "60 FPS", lbl: "Inferencia Local" }, { val: "TensorRT", lbl: "Aceleración GPU" }, { val: "0 Cloud", lbl: "Privacidad Total" } ]
+                metrics: [ { val: "99.4%", lbl: "PrecisiÃ³n mAP" }, { val: "60 FPS", lbl: "Inferencia Local" }, { val: "TensorRT", lbl: "AceleraciÃ³n GPU" }, { val: "0 Cloud", lbl: "Privacidad Total" } ]
             },
             ml: {
                 badge: "ARTIFICIAL INTELLIGENCE", title: "Machine Learning & Neural Nets",
-                rank: "AS DE TRÉBOLES ♣", accent: "#a855f7", icon: "fas fa-brain",
+                rank: "AS DE TRÃ‰BOLES â™£", accent: "#a855f7", icon: "fas fa-brain",
                 desc: "Entrenamiento de modelos de aprendizaje profundo, redes neuronales personalizadas y algoritmos predictivos.",
                 projects: [
-                    { icon: "fas fa-project-diagram", name: "Redes Neuronales Profundas", desc: "Clasificación multivariada y modelos predictivos." },
-                    { icon: "fas fa-chart-line", name: "Optimización de Hiperparámetros", desc: "Ajuste fino de modelos para máxima precisión." }
+                    { icon: "fas fa-project-diagram", name: "Redes Neuronales Profundas", desc: "ClasificaciÃ³n multivariada y modelos predictivos." },
+                    { icon: "fas fa-chart-line", name: "OptimizaciÃ³n de HiperparÃ¡metros", desc: "Ajuste fino de modelos para mÃ¡xima precisiÃ³n." }
                 ],
                 metrics: [ { val: "Deep Learning", lbl: "Redes Neuronales" }, { val: "PyTorch Core", lbl: "Framework AI" }, { val: "Real-time", lbl: "Predicciones" }, { val: "Local AI", lbl: "Sin Intermediarios" } ]
             },
             three: {
                 badge: "3D GRAPHICS", title: "3D Models & Three.js",
-                rank: "REINA DE TRÉBOLES ♣", accent: "#00ffff", icon: "fas fa-cube",
-                desc: "Visualización 3D interactiva en tiempo real WebGL, modelos 3D PBR, shaders GLSL y animaciones físicas.",
+                rank: "REINA DE TRÃ‰BOLES â™£", accent: "#00ffff", icon: "fas fa-cube",
+                desc: "VisualizaciÃ³n 3D interactiva en tiempo real WebGL, modelos 3D PBR, shaders GLSL y animaciones fÃ­sicas.",
                 projects: [
-                    { icon: "fas fa-globe", name: "Universo 3D Portafolio VANTA", desc: "Partículas fluidas, cristal interactivo y refracción." },
+                    { icon: "fas fa-globe", name: "Universo 3D Portafolio VANTA", desc: "PartÃ­culas fluidas, cristal interactivo y refracciÃ³n." },
                     { icon: "fas fa-cube", name: "Modelos 3D PBR", desc: "Carga optimizada de archivos GLTF/GLB con mapas HDRI." }
                 ],
-                metrics: [ { val: "120 FPS", lbl: "Render WebGL" }, { val: "GLSL 3.0", lbl: "Custom Shaders" }, { val: "PBR Materials", lbl: "Física de Luz" }, { val: "< 1.2MB", lbl: "Bundle Opt" } ]
+                metrics: [ { val: "120 FPS", lbl: "Render WebGL" }, { val: "GLSL 3.0", lbl: "Custom Shaders" }, { val: "PBR Materials", lbl: "FÃ­sica de Luz" }, { val: "< 1.2MB", lbl: "Bundle Opt" } ]
             },
             postgres: {
                 badge: "DATABASE ENGINE", title: "PostgreSQL & Neon",
-                rank: "NUEVE DE DIAMANTES ♦", accent: "#4169E1", icon: "fas fa-database",
-                desc: "Base de datos relacional serverless con aislamiento de transacciones ACID y consultas JSONB híbridas.",
+                rank: "NUEVE DE DIAMANTES â™¦", accent: "#4169E1", icon: "fas fa-database",
+                desc: "Base de datos relacional serverless con aislamiento de transacciones ACID y consultas JSONB hÃ­bridas.",
                 projects: [
-                    { icon: "fas fa-database", name: "Motor de Datos Multi-Tenant", desc: "Índices B-Tree optimizados + consultas JSONB." },
-                    { icon: "fas fa-cloud", name: "Arquitectura Serverless Neon", desc: "Escalado elástico a cero en inactividad." }
+                    { icon: "fas fa-database", name: "Motor de Datos Multi-Tenant", desc: "Ãndices B-Tree optimizados + consultas JSONB." },
+                    { icon: "fas fa-cloud", name: "Arquitectura Serverless Neon", desc: "Escalado elÃ¡stico a cero en inactividad." }
                 ],
-                metrics: [ { val: "100%", lbl: "Garantía ACID" }, { val: "0.001ms", lbl: "Index Lookup" }, { val: "Neon Cloud", lbl: "Serverless Mesh" }, { val: "JSONB", lbl: "Document Hybrid" } ]
+                metrics: [ { val: "100%", lbl: "GarantÃ­a ACID" }, { val: "0.001ms", lbl: "Index Lookup" }, { val: "Neon Cloud", lbl: "Serverless Mesh" }, { val: "JSONB", lbl: "Document Hybrid" } ]
             },
             cloudflare: {
                 badge: "CYBER SECURITY", title: "Cloudflare Tunnels",
-                rank: "DIEZ DE DIAMANTES ♦", accent: "#F38020", icon: "fas fa-shield-alt",
-                desc: "Enrutamiento privado de redes Zero Trust, túneles cifrados de punto a punto y protección anti-DDoS.",
+                rank: "DIEZ DE DIAMANTES â™¦", accent: "#F38020", icon: "fas fa-shield-alt",
+                desc: "Enrutamiento privado de redes Zero Trust, tÃºneles cifrados de punto a punto y protecciÃ³n anti-DDoS.",
                 projects: [
                     { icon: "fas fa-user-shield", name: "Arquitectura Zero Trust", desc: "Acceso seguro a servidores locales sin puertos abiertos." },
-                    { icon: "fas fa-network-wired", name: "Cloudflare Edge Tunnels", desc: "Tráfico encriptado de alta velocidad." }
+                    { icon: "fas fa-network-wired", name: "Cloudflare Edge Tunnels", desc: "TrÃ¡fico encriptado de alta velocidad." }
                 ],
-                metrics: [ { val: "Zero Trust", lbl: "Sin Puertos Abiertos" }, { val: "Anti-DDoS", lbl: "Protección Edge" }, { val: "100% SSL", lbl: "Cifrado Total" }, { val: "< 2ms", lbl: "Latencia Túnel" } ]
+                metrics: [ { val: "Zero Trust", lbl: "Sin Puertos Abiertos" }, { val: "Anti-DDoS", lbl: "ProtecciÃ³n Edge" }, { val: "100% SSL", lbl: "Cifrado Total" }, { val: "< 2ms", lbl: "Latencia TÃºnel" } ]
             },
             johan_core: {
                 badge: "CORE ENGINE", title: "Python, C++, Docker & Git",
-                rank: "JOTA DE DIAMANTES ♦", accent: "#11d483", icon: "fas fa-code-branch",
-                desc: "Integración de lenguajes de alto rendimiento, código nativo C++, contenedores Docker y flujos Git.",
+                rank: "JOTA DE DIAMANTES â™¦", accent: "#11d483", icon: "fas fa-code-branch",
+                desc: "IntegraciÃ³n de lenguajes de alto rendimiento, cÃ³digo nativo C++, contenedores Docker y flujos Git.",
                 projects: [
-                    { icon: "fas fa-terminal", name: "Bindings C++ Nativo", desc: "Aceleración de código crítico para procesamiento 3D y AI." },
+                    { icon: "fas fa-terminal", name: "Bindings C++ Nativo", desc: "AceleraciÃ³n de cÃ³digo crÃ­tico para procesamiento 3D y AI." },
                     { icon: "fas fa-boxes", name: "Dockerized Pipelines", desc: "Entornos de entrenamiento aislados en contenedores." }
                 ],
-                metrics: [ { val: "C++ Native", lbl: "Cómputo Nativo" }, { val: "Docker AI", lbl: "Entornos Aislados" }, { val: "Git Flow", lbl: "Control Código" }, { val: "Python AI", lbl: "Integración Core" } ]
+                metrics: [ { val: "C++ Native", lbl: "CÃ³mputo Nativo" }, { val: "Docker AI", lbl: "Entornos Aislados" }, { val: "Git Flow", lbl: "Control CÃ³digo" }, { val: "Python AI", lbl: "IntegraciÃ³n Core" } ]
             },
             vanta_master: {
                 badge: "THE WINNING HAND", title: "CRITERIO",
-                rank: "AS MAESTRO ♠♦", accent: "#f0c030", icon: "fas fa-crown",
-                desc: "Sinergia técnica de elite por Andrés & Johan. La combinación perfecta de Full-Stack Cloud, IA y Gráficos 3D.",
+                rank: "AS MAESTRO â™ â™¦", accent: "#f0c030", icon: "fas fa-crown",
+                desc: "Sinergia tÃ©cnica de elite por AndrÃ©s & Johan. La combinaciÃ³n perfecta de Full-Stack Cloud, IA y GrÃ¡ficos 3D.",
                 projects: [
-                    { icon: "fas fa-user-astronaut", name: "Andrés — Full-Stack & Cloud", desc: "FastAPI, Supabase, React, Node, Python, Flask, C++, Vercel, Docker, Git." },
-                    { icon: "fas fa-robot", name: "Johan — AI Vision & 3D", desc: "YOLOv8, Machine Learning, 3D Models, Three.js, Postgres, Cloudflare Tunnels, Python, C++, Docker, Git." }
+                    { icon: "fas fa-user-astronaut", name: "AndrÃ©s â€” Full-Stack & Cloud", desc: "FastAPI, Supabase, React, Node, Python, Flask, C++, Vercel, Docker, Git." },
+                    { icon: "fas fa-robot", name: "Johan â€” AI Vision & 3D", desc: "YOLOv8, Machine Learning, 3D Models, Three.js, Postgres, Cloudflare Tunnels, Python, C++, Docker, Git." }
                 ],
-                metrics: [ { val: "360° Studio", lbl: "Cobertura Total" }, { val: "60 FPS", lbl: "Rendimiento Web" }, { val: "Local AI", lbl: "Inferencia Propia" }, { val: "Awwwards", lbl: "Nivel de Calidad" } ]
+                metrics: [ { val: "360Â° Studio", lbl: "Cobertura Total" }, { val: "60 FPS", lbl: "Rendimiento Web" }, { val: "Local AI", lbl: "Inferencia Propia" }, { val: "Awwwards", lbl: "Nivel de Calidad" } ]
             }
         };
 
@@ -2429,7 +2429,7 @@ function initEffectsScript() {
             }
             gsap.registerPlugin(ScrollTrigger);
 
-            // ─── Audio synth ─────────────────────────────────────────────
+            // â”€â”€â”€ Audio synth â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             let audioCtx = null;
             function playTick(freq = 440, dur = 0.06) {
                 try {
@@ -2449,7 +2449,7 @@ function initEffectsScript() {
                 } catch(e) {}
             }
 
-            // ─── Master Slam Felt Shockwave ───────────────────────────────
+            // â”€â”€â”€ Master Slam Felt Shockwave â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             function spawnMasterFeltShockwave() {
                 if (!tableFelt) return;
                 for (let w = 0; w < 3; w++) {
@@ -2461,7 +2461,7 @@ function initEffectsScript() {
                 }
             }
 
-            // ─── Screen Shake ─────────────────────────────────────────────
+            // â”€â”€â”€ Screen Shake â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             function triggerScreenShake() {
                 if (!tableFelt) return;
                 gsap.to(tableFelt, {
@@ -2471,8 +2471,8 @@ function initEffectsScript() {
                 });
             }
 
-            // ─── Card Positions ───────────────────────────────────────────
-            // ─── Card Positions & Responsive Spreads ───────────────────────
+            // â”€â”€â”€ Card Positions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // â”€â”€â”€ Card Positions & Responsive Spreads â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             const andresCards = Array.from(document.querySelectorAll('.card-andres'));
             const johanCards  = Array.from(document.querySelectorAll('.card-johan'));
             const masterCard  = document.getElementById('master-vanta-card');
@@ -2503,7 +2503,7 @@ function initEffectsScript() {
                 { x:  300 * xSpread, y:  138 * ySpread, rZ:  12 }
             ];
 
-            // ─── Pre-set ALL cards to dealer deck at center ───────────────
+            // â”€â”€â”€ Pre-set ALL cards to dealer deck at center â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             // Deck is slightly above center (dealer's side concept)
             const deckY = 0;
             andresCards.forEach((card) => {
@@ -2528,7 +2528,7 @@ function initEffectsScript() {
             if (seatA) gsap.set(seatA, { opacity: 0, y: -10 });
             if (seatJ) gsap.set(seatJ, { opacity: 0, y:  10 });
 
-            // ─── ScrollTrigger Timeline (Calibrado Awwwards: Snappy Dealer) ──
+            // â”€â”€â”€ ScrollTrigger Timeline (Calibrado Awwwards: Snappy Dealer) â”€â”€
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: section,
@@ -2551,7 +2551,7 @@ function initEffectsScript() {
             if (seatA) tl.to(seatA, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" }, 0.05);
             if (seatJ) tl.to(seatJ, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" }, 0.10);
 
-            // ─── PHASE 1+2: Alternating Dealer Deal (A0,J0,A1,J1,...) ────
+            // â”€â”€â”€ PHASE 1+2: Alternating Dealer Deal (A0,J0,A1,J1,...) â”€â”€â”€â”€
             // Real poker heads-up deal: alternate every card, one to each player
             const dealSequence = [];
             for (let i = 0; i < 6; i++) {
@@ -2576,7 +2576,7 @@ function initEffectsScript() {
                 const arcMidX = endX * 0.52 + (endRZ > 0 ? -14 : 14);
                 const arcMidY = endY * 0.48;
 
-                // — Step 1: Snap out of deck, rocket toward arc midpoint —
+                // â€” Step 1: Snap out of deck, rocket toward arc midpoint â€”
                 tl.to(card, {
                     x: arcMidX, y: arcMidY,
                     scale: cardTargetScale * 0.96, opacity: 1,
@@ -2585,7 +2585,7 @@ function initEffectsScript() {
                     ease: "power4.out"
                 }, baseDelay);
 
-                // — Flip card face-up during travel (split: 90° then reveal) —
+                // â€” Flip card face-up during travel (split: 90Â° then reveal) â€”
                 if (inner) {
                     // First half of flip (goes dark)
                     tl.to(inner, {
@@ -2601,7 +2601,7 @@ function initEffectsScript() {
                     }, baseDelay + SLIDE_DUR * 0.30 + FLIP_DUR * 0.45);
                 }
 
-                // — Step 2: Decelerate & settle into final position —
+                // â€” Step 2: Decelerate & settle into final position â€”
                 tl.to(card, {
                     x: endX, y: endY,
                     scale: cardTargetScale,
@@ -2610,7 +2610,7 @@ function initEffectsScript() {
                     ease: "power3.inOut"
                 }, baseDelay + SLIDE_DUR * 0.52);
 
-                // — Step 3: Landing thud — squish compress then elastic bounce —
+                // â€” Step 3: Landing thud â€” squish compress then elastic bounce â€”
                 const landAt = baseDelay + SLIDE_DUR * 0.52 + SLIDE_DUR * 0.55;
                 tl.to(card, { scaleY: cardTargetScale * 0.88, scaleX: cardTargetScale * 1.05, duration: 0.055, ease: "power3.in" }, landAt);
                 tl.to(card, { scaleY: cardTargetScale, scaleX: cardTargetScale, duration: 0.20,  ease: "elastic.out(1.35, 0.52)" }, landAt + 0.055);
@@ -2621,7 +2621,7 @@ function initEffectsScript() {
                 }, null, landAt + 0.01);
             });
 
-            // ─── PHASE 3: The River Slam — VANTA Master Card ─────────────
+            // â”€â”€â”€ PHASE 3: The River Slam â€” VANTA Master Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             const riverStart = 0.30 + dealSequence.length * DEAL_SPACING + 0.40;
 
             if (masterCard) {
@@ -2667,7 +2667,7 @@ function initEffectsScript() {
                 }, null, riverStart + 1.31);
             }
 
-            // ─── Hover & Click Interactions ───────────────────────────────
+            // â”€â”€â”€ Hover & Click Interactions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             cards.forEach((card) => {
                 const inner    = card.querySelector('.poker-card-inner');
                 const isMaster = card.classList.contains('master-vanta-card');
@@ -2688,7 +2688,7 @@ function initEffectsScript() {
                 });
             });
 
-            // ─── Inspection Modal ─────────────────────────────────────────
+            // â”€â”€â”€ Inspection Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             const inspectBtns = document.querySelectorAll('.poker-inspect-btn');
             const closeBtn    = modal ? modal.querySelector('.poker-modal-close')   : null;
             const backdrop    = modal ? modal.querySelector('.poker-modal-backdrop') : null;
@@ -2745,44 +2745,39 @@ function initEffectsScript() {
 
     /* ============================================================
        ACTO 02: THE FULLSCREEN KEYNOTE SCROLLYTELLING SHOWCASE
-       Dual-Phase Keynote Engine: Tension Hook -> Titanium Masterpiece
-       Pinned 100vh Scrollytelling powered by GSAP & ScrollTrigger
+       Cinematic Minimalist Engine â€” SOTY Level
+       2-Phase: Kinetic Hook â†’ 3D Physical Masterpiece
+       Powered by GSAP ScrollTrigger + scrub 1.2
        ============================================================ */
     (function initFullscreenKeynoteScrollytelling() {
         function setup() {
             const container = document.querySelector('.keynote-scrolly-container');
-            const viewport = document.querySelector('.keynote-sticky-viewport');
             const ambientCanvas = document.querySelector('.keynote-ambient-canvas');
             const chapters = document.querySelectorAll('.keynote-chapter');
             const pills = document.querySelectorAll('.kht-pill');
 
-            if (!container || !viewport || !chapters.length) return;
+            if (!container || !chapters.length) return;
             if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
             const chapterColors = [
-                'rgba(255, 59, 48, 0.26)',   // 01 SVIVA CORE (Red Alert)
-                'rgba(255, 149, 0, 0.24)',   // 02 VENTASTRACK (Amber B2B)
-                'rgba(0, 229, 255, 0.22)',   // 03 CERDIV IUTA (Cyan Cloud)
-                'rgba(17, 212, 131, 0.24)'   // 04 AURA CHECK (Emerald Bio)
+                'rgba(255, 59, 48, 0.26)',    // 01 SVIVA CORE (Red)
+                'rgba(255, 149, 0, 0.24)',    // 02 VENTASTRACK (Amber)
+                'rgba(0, 229, 255, 0.22)',    // 03 KIOSKO AZUL (Cyan)
+                'rgba(17, 212, 131, 0.24)'    // 04 CERDIV IUTA (Emerald)
             ];
 
-            let activeChapterIndex = 0;
+            let activeChapterIndex = -1;
 
             function setActivePill(index) {
                 if (index === activeChapterIndex) return;
                 activeChapterIndex = index;
-                pills.forEach((p, i) => {
-                    p.classList.toggle('active', i === index);
-                });
+                pills.forEach((p, i) => { p.classList.toggle('active', i === index); });
                 if (ambientCanvas && chapterColors[index]) {
-                    ambientCanvas.style.setProperty('--keynote-glow', chapterColors[index]);
-                }
-                if (window._vantaAudio && window._vantaAudio.playHover) {
-                    window._vantaAudio.playHover();
+                    ambientCanvas.style.background = `radial-gradient(circle 750px at 50% 50%, ${chapterColors[index]}, rgba(3, 5, 8, 0.95) 70%, #030508 100%)`;
                 }
             }
 
-            // Click on HUD Pills to Jump directly to any Chapter
+            // HUD pills click-to-jump
             pills.forEach((pill) => {
                 pill.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -2791,7 +2786,7 @@ function initEffectsScript() {
                         const targetProgress = idx * 0.25 + 0.12;
                         const targetY = st.start + targetProgress * (st.end - st.start);
                         if (window.lenis) {
-                            window.lenis.scrollTo(targetY, { duration: 1.2 });
+                            window.lenis.scrollTo(targetY, { duration: 1.4 });
                         } else {
                             window.scrollTo({ top: targetY, behavior: 'smooth' });
                         }
@@ -2799,104 +2794,249 @@ function initEffectsScript() {
                 });
             });
 
-            // Master GSAP Timeline with Scrubbed Pin
-            const masterTl = gsap.timeline({
-                defaults: { ease: 'power2.inOut' }
+            // â”€â”€ Per-chapter: kinetic word split + 3D frame initial state â”€â”€
+            chapters.forEach((chapter, i) => {
+                const words = chapter.querySelectorAll('.kh-headline-word');
+                const meta = chapter.querySelector('.kh-meta-tag');
+                const subtitle = chapter.querySelector('.kh-subtitle');
+                const frameWrap = chapter.querySelector('.km-frame-wrap');
+                const detailsStrip = chapter.querySelector('.km-details-strip');
+
+                if (i === 0) {
+                    gsap.set(chapter, { autoAlpha: 1, zIndex: 10 });
+                    // Hook visible: words already up
+                    if (words.length) gsap.set(words, { y: 0, opacity: 1, filter: 'blur(0px)' });
+                    if (meta) gsap.set(meta, { opacity: 1 });
+                    if (subtitle) gsap.set(subtitle, { opacity: 1 });
+                    // Masterpiece hidden with 3D tilt
+                    if (frameWrap) gsap.set(frameWrap, { autoAlpha: 0, rotateX: 14, y: 50, scale: 0.93, transformOrigin: '50% 100%' });
+                    if (detailsStrip) gsap.set(detailsStrip, { autoAlpha: 0, y: 20 });
+                } else {
+                    gsap.set(chapter, { autoAlpha: 0, zIndex: 5 });
+                    if (words.length) gsap.set(words, { y: 70, opacity: 0, filter: 'blur(4px)' });
+                    if (meta) gsap.set(meta, { opacity: 0 });
+                    if (subtitle) gsap.set(subtitle, { opacity: 0 });
+                    if (frameWrap) gsap.set(frameWrap, { autoAlpha: 0, rotateX: 14, y: 50, scale: 0.93, transformOrigin: '50% 100%' });
+                    if (detailsStrip) gsap.set(detailsStrip, { autoAlpha: 0, y: 20 });
+                }
             });
 
+            // â”€â”€ Build the master timeline â”€â”€
+            const masterTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+            function buildChapter(chapter, isFirst, enterLabel, revealLabel, exitLabel) {
+                const words = chapter.querySelectorAll('.kh-headline-word');
+                const meta = chapter.querySelector('.kh-meta-tag');
+                const subtitle = chapter.querySelector('.kh-subtitle');
+                const frameWrap = chapter.querySelector('.km-frame-wrap');
+                const img = chapter.querySelector('.km-screen img');
+                const detailsStrip = chapter.querySelector('.km-details-strip');
+
+                // â€” ENTER chapter â€”
+                if (!isFirst) {
+                    masterTl.to(chapter, { autoAlpha: 1, zIndex: 10, duration: 0.05 }, enterLabel);
+                    if (meta) masterTl.to(meta, { opacity: 1, duration: 0.2 }, enterLabel);
+                    if (words.length) {
+                        masterTl.to(words, {
+                            y: 0, opacity: 1, filter: 'blur(0px)',
+                            stagger: 0.06, duration: 0.4, ease: 'power4.out'
+                        }, `${enterLabel}+=0.05`);
+                    }
+                    if (subtitle) masterTl.to(subtitle, { opacity: 1, duration: 0.3 }, `${enterLabel}+=0.25`);
+                    masterTl.to({}, { duration: 0.2 }); // settle on hook
+                }
+
+                // â€” REVEAL masterpiece: 3D physical frame entry â€”
+                if (meta) masterTl.to(meta, { opacity: 0, duration: 0.15 }, revealLabel);
+                if (words.length) {
+                    masterTl.to(words, {
+                        y: -40, opacity: 0, filter: 'blur(6px)',
+                        stagger: { each: 0.04, from: 'end' }, duration: 0.25
+                    }, revealLabel);
+                }
+                if (subtitle) masterTl.to(subtitle, { opacity: 0, duration: 0.2 }, revealLabel);
+
+                if (frameWrap) {
+                    masterTl.to(frameWrap, {
+                        autoAlpha: 1, rotateX: 0, y: 0, scale: 1,
+                        duration: 0.55, ease: 'power3.out'
+                    }, `${revealLabel}+=0.1`);
+                }
+                // Parallax: image drifts upward inside frame
+                if (img) {
+                    masterTl.fromTo(img,
+                        { y: 20 },
+                        { y: -10, duration: 0.8, ease: 'none' },
+                        `${revealLabel}+=0.1`
+                    );
+                }
+                if (detailsStrip) {
+                    masterTl.to(detailsStrip, {
+                        autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out'
+                    }, `${revealLabel}+=0.3`);
+                }
+
+                masterTl.to({}, { duration: 0.35 }); // settle on masterpiece
+
+                // â€” EXIT â€”
+                if (frameWrap) masterTl.to(frameWrap, { autoAlpha: 0, y: -35, rotateX: -8, scale: 0.96, duration: 0.22 }, exitLabel);
+                if (detailsStrip) masterTl.to(detailsStrip, { autoAlpha: 0, y: -18, duration: 0.18 }, exitLabel);
+                masterTl.to(chapter, { autoAlpha: 0, duration: 0.1 }, `${exitLabel}+=0.15`);
+            }
+
+            // Build all 4 chapters
+            buildChapter(chapters[0], true, null, 'ch0_reveal', 'ch0_exit');
+            if (chapters[1]) buildChapter(chapters[1], false, 'ch1_enter', 'ch1_reveal', 'ch1_exit');
+            if (chapters[2]) buildChapter(chapters[2], false, 'ch2_enter', 'ch2_reveal', 'ch2_exit');
+            if (chapters[3]) {
+                // Last chapter: no exit
+                const c = chapters[3];
+                const words = c.querySelectorAll('.kh-headline-word');
+                const meta = c.querySelector('.kh-meta-tag');
+                const subtitle = c.querySelector('.kh-subtitle');
+                const frameWrap = c.querySelector('.km-frame-wrap');
+                const img = c.querySelector('.km-screen img');
+                const detailsStrip = c.querySelector('.km-details-strip');
+
+                masterTl.to(c, { autoAlpha: 1, zIndex: 10, duration: 0.05 }, 'ch3_enter');
+                if (meta) masterTl.to(meta, { opacity: 1, duration: 0.2 }, 'ch3_enter');
+                if (words.length) {
+                    masterTl.to(words, { y: 0, opacity: 1, filter: 'blur(0px)', stagger: 0.06, duration: 0.4, ease: 'power4.out' }, 'ch3_enter+=0.05');
+                }
+                if (subtitle) masterTl.to(subtitle, { opacity: 1, duration: 0.3 }, 'ch3_enter+=0.25');
+                masterTl.to({}, { duration: 0.2 });
+                if (meta) masterTl.to(meta, { opacity: 0, duration: 0.15 }, 'ch3_reveal');
+                if (words.length) masterTl.to(words, { y: -40, opacity: 0, filter: 'blur(6px)', stagger: { each: 0.04, from: 'end' }, duration: 0.25 }, 'ch3_reveal');
+                if (subtitle) masterTl.to(subtitle, { opacity: 0, duration: 0.2 }, 'ch3_reveal');
+                if (frameWrap) masterTl.to(frameWrap, { autoAlpha: 1, rotateX: 0, y: 0, scale: 1, duration: 0.55, ease: 'power3.out' }, 'ch3_reveal+=0.1');
+                if (img) masterTl.fromTo(img, { y: 20 }, { y: -10, duration: 0.8, ease: 'none' }, 'ch3_reveal+=0.1');
+                if (detailsStrip) masterTl.to(detailsStrip, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' }, 'ch3_reveal+=0.3');
+                masterTl.to({}, { duration: 0.45 }); // Firm settle at end
+            }
+
+            // â”€â”€ ScrollTrigger: silky scrub 1.2 â”€â”€
             const st = ScrollTrigger.create({
                 trigger: container,
                 start: 'top top',
                 end: 'bottom bottom',
-                scrub: 0.7,
+                scrub: 1.2,
                 animation: masterTl,
                 onUpdate: (self) => {
                     const prog = self.progress;
-                    let curIdx = Math.min(3, Math.floor(prog * 4));
+                    const curIdx = Math.min(3, Math.floor(prog * 4));
                     setActivePill(curIdx);
                 }
             });
 
-            // Prepare all chapters: initial states
-            chapters.forEach((chapter, i) => {
-                const hook = chapter.querySelector('.keynote-hook');
-                const masterpiece = chapter.querySelector('.keynote-masterpiece');
-
-                if (i === 0) {
-                    // Chapter 01 starts visible
-                    gsap.set(chapter, { autoAlpha: 1, zIndex: 10 });
-                    if (hook) gsap.set(hook, { autoAlpha: 1, scale: 1, y: 0 });
-                    if (masterpiece) gsap.set(masterpiece, { autoAlpha: 0, scale: 1.05, y: 35, pointerEvents: 'none' });
-                } else {
-                    // Subsequent chapters start hidden
-                    gsap.set(chapter, { autoAlpha: 0, zIndex: 5 });
-                    if (hook) gsap.set(hook, { autoAlpha: 0, scale: 1.05, y: 30 });
-                    if (masterpiece) gsap.set(masterpiece, { autoAlpha: 0, scale: 1.05, y: 35, pointerEvents: 'none' });
-                }
+            // â”€â”€ Magnetic 3D tilt on mousemove (while masterpiece is visible) â”€â”€
+            const quickX = gsap.quickTo('body', '--tilt-x', { duration: 0.6, ease: 'power2.out' });
+            const quickY = gsap.quickTo('body', '--tilt-y', { duration: 0.6, ease: 'power2.out' });
+            document.querySelector('.keynote-sticky-viewport')?.addEventListener('mousemove', (e) => {
+                const vw = window.innerWidth;
+                const vh = window.innerHeight;
+                const tx = ((e.clientX / vw) - 0.5) * 6;  // Â±3deg
+                const ty = ((e.clientY / vh) - 0.5) * -4; // Â±2deg
+                chapters.forEach(ch => {
+                    const fw = ch.querySelector('.km-frame-wrap');
+                    if (fw) {
+                        gsap.to(fw, { rotateY: tx, rotateX: ty, duration: 0.8, ease: 'power2.out', overwrite: 'auto' });
+                    }
+                });
             });
 
-            // Build Timeline Steps across the 4 Chapters (normalized duration: 4.0 total, 1.0 per chapter)
-            // Chapter 01: SVIVA (0.0 to 1.0)
-            const ch0 = chapters[0];
-            const hook0 = ch0 ? ch0.querySelector('.keynote-hook') : null;
-            const mp0 = ch0 ? ch0.querySelector('.keynote-masterpiece') : null;
+            console.log('[VANTA] Cinematic Keynote Scrollytelling initialized â€”', chapters.length, 'chapters');
+        }
 
-            if (hook0 && mp0) {
-                masterTl.to({}, { duration: 0.15 }) // Initial pause on hook
-                    .to(hook0, { autoAlpha: 0, scale: 0.93, y: -35, duration: 0.25 }, 'ch0_reveal')
-                    .to(mp0, { autoAlpha: 1, scale: 1, y: 0, pointerEvents: 'auto', duration: 0.3 }, 'ch0_reveal+=0.05')
-                    .to({}, { duration: 0.3 }) // Settle on masterpiece
-                    .to(mp0, { autoAlpha: 0, y: -30, duration: 0.2 }, 'ch0_exit')
-                    .to(ch0, { autoAlpha: 0, duration: 0.1 }, 'ch0_exit+=0.1');
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setup);
+        } else {
+            setup();
+        }
+    })();
+
+    /* ============================================================
+       ACTO 02.5: WORKS ARCHIVE â€” Editorial Table + Cursor Preview
+       Locomotive/Superflux style floating image on hover with lerp
+       ============================================================ */
+    (function initWorksArchive() {
+        function setup() {
+            const table = document.getElementById('wa-table');
+            const cursorPreview = document.getElementById('wa-cursor-preview');
+            const previewImg = document.getElementById('wa-preview-img');
+            if (!table || !cursorPreview || !previewImg) return;
+
+            const rows = table.querySelectorAll('.wa-row');
+
+            // ScrollTrigger: header + rows stagger entrance
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                const section = document.querySelector('.works-archive');
+                const rule = section?.querySelector('.wa-rule');
+                const eyebrow = section?.querySelector('.wa-eyebrow');
+                const titleWords = section?.querySelectorAll('.wa-title-word');
+
+                if (eyebrow) gsap.set(eyebrow, { opacity: 0, y: 16 });
+                if (titleWords) gsap.set(titleWords, { opacity: 0, y: 40 });
+                if (rule) gsap.set(rule, { scaleX: 0, transformOrigin: 'left center' });
+                if (rows.length) gsap.set(rows, { opacity: 0, y: 25 });
+
+                ScrollTrigger.create({
+                    trigger: section,
+                    start: 'top 75%',
+                    onEnter: () => {
+                        const tl = gsap.timeline();
+                        if (eyebrow) tl.to(eyebrow, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
+                        if (titleWords?.length) {
+                            tl.to(titleWords, { opacity: 1, y: 0, stagger: 0.1, duration: 0.55, ease: 'power4.out' }, '-=0.2');
+                        }
+                        if (rule) tl.to(rule, { scaleX: 1, duration: 0.7, ease: 'power3.inOut' }, '-=0.2');
+                        if (rows.length) {
+                            tl.to(rows, { opacity: 1, y: 0, stagger: 0.07, duration: 0.45, ease: 'power2.out' }, '-=0.3');
+                        }
+                    },
+                    once: true
+                });
             }
 
-            // Chapter 02: VENTASTRACK (1.0 to 2.0)
-            const ch1 = chapters[1];
-            const hook1 = ch1 ? ch1.querySelector('.keynote-hook') : null;
-            const mp1 = ch1 ? ch1.querySelector('.keynote-masterpiece') : null;
+            // Lerp cursor preview state
+            let mouseX = 0, mouseY = 0;
+            let curX = 0, curY = 0;
+            let isActive = false;
+            let rafId = null;
 
-            if (ch1 && hook1 && mp1) {
-                masterTl.to(ch1, { autoAlpha: 1, zIndex: 10, duration: 0.05 }, 'ch1_enter')
-                    .to(hook1, { autoAlpha: 1, scale: 1, y: 0, duration: 0.25 }, 'ch1_enter')
-                    .to({}, { duration: 0.15 })
-                    .to(hook1, { autoAlpha: 0, scale: 0.93, y: -35, duration: 0.25 }, 'ch1_reveal')
-                    .to(mp1, { autoAlpha: 1, scale: 1, y: 0, pointerEvents: 'auto', duration: 0.3 }, 'ch1_reveal+=0.05')
-                    .to({}, { duration: 0.3 })
-                    .to(mp1, { autoAlpha: 0, y: -30, duration: 0.2 }, 'ch1_exit')
-                    .to(ch1, { autoAlpha: 0, duration: 0.1 }, 'ch1_exit+=0.1');
+            function lerp(start, end, factor) {
+                return start + (end - start) * factor;
             }
 
-            // Chapter 03: CERDIV IUTA (2.0 to 3.0)
-            const ch2 = chapters[2];
-            const hook2 = ch2 ? ch2.querySelector('.keynote-hook') : null;
-            const mp2 = ch2 ? ch2.querySelector('.keynote-masterpiece') : null;
-
-            if (ch2 && hook2 && mp2) {
-                masterTl.to(ch2, { autoAlpha: 1, zIndex: 10, duration: 0.05 }, 'ch2_enter')
-                    .to(hook2, { autoAlpha: 1, scale: 1, y: 0, duration: 0.25 }, 'ch2_enter')
-                    .to({}, { duration: 0.15 })
-                    .to(hook2, { autoAlpha: 0, scale: 0.93, y: -35, duration: 0.25 }, 'ch2_reveal')
-                    .to(mp2, { autoAlpha: 1, scale: 1, y: 0, pointerEvents: 'auto', duration: 0.3 }, 'ch2_reveal+=0.05')
-                    .to({}, { duration: 0.3 })
-                    .to(mp2, { autoAlpha: 0, y: -30, duration: 0.2 }, 'ch2_exit')
-                    .to(ch2, { autoAlpha: 0, duration: 0.1 }, 'ch2_exit+=0.1');
+            function animatePreview() {
+                curX = lerp(curX, mouseX, 0.1);
+                curY = lerp(curY, mouseY, 0.1);
+                cursorPreview.style.transform = `translate(${curX}px, ${curY}px) scale(${isActive ? 1 : 0.88})`;
+                rafId = requestAnimationFrame(animatePreview);
             }
 
-            // Chapter 04: AURA CHECK (3.0 to 4.0)
-            const ch3 = chapters[3];
-            const hook3 = ch3 ? ch3.querySelector('.keynote-hook') : null;
-            const mp3 = ch3 ? ch3.querySelector('.keynote-masterpiece') : null;
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX + 24;
+                mouseY = e.clientY - 100;
+            });
 
-            if (ch3 && hook3 && mp3) {
-                masterTl.to(ch3, { autoAlpha: 1, zIndex: 10, duration: 0.05 }, 'ch3_enter')
-                    .to(hook3, { autoAlpha: 1, scale: 1, y: 0, duration: 0.25 }, 'ch3_enter')
-                    .to({}, { duration: 0.15 })
-                    .to(hook3, { autoAlpha: 0, scale: 0.93, y: -35, duration: 0.25 }, 'ch3_reveal')
-                    .to(mp3, { autoAlpha: 1, scale: 1, y: 0, pointerEvents: 'auto', duration: 0.3 }, 'ch3_reveal+=0.05')
-                    .to({}, { duration: 0.35 }); // Settles firmly into the end of the section
-            }
+            rows.forEach((row) => {
+                const previewSrc = row.getAttribute('data-preview');
 
-            console.log('[VANTA] Fullscreen Keynote Scrollytelling Stage initialized for', chapters.length, 'chapters');
+                row.addEventListener('mouseenter', () => {
+                    if (!previewSrc) return;
+                    previewImg.src = previewSrc;
+                    isActive = true;
+                    cursorPreview.classList.add('is-visible');
+                    if (!rafId) rafId = requestAnimationFrame(animatePreview);
+                });
+
+                row.addEventListener('mouseleave', () => {
+                    isActive = false;
+                    cursorPreview.classList.remove('is-visible');
+                });
+            });
+
+            console.log('[VANTA] Works Archive initialized â€”', rows.length, 'entries');
         }
 
         if (document.readyState === 'loading') {
@@ -2913,5 +3053,6 @@ if (document.readyState === 'loading') {
 } else {
     initEffectsScript();
 }
+
 
 
