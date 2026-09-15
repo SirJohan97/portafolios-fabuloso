@@ -2744,39 +2744,140 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       INCÓGNITA CURTAIN SYSTEM (Tension & Release Narrative)
+       ACTO 02: THE CINEMATIC SCROLLYTELLING SHOWCASE (OPTION 1)
+       Dual-Beat: Ambient Blackout + Iris Shutter Wipe via Scroll & Touch
        ============================================================ */
-    (function initIncognitaCurtainSystem() {
+    (function initCinematicScrollytellingShowcase() {
         function setup() {
-            const cards = document.querySelectorAll('.card.card-flagship');
-            if (!cards.length) return;
+            const portfolioSection = document.getElementById('portfolio');
+            const cards = document.querySelectorAll('.horizontal-track .card.card-flagship');
+            const backdrop = document.querySelector('.portfolio-cinema-backdrop');
+            if (!portfolioSection || !cards.length) return;
 
+            const glowThemes = {
+                danger: 'rgba(255, 59, 48, 0.24)',
+                amber:  'rgba(255, 149, 0, 0.22)',
+                cyan:   'rgba(0, 229, 255, 0.20)',
+                green:  'rgba(17, 212, 131, 0.22)'
+            };
+
+            // 1. Interacción táctil directa: Clic en el telón desvela el proyecto
             cards.forEach(card => {
-                const revealBtn = card.querySelector('.pch-reveal-btn');
-                const closeBtn  = card.querySelector('.pch-close-btn');
+                const curtain   = card.querySelector('.cinema-shutter-curtain');
+                const toggleBack = card.querySelector('.crm-toggle-back');
+                const actionLinks = card.querySelectorAll('.cinema-reveal-masterpiece a, .cinema-reveal-masterpiece button:not(.crm-toggle-back)');
 
-                if (revealBtn) {
-                    revealBtn.addEventListener('click', (e) => {
+                if (curtain) {
+                    curtain.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        card.classList.add('revealed');
+                        card.classList.add('is-revealed');
+                        card.classList.add('is-center-stage');
+                        card.dataset.manualPin = 'true';
                         if (window._vantaAudio && window._vantaAudio.playClick) {
                             window._vantaAudio.playClick();
                         }
                     });
                 }
 
-                if (closeBtn) {
-                    closeBtn.addEventListener('click', (e) => {
+                if (toggleBack) {
+                    toggleBack.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        card.classList.remove('revealed');
+                        card.classList.remove('is-revealed');
+                        delete card.dataset.manualPin;
                         if (window._vantaAudio && window._vantaAudio.playClick) {
                             window._vantaAudio.playClick();
                         }
                     });
                 }
+
+                // Asegurar que botones y enlaces internos funcionen sin interferencia
+                actionLinks.forEach(el => {
+                    el.addEventListener('click', (e) => e.stopPropagation());
+                });
             });
 
-            console.log('[VANTA] Incógnita Curtain System ready for', cards.length, 'flagships');
+            // 2. Scrollytelling Orgánico: Detección continua de tarjeta en centro de encuadre
+            let ticking = false;
+            let currentActiveCard = null;
+
+            function onScrollCheck() {
+                if (window.innerWidth <= 900) return; // En pantallas táctiles móviles el usuario usa tap directo
+
+                const portRect = portfolioSection.getBoundingClientRect();
+                const vpH = window.innerHeight;
+                // Si el portafolio está fuera del viewport, no procesar
+                if (portRect.bottom < 0 || portRect.top > vpH) return;
+
+                const vpW = window.innerWidth;
+                const vpCenter = vpW / 2;
+
+                let closest = null;
+                let minDistance = Infinity;
+
+                cards.forEach(card => {
+                    const r = card.getBoundingClientRect();
+                    const cardCenter = r.left + r.width / 2;
+                    const dist = Math.abs(cardCenter - vpCenter);
+
+                    if (dist < minDistance) {
+                        minDistance = dist;
+                        closest = card;
+                    }
+                });
+
+                // Si la tarjeta más cercana está en el centro de visión (dentro de 300px del centro)
+                if (closest && minDistance < 300) {
+                    if (currentActiveCard !== closest) {
+                        currentActiveCard = closest;
+                        // Revelación orgánica de la tarjeta en foco
+                        cards.forEach(c => {
+                            if (c === closest) {
+                                c.classList.add('is-center-stage');
+                                c.classList.add('is-revealed');
+                            } else if (!c.dataset.manualPin) {
+                                c.classList.remove('is-center-stage');
+                                c.classList.remove('is-revealed');
+                            }
+                        });
+
+                        // Actualizar aura ambiental en el backdrop
+                        if (backdrop) {
+                            const theme = closest.getAttribute('data-theme-glow') || 'cyan';
+                            const color = glowThemes[theme] || glowThemes.cyan;
+                            backdrop.style.setProperty('--cinema-glow-color', color);
+                            backdrop.style.opacity = '1';
+                        }
+                    }
+                } else if (minDistance >= 400 && currentActiveCard) {
+                    // Si ninguna tarjeta está en el centro
+                    if (!currentActiveCard.dataset.manualPin) {
+                        currentActiveCard.classList.remove('is-center-stage');
+                        currentActiveCard.classList.remove('is-revealed');
+                    }
+                    currentActiveCard = null;
+                }
+            }
+
+            function requestScrollTick() {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        onScrollCheck();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+
+            // Escuchar el evento de scroll nativo y de Lenis
+            window.addEventListener('scroll', requestScrollTick, { passive: true });
+            if (window.lenis) {
+                window.lenis.on('scroll', requestScrollTick);
+            }
+
+            // Inicializar el primer chequeo tras render
+            setTimeout(onScrollCheck, 500);
+
+            console.log('[VANTA] Cinematic Scrollytelling Stage ready for', cards.length, 'flagships');
         }
 
         if (document.readyState === 'loading') {

@@ -3248,250 +3248,421 @@
 }
 
 /* =============================================================
-   VANTA TENSION & RELEASE — THE INCÓGNITA CURTAIN SYSTEM
-   Patrón dramático cinematográfico (Problema -> Revelación)
+   ACTO 02: THE CINEMATIC SCROLLYTELLING STAGE (OPTION 1)
+   Atmosphere: Ambient Blackout + Letterbox 21:9 + Iris Shutter Wipe
    ============================================================= */
 
+/* 1. Global Cinema Atmosphere & Backdrop */
+.portfolio-scroll-container {
+    position: relative;
+    background: #020408 !important;
+    overflow: hidden;
+}
+
+.portfolio-cinema-backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.95;
+    background: radial-gradient(circle at var(--cinema-glow-x, 60%) 45%, var(--cinema-glow-color, rgba(0, 229, 255, 0.12)) 0%, rgba(2, 4, 8, 0.95) 55%, #010204 100%);
+    transition: background 0.75s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.75s ease;
+}
+
+/* 2. Cinema Letterbox Bars (Anamorphic 2.39:1 widescreen frame inside sticky wrapper) */
+.portfolio-scroll-container .sticky-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    z-index: 5;
+}
+
+.cinema-letterbox {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 42px;
+    background: rgba(0, 0, 0, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+}
+
+.cinema-letterbox--top {
+    top: 0;
+}
+
+.cinema-letterbox--bottom {
+    bottom: 0;
+    border-bottom: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.clb-rec-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #FF3B30;
+    box-shadow: 0 0 8px #FF3B30;
+    margin-right: 8px;
+    animation: hmb-pulse 1.6s infinite;
+}
+
+.clb-scroll-hint {
+    color: rgba(255, 255, 255, 0.75);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 3. Flagship Card Container */
 .horizontal-track .card.card-flagship {
     position: relative;
-    width: 530px;
-    min-width: 530px;
-    max-width: 560px;
-    height: 640px;
+    width: 540px;
+    min-width: 540px;
+    max-width: 580px;
+    height: 650px;
     flex-shrink: 0;
-    background: #080A0F;
-    border-radius: 18px;
+    background: #06080E;
+    border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.5s ease, 
+                box-shadow 0.5s ease;
+    cursor: pointer;
 }
 
 .horizontal-track .card.card-flagship:hover {
-    border-color: rgba(var(--primary-rgb), 0.35);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 30px rgba(var(--primary-rgb), 0.12);
+    box-shadow: 0 35px 90px rgba(0, 0, 0, 0.95), 0 0 35px rgba(var(--primary-rgb), 0.15);
 }
 
-/* 1. LA INCÓGNITA: Curtain Overlay */
-.project-curtain-hook {
+.horizontal-track .card.card-flagship.is-center-stage {
+    border-color: rgba(var(--primary-rgb), 0.4);
+    box-shadow: 0 35px 100px rgba(0, 0, 0, 0.95), 0 0 45px rgba(var(--primary-rgb), 0.2);
+}
+
+/* 4. LA INCÓGNITA: The Cinematic Shutter Shield (Iris Mask) */
+.cinema-shutter-curtain {
     position: absolute;
     inset: 0;
-    z-index: 15;
-    background: radial-gradient(circle at 50% 15%, #141923 0%, #07090D 100%);
-    padding: 2.5rem 2.2rem;
+    z-index: 12;
+    background: radial-gradient(circle at 50% 20%, #121824 0%, #06080D 100%);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
-                opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-                clip-path 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 2.6rem 2.4rem;
+    clip-path: circle(150% at 50% 50%);
+    transition: clip-path 0.85s cubic-bezier(0.19, 1, 0.22, 1),
+                opacity 0.65s cubic-bezier(0.19, 1, 0.22, 1),
+                transform 0.85s cubic-bezier(0.19, 1, 0.22, 1);
     pointer-events: auto;
 }
 
-/* When revealed: curtain smoothly retracts upward with cinematic wipe */
-.card.revealed .project-curtain-hook {
-    transform: translateY(-100%);
+/* When revealed: Iris contracts to center and curtain dissolves with cinematic scale */
+.horizontal-track .card.card-flagship.is-revealed .cinema-shutter-curtain {
+    clip-path: circle(0% at 50% 50%);
     opacity: 0;
     pointer-events: none;
+    transform: scale(1.06);
 }
 
-.pch-ambient-glow {
+.csc-ambient-glow {
     position: absolute;
-    top: -40px;
-    right: -40px;
-    width: 220px;
-    height: 220px;
+    top: -50px;
+    right: -50px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
-    filter: blur(70px);
-    opacity: 0.18;
+    filter: blur(80px);
+    opacity: 0.22;
     pointer-events: none;
+    transition: opacity 0.5s ease;
 }
-.pch-glow--cerdiv { background: #00E5FF; }
-.pch-glow--sviva  { background: #FF3B30; opacity: 0.25; }
-.pch-glow--ventas { background: #FF9500; }
-.pch-glow--aura   { background: #11D483; }
+.csc-glow--cerdiv { background: #00E5FF; }
+.csc-glow--sviva  { background: #FF3B30; opacity: 0.35; }
+.csc-glow--ventas { background: #FF9500; }
+.csc-glow--aura   { background: #11D483; }
 
-.pch-header {
+.csc-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
 }
 
-.pch-threat-badge {
+.csc-threat-badge {
     display: inline-flex;
     align-items: center;
     gap: 7px;
     padding: 5px 12px;
-    background: rgba(255, 59, 48, 0.1);
-    border: 1px solid rgba(255, 59, 48, 0.28);
+    background: rgba(255, 59, 48, 0.12);
+    border: 1px solid rgba(255, 59, 48, 0.32);
     border-radius: 100px;
     font-family: 'Space Mono', monospace;
-    font-size: 0.64rem;
-    letter-spacing: 0.05em;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
     color: #FF6B6B;
     text-transform: uppercase;
 }
-.pch-badge--amber {
-    background: rgba(255, 149, 0, 0.1);
-    border-color: rgba(255, 149, 0, 0.28);
+
+.csc-badge--amber {
+    background: rgba(255, 149, 0, 0.12);
+    border-color: rgba(255, 149, 0, 0.32);
     color: #FFAA33;
 }
-.pch-badge--cyan {
-    background: rgba(0, 229, 255, 0.1);
-    border-color: rgba(0, 229, 255, 0.28);
+.csc-badge--cyan {
+    background: rgba(0, 229, 255, 0.12);
+    border-color: rgba(0, 229, 255, 0.32);
     color: #00E5FF;
 }
+.csc-badge--danger {
+    background: rgba(255, 59, 48, 0.15);
+    border-color: rgba(255, 59, 48, 0.38);
+    color: #FF5252;
+}
 
-.pch-index {
+.csc-index {
     font-family: 'Space Mono', monospace;
     font-size: 0.68rem;
     letter-spacing: 0.08em;
     color: rgba(255, 255, 255, 0.4);
 }
 
-.pch-question {
+.csc-body {
+    margin: auto 0;
+}
+
+.csc-question {
     font-family: 'Instrument Serif', Georgia, serif !important;
     font-style: italic;
-    font-size: clamp(1.6rem, 2.2vw, 2.05rem);
-    line-height: 1.25;
+    font-size: clamp(1.8rem, 2.4vw, 2.25rem);
+    line-height: 1.22;
     color: #FFFFFF;
     letter-spacing: -0.01em;
-    margin: 1.5rem 0 1rem;
     font-weight: 400;
+    margin-bottom: 1.2rem;
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
 }
 
-.pch-context {
-    font-size: 0.88rem;
+.csc-context {
+    font-size: 0.92rem;
     line-height: 1.65;
-    color: rgba(255, 255, 255, 0.65);
-    margin-bottom: 1.8rem;
+    color: rgba(255, 255, 255, 0.68);
 }
 
-.pch-action-row {
-    margin-top: auto;
+.csc-footer {
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.pch-reveal-btn {
+.csc-hint-trigger {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 0.75rem 1.4rem;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 100px;
-    color: #FFFFFF;
     font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     letter-spacing: 0.06em;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    color: rgba(255, 255, 255, 0.65);
+    transition: color 0.3s ease;
 }
 
-.pch-reveal-btn:hover {
-    background: rgba(17, 212, 131, 0.12);
-    border-color: #11D483;
-    color: #11D483;
-    box-shadow: 0 0 25px rgba(17, 212, 131, 0.25);
-    transform: translateY(-2px);
-}
-
-.pch-pulse-dot {
-    width: 7px;
-    height: 7px;
+.csc-pulse-ring {
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: #11D483;
-    box-shadow: 0 0 8px #11D483;
+    box-shadow: 0 0 10px #11D483;
     animation: hmb-pulse 1.8s infinite;
 }
 
-/* 2. LA REVELACIÓN: Stage and Back Button */
-.project-reveal-stage {
+.card-flagship:hover .csc-hint-trigger {
+    color: #11D483;
+}
+
+.csc-eye-icon {
+    font-size: 0.8rem;
+    margin-left: 2px;
+}
+
+.csc-scanline-fx {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.12),
+        rgba(0, 0, 0, 0.12) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    opacity: 0.35;
+}
+
+/* 5. LA REVELACIÓN: Masterpiece Stage */
+.cinema-reveal-masterpiece {
     position: relative;
     z-index: 2;
-    padding: 1.25rem 1.4rem 1.4rem;
+    padding: 1.3rem 1.5rem 1.5rem;
     display: flex;
     flex-direction: column;
     height: 100%;
     overflow: hidden;
 }
 
-.project-reveal-stage .titanium-mockup-frame {
-    margin-bottom: 0.6rem;
+.crm-top-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.7rem;
 }
 
-.project-reveal-stage .tmf-screen {
-    height: 195px;
-    max-height: 195px;
-    overflow: hidden;
-}
-
-.project-reveal-stage .card-overlay {
-    padding: 0;
-    margin-bottom: 0.4rem;
-}
-
-.project-reveal-stage .card-overlay h3 {
-    font-size: 1.12rem;
-    margin: 0.35rem 0 0.3rem;
-    line-height: 1.25;
-}
-
-.project-reveal-stage .card-overlay p {
-    font-size: 0.8rem;
-    line-height: 1.45;
-    color: rgba(255, 255, 255, 0.7);
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin-bottom: 0.5rem;
-}
-
-.project-reveal-stage .card-mini-specs {
-    margin-bottom: 0.6rem;
-}
-
-.project-reveal-stage .card-menu {
-    margin-top: auto;
-    padding-top: 0.4rem;
-}
-
-.pch-close-btn {
-    align-self: flex-end;
+.crm-badge-active {
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    color: #11D483;
+    text-transform: uppercase;
+}
+
+.crm-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #11D483;
+    box-shadow: 0 0 6px #11D483;
+}
+
+.crm-toggle-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     padding: 4px 10px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 100px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.55);
     font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
+    font-size: 0.58rem;
     letter-spacing: 0.05em;
     cursor: pointer;
-    margin-bottom: 0.8rem;
     transition: all 0.25s ease;
 }
 
-.pch-close-btn:hover {
+.crm-toggle-back:hover {
     color: #FF6B6B;
     border-color: rgba(255, 59, 48, 0.3);
-    background: rgba(255, 59, 48, 0.08);
+    background: rgba(255, 59, 48, 0.1);
+}
+
+.cinema-reveal-masterpiece .titanium-mockup-frame {
+    margin-bottom: 0.6rem;
+}
+
+.cinema-reveal-masterpiece .tmf-screen {
+    height: 200px;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+.crm-meta-details {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    opacity: 1 !important;
+    transform: none !important;
+    background: transparent !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.crm-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+}
+
+.crm-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.18rem;
+    color: #FFFFFF;
+    line-height: 1.25;
+    margin-bottom: 0.4rem;
+}
+
+.crm-description {
+    font-size: 0.82rem;
+    line-height: 1.48;
+    color: rgba(255, 255, 255, 0.72);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+}
+
+.crm-mini-specs {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.62);
+    margin-bottom: 0.7rem;
+}
+
+.crm-mini-specs span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.cinema-reveal-masterpiece .card-menu {
+    margin-top: auto;
+    padding-top: 0.4rem;
 }
 
 @media (max-width: 768px) {
-    .card.card-flagship {
+    .horizontal-track .card.card-flagship {
+        width: 88vw;
         min-width: 88vw;
         max-width: 92vw;
+        height: 620px;
     }
-    .project-curtain-hook {
+    .cinema-shutter-curtain {
         padding: 1.8rem 1.4rem;
     }
-    .pch-question {
-        font-size: 1.4rem;
+    .csc-question {
+        font-size: 1.45rem;
+    }
+    .cinema-letterbox {
+        padding: 0 1.2rem;
+        font-size: 0.55rem;
     }
 }
