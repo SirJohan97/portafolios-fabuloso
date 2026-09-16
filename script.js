@@ -753,7 +753,11 @@ function initMainScript() {
             description: 'Sistema integrado para el restaurante Kiosko Azul. Permite a los comensales visualizar un menú digital dinámico, reservar mesas en tiempo real y generar pedidos directo a cocina. Para los administradores, cuenta con un completo panel de edición de menú, administración y control de órdenes, y un dashboard de estadísticas para toma de decisiones financieras.',
             tech: ['Python / Flask', 'SQLite', 'Bootstrap 5', 'Bases de Datos', 'Dashboard Admin', 'Control de Pedidos'],
             url: '#contact',
-            screenshots: ['img/auracheck/auralogin.jpeg'],
+            screenshots: [
+                'img/kioskoazul/menu-kiosko.png',
+                'img/kioskoazul/login-kiosko.png',
+                'img/kioskoazul/carrito-kiosko.png'
+            ],
             code: `# Rutas de Pedidos y Reservas de Kiosko Azul
 from flask import Flask, render_template, request, redirect, url_for
 from models import db, Mesa, Pedido
@@ -777,7 +781,10 @@ def reservar_mesa():
             description: 'Sitio web oficial diseñado para promocionar y exhibir nuestro proyecto principal de grado: SVIVA. Es una landing page altamente inmersiva y profesional que aloja la descarga directa del archivo instalador ejecutable (.exe). Integra componentes dinámicos en React, animaciones de alto rendimiento con Tailwind CSS y guías interactivas de configuración.',
             tech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Showcase de Producto'],
             url: '#contact',
-            screenshots: ['img/sviva/svivaindex.jpeg'],
+            screenshots: [
+                'img/sviva/Dashboard.png',
+                'img/sviva/Analitica.png'
+            ],
             code: `// Descarga de Ejecutable e Interfaz React TS
 import React from 'react';
 
@@ -800,7 +807,10 @@ export const DownloadButton: React.FC = () => {
             description: 'Sistema integral de gestión comercial B2B. Se conecta directamente a los servidores y bases de datos locales de la empresa cliente, actualizando stock y catálogos de forma diaria. Diseñado con una estructura de roles y jerarquías seguras para vendedores y gerentes. Incluye un módulo interactivo para crear cotizaciones/facturas rellenando casillas clave de clientes, y un carrito de compras multi-producto dinámico.',
             tech: ['Node.js', 'Express', 'TypeScript', 'Vite', 'PostgreSQL', 'Sincronización Diaria', 'Facturación B2B', 'Carrito de Compras'],
             url: '#contact',
-            screenshots: ['img/cerdiv/cerdivweb.jpeg'],
+            screenshots: [
+                'img/ventastrack/Captura de pantalla 2026-09-15 155907.png',
+                'img/ventastrack/Captura de pantalla 2026-09-15 155608.png'
+            ],
             code: `// Proceso de Facturación y Cotización en Node+TS
 import { Request, Response } from 'express';
 import { Pool } from 'pg';
@@ -836,11 +846,12 @@ export const generarFactura = async (req: Request, res: Response) => {
             tech: ['Python', 'YOLOv8', 'FastAPI', 'Inferencia Desacoplada', 'Telegram API', 'SQLite'],
             url: '#',
             screenshots: [
-                'img/sviva/svivaindex.jpeg',
-                'img/sviva/svivacamaras.jpeg',
-                'img/sviva/svivatelegram.jpeg',
-                'img/sviva/svivagraficas.jpeg'
+                'img/sviva/Dashboard.png',
+                'img/sviva/Deteccion e IA.png',
+                'img/sviva/Analitica.png',
+                'img/sviva/Telegram y Notificaciones.png'
             ],
+
             code: `# Algoritmo de Visión Artificial YOLOv8 + ByteTrack
 import cv2
 from ultralytics import YOLO
@@ -872,8 +883,8 @@ class VisionPipeline:
             tech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Showcase de Producto'],
             url: '#',
             screenshots: [
-                'img/sviva/svivaindex.jpeg',
-                'img/sviva/svivaconfig.jpeg'
+                'img/sviva/Dashboard.png',
+                'img/sviva/Analitica.png'
             ],
             code: `// React + Three.js Showcase Component
 import React, { useEffect, useRef } from 'react';
@@ -901,8 +912,9 @@ export const Hero3D = () => {
             tech: ['Python', 'Flask', 'SQLite', 'HTML5', 'CSS3', 'JavaScript Async'],
             url: '#',
             screenshots: [
-                'img/auracheck/auralogin.jpeg',
-                'img/cerdiv/cerdivweb.jpeg'
+                'img/kioskoazul/menu-kiosko.png',
+                'img/kioskoazul/login-kiosko.png',
+                'img/kioskoazul/carrito-kiosko.png'
             ],
             code: `# Motor POS y Gestión de Órdenes Flask
 from flask import Flask, request, jsonify
@@ -931,6 +943,7 @@ def crear_orden():
             url: 'https://biblioteca-ashy-sigma.vercel.app',
             screenshots: [
                 'img/cerdiv/cerdivweb.jpeg',
+                'img/cerdiv/Captura de pantalla 2026-09-15 154435.png',
                 'img/cerdiv/cerdivsede.jpeg'
             ],
             code: `# Consultas de Bases de Datos Relacionales (PostgreSQL Neon)

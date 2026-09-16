@@ -3389,15 +3389,7 @@
     align-items: center;
     justify-content: center;
     pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-}
-
-.keynote-chapter.active {
-    pointer-events: auto;
-    opacity: 1;
-    visibility: visible;
+    will-change: opacity, transform;
 }
 
 /* 5. Phase A: The Hook (Monumental Tension Typography) */

@@ -1,4 +1,4 @@
-﻿/* =============================================================
+/* =============================================================
    EFFECTS.JS â€” Consolidated Elite Animations (Fases 1, 2, 3)
    - Active Nav Link & 3D Tilt Cards
    - Magnetic Cursor (with GPU will-change & elastic snap)
@@ -2778,12 +2778,13 @@ function initEffectsScript() {
             }
 
             // HUD pills click-to-jump
+            const pillTargets = [0.12, 0.38, 0.65, 0.92];
             pills.forEach((pill) => {
                 pill.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const idx = parseInt(pill.getAttribute('data-index') || '0', 10);
                     if (st) {
-                        const targetProgress = idx * 0.25 + 0.12;
+                        const targetProgress = pillTargets[idx] !== undefined ? pillTargets[idx] : idx * 0.25;
                         const targetY = st.start + targetProgress * (st.end - st.start);
                         if (window.lenis) {
                             window.lenis.scrollTo(targetY, { duration: 1.4 });
@@ -2821,7 +2822,7 @@ function initEffectsScript() {
                 }
             });
 
-            // â”€â”€ Build the master timeline â”€â”€
+            // ── Build the master timeline ──
             const masterTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
             function buildChapter(chapter, isFirst, enterLabel, revealLabel, exitLabel) {
@@ -2832,8 +2833,12 @@ function initEffectsScript() {
                 const img = chapter.querySelector('.km-screen img');
                 const detailsStrip = chapter.querySelector('.km-details-strip');
 
-                // â€” ENTER chapter â€”
-                if (!isFirst) {
+                // 1. ENTER / HOLD HOOK
+                if (isFirst) {
+                    // Chapter 01 starts visible: hold hook prominently
+                    masterTl.to({}, { duration: 0.35 });
+                } else {
+                    // Enter subsequent chapters
                     masterTl.to(chapter, { autoAlpha: 1, zIndex: 10, duration: 0.05 }, enterLabel);
                     if (meta) masterTl.to(meta, { opacity: 1, duration: 0.2 }, enterLabel);
                     if (words.length) {
@@ -2843,10 +2848,10 @@ function initEffectsScript() {
                         }, `${enterLabel}+=0.05`);
                     }
                     if (subtitle) masterTl.to(subtitle, { opacity: 1, duration: 0.3 }, `${enterLabel}+=0.25`);
-                    masterTl.to({}, { duration: 0.2 }); // settle on hook
+                    masterTl.to({}, { duration: 0.35 }); // Hold hook on screen
                 }
 
-                // â€” REVEAL masterpiece: 3D physical frame entry â€”
+                // 2. REVEAL MASTERPIECE (3D physical frame entry)
                 if (meta) masterTl.to(meta, { opacity: 0, duration: 0.15 }, revealLabel);
                 if (words.length) {
                     masterTl.to(words, {
@@ -2862,11 +2867,10 @@ function initEffectsScript() {
                         duration: 0.55, ease: 'power3.out'
                     }, `${revealLabel}+=0.1`);
                 }
-                // Parallax: image drifts upward inside frame
                 if (img) {
                     masterTl.fromTo(img,
                         { y: 20 },
-                        { y: -10, duration: 0.8, ease: 'none' },
+                        { y: -10, duration: 0.9, ease: 'none' },
                         `${revealLabel}+=0.1`
                     );
                 }
@@ -2876,43 +2880,23 @@ function initEffectsScript() {
                     }, `${revealLabel}+=0.3`);
                 }
 
-                masterTl.to({}, { duration: 0.35 }); // settle on masterpiece
+                // Generous dwell time on the masterpiece
+                masterTl.to({}, { duration: 0.55 });
 
-                // â€” EXIT â€”
-                if (frameWrap) masterTl.to(frameWrap, { autoAlpha: 0, y: -35, rotateX: -8, scale: 0.96, duration: 0.22 }, exitLabel);
-                if (detailsStrip) masterTl.to(detailsStrip, { autoAlpha: 0, y: -18, duration: 0.18 }, exitLabel);
-                masterTl.to(chapter, { autoAlpha: 0, duration: 0.1 }, `${exitLabel}+=0.15`);
+                // 3. EXIT CHAPTER
+                if (exitLabel) {
+                    if (frameWrap) masterTl.to(frameWrap, { autoAlpha: 0, y: -35, rotateX: -8, scale: 0.96, duration: 0.22 }, exitLabel);
+                    if (detailsStrip) masterTl.to(detailsStrip, { autoAlpha: 0, y: -18, duration: 0.18 }, exitLabel);
+                    masterTl.to(chapter, { autoAlpha: 0, duration: 0.1 }, `${exitLabel}+=0.15`);
+                }
             }
 
             // Build all 4 chapters
             buildChapter(chapters[0], true, null, 'ch0_reveal', 'ch0_exit');
             if (chapters[1]) buildChapter(chapters[1], false, 'ch1_enter', 'ch1_reveal', 'ch1_exit');
             if (chapters[2]) buildChapter(chapters[2], false, 'ch2_enter', 'ch2_reveal', 'ch2_exit');
-            if (chapters[3]) {
-                // Last chapter: no exit
-                const c = chapters[3];
-                const words = c.querySelectorAll('.kh-headline-word');
-                const meta = c.querySelector('.kh-meta-tag');
-                const subtitle = c.querySelector('.kh-subtitle');
-                const frameWrap = c.querySelector('.km-frame-wrap');
-                const img = c.querySelector('.km-screen img');
-                const detailsStrip = c.querySelector('.km-details-strip');
+            if (chapters[3]) buildChapter(chapters[3], false, 'ch3_enter', 'ch3_reveal', null); // Last chapter stays settled
 
-                masterTl.to(c, { autoAlpha: 1, zIndex: 10, duration: 0.05 }, 'ch3_enter');
-                if (meta) masterTl.to(meta, { opacity: 1, duration: 0.2 }, 'ch3_enter');
-                if (words.length) {
-                    masterTl.to(words, { y: 0, opacity: 1, filter: 'blur(0px)', stagger: 0.06, duration: 0.4, ease: 'power4.out' }, 'ch3_enter+=0.05');
-                }
-                if (subtitle) masterTl.to(subtitle, { opacity: 1, duration: 0.3 }, 'ch3_enter+=0.25');
-                masterTl.to({}, { duration: 0.2 });
-                if (meta) masterTl.to(meta, { opacity: 0, duration: 0.15 }, 'ch3_reveal');
-                if (words.length) masterTl.to(words, { y: -40, opacity: 0, filter: 'blur(6px)', stagger: { each: 0.04, from: 'end' }, duration: 0.25 }, 'ch3_reveal');
-                if (subtitle) masterTl.to(subtitle, { opacity: 0, duration: 0.2 }, 'ch3_reveal');
-                if (frameWrap) masterTl.to(frameWrap, { autoAlpha: 1, rotateX: 0, y: 0, scale: 1, duration: 0.55, ease: 'power3.out' }, 'ch3_reveal+=0.1');
-                if (img) masterTl.fromTo(img, { y: 20 }, { y: -10, duration: 0.8, ease: 'none' }, 'ch3_reveal+=0.1');
-                if (detailsStrip) masterTl.to(detailsStrip, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' }, 'ch3_reveal+=0.3');
-                masterTl.to({}, { duration: 0.45 }); // Firm settle at end
-            }
 
             // â”€â”€ ScrollTrigger: silky scrub 1.2 â”€â”€
             const st = ScrollTrigger.create({
@@ -2923,7 +2907,11 @@ function initEffectsScript() {
                 animation: masterTl,
                 onUpdate: (self) => {
                     const prog = self.progress;
-                    const curIdx = Math.min(3, Math.floor(prog * 4));
+                    let curIdx = 0;
+                    if (prog >= 0.74) curIdx = 3;
+                    else if (prog >= 0.47) curIdx = 2;
+                    else if (prog >= 0.20) curIdx = 1;
+                    else curIdx = 0;
                     setActivePill(curIdx);
                 }
             });
