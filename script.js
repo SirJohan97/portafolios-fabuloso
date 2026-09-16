@@ -1039,6 +1039,79 @@ router.post('/api/delivery/cotizar', (req, res) => {
         tiempo_estimado: "30 - 45 min"
     });
 });`
+        },
+        biopass: {
+            tag: 'Python · FastAPI · OpenCV · WebAuthn · Motor de Nómina · En Desarrollo',
+            title: 'AURA BioPass — Asistencia Facial & Nómina Automatizada',
+            description: 'Solución corporativa de control de acceso y registro de jornada laboral mediante reconocimiento facial de alta precisión con validación de vida activa (anti-spoofing en menos de 300 ms). Concebido para reemplazar los relojes biométricos dactilares y eliminar por completo el fraude de suplantación (buddy punching). Los terminales operan en modo kiosko autónomo para tablets o pantallas de recepción, sincronizando cada fichaje en tiempo real con un potente panel administrativo web. El motor procesa automáticamente la jornada neta, deducciones por retardos, turnos rotativos, horas extras diurnas y nocturnas, generando la prenómina calculada lista para exportar a Excel, SAP y sistemas contables.',
+            metrics: ['⚡ <300MS RECONOCIMIENTO', '🛡️ ANTI-SPOOFING LIVENESS', '📊 NÓMINA EN TIEMPO REAL', '🏢 MODO KIOSKO MULTI-SEDE'],
+            pipeline: ['👤 Captura Facial en Kiosko', '→', '🧠 Detección 68 Landmarks & Liveness', '→', '⚡ Matching Vectorial Biométrico', '→', '📅 Conciliación de Turnos & Retardos', '→', '💰 Liquidación de Nómina & Horas Extras'],
+            tech: ['Python / FastAPI', 'OpenCV & InsightFace', 'React / TypeScript', 'PostgreSQL', 'Algoritmos Anti-Spoofing', 'Cálculo de Nómina'],
+            url: '#contact',
+            screenshots: [
+                { src: 'img/auracheck/aura.jpeg', caption: 'Kiosko de Reconocimiento Facial y Verificación de Vida' },
+                { src: 'img/ventastrack/dashboard.png', caption: 'Consola Centralizada de Liquidación de Nómina y Turnos' }
+            ],
+            code: `# Pipeline Biométrico de Asistencia y Liveness Check
+import numpy as np
+from datetime import datetime
+
+def procesar_fichaje_facial(embedding_captura: np.ndarray, empleado_id: str, liveness_score: float):
+    # 1. Validación de vida activa (anti-spoofing contra fotos/pantallas)
+    if liveness_score < 0.95:
+        return {"status": "REJECTED", "reason": "SPOOF_ATTEMPT_DETECTED"}
+    
+    # 2. Matching biométrico por similitud coseno contra vector enrolado
+    vector_oficial = obtener_vector_empleado(empleado_id)
+    similitud = np.dot(embedding_captura, vector_oficial) / (
+        np.linalg.norm(embedding_captura) * np.linalg.norm(vector_oficial)
+    )
+    
+    if similitud >= 0.88:
+        # 3. Registro inmediato y conciliación contra turno asignado
+        evento = registrar_asistencia(empleado_id, timestamp=datetime.utcnow())
+        actualizar_acumulado_nomina(empleado_id, evento)
+        return {"status": "SUCCESS", "empleado": empleado_id, "similitud": float(similitud)}
+    
+    return {"status": "FAIL", "reason": "BIOMETRIC_MISMATCH"}`
+        },
+        wifisense: {
+            tag: 'Python · NumPy · Wi-Fi CSI · Micro-Doppler · Zero-Camera · En Desarrollo',
+            title: 'GhostSense RF — Wi-Fi Sensing & Presencia Invisible',
+            description: 'Proyecto de ingeniería disruptiva que democratiza la tecnología de Wi-Fi Sensing (Channel State Information - CSI). Transforma las ondas electromagnéticas ambientales de routers Wi-Fi y microcontroladores accesibles (como ESP32) en un radar biométrico invisible capaz de detectar personas, contar ocupantes y registrar patrones de respiración sin requerir una sola cámara de seguridad ni sensores ópticos invasivos. Al operar en radiofrecuencia (2.4 GHz y 5 GHz), atraviesa tabiques y paredes convencionales, funciona en absoluta oscuridad y garantiza el 100% de la privacidad humana, haciéndolo idóneo para seguridad perimetral encubierta, residencias geriátricas y automatización de edificios inteligentes.',
+            metrics: ['📡 ZERO-CAMERA PRIVACY', '🧱 DETECCIÓN A TRAVÉS DE PAREDES', '📶 CSI RADIO INTERFEROMETRÍA', '💡 100% HARDWARE ACCESIBLE'],
+            pipeline: ['📶 Balizas RF Wi-Fi (CSI)', '→', '📊 Extracción Amplitud y Fase OFDM', '→', '🧠 Filtro de Micro-Doppler Humano', '→', '👤 Clasificación: Presencia / Respiración', '→', '🚨 Telemetría & Automatización IoT'],
+            tech: ['Python / SciPy', 'Wi-Fi CSI Subcarrier Analysis', 'ESP32 / Commodity Routers', 'Filtros Kalman & Wavelet', 'Micro-Doppler Radar', 'Zero-Camera Privacy'],
+            url: '#contact',
+            screenshots: [
+                { src: 'img/sviva/Dashboard.png', caption: 'Radar de Perturbación RF y Conteo de Presencia Invisible' },
+                { src: 'img/sviva/WhatsApp Image 2026-03-24 at 1.48.24 PM (1).jpeg', caption: 'Monitor de Ondas de Radiofrecuencia CSI Subcarriers' }
+            ],
+            code: `# Extracción y Filtrado de Ondas Wi-Fi CSI (Subcarrier Perturbation)
+import numpy as np
+from scipy.signal import butter, filtfilt
+
+def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
+    """
+    csi_matrix: matriz de forma (paquetes_tiempo, 64_subportadoras_ofdm)
+    Analiza la varianza de amplitud inducida por el movimiento del cuerpo humano
+    """
+    # 1. Extracción de amplitud pura eliminando desfases de antena
+    amplitud = np.abs(csi_matrix)
+    
+    # 2. Filtro pasa-banda Butterworth para aislar micro-doppler de respiración y pasos
+    b, a = butter(4, frec_corte, btype='highpass', fs=50.0)
+    amplitud_filtrada = filtfilt(b, a, amplitud, axis=0)
+    
+    # 3. Cálculo de varianza dinámica diferencial entre subportadoras
+    energia_perturbacion = np.mean(np.var(amplitud_filtrada, axis=0))
+    humano_presente = bool(energia_perturbacion > 0.042)
+    
+    return {
+        "presencia_detectada": humano_presente,
+        "nivel_perturbacion_rf": float(energia_perturbacion),
+        "zero_camera": True
+    }`
         }
     };
 
@@ -1562,6 +1635,8 @@ router.post('/api/delivery/cotizar', (req, res) => {
 
     function openModal(projectKey) {
         if (projectKey === 'cerdiv') projectKey = 'iuta';
+        if (projectKey === 'facepayroll' || projectKey === 'aura-biopass') projectKey = 'biopass';
+        if (projectKey === 'wifi-sense' || projectKey === 'ghostsense') projectKey = 'wifisense';
         const data = PROJECT_DATA[projectKey];
         if (!data) return;
 
@@ -1723,6 +1798,113 @@ router.post('/api/delivery/cotizar', (req, res) => {
             }
         });
     });
+
+
+    // Attach clicks to R&D Pipeline cards (.rd-card)
+    document.querySelectorAll('.rd-card[data-info]').forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Evitar duplicar si se hizo clic directo en el botón info-btn
+            if (e.target.closest('.info-btn')) return;
+            const key = card.getAttribute('data-info');
+            if (key) openModal(key);
+        });
+    });
+
+    // ---- Visualizador Animado de Ondas Wi-Fi CSI (GhostSense RF) ----
+    function initRFWavesAnimation() {
+        const canvas = document.getElementById('canvas-rf-waves');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = canvas.parentElement.clientWidth || 480;
+        let height = canvas.height = canvas.parentElement.clientHeight || 200;
+
+        window.addEventListener('resize', () => {
+            if (canvas.parentElement) {
+                width = canvas.width = canvas.parentElement.clientWidth;
+                height = canvas.height = canvas.parentElement.clientHeight;
+            }
+        }, { passive: true });
+
+        let step = 0;
+        let burstIntensity = 0;
+        let burstTimer = 0;
+
+        function draw() {
+            step += 0.035;
+            burstTimer += 1;
+
+            // Simular perturbación periódica por movimiento humano cada ~3.5 segundos
+            if (burstTimer > 180) {
+                burstIntensity = 1.0;
+                burstTimer = 0;
+            }
+            if (burstIntensity > 0) {
+                burstIntensity -= 0.012;
+                if (burstIntensity < 0) burstIntensity = 0;
+            }
+
+            ctx.fillStyle = 'rgba(5, 7, 10, 0.25)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Dibujar rejilla HUD de fondo
+            ctx.strokeStyle = 'rgba(0, 229, 255, 0.06)';
+            ctx.lineWidth = 1;
+            const gridSpacing = 30;
+            for (let x = 0; x < width; x += gridSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < height; y += gridSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+
+            // 4 capas de ondas sinusoidales representando subportadoras OFDM Wi-Fi
+            const waves = [
+                { color: 'rgba(0, 229, 255, 0.85)', speed: 1.2, freq: 0.016, amp: 26, yOffset: 0 },
+                { color: 'rgba(17, 212, 131, 0.65)', speed: 0.8, freq: 0.022, amp: 18, yOffset: -12 },
+                { color: 'rgba(139, 92, 246, 0.55)', speed: 1.5, freq: 0.028, amp: 22, yOffset: 12 },
+                { color: 'rgba(0, 229, 255, 0.35)', speed: 0.5, freq: 0.012, amp: 32, yOffset: 0 }
+            ];
+
+            const centerY = height / 2;
+
+            waves.forEach(w => {
+                ctx.beginPath();
+                ctx.strokeStyle = w.color;
+                ctx.lineWidth = 1.8;
+
+                const dynamicAmp = w.amp * (1 + burstIntensity * 1.6);
+
+                for (let x = 0; x < width; x += 4) {
+                    const angle = x * w.freq + step * w.speed;
+                    // Modulación por portadoras secundarias
+                    const microNoise = Math.sin(x * 0.08 + step * 2) * (burstIntensity * 8);
+                    const y = centerY + w.yOffset + Math.sin(angle) * dynamicAmp + microNoise;
+                    if (x === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+            });
+
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initRFWavesAnimation);
+    } else {
+        initRFWavesAnimation();
+    }
 
     // Attach clicks to Works Archive rows (.wa-row) and any .info-btn
     document.querySelectorAll('.wa-row[data-info]').forEach(row => {

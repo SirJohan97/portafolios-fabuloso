@@ -10873,3 +10873,519 @@ html.lenis body {
         align-items: flex-start;
     }
 }
+
+
+/* =============================================================
+   ACTO 02.8: I+D LAB — PROYECTOS EN PRODUCCIÓN & R&D PIPELINE
+   Estética Awwwards Cyber-Clean con HUD y Microinteracciones
+   ============================================================= */
+
+.rd-pipeline-section {
+    position: relative;
+    width: 100%;
+    padding: 130px 0 150px;
+    background: #07090e;
+    overflow: hidden;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rd-pipeline-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+        radial-gradient(rgba(17, 212, 131, 0.04) 1px, transparent 1px),
+        radial-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px, 80px 80px;
+    background-position: 0 0, 20px 20px;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.rd-inner {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 0 40px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Header */
+.rd-header {
+    margin-bottom: 50px;
+}
+
+.rd-header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px;
+    background: rgba(17, 212, 131, 0.06);
+    border: 1px solid rgba(17, 212, 131, 0.2);
+    border-radius: 100px;
+    margin-bottom: 20px;
+}
+
+.rd-header-badge .hud-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: #11d483;
+}
+
+.rd-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.rd-dot--pulse {
+    background: #11d483;
+    box-shadow: 0 0 10px #11d483;
+    animation: rdPulseAnim 1.8s ease-in-out infinite;
+}
+
+.rd-dot--green {
+    background: #11d483;
+    box-shadow: 0 0 8px #11d483;
+    animation: rdPulseAnim 2s ease-in-out infinite;
+}
+
+.rd-dot--cyan {
+    background: #00E5FF;
+    box-shadow: 0 0 8px #00E5FF;
+    animation: rdPulseAnim 2s ease-in-out infinite;
+}
+
+@keyframes rdPulseAnim {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.35); }
+}
+
+.rd-title {
+    font-size: clamp(2.4rem, 5.2vw, 4rem);
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+}
+
+.rd-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.65);
+    max-width: 680px;
+    font-weight: 300;
+}
+
+.rd-rule {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(17, 212, 131, 0.3) 0%, rgba(255, 255, 255, 0.08) 40%, transparent 100%);
+    margin-top: 35px;
+}
+
+/* Bento Grid */
+.rd-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+}
+
+@media (max-width: 980px) {
+    .rd-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Card */
+.rd-card {
+    position: relative;
+    background: #0c0f16;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.4s ease, 
+                box-shadow 0.4s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.rd-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(17, 212, 131, 0.4), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.rd-card--wifisense::before {
+    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.4), transparent);
+}
+
+.rd-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(17, 212, 131, 0.35);
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(17, 212, 131, 0.1);
+}
+
+.rd-card--wifisense:hover {
+    border-color: rgba(0, 229, 255, 0.35);
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 229, 255, 0.1);
+}
+
+.rd-card:hover::before {
+    opacity: 1;
+}
+
+/* Top Bar */
+.rd-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rd-card-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rd-status-txt {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: #11d483;
+    font-weight: 700;
+}
+
+.rd-card--wifisense .rd-status-txt {
+    color: #00E5FF;
+}
+
+.rd-card-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.06em;
+}
+
+/* Visual Container */
+.rd-card-visual {
+    height: 210px;
+    background: #05070a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Biometric Scanner Visual */
+.bio-scanner-hud {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+}
+
+.bio-hud-box {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    border: 1px dashed rgba(17, 212, 131, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bio-corner {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: #11d483;
+    border-style: solid;
+}
+
+.bio-tl { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+.bio-tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
+.bio-bl { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+.bio-br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+.bio-laser-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #11d483, transparent);
+    box-shadow: 0 0 12px #11d483, 0 0 20px rgba(17, 212, 131, 0.5);
+    animation: bioLaserScan 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+    z-index: 3;
+}
+
+@keyframes bioLaserScan {
+    0%   { top: 5%; }
+    100% { top: 92%; }
+}
+
+.bio-face-silhouette {
+    width: 80px;
+    height: 96px;
+    position: relative;
+    z-index: 1;
+}
+
+.bio-face-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 6px rgba(17, 212, 131, 0.4));
+}
+
+.bio-badge-verified {
+    position: absolute;
+    bottom: 6px;
+    background: rgba(17, 212, 131, 0.12);
+    border: 1px solid rgba(17, 212, 131, 0.35);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    color: #11d483;
+    letter-spacing: 0.06em;
+    z-index: 4;
+    white-space: nowrap;
+}
+
+.bio-telemetry-hud {
+    position: absolute;
+    bottom: 8px;
+    left: 14px;
+    right: 14px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.05em;
+}
+
+/* RF Wi-Fi Radar Visual */
+.rf-radar-hud {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#canvas-rf-waves {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.rf-hud-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 12px 14px;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 40%, rgba(5, 7, 10, 0.6) 95%);
+}
+
+.rf-badge-detection {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    padding: 4px 10px;
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: #00E5FF;
+    letter-spacing: 0.06em;
+}
+
+.rf-beacon-ping {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00E5FF;
+    box-shadow: 0 0 10px #00E5FF;
+    animation: rdPulseAnim 1.4s infinite;
+}
+
+.rf-telemetry-hud {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(0, 229, 255, 0.6);
+    letter-spacing: 0.05em;
+}
+
+/* Card Body */
+.rd-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rd-card-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: #11d483;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+}
+
+.rd-card--wifisense .rd-card-tag {
+    color: #00E5FF;
+}
+
+.rd-card-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+
+.rd-card-desc {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.68);
+    margin: 0;
+}
+
+.rd-card-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.rd-pill {
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.04em;
+    transition: all 0.3s ease;
+}
+
+.rd-card:hover .rd-pill {
+    border-color: rgba(17, 212, 131, 0.25);
+    background: rgba(17, 212, 131, 0.04);
+}
+
+.rd-card--wifisense:hover .rd-pill {
+    border-color: rgba(0, 229, 255, 0.25);
+    background: rgba(0, 229, 255, 0.04);
+}
+
+/* Card Footer */
+.rd-card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rd-progress-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rd-progress-lbl {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.08em;
+}
+
+.rd-progress-track {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.rd-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #11d483, #00E5FF);
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(17, 212, 131, 0.6);
+}
+
+.rd-progress-bar--cyan {
+    background: linear-gradient(90deg, #00E5FF, #8B5CF6);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+}
+
+.rd-card-cta {
+    align-self: flex-start;
+    padding: 0.65rem 1.4rem;
+    background: rgba(17, 212, 131, 0.08);
+    border: 1px solid rgba(17, 212, 131, 0.3);
+    color: #11d483;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+}
+
+.rd-card-cta:hover {
+    background: #11d483;
+    color: #07090e;
+    box-shadow: 0 0 25px rgba(17, 212, 131, 0.4);
+    transform: translateY(-2px);
+}
+
+.rd-card--wifisense .rd-card-cta {
+    background: rgba(0, 229, 255, 0.08);
+    border-color: rgba(0, 229, 255, 0.3);
+    color: #00E5FF;
+}
+
+.rd-card--wifisense .rd-card-cta:hover {
+    background: #00E5FF;
+    color: #07090e;
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
+}
