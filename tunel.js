@@ -116,16 +116,16 @@
 
     // ─── PROJECT METADATA & COLOR PALETTES ────────────────────────
     const PROJECTS = {
-        sviva:       { title: 'SVIVA', tag: 'TESIS · IA · EDGE', img: 'img/sviva/svivalogo.png', colorA: [0.066, 0.831, 0.513], colorB: [0.0, 1.0, 0.65], hex: "#11d483" },
-        svivaweb:    { title: 'SVIVA Web', tag: 'Vite · TypeScript · React', img: 'img/sviva/svivaindex.jpeg', colorA: [0.0, 0.823, 1.0], colorB: [0.2, 0.4, 1.0], hex: "#00d2ff" },
-        kioskoazul:  { title: 'Kiosko Azul', tag: 'Python · Flask · SQLite', img: 'img/auracheck/auralogin.jpeg', colorA: [0.0, 0.941, 1.0], colorB: [0.0, 0.5, 1.0], hex: "#00f0ff" },
-        iuta:        { title: 'Sistema Bibliotecario IUTA', tag: 'Python · Flask · PostgreSQL', img: 'img/cerdiv/cerdivweb.jpeg', colorA: [0.658, 0.333, 0.968], colorB: [0.4, 0.2, 0.95], hex: "#a855f7" },
+        sviva:       { title: 'SVIVA', tag: 'TESIS · IA · EDGE', img: 'img/sviva/svivalogo.jpeg', colorA: [0.066, 0.831, 0.513], colorB: [0.0, 1.0, 0.65], hex: "#11d483" },
+        svivaweb:    { title: 'SVIVA Web', tag: 'Vite · TypeScript · React', img: 'img/sviva/Dashboard.png', colorA: [0.0, 0.823, 1.0], colorB: [0.2, 0.4, 1.0], hex: "#00d2ff" },
+        kioskoazul:  { title: 'Kiosko Azul', tag: 'Python · Flask · SQLite', img: 'img/kioskoazul/login-kiosko.png', colorA: [0.0, 0.941, 1.0], colorB: [0.0, 0.5, 1.0], hex: "#00f0ff" },
+        iuta:        { title: 'Sistema Bibliotecario IUTA', tag: 'Python · Flask · PostgreSQL', img: 'img/cerdiv/Captura de pantalla 2026-09-15 154435.png', colorA: [0.658, 0.333, 0.968], colorB: [0.4, 0.2, 0.95], hex: "#a855f7" },
         aura:        { title: 'Aura Check', tag: 'FastAPI · Biometría · Seguridad', img: 'img/auracheck/auralogin.jpeg', colorA: [0.96, 0.62, 0.043], colorB: [0.95, 0.25, 0.25], hex: "#f59e0b" },
         cuerpo:      { title: '¿Qué le pasa a mi cuerpo?', tag: 'IA · FastAPI · Inmersivo', img: 'img/quelepasacuerpo/cuerpologin.jpeg', colorA: [0.925, 0.282, 0.6], colorB: [0.95, 0.15, 0.45], hex: "#ec4899" },
-        ventastrack: { title: 'VentasTrack B2B', tag: 'Node.js · TS · PostgreSQL', img: 'img/sviva/svivaconfig.jpeg', colorA: [0.231, 0.509, 0.964], colorB: [0.55, 0.3, 0.98], hex: "#3b82f6" },
+        ventastrack: { title: 'VentasTrack B2B', tag: 'Node.js · TS · PostgreSQL', img: 'img/ventastrack/login-ventast.png', colorA: [0.231, 0.509, 0.964], colorB: [0.55, 0.3, 0.98], hex: "#3b82f6" },
         inventario:  { title: 'Inventario Pro', tag: 'Sistema · Personalizable', img: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg', colorA: [0.066, 0.831, 0.513], colorB: [0.0, 1.0, 0.65], hex: "#11d483" }
     };
-    const DEFAULT_PROJECT = { title: 'VANTA WARP', tag: 'QUANTUM ENGINE', img: 'img/sviva/svivalogo.png', colorA: [0.066, 0.831, 0.513], colorB: [0.0, 0.8, 1.0], hex: "#11d483" };
+    const DEFAULT_PROJECT = { title: 'VANTA WARP', tag: 'QUANTUM ENGINE', img: 'img/sviva/svivalogo.jpeg', colorA: [0.066, 0.831, 0.513], colorB: [0.0, 0.8, 1.0], hex: "#11d483" };
 
     // ─── AUDIO ENGINE ─────────────────────────────────────────────
     class CinematicAudio {

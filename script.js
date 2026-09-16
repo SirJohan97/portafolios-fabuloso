@@ -744,115 +744,30 @@ function initMainScript() {
     }
 
     /* =========================================
-       10. CARD MENU INTERACTIVO (click to toggle)
+       10. CARD MENU INTERACTIVO & DATOS DE PROYECTOS
        ========================================= */
     const PROJECT_DATA = {
-        kioskoazul: {
-            tag: 'Python · Flask · SQLite · Bootstrap',
-            title: 'Kiosko Azul — Gestión de Restaurante',
-            description: 'Sistema integrado para el restaurante Kiosko Azul. Permite a los comensales visualizar un menú digital dinámico, reservar mesas en tiempo real y generar pedidos directo a cocina. Para los administradores, cuenta con un completo panel de edición de menú, administración y control de órdenes, y un dashboard de estadísticas para toma de decisiones financieras.',
-            tech: ['Python / Flask', 'SQLite', 'Bootstrap 5', 'Bases de Datos', 'Dashboard Admin', 'Control de Pedidos'],
-            url: '#contact',
-            screenshots: [
-                'img/kioskoazul/menu-kiosko.png',
-                'img/kioskoazul/login-kiosko.png',
-                'img/kioskoazul/carrito-kiosko.png'
-            ],
-            code: `# Rutas de Pedidos y Reservas de Kiosko Azul
-from flask import Flask, render_template, request, redirect, url_for
-from models import db, Mesa, Pedido
-
-@app.route('/reservar', methods=['POST'])
-def reservar_mesa():
-    mesa_id = request.form.get('mesa_id')
-    cliente = request.form.get('nombre_cliente')
-    
-    mesa = Mesa.query.get(mesa_id)
-    if mesa and mesa.disponible:
-        mesa.disponible = False
-        mesa.cliente = cliente
-        db.session.commit()
-        return jsonify({"status": "SUCCESS", "message": "Mesa reservada"})
-    return jsonify({"status": "ERROR", "message": "Mesa no disponible"})`
-        },
-        svivaweb: {
-            tag: 'React · TS · Vite · Tailwind',
-            title: 'SVIVA Web — Showcase & Descargas',
-            description: 'Sitio web oficial diseñado para promocionar y exhibir nuestro proyecto principal de grado: SVIVA. Es una landing page altamente inmersiva y profesional que aloja la descarga directa del archivo instalador ejecutable (.exe). Integra componentes dinámicos en React, animaciones de alto rendimiento con Tailwind CSS y guías interactivas de configuración.',
-            tech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Showcase de Producto'],
-            url: '#contact',
-            screenshots: [
-                'img/sviva/Dashboard.png',
-                'img/sviva/Analitica.png'
-            ],
-            code: `// Descarga de Ejecutable e Interfaz React TS
-import React from 'react';
-
-export const DownloadButton: React.FC = () => {
-  const handleDownload = () => {
-    // Iniciar descarga del .exe del sistema de videovigilancia
-    window.location.href = '/downloads/sviva_installer.exe';
-  };
-
-  return (
-    <button onClick={handleDownload} className="download-btn">
-      Descargar SVIVA.exe
-    </button>
-  );
-};`
-        },
-        ventastrack: {
-            tag: 'Node.js · TS · Vite · PostgreSQL',
-            title: 'VentasTrack — Gestión de Ventas B2B',
-            description: 'Sistema integral de gestión comercial B2B. Se conecta directamente a los servidores y bases de datos locales de la empresa cliente, actualizando stock y catálogos de forma diaria. Diseñado con una estructura de roles y jerarquías seguras para vendedores y gerentes. Incluye un módulo interactivo para crear cotizaciones/facturas rellenando casillas clave de clientes, y un carrito de compras multi-producto dinámico.',
-            tech: ['Node.js', 'Express', 'TypeScript', 'Vite', 'PostgreSQL', 'Sincronización Diaria', 'Facturación B2B', 'Carrito de Compras'],
-            url: '#contact',
-            screenshots: [
-                'img/ventastrack/Captura de pantalla 2026-09-15 155907.png',
-                'img/ventastrack/Captura de pantalla 2026-09-15 155608.png'
-            ],
-            code: `// Proceso de Facturación y Cotización en Node+TS
-import { Request, Response } from 'express';
-import { Pool } from 'pg';
-
-export const generarFactura = async (req: Request, res: Response) => {
-  const { clienteId, items, vendedorId } = req.body;
-  const pool = new Pool();
-  
-  const client = await pool.connect();
-  try {
-    await client.query('BEGIN');
-    const total = items.reduce((acc: number, item: any) => acc + (item.precio * item.cantidad), 0);
-    const result = await client.query(
-      'INSERT INTO facturas (cliente_id, total, vendedor_id, estado) VALUES ($1, $2, $3, $4) RETURNING id',
-      [clienteId, total, vendedorId, 'PENDIENTE']
-    );
-    await client.query('COMMIT');
-    res.json({ id: result.rows[0].id, total });
-  } catch (e) {
-    await client.query('ROLLBACK');
-    res.status(500).json({ error: e.message });
-  } finally {
-    client.release();
-  }
-};`
-        },
         sviva: {
-            tag: 'YOLOv8 · FastAPI · Visión Artificial · Local',
-            title: 'SVIVA — Sistema de Videovigilancia Inteligente',
-            description: 'Proyecto de tesis (En desarrollo activo). Democratiza el acceso a seguridad avanzada operando algoritmos de visión artificial en tiempo real sobre hardware de gama media. No depende de la nube. Detecta intrusos, rastrea sujetos únicos (ByteTrack) y automatiza toma de decisiones en red local. Cuenta con FastAPI asíncrono, servicio de inferencia desacoplado, motor de grabación inteligente con pre-trigger, módulo de analítica en SQLite y notificaciones en tiempo real vía bot de Telegram.',
-            metrics: ['⚡ INFERENCIA 12ms', '🔒 100% LOCAL / ZERO CLOUD', '🎯 99.4% PRECISIÓN', '📡 TELEGRAM BOT'],
-            pipeline: ['📹 Camera Feed', '→', '⚡ YOLOv8 Inferencia', '→', '🧠 ByteTrack ID', '→', '💾 SQLite & Bot'],
-            tech: ['Python', 'YOLOv8', 'FastAPI', 'Inferencia Desacoplada', 'Telegram API', 'SQLite'],
+            tag: 'Python · YOLOv8 · OpenCV · TensorRT · Telegram API',
+            title: 'SVIVA CORE — Videovigilancia Táctica & AI Edge',
+            description: 'Sistema de videovigilancia táctica e inteligencia artificial que opera 100% en local sobre hardware estándar. Sin latencia y sin dependencia de la nube. Integra detección de intrusos en tiempo real con YOLOv8, rastreo de sujetos únicos mediante ByteTrack y un canal asíncrono con bot de Telegram para despacho inmediato de alertas fotográficas forenses. Ha sido minuciosamente optimizado con una arquitectura táctica ultra-responsive que adapta todos sus controles tanto para tabletas de seguridad en campo como para smartphones de monitoreo.',
+            metrics: ['⚡ INFERENCIA 12ms', '🔒 100% LOCAL / ZERO CLOUD', '📱 MODO RESPONSIVE TÁCTICO', '📡 TELEGRAM BOT LIVE'],
+            pipeline: ['📹 RTSP Camera Stream', '→', '⚡ YOLOv8 Inferencia Local', '→', '🧠 ByteTrack ID Tracking', '→', '💾 SQLite Logs & Telegram Bot'],
+            tech: ['Python 3.11', 'YOLOv8 Real-time', 'ByteTrack Tracker', 'OpenCV / TensorRT', 'FastAPI Async Engine', 'Telegram Bot API', 'SQLite Analytics'],
             url: '#',
             screenshots: [
-                'img/sviva/Dashboard.png',
-                'img/sviva/Deteccion e IA.png',
-                'img/sviva/Analitica.png',
-                'img/sviva/Telegram y Notificaciones.png'
+                { src: 'img/sviva/svivalogo.jpeg', caption: 'Branding & Identidad SVIVA Tactical Core' },
+                { src: 'img/sviva/Dashboard.png', caption: 'Dashboard Central de Vigilancia' },
+                { src: 'img/sviva/WhatsApp Image 2026-09-16 at 10.21.08 AM.jpeg', caption: 'Modo Compacto Ultra-Responsive en Smartphone' },
+                { src: 'img/sviva/WhatsApp Image 2026-09-16 at 10.22.37 AM.jpeg', caption: 'Visualización Táctica Móvil — Telemetría en Teléfono' },
+                { src: 'img/sviva/Deteccion e IA.png', caption: 'Inferencia de Red Neuronal & Bounding Boxes' },
+                { src: 'img/sviva/Analitica.png', caption: 'Métricas Forenses y Gráficas de Tráfico' },
+                { src: 'img/sviva/Telegram y Notificaciones.png', caption: 'Canal de Alertas Instantáneas vía Telegram' },
+                { src: 'img/sviva/svivatelegram.jpeg', caption: 'Recepción de Captura Forense en Chat de Seguridad' },
+                { src: 'img/sviva/Rendimiento.png', caption: 'Monitor de Consumo CPU/GPU y Carga Local' },
+                { src: 'img/sviva/Seguridad.png', caption: 'Módulo de Políticas de Cifrado y Logs' }
             ],
-
-            code: `# Algoritmo de Visión Artificial YOLOv8 + ByteTrack
+            code: `# Algoritmo de Inferencia Táctica YOLOv8 + ByteTrack
 import cv2
 from ultralytics import YOLO
 from trackers.multi_tracker_zoo import create_tracker
@@ -863,104 +778,163 @@ class VisionPipeline:
         self.tracker = create_tracker("bytetrack", "config/bytetrack.yaml")
 
     def process_frame(self, frame):
-        results = self.model(frame, stream=True)
+        # Inferencia local sin conexión a internet
+        results = self.model(frame, stream=True, conf=0.45)
         for r in results:
             boxes = r.boxes.xyxy.cpu().numpy()
             scores = r.boxes.conf.cpu().numpy()
             class_ids = r.boxes.cls.cpu().numpy()
             
-            # Rastreo local e inferencia
+            # Rastreo determinista de IDs únicos
             tracks = self.tracker.update(boxes, scores, class_ids, frame)
-            self.draw_debug_ui(frame, tracks)
+            self.draw_tactical_hud(frame, tracks)
         return frame`
         },
-        svivaweb: {
-            tag: 'Vite · TypeScript · React · Three.js Showcase',
-            title: 'SVIVA Web — Showcase & Landing de Descargas',
-            description: 'Plataforma oficial diseñada para promocionar y distribuir el ejecutable de visión artificial SVIVA. Integra componentes dinámicos en React, animaciones de alto rendimiento con Three.js y GSAP, y guías interactivas.',
-            metrics: ['🚀 VITE + TS', '⚡ 100/100 LIGHTHOUSE', '🎨 THREE.JS + GSAP', '📦 DOWNLOAD EXE'],
-            pipeline: ['🌐 Web Visitor', '→', '🎨 WebGL Hero', '→', '⚡ React SPA Engine', '→', '📦 Executable Download'],
-            tech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Showcase de Producto'],
-            url: '#',
+        ventastrack: {
+            tag: 'Python · FastAPI · PostgreSQL · Enterprise B2B',
+            title: 'VentasTrack — Suite de Gestión Comercial B2B',
+            description: 'Ecosistema de gestión de ventas y distribución comercial B2B de alto volumen. Cuenta con arquitectura transaccional multi-depósito bajo rigurosas garantías ACID, catálogo de productos dinámico y sincronización con almacenes centrales. Ha sido diseñado con una meticulosa adaptación responsive que ofrece dos experiencias dedicadas: una interfaz táctil ultra-ligera en smartphone para vendedores en calle (gestión de rutas, catálogo móvil y cotizaciones offline/online) y un panel analítico integral para directores comerciales en tabletas y ordenadores.',
+            metrics: ['💼 FACTURACIÓN TRANSACCIONAL ACID', '📱 MODO VENDEDOR SMARTPHONE', '🔄 SYNC AUTOMÁTICO MULTI-DEPÓSITO', '📊 KARDEX INTEGRADO'],
+            pipeline: ['🛒 Mobile Sales Order', '→', '⚡ FastAPI Transaction Engine', '→', '🐘 PostgreSQL ACID Isolation', '→', '📄 Automated Invoice Generation'],
+            tech: ['FastAPI / Python', 'PostgreSQL', 'TypeScript / Vite', 'JWT Roles & Permissions', 'Diseño Mobile-First', 'Motor de Facturación'],
+            url: '#contact',
             screenshots: [
-                'img/sviva/Dashboard.png',
-                'img/sviva/Analitica.png'
+                { src: 'img/ventastrack/login-ventast.png', caption: 'Portal Principal de Acceso B2B Enterprise' },
+                { src: 'img/ventastrack/loginresponsive.jpeg', caption: 'Login Optimizado para Smartphones de Fuerza de Ventas' },
+                { src: 'img/ventastrack/responsiveventastra.jpeg', caption: 'Dashboard Móvil para Vendedores en Calle' },
+                { src: 'img/ventastrack/WhatsApp Image 2026-09-16 at 10.16.58 AM.jpeg', caption: 'Flujo Táctil de Pedidos y Cotizaciones en Teléfono' },
+                { src: 'img/ventastrack/WhatsApp Image 2026-09-16 at 10.16.59 AM.jpeg', caption: 'Catálogo de Productos en Pantalla Móvil Vertical' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 155907.png', caption: 'Consola Desktop de Gestión Comercial & Pedidos' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160116.png', caption: 'Directorio de Clientes y Estado de Créditos' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160515.png', caption: 'Control de Inventario y Kardex por Almacén' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 161251.png', caption: 'Generación y Trazabilidad de Facturación' }
             ],
-            code: `// React + Three.js Showcase Component
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+            code: `# Proceso Transaccional ACID en PostgreSQL con Bloqueo de Stock
+from sqlalchemy.orm import Session
+from models import Factura, ItemFactura, Inventario
 
-export const Hero3D = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    useEffect(() => {
-        if (!canvasRef.current) return;
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, alpha: true });
-        renderer.setSize(400, 400);
-        return () => renderer.dispose();
-    }, []);
-    return <canvas ref={canvasRef} />;
-};`
+def procesar_orden_b2b(db: Session, cliente_id: int, items: list):
+    with db.begin():
+        total = 0
+        for item in items:
+            # Bloqueo pesimista de fila para prevenir venta en negativo
+            stock = db.query(Inventario).filter(
+                Inventario.sku == item['sku']
+            ).with_for_update().one()
+            
+            if stock.cantidad < item['cantidad']:
+                raise ValueError(f"Stock insuficiente para SKU: {item['sku']}")
+            
+            stock.cantidad -= item['cantidad']
+            total += stock.precio_unitario * item['cantidad']
+            
+        factura = Factura(cliente_id=cliente_id, total=total, estado="COMPLETADO")
+        db.add(factura)
+    return factura`
         },
         kioskoazul: {
             tag: 'Python · Flask · SQLite · POS Real-time',
             title: 'Kiosko Azul — POS & Menú Digital Interactivo',
-            description: 'Menú digital, reservaciones en tiempo real y pedidos con un completo dashboard administrativo de estadísticas de órdenes para restauración y comercio.',
-            metrics: ['🍔 REAL-TIME POS', '⚡ 0.04s LATENCIA', '📊 DASHBOARD SQL', '🔒 AUDITORÍA POS'],
-            pipeline: ['📱 Client Order UI', '→', '⚡ Flask Async Engine', '→', '💾 SQLite Database', '→', '👨‍🍳 Kitchen Dashboard'],
-            tech: ['Python', 'Flask', 'SQLite', 'HTML5', 'CSS3', 'JavaScript Async'],
+            description: 'Plataforma gastronómica integral de punto de venta (POS) y comanda digital diseñada para restaurantes y comercios de alto tráfico. Diseñado con una experiencia responsive especializada por rol: menú digital táctil e interactivo al que los comensales acceden escaneando el código QR de su mesa desde sus smartphones, terminal táctil de alta velocidad optimizada para camareros en tabletas de sala, y comanda electrónica sincronizada al instante con cocina y balance financiero en caja.',
+            metrics: ['🍔 MENÚ QR EN SMARTPHONES', '⚡ 0.04s LATENCIA PEDIDOS', '📱 TABLET POS PARA MESEROS', '📊 DASHBOARD FINANCIERO'],
+            pipeline: ['📱 QR Menu Comensal', '→', '⚡ Flask Async Engine', '→', '💾 SQLite Database', '→', '👨‍🍳 Kitchen Dispatch & Cashier'],
+            tech: ['Python 3', 'Flask Microframework', 'SQLite / PostgreSQL', 'Mobile-First UX', 'Async Order Dispatch', 'Dashboard Financiero'],
             url: '#',
             screenshots: [
-                'img/kioskoazul/menu-kiosko.png',
-                'img/kioskoazul/login-kiosko.png',
-                'img/kioskoazul/carrito-kiosko.png'
+                { src: 'img/kioskoazul/login-kiosko.png', caption: 'Acceso Administrativo y Punto de Venta' },
+                { src: 'img/kioskoazul/menu-kiosko.png', caption: 'Menú Digital Interactivo para Clientes' },
+                { src: 'img/kioskoazul/carrito-kiosko.png', caption: 'Carrito de Compras y Resumen de Orden' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.13 PM.jpeg', caption: 'Experiencia Móvil en Smartphones (QR Mesa)' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.21 PM.jpeg', caption: 'Ficha Detallada de Platillos en Pantalla Móvil' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.29 PM.jpeg', caption: 'Gestión de Selección y Adicionales en Teléfono' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.37 PM.jpeg', caption: 'Confirmación y Pasarela de Pago Digital' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.47 PM.jpeg', caption: 'Terminal Táctil para Camareros en Tablet' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.15.00 PM.jpeg', caption: 'Despacho de Cocina y Cuadre de Caja en Vivo' }
             ],
-            code: `# Motor POS y Gestión de Órdenes Flask
+            code: `# Motor de Despacho de Pedidos y Reservas en Kiosko Azul
 from flask import Flask, request, jsonify
 import sqlite3
 
 app = Flask(__name__)
 
-@app.route('/api/ordenes', methods=['POST'])
-def crear_orden():
-    data = request.get_json()
+@app.route('/api/pedidos/crear', methods=['POST'])
+def crear_pedido():
+    payload = request.get_json()
+    mesa_id = payload.get('mesa_id')
+    items = payload.get('items', [])
+    
     conn = sqlite3.connect('kiosko.db')
-    cursor = conn.cursor()
-    cursor.execute('INSERT INTO ordenes (mesa_id, total, estado) VALUES (?, ?, ?)',
-                   (data['mesa_id'], data['total'], 'PENDIENTE'))
+    cur = conn.cursor()
+    cur.execute("INSERT INTO pedidos (mesa_id, estado) VALUES (?, 'COCINA')", (mesa_id,))
+    pedido_id = cur.lastrowid
+    
+    for it in items:
+        cur.execute("INSERT INTO detalles (pedido_id, item_id, cant) VALUES (?, ?, ?)",
+                    (pedido_id, it['id'], it['cant']))
     conn.commit()
     conn.close()
-    return jsonify({'status': 'SUCCESS', 'orden_id': cursor.lastrowid})`
+    return jsonify({'status': 'SUCCESS', 'pedido_id': pedido_id})`
         },
         iuta: {
-            tag: 'Python · Flask · PostgreSQL · Multi-Sede',
-            title: 'Sistema de Gestión Bibliotecaria IUTA',
-            description: 'Desarrollado como servicio comunitario para el IUTA, este sistema centraliza y automatiza la administración de libros y ejemplares físicos en múltiples sedes universitarias.',
-            metrics: ['📚 15.000+ REGISTROS', '⚡ BÚSQUEDA ASÍNCRONA', '🔒 POSTGRESQL NEON', '🏛️ MULTI-SEDE'],
-            pipeline: ['🔍 Search Query', '→', '⚡ Flask ORM', '→', '🐘 PostgreSQL Neon', '→', '📖 Stock Allocation'],
-            tech: ['Flask (Python)', 'PostgreSQL / Neon', 'Vercel Blob', 'Werkzeug Auth', 'Búsqueda Asíncrona', 'Multi-sede'],
+            tag: 'Python · Flask · PostgreSQL · Multi-Tenant · 5 Sedes',
+            title: 'CERDIV IUTA — Centro de Recursos Digitales Multi-Sede',
+            description: 'Ecosistema centralizado de gestión bibliotecaria y recursos académicos multi-tenant desarrollado para el Instituto Universitario de Tecnología de Administración Industrial (IUTA). Conecta de forma síncrona cinco sedes universitarias (Central, Baralt, Jesuitas, Altos Mirandinos y Guarenas), administrando un catálogo de más de 15.000 volúmenes físicos con búsqueda asíncrona por facetas, préstamos inter-sedes y auditoría transaccional.',
+            metrics: ['🏛️ 5 SEDES UNIVERSITARIAS', '📚 15.000+ VOLÚMENES', '⚡ BÚSQUEDA ASÍNCRONA', '🐘 POSTGRESQL MULTI-TENANT'],
+            pipeline: ['🔍 Search Query Asíncrono', '→', '⚡ Flask Multi-Tenant Router', '→', '🐘 PostgreSQL Neon Cloud', '→', '📖 Préstamo Inter-Sedes'],
+            tech: ['Python / Flask', 'PostgreSQL Neon', 'Vercel Serverless', 'Arquitectura Multi-Tenant', 'Werkzeug Security', 'Búsqueda Asíncrona'],
             url: 'https://biblioteca-ashy-sigma.vercel.app',
             screenshots: [
-                'img/cerdiv/cerdivweb.jpeg',
-                'img/cerdiv/Captura de pantalla 2026-09-15 154435.png',
-                'img/cerdiv/cerdivsede.jpeg'
+                { src: 'img/cerdiv/Captura de pantalla 2026-09-15 154435.png', caption: 'Portal Oficial CERDIV IUTA — Vista de las 5 Sedes' },
+                { src: 'img/cerdiv/cerdivweb.jpeg', caption: 'Catálogo de Libros y Motor de Búsqueda por Facetas' },
+                { src: 'img/cerdiv/cerdivsede.jpeg', caption: 'Selección de Sede y Disponibilidad de Ejemplares' }
             ],
-            code: `# Consultas de Bases de Datos Relacionales (PostgreSQL Neon)
-from flask_sqlalchemy import SQLAlchemy
-from models import db, Libro, Prestamo
+            code: `# Consulta de Disponibilidad Multi-Tenant en 5 Sedes
+from models import db, Libro, EjemplarSede
 
-def registrar_prestamo_libro(usuario_id, libro_id, sede_id):
-    # Transacción ACID con bloqueo de fila optimista
-    with db.session.begin(nested=True):
-        libro = db.session.query(Libro).filter_by(id=libro_id, sede_id=sede_id).with_for_update().first()
-        if not libro or libro.copias_disponibles <= 0:
-            raise Exception("Ejemplares agotados en la sede seleccionada")
-        
-        prestamo = Prestamo(usuario_id=usuario_id, libro_id=libro_id, sede_id=sede_id, estado="ACTIVO")
-        libro.copias_disponibles -= 1
-        db.session.add(prestamo)
-    db.session.commit()`
+def consultar_stock_multi_sede(isbn: str):
+    # Agrupación transaccional a través de las 5 sedes universitarias
+    sedes_activas = ['Central', 'Baralt', 'Jesuitas', 'Altos Mirandinos', 'Guarenas']
+    query = db.session.query(
+        EjemplarSede.nombre_sede,
+        EjemplarSede.disponibles
+    ).filter(
+        EjemplarSede.isbn == isbn,
+        EjemplarSede.nombre_sede.in_(sedes_activas)
+    ).all()
+    
+    return {sede: disp for sede, disp in query}`
+        },
+        inventario: {
+            tag: 'Python · FastAPI · PostgreSQL · Kardex PEPS/UEPS',
+            title: 'Sistema de Control de Inventario & Kardex Multibodega',
+            description: 'Plataforma industrial para la trazabilidad exhaustiva de existencias, control de mermas y balance de almacenes en tiempo real. Incorpora cálculo automatizado de métodos Kardex (PEPS, UEPS y Promedio Ponderado), alertas inteligentes de reabastecimiento crítico y control multi-bodega con prevención de bloqueos concurrentes.',
+            metrics: ['📦 KARDEX PEPS/UEPS AUTO', '🏢 MULTI-BODEGA CENTRAL', '⚡ ALERTAS STOCK MÍNIMO', '🔒 ACID CONCURRENCY LOCK'],
+            pipeline: ['📦 Código de Barras / SKU', '→', '⚡ FastAPI Async Processing', '→', '🔒 Row-level Lock FOR UPDATE', '→', '📊 Kardex & Dashboard Update'],
+            tech: ['Python / FastAPI', 'PostgreSQL', 'SQLite', 'Dashboards Analíticos', 'Lector Código de Barras', 'Control de Mermas'],
+            url: '#contact',
+            screenshots: [
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (8).jpeg', caption: 'Consola Principal de Inventario y Stock Global' },
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg', caption: 'Kardex Detallado por Producto y Registro de Lote' },
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (1).jpeg', caption: 'Módulo de Entradas y Recepción de Mercancía' },
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (2).jpeg', caption: 'Directorio de Proveedores y Órdenes de Compra' },
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (3).jpeg', caption: 'Alertas de Stock Crítico y Puntos de Reorden' },
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (6).jpeg', caption: 'Reportes y Métricas de Rotación de Inventario' }
+            ],
+            code: `-- Query Transaccional Kardex con Bloqueo de Fila Optimista
+BEGIN;
+SELECT sku, stock_actual, precio_promedio
+FROM inventario_bodega
+WHERE sku = 'SKU-LOG-9921' AND bodega_id = 1
+FOR UPDATE;
+
+UPDATE inventario_bodega
+SET stock_actual = stock_actual - 20,
+    ultima_modificacion = NOW()
+WHERE sku = 'SKU-LOG-9921' AND bodega_id = 1;
+
+INSERT INTO kardex_movimientos (sku, bodega_id, cantidad, tipo, metodo)
+VALUES ('SKU-LOG-9921', 1, 20, 'EGRESO', 'PROMEDIO_PONDERADO');
+COMMIT;`
         },
         aura: {
             tag: 'FastAPI · Biometría · WebAuthn · Seguridad Local',
@@ -971,15 +945,14 @@ def registrar_prestamo_libro(usuario_id, libro_id, sede_id):
             tech: ['FastAPI + Python 3.11', 'WebAuthn / Biometría', 'face-api.js', 'Web Audio API', 'jsPDF', 'Vercel Serverless', 'SlowAPI Rate Limiting'],
             url: 'https://aura-check-omega.vercel.app/',
             screenshots: [
-                'img/auracheck/aura.jpeg',
-                'img/auracheck/auralogin.jpeg'
+                { src: 'img/auracheck/aura.jpeg', caption: 'Dashboard Central de Auditoría de Seguridad' },
+                { src: 'img/auracheck/auralogin.jpeg', caption: 'Autenticación Biométrica y Verificación WebAuthn' }
             ],
             code: `// Verificación de Integridad Biométrica y Speed Test Local
 async function auditBiometrics() {
     const hasWebAuthn = window.PublicKeyCredential && 
         await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
     
-    // face-api.js local face recognition setup
     await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
     const detection = await faceapi.detectSingleFace(
         videoEl, new faceapi.TinyFaceDetectorOptions()
@@ -995,14 +968,14 @@ async function auditBiometrics() {
         cuerpo: {
             tag: 'Google Gemini · FastAPI · IA Narrativa · Victorian UX',
             title: '¿Qué le pasa a mi cuerpo? | Archivo Médico 1885',
-            description: 'Plataforma de consulta médica inmersiva con IA que actúa como un doctor victoriano de 1885. Integra Gemini 1.5/2.0 Flash para respuestas con personalidad histórica, un sistema de fallback a Wikipedia y MedlinePlus (BeautifulSoup4 + httpx), filtros de imagen Cloudinary para estética de grabado antiguo.',
+            description: 'Plataforma de consulta médica inmersiva con IA que actúa como un doctor victoriano de 1885. Integra Gemini 1.5/2.0 Flash para respuestas con personalidad histórica, un sistema de fallback a Wikipedia y MedlinePlus (BeautifulSoup4 + httpx), y filtros de imagen Cloudinary para estética de grabado antiguo.',
             metrics: ['🎙️ VOZ VICTORIANA 1885', '🤖 GEMINI AI', '⚡ TTS EN TIEMPO REAL', '📖 UX HISTÓRICA'],
             pipeline: ['❓ User Query', '→', '🤖 Gemini 1.5 Flash', '→', '📜 Victorian Filter', '→', '🔊 Web Audio TTS'],
             tech: ['Google Gemini 1.5/2.0', 'FastAPI + Python', 'BeautifulSoup4', 'Cloudinary API', 'Tailwind CSS', 'Wikipedia / MedlinePlus', 'Vercel Functions'],
             url: 'https://que-le-pasa-a-mi-cuerpo.vercel.app/',
             screenshots: [
-                'img/quelepasacuerpo/cuerpologin.jpeg',
-                'img/quelepasacuerpo/cuerpopasa.jpeg'
+                { src: 'img/quelepasacuerpo/cuerpologin.jpeg', caption: 'Portada y Consulta del Doctor Victoriano' },
+                { src: 'img/quelepasacuerpo/cuerpopasa.jpeg', caption: 'Ficha Histórica y Diagnóstico Médico 1885' }
             ],
             code: `# Motor Narrativo IA del Doctor Victoriano con Fallback
 import google.generativeai as genai
@@ -1011,79 +984,35 @@ from bs4 import BeautifulSoup
 def consulta_medica_historica(pregunta: str):
     genai.configure(api_key="GEMINI_API_KEY")
     model = genai.GenerativeModel('gemini-1.5-flash')
-    
-    # Inyectar System Prompt victoriano
     prompt = f"Actúa como un médico británico en 1885. Pregunta: {pregunta}"
     response = model.generate_content(prompt)
-    
-    # Filtro de respuesta para remover HTML o tags indeseados
     soup = BeautifulSoup(response.text, "html.parser")
     return soup.get_text()`
         },
-        ventastrack: {
-            tag: 'Node.js · TypeScript · PostgreSQL · B2B Enterprise',
-            title: 'VentasTrack B2B Commercial & Inventory Suite',
-            description: 'Ecosistema comercial B2B para distribución mayorista: control de inventario en almacenes múltiples, catálogos segmentados por clientes, roles jerárquicos y facturación transaccional en tiempo real con sincronización diaria a base de datos central.',
-            metrics: ['💼 B2B FACTURACIÓN', '🔄 SYNC AUTOMÁTICO', '⚡ NODE.JS + TS', '📊 INVENTARIO MULTI-SEDE'],
-            pipeline: ['🛒 B2B Cart', '→', '⚡ Node.js Transaction', '→', '🐘 PostgreSQL ACID', '→', '📄 Invoice PDF'],
-            tech: ['Node.js', 'TypeScript', 'Vite', 'PostgreSQL', 'JWT Auth', 'Billing Engine', 'Multi-Warehouse'],
-            url: '#',
-            screenshots: [
-                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (8).jpeg',
-                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (1).jpeg',
-                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (2).jpeg',
-                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg'
-            ],
-            code: `// Node.js + TypeScript Transaction Handler
-import { Pool } from 'pg';
-const pool = new Pool();
-
-export const processOrder = async (clienteId: string, items: any[]) => {
-    const client = await pool.connect();
-    try {
-        await client.query('BEGIN');
-        const total = items.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
-        const res = await client.query(
-            'INSERT INTO facturas (cliente_id, total, estado) VALUES ($1, $2, $3) RETURNING id',
-            [clienteId, total, 'PENDIENTE']
-        );
-        await client.query('COMMIT');
-        return res.rows[0];
-    } finally {
-        client.release();
-    }
-};`
-        },
-        inventario: {
-            tag: 'Gestión Empresarial · Stock · Custom Software',
-            title: 'Sistema de Inventario Pro | 100% Personalizable',
-            description: 'Nuestra solución de inventario es un ecosistema digital diseñado para empresas que buscan orden y escalabilidad. Ofrecemos este software como un producto base altamente flexible (campos personalizados, alertas de stock mínimo, multi-sucursales).',
-            metrics: ['📦 100% CUSTOM', '⚡ STOCK EN VIVO', '📊 REPORTES AUTO', '🔒 MULTI-BODEGA'],
-            pipeline: ['📦 Stock Scan', '→', '⚡ Python FastAPI', '→', '🔒 FOR UPDATE Lock', '→', '📊 Real-time Inventory'],
-            tech: ['Python', 'Gestión de Stock', 'Base de Datos', 'Personalizable', 'Soporte 24/7'],
+        svivaweb: {
+            tag: 'React · TS · Vite · Tailwind · Three.js Showcase',
+            title: 'SVIVA Web — Showcase & Descargas',
+            description: 'Sitio web oficial diseñado para promocionar y exhibir nuestro proyecto insignia: SVIVA. Es una landing page de alto impacto que aloja la descarga directa del instalador ejecutable (.exe), integrando componentes en React, animaciones en Three.js y guías interactivas.',
+            metrics: ['🚀 VITE + TS', '⚡ 100/100 LIGHTHOUSE', '🎨 THREE.JS + GSAP', '📦 DOWNLOAD EXE'],
+            pipeline: ['🌐 Web Visitor', '→', '🎨 WebGL Hero', '→', '⚡ React SPA Engine', '→', '📦 Executable Download'],
+            tech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Three.js'],
             url: '#contact',
             screenshots: [
-                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg',
-                'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (2).jpeg'
+                { src: 'img/sviva/Dashboard.png', caption: 'Showcase del Sistema en la Web' },
+                { src: 'img/sviva/Analitica.png', caption: 'Vista Previa de Analítica Web' }
             ],
-            code: `-- Query de Inventario con Bloqueo de Filas y Reportes Diarios
-BEGIN;
-SELECT i.id, i.sku, i.stock_actual 
-FROM inventario i
-WHERE i.sku = 'SKU-7739-B' AND i.bodega_id = 2
-FOR UPDATE;
-
-UPDATE inventario 
-SET stock_actual = stock_actual - 15, fecha_actualizacion = NOW()
-WHERE sku = 'SKU-7739-B' AND bodega_id = 2;
-
-INSERT INTO logs_movimientos (sku, bodega_id, cantidad, tipo)
-VALUES ('SKU-7739-B', 2, 15, 'SALIDA');
-COMMIT;`
+            code: `// Descarga de Ejecutable e Interfaz React TS
+export const DownloadButton: React.FC = () => {
+    return (
+        <button onClick={() => window.location.href = '/downloads/sviva_installer.exe'}>
+            Descargar SVIVA.exe
+        </button>
+    );
+};`
         }
     };
 
-    // ---- Modal and Technical 3D State ----
+        // ---- Modal and Technical 3D State ----
     const modalOverlay   = document.getElementById('projectModalOverlay');
     const modalTag       = document.getElementById('modalTag');
     const modalTitle     = document.getElementById('modalTitle');
@@ -1386,6 +1315,7 @@ COMMIT;`
                     if (canvasContainer) canvasContainer.classList.remove('tab-hidden');
                     if (canvasHint) canvasHint.classList.remove('tab-hidden');
                     if (galleryContainer) galleryContainer.classList.add('tab-hidden');
+                    stopModalCarousel();
                     // Forzar resize para que Three.js se reajuste si estaba oculto
                     if (modal3DRenderer && modal3DCamera) {
                         const w = canvasContainer.clientWidth;
@@ -1400,9 +1330,204 @@ COMMIT;`
                     if (canvasContainer) canvasContainer.classList.add('tab-hidden');
                     if (canvasHint) canvasHint.classList.add('tab-hidden');
                     if (galleryContainer) galleryContainer.classList.remove('tab-hidden');
+                    resumeModalCarousel();
                 }
             });
         });
+    }
+
+        // ---- Automatic Modal Carousel Engine ----
+    let modalCarouselTimer = null;
+    let currentSlideIndex = 0;
+
+    function initModalCarousel(screenshots, projectTitle) {
+        const grid = document.getElementById('modalGalleryGrid');
+        if (!grid) return;
+
+        stopModalCarousel();
+
+        if (!screenshots || screenshots.length === 0) {
+            grid.innerHTML = '<p class="mc-empty">No hay capturas disponibles para este sistema.</p>';
+            return;
+        }
+
+        const items = screenshots.map((item, idx) => {
+            if (typeof item === 'string') {
+                const isMobile = item.toLowerCase().includes('responsive') || item.toLowerCase().includes('whatsapp');
+                return {
+                    src: item,
+                    caption: isMobile ? 'MODO MÓVIL // RESPONSIVE COMPACT' : `CAPTURA ${String(idx + 1).padStart(2, '0')} // ${projectTitle}`
+                };
+            }
+            return item;
+        });
+
+        currentSlideIndex = 0;
+        const total = items.length;
+
+        grid.innerHTML = `
+            <div class="modal-carousel-root" id="modalCarouselRoot">
+                <div class="mc-stage">
+                    <div class="mc-slide-viewport">
+                        ${items.map((it, i) => `
+                            <div class="mc-slide ${i === 0 ? 'active' : ''}" data-index="${i}">
+                                <img src="${it.src}" alt="${it.caption || projectTitle}" loading="lazy">
+                                <div class="mc-slide-overlay">
+                                    <span class="mc-slide-badge">${it.caption || `CAPTURA ${String(i + 1).padStart(2, '0')}`}</span>
+                                    <span class="mc-zoom-hint"><i class="fas fa-search-plus"></i> CLICK PARA EXPANDIR</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <button class="mc-nav-btn mc-prev" aria-label="Anterior" type="button">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="mc-nav-btn mc-next" aria-label="Siguiente" type="button">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+
+                    <div class="mc-progress-track">
+                        <div class="mc-progress-bar" id="mcProgressBar"></div>
+                    </div>
+                </div>
+
+                <div class="mc-footer">
+                    <div class="mc-counter">
+                        <span class="mc-current-num">01</span>
+                        <span class="mc-sep">/</span>
+                        <span class="mc-total-num">${String(total).padStart(2, '0')}</span>
+                    </div>
+                    <div class="mc-dots">
+                        ${items.map((_, i) => `
+                            <button class="mc-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="Diapositiva ${i + 1}"></button>
+                        `).join('')}
+                    </div>
+                    <div class="mc-status-pill">
+                        <span class="mc-pulse-dot"></span>
+                        <span class="mc-status-label">AUTO-SLIDE</span>
+                    </div>
+                </div>
+
+                <div class="mc-thumbnails">
+                    ${items.map((it, i) => `
+                        <button class="mc-thumb ${i === 0 ? 'active' : ''}" data-index="${i}" type="button">
+                            <img src="${it.src}" alt="Miniatura ${i + 1}">
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        const root = document.getElementById('modalCarouselRoot');
+        const slides = root.querySelectorAll('.mc-slide');
+        const dots = root.querySelectorAll('.mc-dot');
+        const thumbs = root.querySelectorAll('.mc-thumb');
+        const prevBtn = root.querySelector('.mc-prev');
+        const nextBtn = root.querySelector('.mc-next');
+        const currentNum = root.querySelector('.mc-current-num');
+        const progressBar = document.getElementById('mcProgressBar');
+
+        function showSlide(idx) {
+            currentSlideIndex = (idx + total) % total;
+            slides.forEach((sl, i) => sl.classList.toggle('active', i === currentSlideIndex));
+            dots.forEach((dt, i) => dt.classList.toggle('active', i === currentSlideIndex));
+            thumbs.forEach((th, i) => {
+                th.classList.toggle('active', i === currentSlideIndex);
+                if (i === currentSlideIndex) {
+                    th.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            });
+            if (currentNum) currentNum.textContent = String(currentSlideIndex + 1).padStart(2, '0');
+            resetProgressBar();
+        }
+
+        function resetProgressBar() {
+            if (!progressBar) return;
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+            void progressBar.offsetWidth;
+            progressBar.style.transition = 'width 3500ms linear';
+            progressBar.style.width = '100%';
+        }
+
+        function startAutoSlide() {
+            stopAutoSlide();
+            resetProgressBar();
+            modalCarouselTimer = setInterval(() => {
+                showSlide(currentSlideIndex + 1);
+            }, 3500);
+        }
+
+        function stopAutoSlide() {
+            if (modalCarouselTimer) {
+                clearInterval(modalCarouselTimer);
+                modalCarouselTimer = null;
+            }
+            if (progressBar) {
+                const curW = window.getComputedStyle(progressBar).width;
+                progressBar.style.transition = 'none';
+                progressBar.style.width = curW;
+            }
+        }
+
+        window._modalCarouselResume = startAutoSlide;
+        window._modalCarouselPause  = stopAutoSlide;
+
+        prevBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showSlide(currentSlideIndex - 1);
+            startAutoSlide();
+        });
+
+        nextBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showSlide(currentSlideIndex + 1);
+            startAutoSlide();
+        });
+
+        dots.forEach(d => {
+            d.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showSlide(parseInt(d.dataset.index, 10));
+                startAutoSlide();
+            });
+        });
+
+        thumbs.forEach(t => {
+            t.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showSlide(parseInt(t.dataset.index, 10));
+                startAutoSlide();
+            });
+        });
+
+        root.addEventListener('mouseenter', stopAutoSlide);
+        root.addEventListener('mouseleave', startAutoSlide);
+
+        slides.forEach(sl => {
+            sl.addEventListener('click', () => {
+                const img = sl.querySelector('img');
+                if (img && typeof openFullscreen === 'function') {
+                    openFullscreen(img.src);
+                }
+            });
+        });
+
+        startAutoSlide();
+    }
+
+    function stopModalCarousel() {
+        if (modalCarouselTimer) {
+            clearInterval(modalCarouselTimer);
+            modalCarouselTimer = null;
+        }
+    }
+
+    function resumeModalCarousel() {
+        if (typeof window._modalCarouselResume === 'function') {
+            window._modalCarouselResume();
+        }
     }
 
     function openModal(projectKey) {
@@ -1438,8 +1563,8 @@ COMMIT;`
             }
         }
 
-        // Reset modal tabs to default (wireframe)
-        const defaultTabBtn = document.querySelector('.modal-tab-btn[data-tab="wireframe"]');
+        // Activar pestaña de Capturas Reales (Carrusel Automático) por defecto
+        const defaultTabBtn = document.querySelector('.modal-tab-btn[data-tab="screenshots"]');
         if (defaultTabBtn) {
             document.querySelectorAll('.modal-tab-btn').forEach(b => b.classList.remove('active'));
             defaultTabBtn.classList.add('active');
@@ -1447,46 +1572,12 @@ COMMIT;`
         const canvasContainer = document.getElementById('modal-3d-canvas-container');
         const canvasHint = document.querySelector('.canvas-3d-hint');
         const galleryContainer = document.getElementById('modal-gallery-container');
-        if (canvasContainer) canvasContainer.classList.remove('tab-hidden');
-        if (canvasHint) canvasHint.classList.remove('tab-hidden');
-        if (galleryContainer) galleryContainer.classList.add('tab-hidden');
+        if (canvasContainer) canvasContainer.classList.add('tab-hidden');
+        if (canvasHint) canvasHint.classList.add('tab-hidden');
+        if (galleryContainer) galleryContainer.classList.remove('tab-hidden');
 
-        // Renderizar capturas de pantalla reales en la pestaña de galería
-        const galleryGrid = document.getElementById('modalGalleryGrid');
-        if (galleryGrid) {
-            if (data.screenshots && data.screenshots.length > 0) {
-                galleryGrid.innerHTML = data.screenshots.map(src => `
-                    <div class="gallery-screenshot-card" data-src="${src}">
-                        <img src="${src}" alt="Captura de ${data.title}">
-                    </div>
-                `).join('');
-                
-                // Evento click para abrir lightbox
-                galleryGrid.querySelectorAll('.gallery-screenshot-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        const src = card.getAttribute('data-src');
-                        openFullscreen(src);
-                    });
-                    
-                    // Asociar eventos del cursor personalizado
-                    card.addEventListener('mouseenter', () => {
-                        if (cursor) {
-                            cursor.classList.remove('hovered');
-                            cursor.classList.add('project-hover');
-                            if (cursor2) cursor2.style.opacity = '0';
-                        }
-                    });
-                    card.addEventListener('mouseleave', () => {
-                        if (cursor) {
-                            cursor.classList.remove('project-hover');
-                            if (cursor2) cursor2.style.opacity = '1';
-                        }
-                    });
-                });
-            } else {
-                galleryGrid.innerHTML = '<p style="color: rgba(255,255,255,0.3); text-align: center; grid-column: 1/-1; padding: 2rem;">No hay capturas disponibles para este sistema.</p>';
-            }
-        }
+        // Inicializar el carrusel automático con las fotos del proyecto
+        initModalCarousel(data.screenshots, data.title);
 
         // Inyectar y resaltar código fuente
         const codeSnippetEl = document.getElementById('modalCodeSnippet');
@@ -1497,12 +1588,11 @@ COMMIT;`
         modalOverlay.classList.add('modal-open');
         document.body.style.overflow = 'hidden';
 
-        // Inicializar canvas 3D con delay para animación CSS
+        // Inicializar canvas 3D con delay por si el usuario pasa a la pestaña 3D
         setTimeout(() => {
             initModal3D(projectKey);
         }, 120);
 
-        // Forzar un segundo resize tras finalizar la animación CSS de apertura (750ms) para corregir aspect ratio
         setTimeout(() => {
             if (modal3DRenderer && modal3DCamera) {
                 const container = document.getElementById('modal-3d-canvas-container');
@@ -1521,14 +1611,13 @@ COMMIT;`
     window.openProjectModal = openModal;
 
     function closeModal() {
+        stopModalCarousel();
         modalOverlay.classList.remove('modal-open');
         document.body.style.overflow = '';
         
-        // Quitar fade-in del canvas
         const container = document.getElementById('modal-3d-canvas-container');
         if (container) container.classList.remove('loaded');
 
-        // Retrasar la destrucción del canvas 3D 750ms para que siga viéndose mientras el modal se desliza hacia abajo
         setTimeout(() => {
             if (!modalOverlay.classList.contains('modal-open')) {
                 disposeModal3D();

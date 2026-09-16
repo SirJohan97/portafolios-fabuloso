@@ -3466,6 +3466,11 @@
     justify-content: center;
     z-index: 15;
     will-change: transform, opacity;
+    pointer-events: none;
+}
+
+.km-frame-wrap, .km-titanium-frame, .km-details-strip, .km-details-right, .km-cta {
+    pointer-events: auto !important;
 }
 
 /* 3D Physical Frame Wrap — perspective for depth entry animation */
@@ -3611,7 +3616,10 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 100px;
     background: transparent;
-    cursor: pointer;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 30;
     transition: all 0.25s ease;
     white-space: nowrap;
 }

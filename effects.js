@@ -2058,31 +2058,7 @@ function initEffectsScript() {
             }, 100);
         }
 
-        // Hook all info-btn buttons to 3D Warp Tunnel Experience â†’ Rich Project Modal
-        document.querySelectorAll('.info-btn[data-info]').forEach(btn => {
-            btn.addEventListener('click', e => {
-                e.preventDefault();
-                e.stopPropagation();
-                const key  = btn.dataset.info;
-                const card = btn.closest('.card');
-                
-                const openRichModal = (projKey) => {
-                    if (typeof window.openProjectModal === 'function') {
-                        window.openProjectModal(projKey);
-                    } else if (typeof openProject === 'function') {
-                        openProject(projKey, card);
-                    }
-                };
-
-                if (window.WarpRunner && typeof window.WarpRunner.launch === 'function') {
-                    window.WarpRunner.launch(key, (projKey) => {
-                        openRichModal(projKey);
-                    });
-                } else {
-                    openRichModal(key);
-                }
-            });
-        });
+        // (info-btn listener is managed exclusively in script.js to avoid duplicate WarpRunner collisions)
 
         // Hook V-SIMULATOR navbar button to launch free 3D Warp Flight
         const simBtn = document.getElementById('v-simulator-btn');
@@ -2804,7 +2780,7 @@ function initEffectsScript() {
                 const detailsStrip = chapter.querySelector('.km-details-strip');
 
                 if (i === 0) {
-                    gsap.set(chapter, { autoAlpha: 1, zIndex: 10 });
+                    gsap.set(chapter, { autoAlpha: 1, zIndex: 10, pointerEvents: 'auto' });
                     // Hook visible: words already up
                     if (words.length) gsap.set(words, { y: 0, opacity: 1, filter: 'blur(0px)' });
                     if (meta) gsap.set(meta, { opacity: 1 });
@@ -2813,7 +2789,7 @@ function initEffectsScript() {
                     if (frameWrap) gsap.set(frameWrap, { autoAlpha: 0, rotateX: 14, y: 50, scale: 0.93, transformOrigin: '50% 100%' });
                     if (detailsStrip) gsap.set(detailsStrip, { autoAlpha: 0, y: 20 });
                 } else {
-                    gsap.set(chapter, { autoAlpha: 0, zIndex: 5 });
+                    gsap.set(chapter, { autoAlpha: 0, zIndex: 5, pointerEvents: 'none' });
                     if (words.length) gsap.set(words, { y: 70, opacity: 0, filter: 'blur(4px)' });
                     if (meta) gsap.set(meta, { opacity: 0 });
                     if (subtitle) gsap.set(subtitle, { opacity: 0 });
@@ -2839,7 +2815,7 @@ function initEffectsScript() {
                     masterTl.to({}, { duration: 0.35 });
                 } else {
                     // Enter subsequent chapters
-                    masterTl.to(chapter, { autoAlpha: 1, zIndex: 10, duration: 0.05 }, enterLabel);
+                    masterTl.to(chapter, { autoAlpha: 1, zIndex: 10, pointerEvents: 'auto', duration: 0.05 }, enterLabel);
                     if (meta) masterTl.to(meta, { opacity: 1, duration: 0.2 }, enterLabel);
                     if (words.length) {
                         masterTl.to(words, {
@@ -2860,6 +2836,8 @@ function initEffectsScript() {
                     }, revealLabel);
                 }
                 if (subtitle) masterTl.to(subtitle, { opacity: 0, duration: 0.2 }, revealLabel);
+
+                masterTl.set(chapter, { pointerEvents: 'auto' }, revealLabel);
 
                 if (frameWrap) {
                     masterTl.to(frameWrap, {
@@ -2887,7 +2865,7 @@ function initEffectsScript() {
                 if (exitLabel) {
                     if (frameWrap) masterTl.to(frameWrap, { autoAlpha: 0, y: -35, rotateX: -8, scale: 0.96, duration: 0.22 }, exitLabel);
                     if (detailsStrip) masterTl.to(detailsStrip, { autoAlpha: 0, y: -18, duration: 0.18 }, exitLabel);
-                    masterTl.to(chapter, { autoAlpha: 0, duration: 0.1 }, `${exitLabel}+=0.15`);
+                    masterTl.to(chapter, { autoAlpha: 0, pointerEvents: 'none', duration: 0.1 }, `${exitLabel}+=0.15`);
                 }
             }
 
