@@ -2987,6 +2987,7 @@ function initEffectsScript() {
 
             rows.forEach((row) => {
                 const previewSrc = row.getAttribute('data-preview');
+                const projectKey = row.getAttribute('data-info');
 
                 row.addEventListener('mouseenter', () => {
                     if (!previewSrc) return;
@@ -2999,6 +3000,13 @@ function initEffectsScript() {
                 row.addEventListener('mouseleave', () => {
                     isActive = false;
                     cursorPreview.classList.remove('is-visible');
+                });
+
+                row.addEventListener('click', (e) => {
+                    if (!projectKey) return;
+                    if (typeof window.openProjectModal === 'function') {
+                        window.openProjectModal(projectKey);
+                    }
                 });
             });
 

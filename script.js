@@ -750,24 +750,24 @@ function initMainScript() {
         sviva: {
             tag: 'Python · YOLOv8 · OpenCV · TensorRT · Telegram API',
             title: 'SVIVA CORE — Videovigilancia Táctica & AI Edge',
-            description: 'Sistema de videovigilancia táctica e inteligencia artificial que opera 100% en local sobre hardware estándar. Sin latencia y sin dependencia de la nube. Integra detección de intrusos en tiempo real con YOLOv8, rastreo de sujetos únicos mediante ByteTrack y un canal asíncrono con bot de Telegram para despacho inmediato de alertas fotográficas forenses. Ha sido minuciosamente optimizado con una arquitectura táctica ultra-responsive que adapta todos sus controles tanto para tabletas de seguridad en campo como para smartphones de monitoreo.',
-            metrics: ['⚡ INFERENCIA 12ms', '🔒 100% LOCAL / ZERO CLOUD', '📱 MODO RESPONSIVE TÁCTICO', '📡 TELEGRAM BOT LIVE'],
-            pipeline: ['📹 RTSP Camera Stream', '→', '⚡ YOLOv8 Inferencia Local', '→', '🧠 ByteTrack ID Tracking', '→', '💾 SQLite Logs & Telegram Bot'],
-            tech: ['Python 3.11', 'YOLOv8 Real-time', 'ByteTrack Tracker', 'OpenCV / TensorRT', 'FastAPI Async Engine', 'Telegram Bot API', 'SQLite Analytics'],
+            description: 'Sistema de videovigilancia táctica e inteligencia artificial que opera 100% en local sobre hardware estándar. Sin latencia y con absoluta soberanía de datos (cero dependencia de la nube). Validado exhaustivamente con streams RTSP simulados en teléfonos móviles y diseñado con compatibilidad agnóstica para cualquier cámara de seguridad convencional (cámaras IP PoE, streams RTSP o CCTV cableado vía encoder). Integra inferencia multiclase con YOLOv8 para detección de personas, mascotas, vehículos, objetos peligrosos/armas y merodeos sospechosos en zonas perimetrales. Conectado a un bot interactivo de Telegram que despacha alertas fotográficas forenses con telemetría en tiempo real (cámara, hora exacta y nivel de amenaza) e incorpora botones de acción directa para activar alarmas disuasivas y generar reportes semanales automáticos.',
+            metrics: ['⚡ INFERENCIA 12ms', '🔒 100% LOCAL / ZERO CLOUD', '📡 BOT TELEGRAM INTERACTIVO', '🚨 ALERTA FORENSE & MERODEO'],
+            pipeline: ['📹 RTSP / Cámara IP Convencional', '→', '⚡ Inferencia YOLOv8 Local (<15ms)', '→', '🧠 ByteTrack ID & Análisis de Merodeo', '→', '📡 Bot Telegram + Alarma Disuasiva'],
+            tech: ['Python 3.11', 'YOLOv8 Real-time', 'ByteTrack Tracker', 'OpenCV / TensorRT', 'FastAPI Async Engine', 'Telegram Bot API (Inline Buttons)', 'SQLite Analytics'],
             url: '#',
             screenshots: [
                 { src: 'img/sviva/svivalogo.jpeg', caption: 'Branding & Identidad SVIVA Tactical Core' },
-                { src: 'img/sviva/Dashboard.png', caption: 'Dashboard Central de Vigilancia' },
+                { src: 'img/sviva/Dashboard.png', caption: 'Dashboard Central de Monitoreo & Cámaras' },
                 { src: 'img/sviva/WhatsApp Image 2026-09-16 at 10.21.08 AM.jpeg', caption: 'Modo Compacto Ultra-Responsive en Smartphone' },
                 { src: 'img/sviva/WhatsApp Image 2026-09-16 at 10.22.37 AM.jpeg', caption: 'Visualización Táctica Móvil — Telemetría en Teléfono' },
                 { src: 'img/sviva/Deteccion e IA.png', caption: 'Inferencia de Red Neuronal & Bounding Boxes' },
-                { src: 'img/sviva/Analitica.png', caption: 'Métricas Forenses y Gráficas de Tráfico' },
+                { src: 'img/sviva/Analitica.png', caption: 'Métricas Forenses y Gráficas de Tráfico Semanal' },
                 { src: 'img/sviva/Telegram y Notificaciones.png', caption: 'Canal de Alertas Instantáneas vía Telegram' },
-                { src: 'img/sviva/svivatelegram.jpeg', caption: 'Recepción de Captura Forense en Chat de Seguridad' },
+                { src: 'img/sviva/svivatelegram.jpeg', caption: 'Recepción de Captura Forense con Botones de Alarma' },
                 { src: 'img/sviva/Rendimiento.png', caption: 'Monitor de Consumo CPU/GPU y Carga Local' },
                 { src: 'img/sviva/Seguridad.png', caption: 'Módulo de Políticas de Cifrado y Logs' }
             ],
-            code: `# Algoritmo de Inferencia Táctica YOLOv8 + ByteTrack
+            code: `# Algoritmo de Inferencia Táctica YOLOv8 + Despacho Interactivo Telegram
 import cv2
 from ultralytics import YOLO
 from trackers.multi_tracker_zoo import create_tracker
@@ -777,68 +777,71 @@ class VisionPipeline:
         self.model = YOLO(model_path)
         self.tracker = create_tracker("bytetrack", "config/bytetrack.yaml")
 
-    def process_frame(self, frame):
-        # Inferencia local sin conexión a internet
+    def process_frame(self, frame, camera_id="CAM_01"):
+        # Inferencia local sin dependencia de la nube
         results = self.model(frame, stream=True, conf=0.45)
         for r in results:
             boxes = r.boxes.xyxy.cpu().numpy()
             scores = r.boxes.conf.cpu().numpy()
             class_ids = r.boxes.cls.cpu().numpy()
             
-            # Rastreo determinista de IDs únicos
+            # Rastreo determinista de IDs únicos y control de merodeo
             tracks = self.tracker.update(boxes, scores, class_ids, frame)
-            self.draw_tactical_hud(frame, tracks)
+            threat_level = self.evaluar_amenaza(class_ids, tracks)
+            if threat_level != "NORMAL":
+                self.enviar_alerta_telegram(frame, camera_id, threat_level)
         return frame`
         },
         ventastrack: {
-            tag: 'Python · FastAPI · PostgreSQL · Enterprise B2B',
-            title: 'VentasTrack — Suite de Gestión Comercial B2B',
-            description: 'Ecosistema de gestión de ventas y distribución comercial B2B de alto volumen. Cuenta con arquitectura transaccional multi-depósito bajo rigurosas garantías ACID, catálogo de productos dinámico y sincronización con almacenes centrales. Ha sido diseñado con una meticulosa adaptación responsive que ofrece dos experiencias dedicadas: una interfaz táctil ultra-ligera en smartphone para vendedores en calle (gestión de rutas, catálogo móvil y cotizaciones offline/online) y un panel analítico integral para directores comerciales en tabletas y ordenadores.',
-            metrics: ['💼 FACTURACIÓN TRANSACCIONAL ACID', '📱 MODO VENDEDOR SMARTPHONE', '🔄 SYNC AUTOMÁTICO MULTI-DEPÓSITO', '📊 KARDEX INTEGRADO'],
-            pipeline: ['🛒 Mobile Sales Order', '→', '⚡ FastAPI Transaction Engine', '→', '🐘 PostgreSQL ACID Isolation', '→', '📄 Automated Invoice Generation'],
-            tech: ['FastAPI / Python', 'PostgreSQL', 'TypeScript / Vite', 'JWT Roles & Permissions', 'Diseño Mobile-First', 'Motor de Facturación'],
+            tag: 'Python · FastAPI · PostgreSQL · Enterprise B2B · Lab. Behrens',
+            title: 'VentasTrack — Automatización Comercial Exclusiva Laboratorios Behrens',
+            description: 'Plataforma corporativa integral de automatización y gestión comercial B2B diseñada y desarrollada exclusivamente para la fuerza de ventas y las operaciones estratégicas de Laboratorios Behrens, C.A. Actúa como puente digital de alta fidelidad que conecta a visitadores médicos y asesores comerciales en calle directamente con Atención al Cliente (ATC), Tesorería, Supervisión y el sistema central SAP ERP.\n\nCentraliza todo el ciclo de vida comercial: captura inteligente de cotizaciones en smartphones con listas de precios diferenciadas (Clínica, Droguería Nacional, Droguería Regional), descuentos escalonados con precisión de 3 decimales, operatividad offline total con IndexedDB para rutas sin cobertura celular (sincronización automática al recuperar señal), flujo de validación multirrol y exportación estructurada a SAP ERP (pedidos ZB01, condiciones ZB21, tasa oficial BCV a 4 decimales y sedes destino ZDES). Incluye generación instantánea de cotizaciones en PDF con membrete institucional y cálculos multimoneda en tiempo real (USD / Bs. BCV).',
+            metrics: ['💊 EXCLUSIVO LAB. BEHRENS', '🔄 INTEGRACIÓN SAP ERP (ZB01)', '📶 OFFLINE-FIRST (INDEXEDDB)', '💵 MULTIMONEDA TASA BCV'],
+            pipeline: ['📱 Pedido Visitador en Calle (Offline/Online)', '→', '🏢 Validación ATC & Tesorería', '→', '🔄 Generación Doc. SAP (ZB01/ZB21)', '→', '📄 Factura PDF & Despacho'],
+            tech: ['FastAPI / Python', 'PostgreSQL', 'TypeScript / Vite', 'IndexedDB Offline Cache', 'SAP ERP Connector', 'Generador PDF Oficial', 'JWT Roles & Permissions'],
             url: '#contact',
             screenshots: [
-                { src: 'img/ventastrack/login-ventast.png', caption: 'Portal Principal de Acceso B2B Enterprise' },
+                { src: 'img/ventastrack/login-ventast.png', caption: 'Portal Principal de Acceso B2B Laboratorios Behrens' },
                 { src: 'img/ventastrack/loginresponsive.jpeg', caption: 'Login Optimizado para Smartphones de Fuerza de Ventas' },
-                { src: 'img/ventastrack/responsiveventastra.jpeg', caption: 'Dashboard Móvil para Vendedores en Calle' },
-                { src: 'img/ventastrack/WhatsApp Image 2026-09-16 at 10.16.58 AM.jpeg', caption: 'Flujo Táctil de Pedidos y Cotizaciones en Teléfono' },
-                { src: 'img/ventastrack/WhatsApp Image 2026-09-16 at 10.16.59 AM.jpeg', caption: 'Catálogo de Productos en Pantalla Móvil Vertical' },
+                { src: 'img/ventastrack/responsiveventastra.jpeg', caption: 'Dashboard Móvil para Visitadores Médicos en Ruta' },
+                { src: 'img/ventastrack/WhatsApp Image 2026-09-16 at 10.16.58 AM.jpeg', caption: 'Levantamiento Táctil de Cotizaciones en Teléfono' },
+                { src: 'img/ventastrack/WhatsApp Image 2026-09-16 at 10.16.59 AM.jpeg', caption: 'Catálogo de Productos y Listas de Precios por Droguería' },
                 { src: 'img/ventastrack/Captura de pantalla 2026-09-15 155907.png', caption: 'Consola Desktop de Gestión Comercial & Pedidos' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160116.png', caption: 'Directorio de Clientes y Estado de Créditos' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160515.png', caption: 'Control de Inventario y Kardex por Almacén' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 161251.png', caption: 'Generación y Trazabilidad de Facturación' }
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160116.png', caption: 'Directorio de Clientes y Estado de Créditos ATC' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160515.png', caption: 'Validación de Inventario Físico en Almacén' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 161251.png', caption: 'Módulo de Exportación Directa a SAP ERP (ZB01)' }
             ],
-            code: `# Proceso Transaccional ACID en PostgreSQL con Bloqueo de Stock
-from sqlalchemy.orm import Session
-from models import Factura, ItemFactura, Inventario
+            code: `# Generación de Pedido Comercial SAP ERP (ZB01 / ZB21) con Tasa Oficial BCV
+from decimal import Decimal
+from models import Cotizacion, SAPSalesOrder
 
-def procesar_orden_b2b(db: Session, cliente_id: int, items: list):
-    with db.begin():
-        total = 0
-        for item in items:
-            # Bloqueo pesimista de fila para prevenir venta en negativo
-            stock = db.query(Inventario).filter(
-                Inventario.sku == item['sku']
-            ).with_for_update().one()
-            
-            if stock.cantidad < item['cantidad']:
-                raise ValueError(f"Stock insuficiente para SKU: {item['sku']}")
-            
-            stock.cantidad -= item['cantidad']
-            total += stock.precio_unitario * item['cantidad']
-            
-        factura = Factura(cliente_id=cliente_id, total=total, estado="COMPLETADO")
-        db.add(factura)
-    return factura`
+def exportar_a_sap_erp(cotizacion_id: int, tasa_bcv: Decimal):
+    cot = Cotizacion.query.get(cotizacion_id)
+    # Formato oficial de orden de venta SAP de Laboratorios Behrens
+    sap_payload = {
+        "doc_type": "ZB01",
+        "sales_org": "BEHR",
+        "tasa_cambio": round(tasa_bcv, 4),
+        "cliente_sap": cot.cliente.codigo_sap,
+        "sede_destino": cot.sede_zdes,
+        "items": [
+            {
+                "material": it.material_sap,
+                "cantidad": it.unidades,
+                "precio_lista": it.precio_lista,
+                "descuento_zb21": round(it.descuento, 3)
+            } for it in cot.items
+        ]
+    }
+    return SAPSalesOrder.crear(sap_payload)`
         },
         kioskoazul: {
-            tag: 'Python · Flask · SQLite · POS Real-time',
+            tag: 'Python · Flask · SQLite · POS Real-time · Async Queue',
             title: 'Kiosko Azul — POS & Menú Digital Interactivo',
-            description: 'Plataforma gastronómica integral de punto de venta (POS) y comanda digital diseñada para restaurantes y comercios de alto tráfico. Diseñado con una experiencia responsive especializada por rol: menú digital táctil e interactivo al que los comensales acceden escaneando el código QR de su mesa desde sus smartphones, terminal táctil de alta velocidad optimizada para camareros en tabletas de sala, y comanda electrónica sincronizada al instante con cocina y balance financiero en caja.',
-            metrics: ['🍔 MENÚ QR EN SMARTPHONES', '⚡ 0.04s LATENCIA PEDIDOS', '📱 TABLET POS PARA MESEROS', '📊 DASHBOARD FINANCIERO'],
-            pipeline: ['📱 QR Menu Comensal', '→', '⚡ Flask Async Engine', '→', '💾 SQLite Database', '→', '👨‍🍳 Kitchen Dispatch & Cashier'],
-            tech: ['Python 3', 'Flask Microframework', 'SQLite / PostgreSQL', 'Mobile-First UX', 'Async Order Dispatch', 'Dashboard Financiero'],
+            description: 'Plataforma gastronómica integral de punto de venta (POS) y comanda digital diseñada para restaurantes y comercios con alto tráfico de comensales. Su arquitectura backend implementa un sistema de colas asíncronas (async FIFO queue) donde cada pedido entra a un buffer ultraligero y se procesa en cuestión de milisegundos, garantizando cero caídas ni saturación en pruebas de estrés masivas. Incorpora métodos de pago personalizados adaptados al mercado (Pago Móvil y Efectivo), menú digital interactivo por código QR para smartphones de comensales, interfaz táctil acelerada para meseros en tabletas y sincronización instantánea con el monitor de cocina y cuadre financiero en caja.',
+            metrics: ['🍔 MENÚ QR MOBILE', '⚡ COLA ASÍNCRONA <10ms', '📱 TÁCTIL MESEROS & COCINA', '💵 PAGO MÓVIL & EFECTIVO'],
+            pipeline: ['📱 Pedido QR Comensal', '→', '⚡ Cola Asíncrona FIFO (<10ms)', '→', '💾 Transacción SQLite Concurrente', '→', '👨‍🍳 Monitor Cocina & Cuadre Caja'],
+            tech: ['Python 3', 'Flask Microframework', 'Async Queue System', 'SQLite / PostgreSQL', 'Mobile-First UX', 'Módulo Pago Móvil / Efectivo'],
             url: '#',
             screenshots: [
                 { src: 'img/kioskoazul/login-kiosko.png', caption: 'Acceso Administrativo y Punto de Venta' },
@@ -847,69 +850,66 @@ def procesar_orden_b2b(db: Session, cliente_id: int, items: list):
                 { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.13 PM.jpeg', caption: 'Experiencia Móvil en Smartphones (QR Mesa)' },
                 { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.21 PM.jpeg', caption: 'Ficha Detallada de Platillos en Pantalla Móvil' },
                 { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.29 PM.jpeg', caption: 'Gestión de Selección y Adicionales en Teléfono' },
-                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.37 PM.jpeg', caption: 'Confirmación y Pasarela de Pago Digital' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.37 PM.jpeg', caption: 'Confirmación y Pasarela Pago Móvil / Efectivo' },
                 { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.47 PM.jpeg', caption: 'Terminal Táctil para Camareros en Tablet' },
                 { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.15.00 PM.jpeg', caption: 'Despacho de Cocina y Cuadre de Caja en Vivo' }
             ],
-            code: `# Motor de Despacho de Pedidos y Reservas en Kiosko Azul
+            code: `# Motor de Cola Asíncrona de Pedidos para Pruebas de Estrés
+import queue, threading, sqlite3
 from flask import Flask, request, jsonify
-import sqlite3
 
 app = Flask(__name__)
+order_queue = queue.Queue()
 
-@app.route('/api/pedidos/crear', methods=['POST'])
-def crear_pedido():
-    payload = request.get_json()
-    mesa_id = payload.get('mesa_id')
-    items = payload.get('items', [])
-    
-    conn = sqlite3.connect('kiosko.db')
-    cur = conn.cursor()
-    cur.execute("INSERT INTO pedidos (mesa_id, estado) VALUES (?, 'COCINA')", (mesa_id,))
-    pedido_id = cur.lastrowid
-    
-    for it in items:
-        cur.execute("INSERT INTO detalles (pedido_id, item_id, cant) VALUES (?, ?, ?)",
-                    (pedido_id, it['id'], it['cant']))
-    conn.commit()
-    conn.close()
-    return jsonify({'status': 'SUCCESS', 'pedido_id': pedido_id})`
+def queue_worker():
+    conn = sqlite3.connect('kiosko.db', check_same_thread=False)
+    while True:
+        order = order_queue.get()
+        if order is None: break
+        # Procesamiento secuencial en memoria en <5ms sin contención de locks
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO pedidos (mesa_id, total, metodo_pago) VALUES (?, ?, ?)",
+                       (order['mesa_id'], order['total'], order['metodo_pago']))
+        conn.commit()
+        order_queue.task_done()
+
+threading.Thread(target=queue_worker, daemon=True).start()`
         },
         iuta: {
             tag: 'Python · Flask · PostgreSQL · Multi-Tenant · 5 Sedes',
             title: 'CERDIV IUTA — Centro de Recursos Digitales Multi-Sede',
-            description: 'Ecosistema centralizado de gestión bibliotecaria y recursos académicos multi-tenant desarrollado para el Instituto Universitario de Tecnología de Administración Industrial (IUTA). Conecta de forma síncrona cinco sedes universitarias (Central, Baralt, Jesuitas, Altos Mirandinos y Guarenas), administrando un catálogo de más de 15.000 volúmenes físicos con búsqueda asíncrona por facetas, préstamos inter-sedes y auditoría transaccional.',
-            metrics: ['🏛️ 5 SEDES UNIVERSITARIAS', '📚 15.000+ VOLÚMENES', '⚡ BÚSQUEDA ASÍNCRONA', '🐘 POSTGRESQL MULTI-TENANT'],
-            pipeline: ['🔍 Search Query Asíncrono', '→', '⚡ Flask Multi-Tenant Router', '→', '🐘 PostgreSQL Neon Cloud', '→', '📖 Préstamo Inter-Sedes'],
-            tech: ['Python / Flask', 'PostgreSQL Neon', 'Vercel Serverless', 'Arquitectura Multi-Tenant', 'Werkzeug Security', 'Búsqueda Asíncrona'],
+            description: 'Sistema administrativo centralizado de inventario bibliográfico y catalogación técnica multi-tenant desarrollado para el Instituto Universitario de Tecnología de Administración Industrial (IUTA). Su objetivo primordial es el registro exhaustivo y la auditoría patrimonial de los ejemplares físicos de las 5 bibliotecas del instituto (Sedes Central, Baralt, Jesuitas, Altos Mirandinos y Guarenas). Cada registro incluye la catalogación bibliotecológica normalizada, clasificación Dewey, cota, ISBN, editorial, imagen de portada y desglose de volúmenes disponibles por sede, permitiendo una trazabilidad precisa del patrimonio bibliográfico universitario sin requerir almacenamiento ni distribución de archivos PDF.',
+            metrics: ['🏛️ 5 SEDES CONECTADAS', '📚 15.000+ FICHAS TÉCNICAS', '🔍 CATALOGACIÓN BIBLIOTECOLÓGICA', '🐘 POSTGRESQL MULTI-TENANT'],
+            pipeline: ['🔍 Búsqueda Asíncrona por Cota/ISBN', '→', '⚡ Router Multi-Tenant Flask', '→', '🐘 PostgreSQL Neon Cloud', '→', '📖 Inventario de Ejemplares por Sede'],
+            tech: ['Python / Flask', 'PostgreSQL Neon', 'Vercel Serverless', 'Arquitectura Multi-Tenant', 'Catalogación Bibliotecológica', 'Búsqueda Asíncrona'],
             url: 'https://biblioteca-ashy-sigma.vercel.app',
             screenshots: [
                 { src: 'img/cerdiv/Captura de pantalla 2026-09-15 154435.png', caption: 'Portal Oficial CERDIV IUTA — Vista de las 5 Sedes' },
                 { src: 'img/cerdiv/cerdivweb.jpeg', caption: 'Catálogo de Libros y Motor de Búsqueda por Facetas' },
-                { src: 'img/cerdiv/cerdivsede.jpeg', caption: 'Selección de Sede y Disponibilidad de Ejemplares' }
+                { src: 'img/cerdiv/cerdivsede.jpeg', caption: 'Selección de Sede y Disponibilidad de Ejemplares Físicos' }
             ],
             code: `# Consulta de Disponibilidad Multi-Tenant en 5 Sedes
 from models import db, Libro, EjemplarSede
 
-def consultar_stock_multi_sede(isbn: str):
-    # Agrupación transaccional a través de las 5 sedes universitarias
+def consultar_stock_multi_sede(cota: str):
+    # Inventario centralizado a través de las 5 sedes universitarias de IUTA
     sedes_activas = ['Central', 'Baralt', 'Jesuitas', 'Altos Mirandinos', 'Guarenas']
     query = db.session.query(
         EjemplarSede.nombre_sede,
-        EjemplarSede.disponibles
+        EjemplarSede.ejemplares_fisicos
     ).filter(
-        EjemplarSede.isbn == isbn,
+        EjemplarSede.cota == cota,
         EjemplarSede.nombre_sede.in_(sedes_activas)
     ).all()
     
-    return {sede: disp for sede, disp in query}`
+    return {sede: cant for sede, cant in query}`
         },
         inventario: {
-            tag: 'Python · FastAPI · PostgreSQL · Kardex PEPS/UEPS',
+            tag: 'Python · FastAPI · PostgreSQL · Promedio Ponderado · Base Modular',
             title: 'Sistema de Control de Inventario & Kardex Multibodega',
-            description: 'Plataforma industrial para la trazabilidad exhaustiva de existencias, control de mermas y balance de almacenes en tiempo real. Incorpora cálculo automatizado de métodos Kardex (PEPS, UEPS y Promedio Ponderado), alertas inteligentes de reabastecimiento crítico y control multi-bodega con prevención de bloqueos concurrentes.',
-            metrics: ['📦 KARDEX PEPS/UEPS AUTO', '🏢 MULTI-BODEGA CENTRAL', '⚡ ALERTAS STOCK MÍNIMO', '🔒 ACID CONCURRENCY LOCK'],
-            pipeline: ['📦 Código de Barras / SKU', '→', '⚡ FastAPI Async Processing', '→', '🔒 Row-level Lock FOR UPDATE', '→', '📊 Kardex & Dashboard Update'],
+            description: 'Plataforma industrial de control de existencias, trazabilidad Kardex bajo método de Promedio Ponderado y gestión de almacenes centrales. Ha sido concebida como la solución base modular de VANTA Studio: un software de alta ingeniería listo para ser personalizado e implantado a la medida de las reglas de negocio, categorías y flujos de cualquier empresa cliente. Incluye cálculo automático de costos medios, alertas inteligentes de rotura de stock, registro de mermas y bloqueos transaccionales optimistas (ACID) para operaciones concurrentes en depósitos múltiples.',
+            metrics: ['📦 PROMEDIO PONDERADO', '🏢 BASE 100% PERSONALIZABLE', '⚡ STOCK & MERMAS EN VIVO', '🔒 MULTI-BODEGA TRANSACCIONAL'],
+            pipeline: ['📦 Código de Barras / SKU', '→', '⚡ FastAPI Async Engine', '→', '📊 Cálculo Promedio Ponderado', '→', '🏢 Balance & Kardex Multi-Almacén'],
             tech: ['Python / FastAPI', 'PostgreSQL', 'SQLite', 'Dashboards Analíticos', 'Lector Código de Barras', 'Control de Mermas'],
             url: '#contact',
             screenshots: [
@@ -920,21 +920,44 @@ def consultar_stock_multi_sede(isbn: str):
                 { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (3).jpeg', caption: 'Alertas de Stock Crítico y Puntos de Reorden' },
                 { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (6).jpeg', caption: 'Reportes y Métricas de Rotación de Inventario' }
             ],
-            code: `-- Query Transaccional Kardex con Bloqueo de Fila Optimista
+            code: `-- Cálculo Automático de Promedio Ponderado en Transacción ACID
 BEGIN;
-SELECT sku, stock_actual, precio_promedio
+SELECT stock_actual, costo_promedio
 FROM inventario_bodega
-WHERE sku = 'SKU-LOG-9921' AND bodega_id = 1
+WHERE sku = 'SKU-MED-8810' AND bodega_id = 1
 FOR UPDATE;
 
+-- Nuevo Costo Promedio = (Valor Existente + Valor Nuevo Ingreso) / Total Unidades
 UPDATE inventario_bodega
-SET stock_actual = stock_actual - 20,
+SET costo_promedio = ((stock_actual * costo_promedio) + (100 * 12.50)) / (stock_actual + 100),
+    stock_actual = stock_actual + 100,
     ultima_modificacion = NOW()
-WHERE sku = 'SKU-LOG-9921' AND bodega_id = 1;
+WHERE sku = 'SKU-MED-8810' AND bodega_id = 1;
 
-INSERT INTO kardex_movimientos (sku, bodega_id, cantidad, tipo, metodo)
-VALUES ('SKU-LOG-9921', 1, 20, 'EGRESO', 'PROMEDIO_PONDERADO');
 COMMIT;`
+        },
+        svivaweb: {
+            tag: 'React · TS · Vite · Three.js · Scrollytelling',
+            title: 'SVIVA Web — Showcase Inmersivo & Landing de Descargas',
+            description: 'Sitio web oficial y plataforma de distribución de alto impacto diseñada para la presentación del ejecutable de videovigilancia SVIVA. Desarrollada con rigurosos estándares Awwwards: scrollytelling cinemático, animaciones de alto rendimiento con Three.js y React, microinteracciones fluidas y canal de descarga seguro del instalador (.exe). Demuestra la capacidad de VANTA Studio para transformar software técnico en una experiencia de marca envolvente.',
+            metrics: ['🎬 VIDEO DEMO EN VIVO', '🚀 SCROLLYTELLING FLUIDO', '⚡ 100/100 LIGHTHOUSE', '📦 DESCARGA INSTALADOR EXE'],
+            pipeline: ['🌐 Visitante Web', '→', '🎬 Scrollytelling Cinemático', '→', '⚡ React + Three.js SPA', '→', '📦 Descarga Instalador EXE'],
+            tech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Three.js', 'GSAP ScrollTrigger', 'Showcase Web'],
+            url: '#contact',
+            youtubeId: 'RCy3nJT36fs',
+            videoUrl: 'https://www.youtube.com/embed/RCy3nJT36fs',
+            screenshots: [
+                { src: 'img/sviva/Dashboard.png', caption: 'Showcase del Sistema en la Web' },
+                { src: 'img/sviva/Analitica.png', caption: 'Vista Previa de Analítica Web' }
+            ],
+            code: `// Descarga de Ejecutable e Interfaz React TS
+export const DownloadButton: React.FC = () => {
+    return (
+        <button onClick={() => window.location.href = '/downloads/sviva_installer.exe'}>
+            Descargar SVIVA.exe
+        </button>
+    );
+};`
         },
         aura: {
             tag: 'FastAPI · Biometría · WebAuthn · Seguridad Local',
@@ -989,26 +1012,33 @@ def consulta_medica_historica(pregunta: str):
     soup = BeautifulSoup(response.text, "html.parser")
     return soup.get_text()`
         },
-        svivaweb: {
-            tag: 'React · TS · Vite · Tailwind · Three.js Showcase',
-            title: 'SVIVA Web — Showcase & Descargas',
-            description: 'Sitio web oficial diseñado para promocionar y exhibir nuestro proyecto insignia: SVIVA. Es una landing page de alto impacto que aloja la descarga directa del instalador ejecutable (.exe), integrando componentes en React, animaciones en Three.js y guías interactivas.',
-            metrics: ['🚀 VITE + TS', '⚡ 100/100 LIGHTHOUSE', '🎨 THREE.JS + GSAP', '📦 DOWNLOAD EXE'],
-            pipeline: ['🌐 Web Visitor', '→', '🎨 WebGL Hero', '→', '⚡ React SPA Engine', '→', '📦 Executable Download'],
-            tech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Three.js'],
+        panafresco: {
+            tag: 'React · Node.js · Express · Carrito Dinámico · Delivery',
+            title: 'Pana Fresco — E-commerce & Plataforma de Delivery',
+            description: 'Solución integral de comercio electrónico y gestión de pedidos diseñada para panadería, pastelería y despachos de gastronomía artesanal. Incluye catálogo interactivo con filtrado de productos por categoría, carrito de compras dinámico en tiempo real, cálculo automatizado de rutas y tarifas de delivery por zona, y módulo administrativo para la recepción y control de órdenes en cocina.',
+            metrics: ['🥖 E-COMMERCE LIVE', '⚡ CARRITO DINÁMICO', '🛵 CÁLCULO DE RUTAS', '📱 100% RESPONSIVE'],
+            pipeline: ['🛒 Carrito de Compras Dinámico', '→', '⚡ Express Async API', '→', '🛵 Cálculo Tarifa Delivery', '→', '👨‍🍳 Despacho & Confirmación'],
+            tech: ['React', 'Node.js', 'Express', 'Tailwind CSS', 'PostgreSQL / SQLite', 'APIs Transaccionales'],
             url: '#contact',
             screenshots: [
-                { src: 'img/sviva/Dashboard.png', caption: 'Showcase del Sistema en la Web' },
-                { src: 'img/sviva/Analitica.png', caption: 'Vista Previa de Analítica Web' }
+                { src: 'img/pana-fresco.jpeg', caption: 'Plataforma Digital de Pedidos Pana Fresco' }
             ],
-            code: `// Descarga de Ejecutable e Interfaz React TS
-export const DownloadButton: React.FC = () => {
-    return (
-        <button onClick={() => window.location.href = '/downloads/sviva_installer.exe'}>
-            Descargar SVIVA.exe
-        </button>
-    );
-};`
+            code: `// API de Cálculo de Ruta y Tarifa de Delivery
+import express from 'express';
+const router = express.Router();
+
+router.post('/api/delivery/cotizar', (req, res) => {
+    const { zona_id, total_carrito } = req.body;
+    const tarifas = { "norte": 2.50, "sur": 3.00, "este": 2.00, "oeste": 3.50 };
+    const costo_envio = tarifas[zona_id] || 3.00;
+    const envio_gratis = total_carrito >= 30.00;
+    
+    res.json({
+        costo_envio: envio_gratis ? 0.00 : costo_envio,
+        envio_gratis: envio_gratis,
+        tiempo_estimado: "30 - 45 min"
+    });
+});`
         }
     };
 
@@ -1531,6 +1561,7 @@ export const DownloadButton: React.FC = () => {
     }
 
     function openModal(projectKey) {
+        if (projectKey === 'cerdiv') projectKey = 'iuta';
         const data = PROJECT_DATA[projectKey];
         if (!data) return;
 
@@ -1563,11 +1594,12 @@ export const DownloadButton: React.FC = () => {
             }
         }
 
-        // Activar pestaña de Capturas Reales (Carrusel Automático) por defecto
+        // Activar pestaña de Capturas Reales / Video por defecto
         const defaultTabBtn = document.querySelector('.modal-tab-btn[data-tab="screenshots"]');
         if (defaultTabBtn) {
             document.querySelectorAll('.modal-tab-btn').forEach(b => b.classList.remove('active'));
             defaultTabBtn.classList.add('active');
+            defaultTabBtn.innerHTML = data.youtubeId ? '<i class="fab fa-youtube"></i> Video Demo' : '<i class="fas fa-desktop"></i> Capturas Reales';
         }
         const canvasContainer = document.getElementById('modal-3d-canvas-container');
         const canvasHint = document.querySelector('.canvas-3d-hint');
@@ -1576,8 +1608,51 @@ export const DownloadButton: React.FC = () => {
         if (canvasHint) canvasHint.classList.add('tab-hidden');
         if (galleryContainer) galleryContainer.classList.remove('tab-hidden');
 
-        // Inicializar el carrusel automático con las fotos del proyecto
-        initModalCarousel(data.screenshots, data.title);
+        const grid = document.getElementById('modalGalleryGrid');
+        if (data.youtubeId) {
+            // Reproductor HD de YouTube para SVIVA Web y proyectos con video
+            stopModalCarousel();
+            if (grid) {
+                grid.innerHTML = `
+                    <div class="modal-video-stage">
+                        <div class="modal-video-frame">
+                            <iframe 
+                                id="modalYoutubeIframe"
+                                src="https://www.youtube-nocookie.com/embed/${data.youtubeId}?autoplay=1&mute=0&rel=0&modestbranding=1" 
+                                title="${data.title}" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="modal-video-info">
+                            <span class="mc-slide-badge"><i class="fab fa-youtube"></i> DEMO EN VIVO // SCROLLYTELLING SHOWCASE</span>
+                            <span class="mc-zoom-hint"><i class="fas fa-play-circle"></i> REPRODUCCIÓN FULL HD</span>
+                        </div>
+                        ${data.screenshots && data.screenshots.length > 0 ? `
+                            <div class="mc-thumbnails" style="margin-top: 6px;">
+                                ${data.screenshots.map((s, i) => `
+                                    <button class="mc-thumb" data-index="${i}" type="button" title="Ver captura ${i + 1}">
+                                        <img src="${typeof s === 'string' ? s : s.src}" alt="Miniatura ${i + 1}">
+                                    </button>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+
+                grid.querySelectorAll('.mc-thumb').forEach(th => {
+                    th.addEventListener('click', () => {
+                        const idx = parseInt(th.dataset.index, 10);
+                        const s = data.screenshots[idx];
+                        const src = typeof s === 'string' ? s : s.src;
+                        if (typeof openFullscreen === 'function') openFullscreen(src);
+                    });
+                });
+            }
+        } else {
+            // Inicializar el carrusel automático con las fotos del proyecto
+            initModalCarousel(data.screenshots, data.title);
+        }
 
         // Inyectar y resaltar código fuente
         const codeSnippetEl = document.getElementById('modalCodeSnippet');
@@ -1609,9 +1684,14 @@ export const DownloadButton: React.FC = () => {
         }, 800);
     }
     window.openProjectModal = openModal;
+    window.closeProjectModal = closeModal;
 
     function closeModal() {
         stopModalCarousel();
+        // Detener de inmediato cualquier video de YouTube activo
+        const grid = document.getElementById('modalGalleryGrid');
+        if (grid) grid.innerHTML = '';
+
         modalOverlay.classList.remove('modal-open');
         document.body.style.overflow = '';
         
@@ -1641,6 +1721,14 @@ export const DownloadButton: React.FC = () => {
                 closeAllCards();
                 if (!isActive) card.classList.add('card-active');
             }
+        });
+    });
+
+    // Attach clicks to Works Archive rows (.wa-row) and any .info-btn
+    document.querySelectorAll('.wa-row[data-info]').forEach(row => {
+        row.addEventListener('click', (e) => {
+            const key = row.getAttribute('data-info');
+            if (key) openModal(key);
         });
     });
 

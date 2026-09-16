@@ -3718,8 +3718,8 @@
     gap: 0 2rem;
     padding: 1.5rem 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    cursor: default;
-    transition: border-color 0.25s ease;
+    cursor: pointer;
+    transition: border-color 0.25s ease, background 0.25s ease;
     will-change: transform, opacity;
 }
 
@@ -3728,11 +3728,13 @@
 }
 
 .wa-row:hover {
-    border-bottom-color: rgba(255, 255, 255, 0.22);
+    border-bottom-color: rgba(17, 212, 131, 0.3);
+    background: rgba(255, 255, 255, 0.015);
 }
 
 .wa-row:hover .wa-row-name {
     transform: translateX(6px);
+    color: #11D483;
 }
 
 /* Year column */
@@ -3755,7 +3757,7 @@
     font-weight: 600;
     font-size: clamp(1rem, 1.3vw, 1.25rem);
     color: #FFFFFF;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
 }
 
 .wa-row-category {
@@ -3776,25 +3778,29 @@
 
 /* CTA column */
 .wa-row-cta {
+    display: inline-block;
     font-family: 'Space Mono', monospace;
     font-size: 0.65rem;
     letter-spacing: 0.08em;
     color: #11D483;
+    background: rgba(17, 212, 131, 0.08);
+    border: 1px solid rgba(17, 212, 131, 0.25);
+    padding: 5px 12px;
+    border-radius: 100px;
     text-decoration: none;
-    text-align: right;
+    text-align: center;
     white-space: nowrap;
-    transition: color 0.2s ease, letter-spacing 0.2s ease;
+    cursor: pointer;
+    transition: all 0.25s ease;
 }
 
+.wa-row:hover .wa-row-cta,
 .wa-row-cta:hover {
-    color: #FFFFFF;
-    letter-spacing: 0.12em;
-}
-
-.wa-row-cta.wa-cta--private {
-    color: rgba(255, 255, 255, 0.22);
-    cursor: default;
-    pointer-events: none;
+    color: #030508;
+    background: #11D483;
+    border-color: #11D483;
+    box-shadow: 0 0 12px rgba(17, 212, 131, 0.4);
+    letter-spacing: 0.10em;
 }
 
 /* Floating Cursor Preview */
