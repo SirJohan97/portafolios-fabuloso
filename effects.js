@@ -3020,6 +3020,177 @@ function initEffectsScript() {
         }
     })();
 
+    /* ============================================================
+       ACTO 02.8: I+D LAB — PROYECTOS EN PRODUCCIÓN SCROLLYTELLING
+       Cinematic Pinned Narrative: Tensión, Incógnita & Revelación 3D
+       2 Chapters: 01 BehBAN (Laboratorios Behrens) → 02 GhostSense RF
+       Powered by GSAP ScrollTrigger + scrub 1.2
+       ============================================================ */
+    (function initRDPipelineScrollytelling() {
+        function setup() {
+            const container = document.querySelector('.rd-scrolly-container');
+            const ambientCanvas = document.getElementById('rdAmbientCanvas');
+            const chapters = document.querySelectorAll('.rd-chapter');
+            const pills = document.querySelectorAll('.rd-hud-pill');
+
+            if (!container || !chapters.length) return;
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+            const chapterColors = [
+                'radial-gradient(circle 800px at 50% 50%, rgba(17, 212, 131, 0.22), rgba(3, 5, 8, 0.95) 70%, #030508 100%)', // 01 BehBAN (Behrens Emerald)
+                'radial-gradient(circle 800px at 50% 50%, rgba(0, 229, 255, 0.24), rgba(3, 5, 8, 0.95) 70%, #030508 100%)'  // 02 GhostSense (Phantom Cyan)
+            ];
+
+            let activeChapterIndex = -1;
+
+            function setActivePill(index) {
+                if (index === activeChapterIndex) return;
+                activeChapterIndex = index;
+                pills.forEach((p, i) => {
+                    p.classList.toggle('active', i === index);
+                    p.setAttribute('aria-selected', i === index ? 'true' : 'false');
+                });
+                if (ambientCanvas && chapterColors[index]) {
+                    ambientCanvas.style.background = chapterColors[index];
+                }
+            }
+
+            // HUD pills click-to-jump
+            const pillTargets = [0.12, 0.65];
+            pills.forEach((pill) => {
+                pill.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = parseInt(pill.getAttribute('data-index') || '0', 10);
+                    if (st) {
+                        const targetProgress = pillTargets[idx] !== undefined ? pillTargets[idx] : idx * 0.5;
+                        const targetY = st.start + targetProgress * (st.end - st.start);
+                        if (window.lenis) {
+                            window.lenis.scrollTo(targetY, { duration: 1.4 });
+                        } else {
+                            window.scrollTo({ top: targetY, behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+
+            // Initial setup for chapters
+            chapters.forEach((chapter, i) => {
+                const tag = chapter.querySelector('.rd-hook-tag');
+                const words = chapter.querySelectorAll('.rd-hook-word');
+                const subtitle = chapter.querySelector('.rd-hook-subtitle');
+                const showcaseWrap = chapter.querySelector('.rd-showcase-wrap');
+                const card = chapter.querySelector('.rd-showcase-card');
+
+                if (i === 0) {
+                    gsap.set(chapter, { autoAlpha: 1, zIndex: 10, pointerEvents: 'auto' });
+                    if (tag) gsap.set(tag, { opacity: 1 });
+                    if (words.length) gsap.set(words, { y: 0, opacity: 1, filter: 'blur(0px)' });
+                    if (subtitle) gsap.set(subtitle, { opacity: 1 });
+                    if (showcaseWrap) gsap.set(showcaseWrap, { autoAlpha: 0, pointerEvents: 'none' });
+                    if (card) gsap.set(card, { rotateX: 14, y: 50, scale: 0.94, transformOrigin: '50% 100%' });
+                } else {
+                    gsap.set(chapter, { autoAlpha: 0, zIndex: 5, pointerEvents: 'none' });
+                    if (tag) gsap.set(tag, { opacity: 0 });
+                    if (words.length) gsap.set(words, { y: 60, opacity: 0, filter: 'blur(4px)' });
+                    if (subtitle) gsap.set(subtitle, { opacity: 0 });
+                    if (showcaseWrap) gsap.set(showcaseWrap, { autoAlpha: 0, pointerEvents: 'none' });
+                    if (card) gsap.set(card, { rotateX: 14, y: 50, scale: 0.94, transformOrigin: '50% 100%' });
+                }
+            });
+
+            // Master Timeline with ScrollTrigger scrub
+            const masterTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+            function buildRDChapter(chapter, isFirst, enterLabel, revealLabel, exitLabel) {
+                const tag = chapter.querySelector('.rd-hook-tag');
+                const words = chapter.querySelectorAll('.rd-hook-word');
+                const subtitle = chapter.querySelector('.rd-hook-subtitle');
+                const showcaseWrap = chapter.querySelector('.rd-showcase-wrap');
+                const card = chapter.querySelector('.rd-showcase-card');
+
+                // 1. ENTER / HOLD INCOGNITA
+                if (isFirst) {
+                    // Chapter 01 starts visible: hold hook prominently
+                    masterTl.to({}, { duration: 0.4 });
+                } else {
+                    masterTl.to(chapter, { autoAlpha: 1, zIndex: 10, pointerEvents: 'auto', duration: 0.05 }, enterLabel);
+                    if (tag) masterTl.to(tag, { opacity: 1, duration: 0.2 }, enterLabel);
+                    if (words.length) {
+                        masterTl.to(words, {
+                            y: 0, opacity: 1, filter: 'blur(0px)',
+                            stagger: 0.06, duration: 0.45, ease: 'power4.out'
+                        }, `${enterLabel}+=0.05`);
+                    }
+                    if (subtitle) masterTl.to(subtitle, { opacity: 1, duration: 0.3 }, `${enterLabel}+=0.25`);
+                    masterTl.to({}, { duration: 0.4 }); // Hold mystery on screen
+                }
+
+                // 2. REVEAL SHOWCASE (Mystery lifts up and 3D card sweeps in)
+                if (tag) masterTl.to(tag, { opacity: 0, duration: 0.15 }, revealLabel);
+                if (words.length) {
+                    masterTl.to(words, {
+                        y: -45, opacity: 0, filter: 'blur(6px)',
+                        stagger: { each: 0.04, from: 'end' }, duration: 0.28
+                    }, revealLabel);
+                }
+                if (subtitle) masterTl.to(subtitle, { opacity: 0, duration: 0.2 }, revealLabel);
+
+                masterTl.set(chapter, { pointerEvents: 'auto' }, revealLabel);
+
+                if (showcaseWrap) {
+                    masterTl.to(showcaseWrap, { autoAlpha: 1, pointerEvents: 'auto', duration: 0.35 }, `${revealLabel}+=0.1`);
+                }
+                if (card) {
+                    masterTl.to(card, {
+                        rotateX: 0, y: 0, scale: 1,
+                        duration: 0.6, ease: 'power3.out'
+                    }, `${revealLabel}+=0.1`);
+                }
+
+                // Generous dwell time on the showcase
+                masterTl.to({}, { duration: 0.65 });
+
+                // 3. EXIT CHAPTER (Fade out and exit)
+                if (exitLabel) {
+                    if (card) masterTl.to(card, { y: -35, rotateX: -8, scale: 0.95, duration: 0.25 }, exitLabel);
+                    if (showcaseWrap) masterTl.to(showcaseWrap, { autoAlpha: 0, pointerEvents: 'none', duration: 0.2 }, exitLabel);
+                    masterTl.to(chapter, { autoAlpha: 0, pointerEvents: 'none', duration: 0.1 }, `${exitLabel}+=0.15`);
+                }
+            }
+
+            // Build Chapter 01 (BehBAN) and Chapter 02 (GhostSense RF)
+            buildRDChapter(chapters[0], true, null, 'rd0_reveal', 'rd0_exit');
+            if (chapters[1]) buildRDChapter(chapters[1], false, 'rd1_enter', 'rd1_reveal', null);
+
+            // ScrollTrigger
+            const st = ScrollTrigger.create({
+                trigger: container,
+                start: 'top top',
+                end: '+=240%',
+                pin: true,
+                pinSpacing: true,
+                scrub: 1.2,
+                animation: masterTl,
+                onUpdate: (self) => {
+                    const progress = self.progress;
+                    if (progress < 0.48) {
+                        setActivePill(0);
+                    } else {
+                        setActivePill(1);
+                    }
+                }
+            });
+
+            console.log('[VANTA] R&D Pipeline Scrollytelling initialized — 2 chapters, GSAP pin OK');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setup);
+        } else {
+            setup();
+        }
+    })();
+
 }
 
 if (document.readyState === 'loading') {

@@ -3846,3 +3846,298 @@
 }
 
 
+
+
+/* =============================================================
+   ACTO 02.8: I+D LAB — SCROLLYTELLING CINEMATOGRÁFICO EN 2 ACTOS
+   GSAP ScrollTrigger Pinned Narrative: Tensión, Misterio & Revelación
+   ============================================================= */
+
+.rd-scrolly-container {
+    position: relative;
+    width: 100%;
+    height: 280vh;
+    background: #030508;
+    color: #FFFFFF;
+    overflow: visible;
+}
+
+/* Ambient Radial Canvas (Transitions dynamically between chapters) */
+.rd-ambient-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: radial-gradient(circle 800px at 50% 50%, rgba(17, 212, 131, 0.22), rgba(3, 5, 8, 0.95) 70%, #030508 100%);
+    transition: background 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Pinned 100vh Viewport */
+.rd-pinned-stage {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    padding-top: 72px; /* Clear fixed navbar */
+    box-sizing: border-box;
+    overflow: hidden;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HUD Top Bar */
+.rd-hud-top {
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0.85rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 20;
+    flex-shrink: 0;
+}
+
+.rd-hud-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rd-hud-meta .hud-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.rd-hud-pills {
+    display: flex;
+    gap: 8px;
+}
+
+.rd-hud-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rd-hud-pill .rd-pill-idx {
+    font-weight: 700;
+    opacity: 0.6;
+}
+
+.rd-hud-pill.active {
+    background: rgba(17, 212, 131, 0.1);
+    border-color: #11D483;
+    color: #11D483;
+    box-shadow: 0 0 14px rgba(17, 212, 131, 0.25);
+}
+
+.rd-hud-pill[data-index="1"].active {
+    background: rgba(0, 229, 255, 0.1);
+    border-color: #00E5FF;
+    color: #00E5FF;
+    box-shadow: 0 0 14px rgba(0, 229, 255, 0.25);
+}
+
+.rd-hud-status .hud-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Chapter Container */
+.rd-chapter {
+    position: absolute;
+    top: calc(72px + 48px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 1rem 2.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 5;
+}
+
+.rd-chapter.active {
+    pointer-events: auto;
+    visibility: visible;
+}
+
+/* Phase 1: Incógnita / Mystery Hook */
+.rd-hook-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    z-index: 10;
+    will-change: transform, opacity, filter;
+}
+
+.rd-hook-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    color: #11D483;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+}
+
+.rd-hook-tag--cyan {
+    color: #00E5FF;
+}
+
+.rd-hook-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2rem, 4.4vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.12;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin-bottom: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.rd-hook-word {
+    display: inline-block;
+    will-change: transform, opacity, filter;
+}
+
+.rd-hook-subtitle {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 720px;
+    font-weight: 400;
+}
+
+/* Phase 2: Showcase Masterpiece Card */
+.rd-showcase-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 12;
+    pointer-events: none;
+    opacity: 0;
+    padding: 1rem 1.5rem;
+    will-change: transform, opacity;
+}
+
+.rd-showcase-card {
+    width: 100%;
+    max-width: 1160px;
+    background: rgba(9, 13, 20, 0.86);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    padding: 2.2rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 2.5rem;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(17, 212, 131, 0.1);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    pointer-events: auto;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.rd-showcase-card--wifisense {
+    border-color: rgba(0, 229, 255, 0.18);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(0, 229, 255, 0.1);
+}
+
+.rd-showcase-visual {
+    background: #05070A;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    height: 320px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rd-showcase-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.2rem;
+}
+
+.rd-showcase-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.2;
+    margin: 0.4rem 0 0.8rem;
+}
+
+.rd-showcase-desc {
+    font-size: 0.88rem;
+    line-height: 1.62;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.rd-showcase-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Responsive Rules */
+@media (max-width: 960px) {
+    .rd-scrolly-container { height: 360vh; }
+    .rd-showcase-card {
+        grid-template-columns: 1fr;
+        padding: 1.6rem;
+        gap: 1.5rem;
+        max-height: 82vh;
+        overflow-y: auto;
+    }
+    .rd-showcase-visual { height: 220px; }
+    .rd-hud-meta, .rd-hud-status { display: none; }
+    .rd-hud-top { justify-content: center; }
+    .rd-hook-headline { font-size: 2rem; }
+    .rd-hook-subtitle { font-size: 1.05rem; }
+}

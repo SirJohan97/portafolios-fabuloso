@@ -473,155 +473,185 @@
         </div>
     </section>
 
-    <!-- ===== ACTO 02.8: I+D LAB — PROYECTOS EN PRODUCCIÓN & PRÓXIMOS LANZAMIENTOS ===== -->
-    <section class="rd-pipeline-section" id="pipeline" aria-label="Proyectos en Producción e I+D de VANTA Studio">
-        <div class="rd-inner">
-            <div class="rd-header">
-                <div class="rd-header-badge">
+    <!-- ===== ACTO 02.8: I+D LAB — SCROLLYTELLING CINEMATOGRÁFICO DE PROYECTOS EN PRODUCCIÓN ===== -->
+    <section class="rd-scrolly-container" id="pipeline" aria-label="Proyectos en Producción e I+D de VANTA Studio">
+        <!-- Lienzo atmosférico con transición cromática reactiva -->
+        <div class="rd-ambient-canvas" id="rdAmbientCanvas" aria-hidden="true"></div>
+
+        <!-- Pinned Stage Wrapper (100vh fijado durante el scroll narrativo) -->
+        <div class="rd-pinned-stage">
+            
+            <!-- Barra HUD Superior de Navegación R&D -->
+            <div class="rd-hud-top">
+                <div class="rd-hud-meta">
                     <span class="rd-dot rd-dot--pulse"></span>
-                    <span class="hud-label">// R&amp;D LAB &bull; PIPELINE ACTIVO 2026-2027</span>
+                    <span class="hud-label">// R&amp;D PIPELINE 2026-2027 &bull; FASE ACTIVA</span>
                 </div>
-                <h2 class="rd-title font-display">
-                    <span class="reveal-word">En</span> <span class="reveal-word brand-green italic-outline">Producción</span>
-                </h2>
-                <p class="rd-subtitle">
-                    Sistemas en fase activa de laboratorio, algoritmos propietarios y despliegue inminente. La vanguardia tecnológica no se detiene.
-                </p>
-                <div class="rd-rule"></div>
+                <div class="rd-hud-pills" role="tablist" aria-label="Capítulos de proyectos en producción">
+                    <button class="rd-hud-pill active" data-index="0" role="tab" aria-selected="true">
+                        <span class="rd-pill-idx">01</span> BEHBAN BIOMETRÍA
+                    </button>
+                    <button class="rd-hud-pill" data-index="1" role="tab" aria-selected="false">
+                        <span class="rd-pill-idx">02</span> GHOSTSENSE RF
+                    </button>
+                </div>
+                <div class="rd-hud-status">
+                    <span class="hud-label">STATUS: EXPERIMENTAL_LAB</span>
+                </div>
             </div>
 
-            <div class="rd-grid">
-                <!-- TARJETA 01: AURA BioPass & Nómina -->
-                <article class="rd-card rd-card--biopass" data-info="biopass">
-                    <div class="rd-card-glow"></div>
-                    <div class="rd-card-top">
-                        <div class="rd-card-status">
-                            <span class="rd-dot rd-dot--green"></span>
-                            <span class="rd-status-txt">EN DESARROLLO &bull; 82% BUILD</span>
-                        </div>
-                        <span class="rd-card-year">[ FASE BETA // Q4 2026 ]</span>
-                    </div>
+            <!-- CAPÍTULO 01: BehBAN (Laboratorios Behrens) -->
+            <div class="rd-chapter rd-chapter--behban active" data-index="0">
+                <!-- Fase 1: Incógnita Intrigante -->
+                <div class="rd-hook-wrap">
+                    <span class="rd-hook-tag">// LABORATORIOS BEHRENS, C.A. &bull; CONTROL BIOMÉTRICO CONFIDENCIAL</span>
+                    <h2 class="rd-hook-headline">
+                        <span class="rd-hook-word">¿CÓMO COLOCAR UN REGISTRO DE ASISTENCIAS</span>
+                        <span class="rd-hook-word">AL TOPE DE LA VANGUARDIA TECNOLÓGICA</span>
+                        <span class="rd-hook-word brand-green italic-outline">Y SEGURIDAD LABORAL?</span>
+                    </h2>
+                    <p class="rd-hook-subtitle">
+                        El desafío de sustituir registros en hojas físicas y métodos vulnerables por biometría facial sin contacto, anulando el fraude y automatizando la nómina del laboratorio en tiempo real.
+                    </p>
+                </div>
 
-                    <div class="rd-card-visual" id="rd-visual-biopass">
-                        <div class="bio-scanner-hud">
-                            <!-- Retícula y marcas HUD de escaneo facial -->
-                            <div class="bio-hud-box">
-                                <span class="bio-corner bio-tl"></span>
-                                <span class="bio-corner bio-tr"></span>
-                                <span class="bio-corner bio-bl"></span>
-                                <span class="bio-corner bio-br"></span>
-                                <div class="bio-laser-line"></div>
-                                <div class="bio-face-silhouette">
-                                    <svg viewBox="0 0 100 120" class="bio-face-svg" aria-hidden="true">
-                                        <ellipse cx="50" cy="55" rx="32" ry="42" stroke="rgba(17,212,131,0.35)" stroke-width="1.5" fill="rgba(17,212,131,0.03)" stroke-dasharray="4 3"/>
-                                        <circle cx="38" cy="48" r="4" fill="#11d483"/>
-                                        <circle cx="62" cy="48" r="4" fill="#11d483"/>
-                                        <path d="M50 52 L47 65 L53 65" stroke="#11d483" stroke-width="1.5" fill="none"/>
-                                        <path d="M40 76 Q50 84 60 76" stroke="#11d483" stroke-width="1.8" fill="none"/>
-                                        <!-- Landmark points -->
-                                        <circle cx="50" cy="22" r="2" fill="#00E5FF"/>
-                                        <circle cx="28" cy="55" r="2" fill="#00E5FF"/>
-                                        <circle cx="72" cy="55" r="2" fill="#00E5FF"/>
-                                        <circle cx="50" cy="92" r="2" fill="#00E5FF"/>
-                                        <line x1="38" y1="48" x2="62" y2="48" stroke="rgba(0,229,255,0.4)" stroke-width="1" stroke-dasharray="2 2"/>
-                                        <line x1="50" y1="22" x2="50" y2="92" stroke="rgba(0,229,255,0.3)" stroke-width="1" stroke-dasharray="2 2"/>
-                                    </svg>
+                <!-- Fase 2: Gran Revelación Cinemática de BehBAN -->
+                <div class="rd-showcase-wrap">
+                    <div class="rd-showcase-card rd-showcase-card--behban">
+                        <!-- Columna Izquierda: Escáner Biométrico HUD -->
+                        <div class="rd-showcase-visual">
+                            <div class="bio-scanner-hud">
+                                <div class="bio-hud-box">
+                                    <span class="bio-corner bio-tl"></span>
+                                    <span class="bio-corner bio-tr"></span>
+                                    <span class="bio-corner bio-bl"></span>
+                                    <span class="bio-corner bio-br"></span>
+                                    <div class="bio-laser-line"></div>
+                                    <div class="bio-face-silhouette">
+                                        <svg viewBox="0 0 100 120" class="bio-face-svg" aria-hidden="true">
+                                            <ellipse cx="50" cy="55" rx="32" ry="42" stroke="rgba(17,212,131,0.4)" stroke-width="1.5" fill="rgba(17,212,131,0.04)" stroke-dasharray="4 3"/>
+                                            <circle cx="38" cy="48" r="4" fill="#11d483"/>
+                                            <circle cx="62" cy="48" r="4" fill="#11d483"/>
+                                            <path d="M50 52 L47 65 L53 65" stroke="#11d483" stroke-width="1.5" fill="none"/>
+                                            <path d="M40 76 Q50 84 60 76" stroke="#11d483" stroke-width="1.8" fill="none"/>
+                                            <circle cx="50" cy="22" r="2" fill="#00E5FF"/>
+                                            <circle cx="28" cy="55" r="2" fill="#00E5FF"/>
+                                            <circle cx="72" cy="55" r="2" fill="#00E5FF"/>
+                                            <circle cx="50" cy="92" r="2" fill="#00E5FF"/>
+                                            <line x1="38" y1="48" x2="62" y2="48" stroke="rgba(0,229,255,0.4)" stroke-width="1" stroke-dasharray="2 2"/>
+                                            <line x1="50" y1="22" x2="50" y2="92" stroke="rgba(0,229,255,0.3)" stroke-width="1" stroke-dasharray="2 2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="bio-badge-verified">
+                                        <i class="fas fa-shield-alt"></i> LIVENESS: VERIFIED 99.4%
+                                    </div>
                                 </div>
-                                <div class="bio-badge-verified">
-                                    <i class="fas fa-shield-alt"></i> LIVENESS: VERIFIED 99.4%
-                                </div>
-                            </div>
-                            <div class="bio-telemetry-hud">
-                                <span>PÓRTICO_ID: BIO-01</span>
-                                <span>LATENCY: 240ms</span>
-                                <span>ANTI-SPOOF: ACTIVE</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="rd-card-body">
-                        <span class="rd-card-tag">BIOMETRÍA FACIAL &bull; KIOSKO SIN CONTACTO &bull; NÓMINA EN TIEMPO REAL</span>
-                        <h3 class="rd-card-title">AURA BioPass &amp; Nómina Automatizada</h3>
-                        <p class="rd-card-desc">
-                            Sistema integral para control de asistencia de personal mediante reconocimiento facial con validación de vida (anti-spoofing en &lt;300ms). Se enlaza en tiempo real a un panel administrativo que audita retardos, turnos rotativos, horas extras y genera la prenómina automáticamente lista para liquidación contable.
-                        </p>
-                        <div class="rd-card-pills">
-                            <span class="rd-pill">⚡ &lt;300ms Matching</span>
-                            <span class="rd-pill">🛡️ Anti-Spoofing</span>
-                            <span class="rd-pill">📊 Liquidación Nómina</span>
-                            <span class="rd-pill">🏢 Modo Kiosko Multi-Sede</span>
-                        </div>
-                    </div>
-
-                    <div class="rd-card-footer">
-                        <div class="rd-progress-wrap">
-                            <span class="rd-progress-lbl">PROGRESO DE DESARROLLO</span>
-                            <div class="rd-progress-track">
-                                <div class="rd-progress-bar" style="width: 82%;"></div>
-                            </div>
-                        </div>
-                        <button class="rd-card-cta info-btn" data-info="biopass" aria-label="Ver Ficha Técnica de AURA BioPass">
-                            FICHA TÉCNICA I+D ↗
-                        </button>
-                    </div>
-                </article>
-
-                <!-- TARJETA 02: GhostSense RF — Wi-Fi Sensing -->
-                <article class="rd-card rd-card--wifisense" data-info="wifisense">
-                    <div class="rd-card-glow"></div>
-                    <div class="rd-card-top">
-                        <div class="rd-card-status">
-                            <span class="rd-dot rd-dot--cyan"></span>
-                            <span class="rd-status-txt">R&amp;D EXPERIMENTAL &bull; 68% LAB</span>
-                        </div>
-                        <span class="rd-card-year">[ FASE LAB // Q1 2027 ]</span>
-                    </div>
-
-                    <div class="rd-card-visual" id="rd-visual-wifisense">
-                        <div class="rf-radar-hud">
-                            <!-- Canvas de Ondas RF Animadas -->
-                            <canvas id="canvas-rf-waves" width="480" height="200"></canvas>
-                            <div class="rf-hud-overlay">
-                                <div class="rf-badge-detection">
-                                    <span class="rf-beacon-ping"></span>
-                                    <span>HUMAN PRESENCE DETECTED // 5.2 GHz CSI</span>
-                                </div>
-                                <div class="rf-telemetry-hud">
-                                    <span>FREQ: 5.180 GHz</span>
-                                    <span>SUBCARRIERS: 64 OFDM</span>
-                                    <span>ZERO-CAM PRIVACY: 100%</span>
+                                <div class="bio-telemetry-hud">
+                                    <span>BEHRENS_ID: EMP-0412</span>
+                                    <span>LATENCY: 240ms</span>
+                                    <span>PÓRTICO_PLANTA: ACTIVO</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="rd-card-body">
-                        <span class="rd-card-tag">WI-FI SENSING &bull; CSI RADIO INTERFEROMETRÍA &bull; ZERO-CAMERA PRIVACY</span>
-                        <h3 class="rd-card-title">GhostSense RF — Wi-Fi Sensing sin Cámaras</h3>
-                        <p class="rd-card-desc">
-                            Revolución en detección y conteo de personas sin cámaras ni sensores invasivos. Analiza las micro-perturbaciones producidas por cuerpos humanos en las ondas de radio Wi-Fi (Channel State Information). Atraviesa paredes, opera en total oscuridad y preserva la privacidad al 100% con hardware comercial accesible.
-                        </p>
-                        <div class="rd-card-pills">
-                            <span class="rd-pill">📡 Zero-Camera Privacy</span>
-                            <span class="rd-pill">🧱 Visión a través de Paredes</span>
-                            <span class="rd-pill">📶 Radiofrecuencia CSI</span>
-                            <span class="rd-pill">💡 Hardware Accesible (ESP32 / Mesh)</span>
-                        </div>
-                    </div>
-
-                    <div class="rd-card-footer">
-                        <div class="rd-progress-wrap">
-                            <span class="rd-progress-lbl">ESTADO DE INVESTIGACIÓN (R&amp;D)</span>
-                            <div class="rd-progress-track">
-                                <div class="rd-progress-bar rd-progress-bar--cyan" style="width: 68%;"></div>
+                        <!-- Columna Derecha: Ficha Técnica y Controles -->
+                        <div class="rd-showcase-content">
+                            <div class="rd-content-header">
+                                <span class="rd-card-tag">BIOMETRÍA FACIAL &bull; KIOSKO SIN CONTACTO &bull; EXCLUSIVO LABORATORIOS BEHRENS</span>
+                                <h3 class="rd-showcase-title">BehBAN: Asistencia Biométrica y nómina para Behrens</h3>
+                                <p class="rd-showcase-desc">
+                                    Sistema integral de control de asistencia de personal para Laboratorios Behrens mediante reconocimiento facial con validación de vida activa (anti-spoofing en &lt;300ms). Elimina las planillas físicas y los relojes dactilares. Su panel administrativo web concilia retardos, turnos rotativos, permisos y horas extras, generando la prenómina calculada para liquidación contable y SAP.
+                                </p>
+                            </div>
+                            <div class="rd-card-pills">
+                                <span class="rd-pill">⚡ &lt;300ms Matching</span>
+                                <span class="rd-pill">🛡️ Liveness Activo</span>
+                                <span class="rd-pill">🏢 Exclusivo Behrens</span>
+                                <span class="rd-pill">📊 Prenómina SAP</span>
+                            </div>
+                            <div class="rd-showcase-footer">
+                                <div class="rd-progress-wrap">
+                                    <span class="rd-progress-lbl">PROGRESO DE DESARROLLO &bull; 82% BUILD</span>
+                                    <div class="rd-progress-track">
+                                        <div class="rd-progress-bar" style="width: 82%;"></div>
+                                    </div>
+                                </div>
+                                <button class="rd-card-cta info-btn" data-info="behban" aria-label="Ver Ficha Técnica de BehBAN">
+                                    FICHA TÉCNICA BEHBAN ↗
+                                </button>
                             </div>
                         </div>
-                        <button class="rd-card-cta info-btn" data-info="wifisense" aria-label="Ver Ficha Técnica de GhostSense RF">
-                            FICHA TÉCNICA I+D ↗
-                        </button>
                     </div>
-                </article>
+                </div>
             </div>
+
+            <!-- CAPÍTULO 02: GhostSense RF (Wi-Fi Sensing) -->
+            <div class="rd-chapter rd-chapter--wifisense" data-index="1">
+                <!-- Fase 1: Incógnita Intrigante -->
+                <div class="rd-hook-wrap">
+                    <span class="rd-hook-tag rd-hook-tag--cyan">// R&amp;D SECRET LAB &bull; ONDAS ELECTROMAGNÉTICAS INVISIBLES</span>
+                    <h2 class="rd-hook-headline">
+                        <span class="rd-hook-word">¿Y SI PUDIERAS VER</span>
+                        <span class="rd-hook-word">A TRAVÉS DE LAS PAREDES</span>
+                        <span class="rd-hook-word brand-cyan italic-outline">SIN INSTALAR UNA SOLA CÁMARA?</span>
+                    </h2>
+                    <p class="rd-hook-subtitle">
+                        Supervisar presencia, movimiento y respiración humana en espacios críticos sin invasión óptica. La respuesta no está en lentes de vigilancia, sino en las perturbaciones invisibles de las ondas Wi-Fi.
+                    </p>
+                </div>
+
+                <!-- Fase 2: Gran Revelación Cinemática de GhostSense RF -->
+                <div class="rd-showcase-wrap">
+                    <div class="rd-showcase-card rd-showcase-card--wifisense">
+                        <!-- Columna Izquierda: Osciloscopio RF en Vivo -->
+                        <div class="rd-showcase-visual">
+                            <div class="rf-radar-hud">
+                                <canvas id="canvas-rf-waves" width="560" height="240"></canvas>
+                                <div class="rf-hud-overlay">
+                                    <div class="rf-badge-detection">
+                                        <span class="rf-beacon-ping"></span>
+                                        <span>HUMAN PRESENCE DETECTED // 5.2 GHz CSI</span>
+                                    </div>
+                                    <div class="rf-telemetry-hud">
+                                        <span>FREQ: 5.180 GHz</span>
+                                        <span>SUBCARRIERS: 64 OFDM</span>
+                                        <span>ZERO-CAM PRIVACY: 100%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Columna Derecha: Ficha Técnica y Controles -->
+                        <div class="rd-showcase-content">
+                            <div class="rd-content-header">
+                                <span class="rd-card-tag rd-card-tag--cyan">WI-FI SENSING &bull; CSI RADIO INTERFEROMETRÍA &bull; ZERO-CAMERA PRIVACY</span>
+                                <h3 class="rd-showcase-title">GhostSense RF — Wi-Fi Sensing sin Cámaras</h3>
+                                <p class="rd-showcase-desc">
+                                    Revolución en detección y conteo de personas sin cámaras ni sensores invasivos. Analiza las micro-perturbaciones producidas por cuerpos humanos en las ondas de radio Wi-Fi (Channel State Information). Atraviesa paredes, opera en total oscuridad y preserva la privacidad al 100% con hardware comercial accesible (ESP32/commodity mesh).
+                                </p>
+                            </div>
+                            <div class="rd-card-pills">
+                                <span class="rd-pill">📡 Zero-Camera Privacy</span>
+                                <span class="rd-pill">🧱 A través de Paredes</span>
+                                <span class="rd-pill">📶 Radiofrecuencia CSI</span>
+                                <span class="rd-pill">💡 Hardware Accesible (ESP32)</span>
+                            </div>
+                            <div class="rd-showcase-footer">
+                                <div class="rd-progress-wrap">
+                                    <span class="rd-progress-lbl">ESTADO DE INVESTIGACIÓN &bull; 68% LAB</span>
+                                    <div class="rd-progress-track">
+                                        <div class="rd-progress-bar rd-progress-bar--cyan" style="width: 68%;"></div>
+                                    </div>
+                                </div>
+                                <button class="rd-card-cta info-btn" data-info="wifisense" aria-label="Ver Ficha Técnica de GhostSense RF">
+                                    FICHA TÉCNICA GHOSTSENSE ↗
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 

@@ -1075,19 +1075,19 @@ router.post('/api/delivery/cotizar', (req, res) => {
     });
 });`
         },
-        biopass: {
-            tag: 'Python · FastAPI · OpenCV · WebAuthn · Motor de Nómina · En Desarrollo',
-            title: 'AURA BioPass — Asistencia Facial & Nómina Automatizada',
-            description: 'Solución corporativa de control de acceso y registro de jornada laboral mediante reconocimiento facial de alta precisión con validación de vida activa (anti-spoofing en menos de 300 ms). Concebido para reemplazar los relojes biométricos dactilares y eliminar por completo el fraude de suplantación (buddy punching). Los terminales operan en modo kiosko autónomo para tablets o pantallas de recepción, sincronizando cada fichaje en tiempo real con un potente panel administrativo web. El motor procesa automáticamente la jornada neta, deducciones por retardos, turnos rotativos, horas extras diurnas y nocturnas, generando la prenómina calculada lista para exportar a Excel, SAP y sistemas contables.',
-            metrics: ['⚡ <300MS RECONOCIMIENTO', '🛡️ ANTI-SPOOFING LIVENESS', '📊 NÓMINA EN TIEMPO REAL', '🏢 MODO KIOSKO MULTI-SEDE'],
-            pipeline: ['👤 Captura Facial en Kiosko', '→', '🧠 Detección 68 Landmarks & Liveness', '→', '⚡ Matching Vectorial Biométrico', '→', '📅 Conciliación de Turnos & Retardos', '→', '💰 Liquidación de Nómina & Horas Extras'],
-            tech: ['Python / FastAPI', 'OpenCV & InsightFace', 'React / TypeScript', 'PostgreSQL', 'Algoritmos Anti-Spoofing', 'Cálculo de Nómina'],
+        behban: {
+            tag: 'Python · FastAPI · OpenCV · WebAuthn · Motor de Nómina · Exclusivo Behrens',
+            title: 'BehBAN — Asistencia Biométrica y Nómina para Behrens',
+            description: 'Solución corporativa integral de control de acceso y registro de jornada laboral desarrollada exclusivamente para el personal de planta y administración de Laboratorios Behrens, C.A. Reemplaza por completo el registro manual en hojas físicas y los relojes dactilares mediante reconocimiento facial de alta precisión con validación de vida activa (anti-spoofing en menos de 300 ms) para erradicar cualquier intento de suplantación. Su consola web centralizada concilia automáticamente retardos, turnos rotativos, permisos y horas extras diurnas/nocturnas, generando la prenómina calculada lista para su liquidación contable y sincronización con SAP ERP.',
+            metrics: ['⚡ <300MS RECONOCIMIENTO', '🛡️ ANTI-SPOOFING LIVENESS', '🏢 EXCLUSIVO BEHRENS', '📊 PRENÓMINA SAP'],
+            pipeline: ['👤 Captura Facial en Pórtico Behrens', '→', '🧠 Detección 68 Landmarks & Liveness', '→', '⚡ Matching Vectorial Biométrico', '→', '📅 Conciliación de Turnos & Retardos', '→', '💰 Liquidación Nómina & SAP ERP'],
+            tech: ['Python / FastAPI', 'OpenCV & InsightFace', 'React / TypeScript', 'PostgreSQL', 'Algoritmos Anti-Spoofing', 'Integración SAP ERP'],
             url: '#contact',
             screenshots: [
                 { src: 'img/auracheck/aura.jpeg', caption: 'Kiosko de Reconocimiento Facial y Verificación de Vida' },
                 { src: 'img/ventastrack/dashboard.png', caption: 'Consola Centralizada de Liquidación de Nómina y Turnos' }
             ],
-            code: `# Pipeline Biométrico de Asistencia y Liveness Check
+            code: `# Pipeline Biométrico de Asistencia y Liveness Check para Behrens
 import numpy as np
 from datetime import datetime
 
@@ -1670,7 +1670,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
     function openModal(projectKey) {
         if (projectKey === 'cerdiv') projectKey = 'iuta';
-        if (projectKey === 'facepayroll' || projectKey === 'aura-biopass') projectKey = 'biopass';
+        if (projectKey === 'biopass' || projectKey === 'facepayroll' || projectKey === 'aura-biopass') projectKey = 'behban';
         if (projectKey === 'wifi-sense' || projectKey === 'ghostsense') projectKey = 'wifisense';
         const data = PROJECT_DATA[projectKey];
         if (!data) return;
@@ -1836,7 +1836,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
 
     // Attach clicks to R&D Pipeline cards (.rd-card)
-    document.querySelectorAll('.rd-card[data-info]').forEach(card => {
+    document.querySelectorAll('.rd-card[data-info], .rd-showcase-card[data-info]').forEach(card => {
         card.addEventListener('click', (e) => {
             // Evitar duplicar si se hizo clic directo en el botón info-btn
             if (e.target.closest('.info-btn')) return;
