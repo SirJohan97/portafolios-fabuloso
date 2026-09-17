@@ -1236,11 +1236,13 @@ function initEffectsScript() {
         const sectionObs = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
+                    // Prevent home from overwriting if user has scrolled into portfolio or beyond
+                    if (entry.target.id === 'home' && window.scrollY > 350) return;
                     const t = themes.find(th => th.id === entry.target.id);
                     if (t) window.setVantaTheme(t);
                 }
             });
-        }, { threshold: 0.02 });
+        }, { threshold: 0.08 });
 
         themes.forEach(t => {
             const el = document.getElementById(t.id);
@@ -2722,8 +2724,11 @@ function initEffectsScript() {
     /* ============================================================
        ACTO 02: THE FULLSCREEN KEYNOTE SCROLLYTELLING SHOWCASE
        Cinematic Minimalist Engine â€” SOTY Level
-       2-Phase: Kinetic Hook â†’ 3D Physical Masterpiece
-       Powered by GSAP ScrollTrigger + scrub 1.2
+    /* ============================================================
+       ACTO 02: THE FULLSCREEN KEYNOTE SCROLLYTELLING SHOWCASE
+       Cinematic Minimalist Engine — Awwwards Site of the Year Level
+       4-Layer Depth Sandwich: Numeral -> Hook -> Desktop -> Satellite Phone -> Bento
+       Powered by GSAP ScrollTrigger + silky scrub 1.2
        ============================================================ */
     (function initFullscreenKeynoteScrollytelling() {
         function setup() {
@@ -2735,11 +2740,11 @@ function initEffectsScript() {
             if (!container || !chapters.length) return;
             if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-            const chapterColors = [
-                'rgba(255, 59, 48, 0.26)',    // 01 SVIVA CORE (Red)
-                'rgba(255, 149, 0, 0.24)',    // 02 VENTASTRACK (Amber)
-                'rgba(0, 229, 255, 0.22)',    // 03 KIOSKO AZUL (Cyan)
-                'rgba(17, 212, 131, 0.24)'    // 04 CERDIV IUTA (Emerald)
+            const chapterThemes = [
+                { color: 'rgba(255, 59, 48, 0.26)',  hex: '#FF3B30', name: 'SVIVA' },
+                { color: 'rgba(255, 149, 0, 0.24)',  hex: '#FF9500', name: 'VENTASTRACK' },
+                { color: 'rgba(0, 229, 255, 0.22)',  hex: '#00E5FF', name: 'KIOSKO AZUL' },
+                { color: 'rgba(17, 212, 131, 0.24)', hex: '#11D483', name: 'CERDIV IUTA' }
             ];
 
             let activeChapterIndex = -1;
@@ -2748,8 +2753,8 @@ function initEffectsScript() {
                 if (index === activeChapterIndex) return;
                 activeChapterIndex = index;
                 pills.forEach((p, i) => { p.classList.toggle('active', i === index); });
-                if (ambientCanvas && chapterColors[index]) {
-                    ambientCanvas.style.background = `radial-gradient(circle 750px at 50% 50%, ${chapterColors[index]}, rgba(3, 5, 8, 0.95) 70%, #030508 100%)`;
+                if (ambientCanvas && chapterThemes[index]) {
+                    ambientCanvas.style.background = `radial-gradient(circle 750px at 50% 50%, ${chapterThemes[index].color}, rgba(3, 5, 8, 0.95) 70%, #030508 100%)`;
                 }
             }
 
@@ -2771,30 +2776,37 @@ function initEffectsScript() {
                 });
             });
 
-            // â”€â”€ Per-chapter: kinetic word split + 3D frame initial state â”€â”€
+            // ── Per-chapter initial setup: 4-Layer Depth Sandwich ──
             chapters.forEach((chapter, i) => {
+                const numeral = chapter.querySelector('.km-giant-numeral');
                 const words = chapter.querySelectorAll('.kh-headline-word');
                 const meta = chapter.querySelector('.kh-meta-tag');
                 const subtitle = chapter.querySelector('.kh-subtitle');
                 const frameWrap = chapter.querySelector('.km-frame-wrap');
+                const phone = chapter.querySelector('.km-floating-phone');
                 const detailsStrip = chapter.querySelector('.km-details-strip');
+                const metricCards = chapter.querySelectorAll('.km-metric-card');
 
                 if (i === 0) {
                     gsap.set(chapter, { autoAlpha: 1, zIndex: 10, pointerEvents: 'auto' });
-                    // Hook visible: words already up
+                    if (numeral) gsap.set(numeral, { autoAlpha: 0.85, scale: 1, y: 0 });
                     if (words.length) gsap.set(words, { y: 0, opacity: 1, filter: 'blur(0px)' });
                     if (meta) gsap.set(meta, { opacity: 1 });
                     if (subtitle) gsap.set(subtitle, { opacity: 1 });
-                    // Masterpiece hidden with 3D tilt
-                    if (frameWrap) gsap.set(frameWrap, { autoAlpha: 0, rotateX: 14, y: 50, scale: 0.93, transformOrigin: '50% 100%' });
+                    if (frameWrap) gsap.set(frameWrap, { autoAlpha: 0, rotateX: 14, y: 45, scale: 0.93, transformOrigin: '50% 100%' });
+                    if (phone) gsap.set(phone, { autoAlpha: 0, y: 60, scale: 0.88 });
                     if (detailsStrip) gsap.set(detailsStrip, { autoAlpha: 0, y: 20 });
+                    if (metricCards.length) gsap.set(metricCards, { autoAlpha: 0, y: 15 });
                 } else {
                     gsap.set(chapter, { autoAlpha: 0, zIndex: 5, pointerEvents: 'none' });
+                    if (numeral) gsap.set(numeral, { autoAlpha: 0, scale: 0.88, y: 30 });
                     if (words.length) gsap.set(words, { y: 70, opacity: 0, filter: 'blur(4px)' });
                     if (meta) gsap.set(meta, { opacity: 0 });
                     if (subtitle) gsap.set(subtitle, { opacity: 0 });
-                    if (frameWrap) gsap.set(frameWrap, { autoAlpha: 0, rotateX: 14, y: 50, scale: 0.93, transformOrigin: '50% 100%' });
+                    if (frameWrap) gsap.set(frameWrap, { autoAlpha: 0, rotateX: 14, y: 45, scale: 0.93, transformOrigin: '50% 100%' });
+                    if (phone) gsap.set(phone, { autoAlpha: 0, y: 60, scale: 0.88 });
                     if (detailsStrip) gsap.set(detailsStrip, { autoAlpha: 0, y: 20 });
+                    if (metricCards.length) gsap.set(metricCards, { autoAlpha: 0, y: 15 });
                 }
             });
 
@@ -2802,20 +2814,22 @@ function initEffectsScript() {
             const masterTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
             function buildChapter(chapter, isFirst, enterLabel, revealLabel, exitLabel) {
+                const numeral = chapter.querySelector('.km-giant-numeral');
                 const words = chapter.querySelectorAll('.kh-headline-word');
                 const meta = chapter.querySelector('.kh-meta-tag');
                 const subtitle = chapter.querySelector('.kh-subtitle');
                 const frameWrap = chapter.querySelector('.km-frame-wrap');
+                const phone = chapter.querySelector('.km-floating-phone');
                 const img = chapter.querySelector('.km-screen img');
                 const detailsStrip = chapter.querySelector('.km-details-strip');
+                const metricCards = chapter.querySelectorAll('.km-metric-card');
 
                 // 1. ENTER / HOLD HOOK
                 if (isFirst) {
-                    // Chapter 01 starts visible: hold hook prominently
                     masterTl.to({}, { duration: 0.35 });
                 } else {
-                    // Enter subsequent chapters
                     masterTl.to(chapter, { autoAlpha: 1, zIndex: 10, pointerEvents: 'auto', duration: 0.05 }, enterLabel);
+                    if (numeral) masterTl.to(numeral, { autoAlpha: 0.85, scale: 1, y: 0, duration: 0.45, ease: 'power2.out' }, enterLabel);
                     if (meta) masterTl.to(meta, { opacity: 1, duration: 0.2 }, enterLabel);
                     if (words.length) {
                         masterTl.to(words, {
@@ -2827,7 +2841,7 @@ function initEffectsScript() {
                     masterTl.to({}, { duration: 0.35 }); // Hold hook on screen
                 }
 
-                // 2. REVEAL MASTERPIECE (3D physical frame entry)
+                // 2. REVEAL MASTERPIECE (Multi-Device Depth Stagger)
                 if (meta) masterTl.to(meta, { opacity: 0, duration: 0.15 }, revealLabel);
                 if (words.length) {
                     masterTl.to(words, {
@@ -2839,32 +2853,60 @@ function initEffectsScript() {
 
                 masterTl.set(chapter, { pointerEvents: 'auto' }, revealLabel);
 
+                // Desktop Titanium Chassis reveal
                 if (frameWrap) {
                     masterTl.to(frameWrap, {
                         autoAlpha: 1, rotateX: 0, y: 0, scale: 1,
                         duration: 0.55, ease: 'power3.out'
-                    }, `${revealLabel}+=0.1`);
+                    }, `${revealLabel}+=0.08`);
                 }
+
+                // Floating Satellite Smartphone reveal (deliberately staggered for physical depth)
+                if (phone) {
+                    masterTl.to(phone, {
+                        autoAlpha: 1, y: 0, scale: 1,
+                        duration: 0.65, ease: 'back.out(1.2)'
+                    }, `${revealLabel}+=0.18`);
+
+                    // Differential Parallax scrub: Satellite moves faster than desktop
+                    masterTl.fromTo(phone,
+                        { y: 22 },
+                        { y: -22, duration: 0.9, ease: 'none' },
+                        `${revealLabel}+=0.2`
+                    );
+                }
+
+                // Subtle internal frame image parallax
                 if (img) {
                     masterTl.fromTo(img,
-                        { y: 20 },
-                        { y: -10, duration: 0.9, ease: 'none' },
+                        { y: 15 },
+                        { y: -15, duration: 0.9, ease: 'none' },
                         `${revealLabel}+=0.1`
                     );
                 }
+
+                // Bento Strip & Tabular Metrics reveal
                 if (detailsStrip) {
                     masterTl.to(detailsStrip, {
                         autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out'
-                    }, `${revealLabel}+=0.3`);
+                    }, `${revealLabel}+=0.25`);
                 }
 
-                // Generous dwell time on the masterpiece
-                masterTl.to({}, { duration: 0.55 });
+                if (metricCards.length) {
+                    masterTl.to(metricCards, {
+                        autoAlpha: 1, y: 0, stagger: 0.07, duration: 0.35, ease: 'power3.out'
+                    }, `${revealLabel}+=0.32`);
+                }
+
+                // Generous dwell time on the operational masterpiece
+                masterTl.to({}, { duration: 0.65 });
 
                 // 3. EXIT CHAPTER
                 if (exitLabel) {
-                    if (frameWrap) masterTl.to(frameWrap, { autoAlpha: 0, y: -35, rotateX: -8, scale: 0.96, duration: 0.22 }, exitLabel);
-                    if (detailsStrip) masterTl.to(detailsStrip, { autoAlpha: 0, y: -18, duration: 0.18 }, exitLabel);
+                    if (frameWrap) masterTl.to(frameWrap, { autoAlpha: 0, y: -30, rotateX: -6, scale: 0.96, duration: 0.22 }, exitLabel);
+                    if (phone) masterTl.to(phone, { autoAlpha: 0, y: -45, scale: 0.92, duration: 0.2 }, exitLabel);
+                    if (numeral) masterTl.to(numeral, { autoAlpha: 0, scale: 1.06, duration: 0.22 }, exitLabel);
+                    if (detailsStrip) masterTl.to(detailsStrip, { autoAlpha: 0, y: -15, duration: 0.18 }, exitLabel);
                     masterTl.to(chapter, { autoAlpha: 0, pointerEvents: 'none', duration: 0.1 }, `${exitLabel}+=0.15`);
                 }
             }
@@ -2875,14 +2917,33 @@ function initEffectsScript() {
             if (chapters[2]) buildChapter(chapters[2], false, 'ch2_enter', 'ch2_reveal', 'ch2_exit');
             if (chapters[3]) buildChapter(chapters[3], false, 'ch3_enter', 'ch3_reveal', null); // Last chapter stays settled
 
-
-            // â”€â”€ ScrollTrigger: silky scrub 1.2 â”€â”€
+            // ── ScrollTrigger: silky scrub 1.2 + HUD Sidebar Sync ──
             const st = ScrollTrigger.create({
                 trigger: container,
                 start: 'top top',
                 end: 'bottom bottom',
                 scrub: 1.2,
                 animation: masterTl,
+                onEnter: () => {
+                    if (window.setVantaTheme) {
+                        window.setVantaTheme({ id: 'portfolio', num: '02', name: 'OBRAS', primary: '#00e5ff', r: 0, g: 229, b: 255 });
+                    }
+                },
+                onEnterBack: () => {
+                    if (window.setVantaTheme) {
+                        window.setVantaTheme({ id: 'portfolio', num: '02', name: 'OBRAS', primary: '#00e5ff', r: 0, g: 229, b: 255 });
+                    }
+                },
+                onLeaveBack: () => {
+                    if (window.setVantaTheme) {
+                        window.setVantaTheme({ id: 'home', num: '01', name: 'INICIO', primary: '#11d483', r: 17, g: 212, b: 131 });
+                    }
+                },
+                onLeave: () => {
+                    if (window.setVantaTheme) {
+                        window.setVantaTheme({ id: 'tech-matrix', num: '03', name: 'ARQUITECTURA', primary: '#11d483', r: 17, g: 212, b: 131 });
+                    }
+                },
                 onUpdate: (self) => {
                     const prog = self.progress;
                     let curIdx = 0;
@@ -2894,23 +2955,47 @@ function initEffectsScript() {
                 }
             });
 
-            // â”€â”€ Magnetic 3D tilt on mousemove (while masterpiece is visible) â”€â”€
-            const quickX = gsap.quickTo('body', '--tilt-x', { duration: 0.6, ease: 'power2.out' });
-            const quickY = gsap.quickTo('body', '--tilt-y', { duration: 0.6, ease: 'power2.out' });
-            document.querySelector('.keynote-sticky-viewport')?.addEventListener('mousemove', (e) => {
-                const vw = window.innerWidth;
-                const vh = window.innerHeight;
-                const tx = ((e.clientX / vw) - 0.5) * 6;  // Â±3deg
-                const ty = ((e.clientY / vh) - 0.5) * -4; // Â±2deg
-                chapters.forEach(ch => {
-                    const fw = ch.querySelector('.km-frame-wrap');
-                    if (fw) {
-                        gsap.to(fw, { rotateY: tx, rotateX: ty, duration: 0.8, ease: 'power2.out', overwrite: 'auto' });
-                    }
-                });
-            });
+            // ── Physical 3D tilt & Specular Sheen (Basement / Lusion Engine) ──
+            const viewport = document.querySelector('.keynote-sticky-viewport');
+            if (viewport) {
+                viewport.addEventListener('mousemove', (e) => {
+                    const vw = window.innerWidth;
+                    const vh = window.innerHeight;
+                    const normX = (e.clientX / vw) - 0.5;
+                    const normY = (e.clientY / vh) - 0.5;
 
-            console.log('[VANTA] Cinematic Keynote Scrollytelling initialized â€”', chapters.length, 'chapters');
+                    // Specular reflection follows light vector
+                    const glareX = ((e.clientX / vw) * 100).toFixed(1);
+                    const glareY = ((e.clientY / vh) * 100).toFixed(1);
+                    document.documentElement.style.setProperty('--glare-x', `${glareX}%`);
+                    document.documentElement.style.setProperty('--glare-y', `${glareY}%`);
+
+                    const tx = normX * 5.5;   // ±2.75 deg
+                    const ty = normY * -3.8;  // ±1.9 deg
+
+                    chapters.forEach(ch => {
+                        const fw = ch.querySelector('.km-frame-wrap');
+                        const phone = ch.querySelector('.km-floating-phone');
+                        if (fw) {
+                            gsap.to(fw, { rotateY: tx, rotateX: ty, duration: 0.7, ease: 'power2.out', overwrite: 'auto' });
+                        }
+                        if (phone) {
+                            // Satellite phone responds with differential elasticity and parallax offset
+                            gsap.to(phone, {
+                                rotateY: 10 + tx * 1.5,
+                                rotateX: ty * 1.5,
+                                x: normX * 18,
+                                y: normY * 12,
+                                duration: 0.85,
+                                ease: 'power2.out',
+                                overwrite: 'auto'
+                            });
+                        }
+                    });
+                }, { passive: true });
+            }
+
+            console.log('[VANTA] Cinematic Keynote Scrollytelling SOTY initialized —', chapters.length, 'chapters');
         }
 
         if (document.readyState === 'loading') {
@@ -3027,50 +3112,80 @@ function initEffectsScript() {
        línea-por-línea, transición cromática dentro del timeline.
        300vh de scroll narrativo. scrub: 0.8 (preciso y fluido)
        ============================================================ */
+    /* ============================================================
+       CINE PIPELINE — I+D LAB SCROLLYTELLING v3 (AWWWARDS EDITION)
+       Arquitectura:
+       - Intro monumental con docking fluido a la esquina superior izquierda
+       - Masked line roll up/down para incógnitas (film credit precision)
+       - Transición cromática suave reactiva al scrub
+       - 12 beats cinematográficos en 500vh de scroll
+       ============================================================ */
     (function initCinePipeline() {
         function setup() {
-            const section    = document.querySelector('.cine-pipeline');
-            const stage      = document.getElementById('cineStage');
-            const bg         = document.getElementById('cineBg');
-            const pills      = document.querySelectorAll('.cine-pill');
-            const ch1        = document.getElementById('cineCh1');
-            const ch2        = document.getElementById('cineCh2');
-            const ch1Hook    = document.getElementById('cineCh1Hook');
-            const ch1Reveal  = document.getElementById('cineCh1Reveal');
-            const ch1Card    = document.getElementById('cineCh1Card');
-            const ch2Hook    = document.getElementById('cineCh2Hook');
-            const ch2Reveal  = document.getElementById('cineCh2Reveal');
-            const ch2Card    = document.getElementById('cineCh2Card');
+            const section     = document.querySelector('.cine-pipeline');
+            const stage       = document.getElementById('cineStage');
+            const bg          = document.getElementById('cineBg');
+            const hud         = document.getElementById('cineHud');
+            const hudLeft     = document.getElementById('cineHudLeft');
+            const hudRight    = document.getElementById('cineHudRight');
+            const pills       = document.querySelectorAll('.cine-pill');
+            const intro       = document.getElementById('cineIntro');
+            const ch1         = document.getElementById('cineCh1');
+            const ch2         = document.getElementById('cineCh2');
+            const ch1Hook     = document.getElementById('cineCh1Hook');
+            const ch1Blueprint = document.getElementById('cineCh1Blueprint');
+            const ch2Hook     = document.getElementById('cineCh2Hook');
+            const ch2Blueprint = document.getElementById('cineCh2Blueprint');
 
-            if (!section || !ch1 || !ch2) return;
+            if (!section || !stage || !intro || !ch1 || !ch2 || !ch1Blueprint || !ch2Blueprint) return;
             if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
             // ─── Selectors ─────────────────────────────────────────────
-            const ch1Lines    = ch1Hook.querySelectorAll('.cine-line');
-            const ch1Eyebrow  = ch1Hook.querySelector('.cine-hook__eyebrow');
-            const ch1Sub      = ch1Hook.querySelector('.cine-hook__sub');
-            const ch2Lines    = ch2Hook.querySelectorAll('.cine-line');
-            const ch2Eyebrow  = ch2Hook.querySelector('.cine-hook__eyebrow');
-            const ch2Sub      = ch2Hook.querySelector('.cine-hook__sub');
+            const introTitle   = intro.querySelector('.cine-intro__title');
+            const introSub     = intro.querySelector('.cine-intro__sub');
 
-            // ─── INITIAL STATE (set before ScrollTrigger so nothing flashes) ──
-            // Chapter 1: visible with hook, reveal hidden
-            gsap.set(ch1, { opacity: 1, zIndex: 10 });
+            const ch1Lines     = ch1Hook.querySelectorAll('.cine-line');
+            const ch1Sub       = ch1Hook.querySelector('.cine-hook__sub');
+            const ch1Visuals   = ch1Blueprint.querySelectorAll('.cine-bp-visual');
+            const ch1Steps     = ch1Blueprint.querySelectorAll('.cine-bp-step');
+            const ch1Infos     = ch1Blueprint.querySelectorAll('.cine-bp-info');
+
+            const ch2Lines     = ch2Hook.querySelectorAll('.cine-line');
+            const ch2Sub       = ch2Hook.querySelector('.cine-hook__sub');
+            const ch2Visuals   = ch2Blueprint.querySelectorAll('.cine-bp-visual');
+            const ch2Steps     = ch2Blueprint.querySelectorAll('.cine-bp-step');
+            const ch2Infos     = ch2Blueprint.querySelectorAll('.cine-bp-info');
+
+            // ─── INITIAL STATE ─────────────────────────────────────────
+            // Intro: Centered, visible, full scale
+            gsap.set(intro, { opacity: 1, zIndex: 25, pointerEvents: 'none' });
+            gsap.set(introTitle, { opacity: 1, scale: 1, x: 0, y: 0, transformOrigin: '50% 50%' });
+            gsap.set(introSub, { opacity: 1, y: 0 });
+
+            // HUD: Top bar present, but corner badge & pills fade in as intro docks
+            gsap.set(hudLeft, { opacity: 0 });
+            gsap.set(pills, { opacity: 0 });
+            gsap.set(hudRight, { opacity: 0 });
+
+            // Chapter 1: hidden until intro docks
+            gsap.set(ch1, { opacity: 0, zIndex: 10 });
             gsap.set(ch1Hook, { opacity: 1 });
-            gsap.set(ch1Eyebrow, { opacity: 0, y: 14 });
-            gsap.set(ch1Lines, { opacity: 0, y: 28, filter: 'blur(5px)' });
-            gsap.set(ch1Sub, { opacity: 0, y: 10 });
-            gsap.set(ch1Reveal, { opacity: 0, pointerEvents: 'none' });
-            gsap.set(ch1Card, { rotateX: 10, y: 40, scale: 0.97, transformOrigin: '50% 100%' });
+            gsap.set(ch1Lines, { yPercent: 125, rotateX: 12, opacity: 0, filter: 'blur(6px)' });
+            gsap.set(ch1Sub, { opacity: 0, y: 12 });
+            gsap.set(ch1Blueprint, { opacity: 0, pointerEvents: 'none', y: 35, scale: 0.98 });
+            // Ch1 Layers: Layer 1 visible, layers 2 and 3 hidden
+            ch1Visuals.forEach((v, i) => gsap.set(v, { opacity: i === 0 ? 1 : 0, scale: i === 0 ? 1 : 0.95 }));
+            ch1Infos.forEach((info, i) => gsap.set(info, { opacity: i === 0 ? 1 : 0, y: i === 0 ? 0 : 18, pointerEvents: i === 0 ? 'auto' : 'none' }));
 
-            // Chapter 2: invisible (opacity only — no visibility:hidden, so scrub can reverse cleanly)
+            // Chapter 2: invisible
             gsap.set(ch2, { opacity: 0, zIndex: 5, pointerEvents: 'none' });
-            gsap.set(ch2Hook, { opacity: 1 }); // hook opacity controlled by ch2 parent
-            gsap.set(ch2Eyebrow, { opacity: 0, y: 14 });
-            gsap.set(ch2Lines, { opacity: 0, y: 28, filter: 'blur(5px)' });
-            gsap.set(ch2Sub, { opacity: 0, y: 10 });
-            gsap.set(ch2Reveal, { opacity: 0, pointerEvents: 'none' });
-            gsap.set(ch2Card, { rotateX: 10, y: 40, scale: 0.97, transformOrigin: '50% 100%' });
+            gsap.set(ch2Hook, { opacity: 1 });
+            gsap.set(ch2Lines, { yPercent: 125, rotateX: 12, opacity: 0, filter: 'blur(6px)' });
+            gsap.set(ch2Sub, { opacity: 0, y: 12 });
+            gsap.set(ch2Blueprint, { opacity: 0, pointerEvents: 'none', y: 35, scale: 0.98 });
+            // Ch2 Layers: Layer 1 visible, layers 2 and 3 hidden
+            ch2Visuals.forEach((v, i) => gsap.set(v, { opacity: i === 0 ? 1 : 0, scale: i === 0 ? 1 : 0.95 }));
+            ch2Infos.forEach((info, i) => gsap.set(info, { opacity: i === 0 ? 1 : 0, y: i === 0 ? 0 : 18, pointerEvents: i === 0 ? 'auto' : 'none' }));
 
             // ─── PILL ACTIVE STATE helper ──────────────────────────────
             let activePillIdx = -1;
@@ -3082,116 +3197,241 @@ function initEffectsScript() {
                     p.setAttribute('aria-selected', i === idx ? 'true' : 'false');
                 });
             }
-            setPill(0); // start with pill 0
+            setPill(0);
 
-            // ─── MASTER TIMELINE ───────────────────────────────────────
-            //
-            // 10 unidades totales (proporción):
-            //  0.0 → 1.0  : Entrada escalonada de incógnita Ch1 (eyebrow + líneas + subtitle)
-            //  1.0 → 3.0  : HOLD — usuario lee la incógnita
-            //  3.0 → 4.2  : LIFT incógnita Ch1 (sube+blur), ENTER reveal Ch1 simultáneo
-            //  4.2 → 5.8  : DWELL reveal Ch1 — el usuario lee la ficha técnica
-            //  5.2 → 6.0  : EXIT reveal Ch1, background shift verde→cian
-            //  5.8 → 7.2  : Entrada escalonada incógnita Ch2
-            //  7.2 → 8.8  : HOLD Ch2
-            //  8.8 → 9.6  : LIFT incógnita Ch2 + ENTER reveal Ch2
-            //  9.6 → 10.0 : DWELL reveal Ch2
-            //
+            // ─── STEPPER ACTIVE STATE helper ───────────────────────────
+            let ch1ActiveStep = 0;
+            let ch2ActiveStep = 0;
+            function setCh1Step(stepIdx) {
+                if (stepIdx === ch1ActiveStep) return;
+                ch1ActiveStep = stepIdx;
+                ch1Steps.forEach((s, i) => s.classList.toggle('is-active', i === stepIdx));
+            }
+            function setCh2Step(stepIdx) {
+                if (stepIdx === ch2ActiveStep) return;
+                ch2ActiveStep = stepIdx;
+                ch2Steps.forEach((s, i) => s.classList.toggle('is-active', i === stepIdx));
+            }
+            setCh1Step(0);
+            setCh2Step(0);
+
+            // Dynamic docking vector (responsive to screen size)
+            function getDockTarget() {
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+                return {
+                    x: -(w * 0.5 - (w > 900 ? 170 : w * 0.35)),
+                    y: -(h * 0.5 - 26),
+                    scale: w > 900 ? 0.26 : 0.22
+                };
+            }
+
+            // ─── MASTER TIMELINE (19.2 UNITS) ──────────────────────────
             const tl = gsap.timeline({ defaults: { ease: 'none' } });
 
-            // [0 → 1] ENTER incógnita Ch1
-            tl.to(ch1Eyebrow, { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 0)
+            // [0.0 → 0.6] HOLD INTRO: Usuario contempla el título monumental
+            tl.to({}, { duration: 0.6 }, 0)
+
+            // [0.6 → 2.0] DOCKING: Título se reubica suavemente a la esquina superior izquierda
+              .to(introSub, { opacity: 0, y: 18, duration: 0.45, ease: 'power2.in' }, 0.6)
+              .to(introTitle, {
+                    x: () => getDockTarget().x,
+                    y: () => getDockTarget().y,
+                    scale: () => getDockTarget().scale,
+                    opacity: 0.3,
+                    duration: 1.2,
+                    ease: 'power3.inOut'
+                }, 0.7)
+              .to(intro, { opacity: 0, duration: 0.25, ease: 'power2.in' }, 1.8)
+              // HUD se revela cuando el intro aterriza en la esquina
+              .to(hudLeft, { opacity: 1, duration: 0.35, ease: 'power2.out' }, 1.75)
+              .to([pills, hudRight], { opacity: 1, duration: 0.45, ease: 'power2.out', stagger: 0.08 }, 1.85)
+
+            // [2.0 → 3.2] MASKED ROLL-UP: Incógnita BehBAN asciende línea por línea
+              .set(ch1, { opacity: 1 }, 2.0)
               .to(ch1Lines, {
-                    opacity: 1, y: 0, filter: 'blur(0px)',
-                    stagger: 0.14, duration: 0.22, ease: 'power3.out'
-                }, 0.12)
-              .to(ch1Sub, { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 0.62)
+                    yPercent: 0,
+                    rotateX: 0,
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    stagger: 0.16,
+                    duration: 0.55,
+                    ease: 'power3.out'
+                }, 2.1)
+              .to(ch1Sub, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.8)
 
-            // [1 → 3] HOLD — empty tween to consume time
-              .to({}, { duration: 2 }, 1)
+            // [3.2 → 4.4] HOLD CH1 HOOK: Lectura profunda de la incógnita
+              .to({}, { duration: 1.2 }, 3.2)
 
-            // [3 → 3.8] LIFT incógnita Ch1 (lines float up and blur out)
-              .to(ch1Eyebrow, { opacity: 0, y: -12, duration: 0.2, ease: 'power2.in' }, 3)
+            // [4.4 → 5.3] ROLL-OUT HOOK + REVEAL BLUEPRINT (Capa 1: Kiosko Edge & Liveness)
               .to(ch1Lines, {
-                    opacity: 0, y: -35, filter: 'blur(8px)',
-                    stagger: { each: 0.07, from: 'end' }, duration: 0.28, ease: 'power2.in'
-                }, 3)
-              .to(ch1Sub, { opacity: 0, y: -10, duration: 0.2, ease: 'power2.in' }, 3)
-
-            // [3.2 → 4.4] ENTER reveal Ch1 (sweeps up from below)
-              .to(ch1Reveal, { opacity: 1, pointerEvents: 'auto', duration: 0.3, ease: 'power2.out' }, 3.2)
-              .to(ch1Card, {
-                    rotateX: 0, y: 0, scale: 1,
+                    yPercent: -125,
+                    opacity: 0,
+                    filter: 'blur(6px)',
+                    stagger: { each: 0.07, from: 'end' },
+                    duration: 0.38,
+                    ease: 'power2.in'
+                }, 4.4)
+              .to(ch1Sub, { opacity: 0, y: -12, duration: 0.26, ease: 'power2.in' }, 4.4)
+              // Entrada del Blueprint BehBAN
+              .to(ch1Blueprint, {
+                    opacity: 1, y: 0, scale: 1, pointerEvents: 'auto',
                     duration: 0.65, ease: 'power3.out'
-                }, 3.2)
+                }, 4.65)
 
-            // [4.2 → 5.8] DWELL reveal Ch1
-              .to({}, { duration: 1.6 }, 4.2)
+            // [5.3 → 6.3] DWELL CAPA 1: Kiosko facial & Anti-spoofing
+              .to({}, { duration: 1.0 }, 5.3)
 
-            // [5.2 → 5.8] EXIT reveal Ch1 + background shift to cian
-              .to(ch1Card, { y: -22, scale: 0.97, opacity: 0, duration: 0.35, ease: 'power2.in' }, 5.2)
-              .to(ch1Reveal, { opacity: 0, pointerEvents: 'none', duration: 0.25 }, 5.2)
-              .to(ch1, { opacity: 0, duration: 0.2, ease: 'power1.in' }, 5.4)
-              // Chromatic shift verde → cian via GSAP (scrub-animable, NO CSS transition)
+            // [6.3 → 7.3] TRANSICIÓN A CAPA 2 (Motor Neural & Privacidad)
+              .to(ch1Visuals[0], { opacity: 0, scale: 1.04, duration: 0.45, ease: 'power2.inOut' }, 6.3)
+              .to(ch1Visuals[1], { opacity: 1, scale: 1, duration: 0.5, ease: 'power3.out' }, 6.55)
+              .to(ch1Infos[0], { opacity: 0, y: -16, pointerEvents: 'none', duration: 0.38, ease: 'power2.in' }, 6.3)
+              .to(ch1Infos[1], { opacity: 1, y: 0, pointerEvents: 'auto', duration: 0.48, ease: 'power3.out' }, 6.58)
+
+            // [7.3 → 8.3] DWELL CAPA 2: Vector 512D y AES-256
+              .to({}, { duration: 1.0 }, 7.3)
+
+            // [8.3 → 9.3] TRANSICIÓN A CAPA 3 (Conciliación Nómina SAP)
+              .to(ch1Visuals[1], { opacity: 0, scale: 1.04, duration: 0.45, ease: 'power2.inOut' }, 8.3)
+              .to(ch1Visuals[2], { opacity: 1, scale: 1, duration: 0.5, ease: 'power3.out' }, 8.55)
+              .to(ch1Infos[1], { opacity: 0, y: -16, pointerEvents: 'none', duration: 0.38, ease: 'power2.in' }, 8.3)
+              .to(ch1Infos[2], { opacity: 1, y: 0, pointerEvents: 'auto', duration: 0.48, ease: 'power3.out' }, 8.58)
+
+            // [9.3 → 10.3] DWELL CAPA 3: Nómina SAP y Dossier BehBAN
+              .to({}, { duration: 1.0 }, 9.3)
+
+            // [10.3 → 11.2] SALIDA BEHBAN + TRANSICIÓN CROMÁTICA VERDE → CIAN
+              .to(ch1Blueprint, { y: -25, scale: 0.96, opacity: 0, pointerEvents: 'none', duration: 0.45, ease: 'power2.in' }, 10.3)
+              .to(ch1, { opacity: 0, duration: 0.25 }, 10.55)
               .to(bg, {
-                    background: 'radial-gradient(ellipse 900px 600px at 50% 40%, rgba(0,229,255,0.16) 0%, rgba(3,5,8,0) 70%)',
-                    duration: 0.9, ease: 'none'
-                }, 5.0)
+                    background: 'radial-gradient(ellipse 900px 600px at 50% 40%, rgba(0,229,255,0.18) 0%, rgba(3,5,8,0) 70%)',
+                    duration: 1.0, ease: 'none'
+                }, 10.2)
 
-            // [5.8 → 7.0] ENTER Ch2 incógnita (opacity-only, no visibility for clean scrub)
-              .to(ch2, { opacity: 1, pointerEvents: 'auto', zIndex: 10, duration: 0.25, ease: 'power2.out' }, 5.7)
-              .to(ch2Eyebrow, { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 5.9)
+            // [11.0 → 12.2] MASKED ROLL-UP: Incógnita GhostSense RF asciende línea por línea
+              .set(ch2, { opacity: 1, pointerEvents: 'auto', zIndex: 10 }, 10.9)
               .to(ch2Lines, {
-                    opacity: 1, y: 0, filter: 'blur(0px)',
-                    stagger: 0.14, duration: 0.22, ease: 'power3.out'
-                }, 6.0)
-              .to(ch2Sub, { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 6.5)
+                    yPercent: 0,
+                    rotateX: 0,
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    stagger: 0.16,
+                    duration: 0.55,
+                    ease: 'power3.out'
+                }, 11.1)
+              .to(ch2Sub, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 11.7)
 
-            // [7.0 → 8.0] HOLD Ch2 (shorter hold → reveal enters earlier)
-              .to({}, { duration: 1.0 }, 7.0)
+            // [12.2 → 13.2] HOLD CH2 HOOK: Lectura profunda de la incógnita Wi-Fi Sensing
+              .to({}, { duration: 1.0 }, 12.2)
 
-            // [8.0 → 8.6] LIFT Ch2 incógnita
-              .to(ch2Eyebrow, { opacity: 0, y: -12, duration: 0.18, ease: 'power2.in' }, 8.0)
+            // [13.2 → 14.1] ROLL-OUT HOOK + REVEAL BLUEPRINT GHOSTSENSE RF (Capa 1: Mesh 5.2 GHz)
               .to(ch2Lines, {
-                    opacity: 0, y: -35, filter: 'blur(8px)',
-                    stagger: { each: 0.06, from: 'end' }, duration: 0.24, ease: 'power2.in'
-                }, 8.0)
-              .to(ch2Sub, { opacity: 0, y: -10, duration: 0.16, ease: 'power2.in' }, 8.0)
+                    yPercent: -125,
+                    opacity: 0,
+                    filter: 'blur(6px)',
+                    stagger: { each: 0.07, from: 'end' },
+                    duration: 0.38,
+                    ease: 'power2.in'
+                }, 13.2)
+              .to(ch2Sub, { opacity: 0, y: -12, duration: 0.26, ease: 'power2.in' }, 13.2)
+              .to(ch2Blueprint, {
+                    opacity: 1, y: 0, scale: 1, pointerEvents: 'auto',
+                    duration: 0.65, ease: 'power3.out'
+                }, 13.45)
 
-            // [8.3 → 9.0] ENTER reveal Ch2
-              .to(ch2Reveal, { opacity: 1, pointerEvents: 'auto', duration: 0.28, ease: 'power2.out' }, 8.3)
-              .to(ch2Card, {
-                    rotateX: 0, y: 0, scale: 1,
-                    duration: 0.6, ease: 'power3.out'
-                }, 8.3)
+            // [14.1 → 15.1] DWELL CAPA 1: Mesh Wi-Fi 5.2 GHz ESP32
+              .to({}, { duration: 1.0 }, 14.1)
 
-            // [9.0 → 10.0] DWELL Ch2 (full card on screen, user reads)
-              .to({}, { duration: 1.0 }, 9.0);
+            // [15.1 → 16.1] TRANSICIÓN A CAPA 2 (Osciloscopio CSI a través de pared)
+              .to(ch2Visuals[0], { opacity: 0, scale: 1.04, duration: 0.45, ease: 'power2.inOut' }, 15.1)
+              .to(ch2Visuals[1], { opacity: 1, scale: 1, duration: 0.5, ease: 'power3.out' }, 15.35)
+              .to(ch2Infos[0], { opacity: 0, y: -16, pointerEvents: 'none', duration: 0.38, ease: 'power2.in' }, 15.1)
+              .to(ch2Infos[1], { opacity: 1, y: 0, pointerEvents: 'auto', duration: 0.48, ease: 'power3.out' }, 15.38)
 
-            // ─── ScrollTrigger — drives timeline with section's full height ─
-            // stage uses position:sticky CSS so we do NOT pin it with GSAP.
-            // We just use the section as trigger and drive the animation.
+            // [16.1 → 17.1] DWELL CAPA 2: Osciloscopio CSI activo
+              .to({}, { duration: 1.0 }, 16.1)
+
+            // [17.1 → 18.1] TRANSICIÓN A CAPA 3 (Radar Zero-Camera)
+              .to(ch2Visuals[1], { opacity: 0, scale: 1.04, duration: 0.45, ease: 'power2.inOut' }, 17.1)
+              .to(ch2Visuals[2], { opacity: 1, scale: 1, duration: 0.5, ease: 'power3.out' }, 17.35)
+              .to(ch2Infos[1], { opacity: 0, y: -16, pointerEvents: 'none', duration: 0.38, ease: 'power2.in' }, 17.1)
+              .to(ch2Infos[2], { opacity: 1, y: 0, pointerEvents: 'auto', duration: 0.48, ease: 'power3.out' }, 17.38)
+
+            // [18.1 → 19.2] DWELL FINAL GHOSTSENSE RF
+              .to({}, { duration: 1.1 }, 18.1);
+
+            // ─── Real-time Stepper & Pills Synchronization on Timeline Update ──
+            tl.eventCallback('onUpdate', () => {
+                const t = tl.time();
+                // HUD Pills: Ch1 vs Ch2
+                setPill(t < 10.6 ? 0 : 1);
+
+                // Stepper Ch1
+                if (t < 6.45) {
+                    setCh1Step(0);
+                } else if (t < 8.45) {
+                    setCh1Step(1);
+                } else {
+                    setCh1Step(2);
+                }
+
+                // Stepper Ch2
+                if (t < 15.25) {
+                    setCh2Step(0);
+                } else if (t < 17.25) {
+                    setCh2Step(1);
+                } else {
+                    setCh2Step(2);
+                }
+            });
+
+            // ─── ScrollTrigger ─────────────────────────────────────────
             const st = ScrollTrigger.create({
                 trigger: section,
                 start: 'top 72px',
                 end: 'bottom bottom',
                 scrub: 0.8,
-                animation: tl,
-                onUpdate(self) {
-                    const p = self.progress;
-                    // Pill 0 active Ch1 (0–55%), Pill 1 Ch2 (55–100%)
-                    setPill(p < 0.55 ? 0 : 1);
-                }
+                animation: tl
             });
 
-            // ─── Pill click-to-jump ────────────────────────────────────
+            // ─── Stepper Click-to-Jump ─────────────────────────────────
+            const ch1StepTimes = [5.6, 7.6, 9.6];
+            const ch2StepTimes = [14.4, 16.4, 18.4];
+
+            ch1Steps.forEach((stepEl, idx) => {
+                stepEl.addEventListener('click', e => {
+                    e.stopPropagation();
+                    const targetP = ch1StepTimes[idx] / 19.2;
+                    const targetY = st.start + targetP * (st.end - st.start);
+                    if (window.lenis) {
+                        window.lenis.scrollTo(targetY, { duration: 1.4 });
+                    } else {
+                        window.scrollTo({ top: targetY, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            ch2Steps.forEach((stepEl, idx) => {
+                stepEl.addEventListener('click', e => {
+                    e.stopPropagation();
+                    const targetP = ch2StepTimes[idx] / 19.2;
+                    const targetY = st.start + targetP * (st.end - st.start);
+                    if (window.lenis) {
+                        window.lenis.scrollTo(targetY, { duration: 1.4 });
+                    } else {
+                        window.scrollTo({ top: targetY, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // ─── Pill Click-to-Jump ────────────────────────────────────
             pills.forEach(pill => {
                 pill.addEventListener('click', e => {
                     e.stopPropagation();
                     const idx = parseInt(pill.getAttribute('data-index') || '0', 10);
-                    // idx 0 → jump to 15% progress, idx 1 → 58%
-                    const targets = [0.08, 0.58];
-                    const targetP = targets[idx] !== undefined ? targets[idx] : 0;
+                    // idx 0 -> BehBAN Capa 1 (5.6 / 19.2), idx 1 -> GhostSense Capa 1 (14.4 / 19.2)
+                    const targetTimes = [5.6, 14.4];
+                    const targetP = (targetTimes[idx] || 0) / 19.2;
                     const targetY = st.start + targetP * (st.end - st.start);
                     if (window.lenis) {
                         window.lenis.scrollTo(targetY, { duration: 1.6 });
@@ -3201,7 +3441,7 @@ function initEffectsScript() {
                 });
             });
 
-            console.log('[VANTA] Cine Pipeline Scrollytelling v2 initialized — GSAP scrub 0.8, 300vh narrative');
+            console.log('[VANTA] Cine Pipeline Exploded Blueprint Scrollytelling v4 initialized');
         }
 
         if (document.readyState === 'loading') {
@@ -3210,6 +3450,339 @@ function initEffectsScript() {
             setup();
         }
     })();
+
+    /* =============================================================
+       VANTA BIOMETRIC 3D FACE MESH (BehBAN Capa 1)
+       Malla facial anatómica 3D interactiva en Three.js reactiva al cursor
+       ============================================================= */
+    function initBioFace3D() {
+        const canvas = document.getElementById('canvas-bio-face');
+        if (!canvas || typeof THREE === 'undefined') return;
+
+        const hudBox = canvas.closest('.bio-hud-box');
+        const pipelineSection = document.getElementById('pipeline');
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(40, (canvas.clientWidth || 220) / (canvas.clientHeight || 250), 0.1, 1000);
+        camera.position.z = 152;
+
+        const renderer = new THREE.WebGLRenderer({
+            canvas,
+            alpha: true,
+            antialias: true,
+            powerPreference: 'high-performance'
+        });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+        function resize() {
+            const width = canvas.clientWidth || 220;
+            const height = canvas.clientHeight || 250;
+            if (canvas.width !== width || canvas.height !== height) {
+                renderer.setSize(width, height, false);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            }
+        }
+        resize();
+
+        // ─── ANATOMICALLY CALIBRATED 3D BIOMETRIC TOPOLOGY ───
+        const points = [
+            // 0-8: Cranium / Hairline curve (elliptical dome)
+            [-28, 44, -12], [-21, 49, -5], [-13, 52, 2], [-6, 53.5, 6], [0, 54, 8], [6, 53.5, 6], [13, 52, 2], [21, 49, -5], [28, 44, -12],
+
+            // 9-17: Upper Forehead
+            [-30, 36, -5], [-22, 39, 4], [-14, 41, 11], [-7, 42.5, 14], [0, 43, 16], [7, 42.5, 14], [14, 41, 11], [22, 39, 4], [30, 36, -5],
+
+            // 18-26: Mid Forehead & Superciliary Arch (Brow level)
+            [-31, 26, 2], [-23, 28.5, 13], [-15, 29.5, 19], [-7, 29, 22], [0, 28, 23], [7, 29, 22], [15, 29.5, 19], [23, 28.5, 13], [31, 26, 2],
+
+            // 27-34: Eyebrows
+            [-28, 24, 7], [-22, 26, 15], [-16, 27, 20], [-9, 25, 22], // Left
+            [9, 25, 22], [16, 27, 20], [22, 26, 15], [28, 24, 7],     // Right
+
+            // 35-44: Eye Orbits (Left: 35-39, Right: 40-44)
+            [-25, 18, 12], [-18, 21, 17], [-11, 18, 20], [-18, 15.5, 16], [-18, 18.5, 18], // 39 is left iris
+            [11, 18, 20], [18, 21, 17], [25, 18, 12], [18, 15.5, 16], [18, 18.5, 18],      // 44 is right iris
+
+            // 45-52: Temples & Zygomatic Arches (Cheekbones)
+            [-33, 16, 0], [-30, 8, 10], [-24, 6, 18], [-17, 5, 21], // left zygoma
+            [17, 5, 21], [24, 6, 18], [30, 8, 10], [33, 16, 0],    // right zygoma
+
+            // 53-61: Nose Architecture (High Z protrusion at tip)
+            [0, 21, 23],   // 53: Nasion
+            [0, 13, 27],   // 54: Rhinion (Upper bridge)
+            [0, 4, 32],    // 55: Cartilaginous mid bridge
+            [0, -4, 38],   // 56: PRONASALE (NOSE TIP)
+            [-6, -6, 30],  // 57: Left alar lobule
+            [6, -6, 30],   // 58: Right alar lobule
+            [-2.5, -8, 33],// 59: Left columella
+            [2.5, -8, 33], // 60: Right columella
+            [0, -9, 30],   // 61: Subnasale
+
+            // 62-67: Maxilla & Mid Cheeks
+            [-14, -4, 21], [14, -4, 21],   // 62, 63
+            [-21, -6, 16], [21, -6, 16],   // 64, 65
+            [-15, -13, 18], [15, -13, 18], // 66, 67
+
+            // 68-79: Lips & Oral Aperture
+            [-13, -19, 18], // 68: left commissure
+            [-7, -16.5, 24],// 69: left cupid peak
+            [0, -17.5, 25], // 70: central dip
+            [7, -16.5, 24], // 71: right cupid peak
+            [13, -19, 18],  // 72: right commissure
+            [9, -23, 22],   // 73: lower lip right
+            [0, -23.8, 23], // 74: lower lip center
+            [-9, -23, 22],  // 75: lower lip left
+            [-5, -18.5, 22],// 76: stomion left
+            [0, -19, 22.5], // 77: stomion center
+            [5, -18.5, 22], // 78: stomion right
+            [0, -27.5, 20], // 79: mentolabial sulcus
+
+            // 80-93: Mandible & Chin (Curved natural jaw contour)
+            [-32, 3, -4],   // 80: left upper ramus
+            [-31, -9, 3],   // 81: left gonion (jaw angle)
+            [-26, -21, 9],  // 82: left body
+            [-18, -31, 15], // 83: left pre-chin
+            [-8, -37, 20],  // 84: left mental tubercle
+            [0, -38.5, 22], // 85: GNATHION (Chin Apex)
+            [8, -37, 20],   // 86: right mental tubercle
+            [18, -31, 15],  // 87: right pre-chin
+            [26, -21, 9],   // 88: right body
+            [31, -9, 3],    // 89: right gonion
+            [32, 3, -4],    // 90: right upper ramus
+            [0, -44, 14],   // 91: submental base
+            [-12, -41, 13], // 92: left submental
+            [12, -41, 13]   // 93: right submental
+        ];
+
+        const lines = [
+            // Hairline / Cranium arc
+            [0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],
+            // Forehead arcs
+            [9,10],[10,11],[11,12],[12,13],[13,14],[14,15],[15,16],[16,17],
+            [18,19],[19,20],[20,21],[21,22],[22,23],[23,24],[24,25],[25,26],
+            // Forehead vertical interconnects
+            [0,9],[9,18],[1,10],[10,19],[2,11],[11,20],[3,12],[12,21],
+            [4,13],[13,22],[5,14],[14,23],[6,15],[15,24],[7,16],[16,25],[8,17],[17,26],
+            // Eyebrows
+            [27,28],[28,29],[29,30],[31,32],[32,33],[33,34],
+            [19,28],[20,29],[21,30],[23,31],[24,32],[25,33],
+            // Eye Orbits (Left)
+            [35,36],[36,37],[37,38],[38,35],
+            [35,39],[36,39],[37,39],[38,39],
+            // Eye Orbits (Right)
+            [40,41],[41,42],[42,43],[43,40],
+            [40,44],[41,44],[42,44],[43,44],
+            // Eyebrows to eyes
+            [27,35],[28,36],[29,37],[30,37],
+            [31,40],[32,40],[33,41],[34,42],
+            // Nose Bridge & Facets
+            [22,53],[30,53],[31,53],
+            [53,54],[54,55],[55,56],[56,61],
+            [37,54],[40,54],
+            [54,57],[54,58],[55,57],[55,58],
+            [56,57],[56,58],[56,59],[56,60],[59,61],[60,61],
+            // Temples & Cheekbones
+            [18,45],[45,46],[46,47],[47,48],
+            [26,52],[52,51],[51,50],[50,49],
+            [35,46],[38,48],[43,49],[42,51],
+            // Mid-face / Maxilla
+            [48,62],[62,57],[49,63],[63,58],
+            [47,64],[64,66],[50,65],[65,67],
+            [62,66],[63,67],[66,68],[67,72],
+            // Philtrum & Nose Base to Upper Lip
+            [61,69],[61,70],[61,71],[57,68],[58,72],
+            // Lips & Mouth Contour
+            [68,69],[69,70],[70,71],[71,72],
+            [72,73],[73,74],[74,75],[75,68],
+            [68,76],[76,77],[77,78],[78,72],
+            [70,77],[74,77],
+            // Lower Lip to Chin Sulcus
+            [75,79],[74,79],[73,79],
+            // Jawline & Chin
+            [45,80],[80,81],[81,82],[82,83],[83,84],[84,85],[85,86],[86,87],[87,88],[88,89],[89,90],[90,52],
+            // Cheeks to Jaw
+            [46,81],[64,82],[66,83],[67,87],[65,88],[51,89],
+            // Chin triangulation
+            [79,84],[79,85],[79,86],
+            [85,91],[84,92],[86,93],[92,91],[93,91]
+        ];
+
+        const faceGroup = new THREE.Group();
+        faceGroup.position.y = 4;
+        scene.add(faceGroup);
+
+        // 1. Line Segments
+        const linePositions = [];
+        lines.forEach(([i, j]) => {
+            const p1 = points[i];
+            const p2 = points[j];
+            if (p1 && p2) {
+                linePositions.push(p1[0], p1[1], p1[2]);
+                linePositions.push(p2[0], p2[1], p2[2]);
+            }
+        });
+
+        const lineGeo = new THREE.BufferGeometry();
+        lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+        const lineMat = new THREE.LineBasicMaterial({
+            color: 0x11d483,
+            transparent: true,
+            opacity: 0.42,
+            blending: THREE.AdditiveBlending
+        });
+        const lineMesh = new THREE.LineSegments(lineGeo, lineMat);
+        faceGroup.add(lineMesh);
+
+        // 2. Glowing Landmark Points
+        const pointPositions = [];
+        const pointColors = [];
+        const colGreen = new THREE.Color(0x11d483);
+        const colCyan = new THREE.Color(0x00E5FF);
+        const colNose = new THREE.Color(0x70ffcc);
+
+        points.forEach((p, idx) => {
+            pointPositions.push(p[0], p[1], p[2]);
+            if (idx === 39 || idx === 44) {
+                pointColors.push(colCyan.r * 1.6, colCyan.g * 1.6, colCyan.b * 1.6);
+            } else if (idx === 56 || idx === 85 || idx === 53) {
+                pointColors.push(colNose.r, colNose.g, colNose.b);
+            } else {
+                pointColors.push(colGreen.r, colGreen.g, colGreen.b);
+            }
+        });
+
+        function createPointTexture() {
+            const c = document.createElement('canvas');
+            c.width = 32;
+            c.height = 32;
+            const ctx = c.getContext('2d');
+            const g = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+            g.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            g.addColorStop(0.25, 'rgba(17, 212, 131, 0.95)');
+            g.addColorStop(0.65, 'rgba(17, 212, 131, 0.2)');
+            g.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.arc(16, 16, 16, 0, Math.PI * 2);
+            ctx.fill();
+            return new THREE.CanvasTexture(c);
+        }
+
+        const pointsGeo = new THREE.BufferGeometry();
+        pointsGeo.setAttribute('position', new THREE.Float32BufferAttribute(pointPositions, 3));
+        pointsGeo.setAttribute('color', new THREE.Float32BufferAttribute(pointColors, 3));
+
+        const pointsMat = new THREE.PointsMaterial({
+            size: 4.2,
+            map: createPointTexture(),
+            transparent: true,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const pointsMesh = new THREE.Points(pointsGeo, pointsMat);
+        faceGroup.add(pointsMesh);
+
+        // 3. Glowing Cyan Iris Rings
+        const irisMeshes = [];
+        [points[39], points[44]].forEach(irisPos => {
+            const ringGeo = new THREE.RingGeometry(1.2, 2.0, 16);
+            const ringMat = new THREE.MeshBasicMaterial({
+                color: 0x00E5FF,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.85,
+                blending: THREE.AdditiveBlending
+            });
+            const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+            ringMesh.position.set(irisPos[0], irisPos[1], irisPos[2] + 0.4);
+            faceGroup.add(ringMesh);
+            irisMeshes.push(ringMesh);
+        });
+
+        // ─── CURSOR TRACKING & REACTIVITY ───
+        let targetRotY = 0;
+        let targetRotX = 0;
+        let currentRotY = 0;
+        let currentRotX = 0;
+        let targetScale = 1.0;
+        let currentScale = 1.0;
+        let isVisible = true;
+
+        window.addEventListener('mousemove', (e) => {
+            const normX = (e.clientX / window.innerWidth) * 2 - 1;
+            const normY = (e.clientY / window.innerHeight) * 2 - 1;
+            targetRotY = normX * 0.42;
+            targetRotX = normY * 0.24;
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches[0]) {
+                const t = e.touches[0];
+                const normX = (t.clientX / window.innerWidth) * 2 - 1;
+                const normY = (t.clientY / window.innerHeight) * 2 - 1;
+                targetRotY = normX * 0.42;
+                targetRotX = normY * 0.24;
+            }
+        }, { passive: true });
+
+        if (hudBox) {
+            hudBox.addEventListener('mouseenter', () => {
+                targetScale = 1.05;
+            });
+            hudBox.addEventListener('mouseleave', () => {
+                targetScale = 1.0;
+            });
+        }
+
+        if ('IntersectionObserver' in window && pipelineSection) {
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    isVisible = entry.isIntersecting;
+                });
+            }, { threshold: 0.05 });
+            obs.observe(pipelineSection);
+        }
+
+        window.addEventListener('resize', resize, { passive: true });
+
+        let clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if (!isVisible) return;
+
+            resize();
+            const elapsedTime = clock.getElapsedTime();
+
+            // Smooth Lerp towards cursor target
+            currentRotY += (targetRotY - currentRotY) * 0.07;
+            currentRotX += (targetRotX - currentRotX) * 0.07;
+            currentScale += (targetScale - currentScale) * 0.08;
+
+            // Subtle biological breathing / micro-jitter
+            const microIdleY = Math.sin(elapsedTime * 1.6) * 0.035;
+            const microIdleX = Math.cos(elapsedTime * 1.2) * 0.02;
+
+            faceGroup.rotation.y = currentRotY + microIdleY;
+            faceGroup.rotation.x = currentRotX + microIdleX;
+            faceGroup.scale.set(currentScale, currentScale, currentScale);
+
+            // Iris micro-pulse
+            const irisPulse = 0.8 + Math.sin(elapsedTime * 3) * 0.15;
+            irisMeshes.forEach(mesh => {
+                mesh.material.opacity = irisPulse;
+            });
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        console.log('[VANTA] Biometric 3D Face Mesh initialized');
+    }
+
+    initBioFace3D();
 
 
 

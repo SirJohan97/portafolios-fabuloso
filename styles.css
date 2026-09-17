@@ -11110,8 +11110,8 @@ html.lenis body {
 
 .bio-hud-box {
     position: relative;
-    width: 140px;
-    height: 140px;
+    width: 165px;
+    height: 165px;
     border: 1px dashed rgba(17, 212, 131, 0.25);
     display: flex;
     align-items: center;
@@ -11148,8 +11148,8 @@ html.lenis body {
 }
 
 .bio-face-silhouette {
-    width: 80px;
-    height: 96px;
+    width: 96px;
+    height: 115px;
     position: relative;
     z-index: 1;
 }
