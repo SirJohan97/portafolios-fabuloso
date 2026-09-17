@@ -3020,168 +3020,188 @@ function initEffectsScript() {
         }
     })();
 
-    /* ============================================================
-       ACTO 02.8: I+D LAB — PROYECTOS EN PRODUCCIÓN SCROLLYTELLING
-       Cinematic Pinned Narrative: Tensión, Incógnita & Revelación 3D
-       2 Chapters: 01 BehBAN (Laboratorios Behrens) → 02 GhostSense RF
-       Powered by GSAP ScrollTrigger + scrub 1.2
-       ============================================================ */
-    (function initRDPipelineScrollytelling() {
-        function setup() {
-            const container = document.querySelector('.rd-scrolly-container');
-            const ambientCanvas = document.getElementById('rdAmbientCanvas');
-            const chapters = document.querySelectorAll('.rd-chapter');
-            const pills = document.querySelectorAll('.rd-hud-pill');
 
-            if (!container || !chapters.length) return;
+    /* ============================================================
+       CINE PIPELINE — I+D LAB SCROLLYTELLING v2 (RECONSTRUIDO)
+       Arquitectura: GSAP Timeline scrub-linkeado, animación
+       línea-por-línea, transición cromática dentro del timeline.
+       300vh de scroll narrativo. scrub: 0.8 (preciso y fluido)
+       ============================================================ */
+    (function initCinePipeline() {
+        function setup() {
+            const section    = document.querySelector('.cine-pipeline');
+            const stage      = document.getElementById('cineStage');
+            const bg         = document.getElementById('cineBg');
+            const pills      = document.querySelectorAll('.cine-pill');
+            const ch1        = document.getElementById('cineCh1');
+            const ch2        = document.getElementById('cineCh2');
+            const ch1Hook    = document.getElementById('cineCh1Hook');
+            const ch1Reveal  = document.getElementById('cineCh1Reveal');
+            const ch1Card    = document.getElementById('cineCh1Card');
+            const ch2Hook    = document.getElementById('cineCh2Hook');
+            const ch2Reveal  = document.getElementById('cineCh2Reveal');
+            const ch2Card    = document.getElementById('cineCh2Card');
+
+            if (!section || !ch1 || !ch2) return;
             if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-            const chapterColors = [
-                'radial-gradient(circle 800px at 50% 50%, rgba(17, 212, 131, 0.22), rgba(3, 5, 8, 0.95) 70%, #030508 100%)', // 01 BehBAN (Behrens Emerald)
-                'radial-gradient(circle 800px at 50% 50%, rgba(0, 229, 255, 0.24), rgba(3, 5, 8, 0.95) 70%, #030508 100%)'  // 02 GhostSense (Phantom Cyan)
-            ];
+            // ─── Selectors ─────────────────────────────────────────────
+            const ch1Lines    = ch1Hook.querySelectorAll('.cine-line');
+            const ch1Eyebrow  = ch1Hook.querySelector('.cine-hook__eyebrow');
+            const ch1Sub      = ch1Hook.querySelector('.cine-hook__sub');
+            const ch2Lines    = ch2Hook.querySelectorAll('.cine-line');
+            const ch2Eyebrow  = ch2Hook.querySelector('.cine-hook__eyebrow');
+            const ch2Sub      = ch2Hook.querySelector('.cine-hook__sub');
 
-            let activeChapterIndex = -1;
+            // ─── INITIAL STATE (set before ScrollTrigger so nothing flashes) ──
+            // Chapter 1: visible with hook, reveal hidden
+            gsap.set(ch1, { opacity: 1, zIndex: 10 });
+            gsap.set(ch1Hook, { opacity: 1 });
+            gsap.set(ch1Eyebrow, { opacity: 0, y: 14 });
+            gsap.set(ch1Lines, { opacity: 0, y: 28, filter: 'blur(5px)' });
+            gsap.set(ch1Sub, { opacity: 0, y: 10 });
+            gsap.set(ch1Reveal, { opacity: 0, pointerEvents: 'none' });
+            gsap.set(ch1Card, { rotateX: 10, y: 40, scale: 0.97, transformOrigin: '50% 100%' });
 
-            function setActivePill(index) {
-                if (index === activeChapterIndex) return;
-                activeChapterIndex = index;
+            // Chapter 2: invisible (opacity only — no visibility:hidden, so scrub can reverse cleanly)
+            gsap.set(ch2, { opacity: 0, zIndex: 5, pointerEvents: 'none' });
+            gsap.set(ch2Hook, { opacity: 1 }); // hook opacity controlled by ch2 parent
+            gsap.set(ch2Eyebrow, { opacity: 0, y: 14 });
+            gsap.set(ch2Lines, { opacity: 0, y: 28, filter: 'blur(5px)' });
+            gsap.set(ch2Sub, { opacity: 0, y: 10 });
+            gsap.set(ch2Reveal, { opacity: 0, pointerEvents: 'none' });
+            gsap.set(ch2Card, { rotateX: 10, y: 40, scale: 0.97, transformOrigin: '50% 100%' });
+
+            // ─── PILL ACTIVE STATE helper ──────────────────────────────
+            let activePillIdx = -1;
+            function setPill(idx) {
+                if (idx === activePillIdx) return;
+                activePillIdx = idx;
                 pills.forEach((p, i) => {
-                    p.classList.toggle('active', i === index);
-                    p.setAttribute('aria-selected', i === index ? 'true' : 'false');
+                    p.classList.toggle('is-active', i === idx);
+                    p.setAttribute('aria-selected', i === idx ? 'true' : 'false');
                 });
-                if (ambientCanvas && chapterColors[index]) {
-                    ambientCanvas.style.background = chapterColors[index];
-                }
             }
+            setPill(0); // start with pill 0
 
-            // HUD pills click-to-jump
-            const pillTargets = [0.12, 0.65];
-            pills.forEach((pill) => {
-                pill.addEventListener('click', (e) => {
+            // ─── MASTER TIMELINE ───────────────────────────────────────
+            //
+            // 10 unidades totales (proporción):
+            //  0.0 → 1.0  : Entrada escalonada de incógnita Ch1 (eyebrow + líneas + subtitle)
+            //  1.0 → 3.0  : HOLD — usuario lee la incógnita
+            //  3.0 → 4.2  : LIFT incógnita Ch1 (sube+blur), ENTER reveal Ch1 simultáneo
+            //  4.2 → 5.8  : DWELL reveal Ch1 — el usuario lee la ficha técnica
+            //  5.2 → 6.0  : EXIT reveal Ch1, background shift verde→cian
+            //  5.8 → 7.2  : Entrada escalonada incógnita Ch2
+            //  7.2 → 8.8  : HOLD Ch2
+            //  8.8 → 9.6  : LIFT incógnita Ch2 + ENTER reveal Ch2
+            //  9.6 → 10.0 : DWELL reveal Ch2
+            //
+            const tl = gsap.timeline({ defaults: { ease: 'none' } });
+
+            // [0 → 1] ENTER incógnita Ch1
+            tl.to(ch1Eyebrow, { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 0)
+              .to(ch1Lines, {
+                    opacity: 1, y: 0, filter: 'blur(0px)',
+                    stagger: 0.14, duration: 0.22, ease: 'power3.out'
+                }, 0.12)
+              .to(ch1Sub, { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 0.62)
+
+            // [1 → 3] HOLD — empty tween to consume time
+              .to({}, { duration: 2 }, 1)
+
+            // [3 → 3.8] LIFT incógnita Ch1 (lines float up and blur out)
+              .to(ch1Eyebrow, { opacity: 0, y: -12, duration: 0.2, ease: 'power2.in' }, 3)
+              .to(ch1Lines, {
+                    opacity: 0, y: -35, filter: 'blur(8px)',
+                    stagger: { each: 0.07, from: 'end' }, duration: 0.28, ease: 'power2.in'
+                }, 3)
+              .to(ch1Sub, { opacity: 0, y: -10, duration: 0.2, ease: 'power2.in' }, 3)
+
+            // [3.2 → 4.4] ENTER reveal Ch1 (sweeps up from below)
+              .to(ch1Reveal, { opacity: 1, pointerEvents: 'auto', duration: 0.3, ease: 'power2.out' }, 3.2)
+              .to(ch1Card, {
+                    rotateX: 0, y: 0, scale: 1,
+                    duration: 0.65, ease: 'power3.out'
+                }, 3.2)
+
+            // [4.2 → 5.8] DWELL reveal Ch1
+              .to({}, { duration: 1.6 }, 4.2)
+
+            // [5.2 → 5.8] EXIT reveal Ch1 + background shift to cian
+              .to(ch1Card, { y: -22, scale: 0.97, opacity: 0, duration: 0.35, ease: 'power2.in' }, 5.2)
+              .to(ch1Reveal, { opacity: 0, pointerEvents: 'none', duration: 0.25 }, 5.2)
+              .to(ch1, { opacity: 0, duration: 0.2, ease: 'power1.in' }, 5.4)
+              // Chromatic shift verde → cian via GSAP (scrub-animable, NO CSS transition)
+              .to(bg, {
+                    background: 'radial-gradient(ellipse 900px 600px at 50% 40%, rgba(0,229,255,0.16) 0%, rgba(3,5,8,0) 70%)',
+                    duration: 0.9, ease: 'none'
+                }, 5.0)
+
+            // [5.8 → 7.0] ENTER Ch2 incógnita (opacity-only, no visibility for clean scrub)
+              .to(ch2, { opacity: 1, pointerEvents: 'auto', zIndex: 10, duration: 0.25, ease: 'power2.out' }, 5.7)
+              .to(ch2Eyebrow, { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 5.9)
+              .to(ch2Lines, {
+                    opacity: 1, y: 0, filter: 'blur(0px)',
+                    stagger: 0.14, duration: 0.22, ease: 'power3.out'
+                }, 6.0)
+              .to(ch2Sub, { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 6.5)
+
+            // [7.0 → 8.0] HOLD Ch2 (shorter hold → reveal enters earlier)
+              .to({}, { duration: 1.0 }, 7.0)
+
+            // [8.0 → 8.6] LIFT Ch2 incógnita
+              .to(ch2Eyebrow, { opacity: 0, y: -12, duration: 0.18, ease: 'power2.in' }, 8.0)
+              .to(ch2Lines, {
+                    opacity: 0, y: -35, filter: 'blur(8px)',
+                    stagger: { each: 0.06, from: 'end' }, duration: 0.24, ease: 'power2.in'
+                }, 8.0)
+              .to(ch2Sub, { opacity: 0, y: -10, duration: 0.16, ease: 'power2.in' }, 8.0)
+
+            // [8.3 → 9.0] ENTER reveal Ch2
+              .to(ch2Reveal, { opacity: 1, pointerEvents: 'auto', duration: 0.28, ease: 'power2.out' }, 8.3)
+              .to(ch2Card, {
+                    rotateX: 0, y: 0, scale: 1,
+                    duration: 0.6, ease: 'power3.out'
+                }, 8.3)
+
+            // [9.0 → 10.0] DWELL Ch2 (full card on screen, user reads)
+              .to({}, { duration: 1.0 }, 9.0);
+
+            // ─── ScrollTrigger — drives timeline with section's full height ─
+            // stage uses position:sticky CSS so we do NOT pin it with GSAP.
+            // We just use the section as trigger and drive the animation.
+            const st = ScrollTrigger.create({
+                trigger: section,
+                start: 'top 72px',
+                end: 'bottom bottom',
+                scrub: 0.8,
+                animation: tl,
+                onUpdate(self) {
+                    const p = self.progress;
+                    // Pill 0 active Ch1 (0–55%), Pill 1 Ch2 (55–100%)
+                    setPill(p < 0.55 ? 0 : 1);
+                }
+            });
+
+            // ─── Pill click-to-jump ────────────────────────────────────
+            pills.forEach(pill => {
+                pill.addEventListener('click', e => {
                     e.stopPropagation();
                     const idx = parseInt(pill.getAttribute('data-index') || '0', 10);
-                    if (st) {
-                        const targetProgress = pillTargets[idx] !== undefined ? pillTargets[idx] : idx * 0.5;
-                        const targetY = st.start + targetProgress * (st.end - st.start);
-                        if (window.lenis) {
-                            window.lenis.scrollTo(targetY, { duration: 1.4 });
-                        } else {
-                            window.scrollTo({ top: targetY, behavior: 'smooth' });
-                        }
+                    // idx 0 → jump to 15% progress, idx 1 → 58%
+                    const targets = [0.08, 0.58];
+                    const targetP = targets[idx] !== undefined ? targets[idx] : 0;
+                    const targetY = st.start + targetP * (st.end - st.start);
+                    if (window.lenis) {
+                        window.lenis.scrollTo(targetY, { duration: 1.6 });
+                    } else {
+                        window.scrollTo({ top: targetY, behavior: 'smooth' });
                     }
                 });
             });
 
-            // Initial setup for chapters
-            chapters.forEach((chapter, i) => {
-                const tag = chapter.querySelector('.rd-hook-tag');
-                const words = chapter.querySelectorAll('.rd-hook-word');
-                const subtitle = chapter.querySelector('.rd-hook-subtitle');
-                const showcaseWrap = chapter.querySelector('.rd-showcase-wrap');
-                const card = chapter.querySelector('.rd-showcase-card');
-
-                if (i === 0) {
-                    gsap.set(chapter, { autoAlpha: 1, zIndex: 10, pointerEvents: 'auto' });
-                    if (tag) gsap.set(tag, { opacity: 1 });
-                    if (words.length) gsap.set(words, { y: 0, opacity: 1, filter: 'blur(0px)' });
-                    if (subtitle) gsap.set(subtitle, { opacity: 1 });
-                    if (showcaseWrap) gsap.set(showcaseWrap, { autoAlpha: 0, pointerEvents: 'none' });
-                    if (card) gsap.set(card, { rotateX: 14, y: 50, scale: 0.94, transformOrigin: '50% 100%' });
-                } else {
-                    gsap.set(chapter, { autoAlpha: 0, zIndex: 5, pointerEvents: 'none' });
-                    if (tag) gsap.set(tag, { opacity: 0 });
-                    if (words.length) gsap.set(words, { y: 60, opacity: 0, filter: 'blur(4px)' });
-                    if (subtitle) gsap.set(subtitle, { opacity: 0 });
-                    if (showcaseWrap) gsap.set(showcaseWrap, { autoAlpha: 0, pointerEvents: 'none' });
-                    if (card) gsap.set(card, { rotateX: 14, y: 50, scale: 0.94, transformOrigin: '50% 100%' });
-                }
-            });
-
-            // Master Timeline with ScrollTrigger scrub
-            const masterTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-            function buildRDChapter(chapter, isFirst, enterLabel, revealLabel, exitLabel) {
-                const tag = chapter.querySelector('.rd-hook-tag');
-                const words = chapter.querySelectorAll('.rd-hook-word');
-                const subtitle = chapter.querySelector('.rd-hook-subtitle');
-                const showcaseWrap = chapter.querySelector('.rd-showcase-wrap');
-                const card = chapter.querySelector('.rd-showcase-card');
-
-                // 1. ENTER / HOLD INCOGNITA
-                if (isFirst) {
-                    // Chapter 01 starts visible: hold hook prominently
-                    masterTl.to({}, { duration: 0.4 });
-                } else {
-                    masterTl.to(chapter, { autoAlpha: 1, zIndex: 10, pointerEvents: 'auto', duration: 0.05 }, enterLabel);
-                    if (tag) masterTl.to(tag, { opacity: 1, duration: 0.2 }, enterLabel);
-                    if (words.length) {
-                        masterTl.to(words, {
-                            y: 0, opacity: 1, filter: 'blur(0px)',
-                            stagger: 0.06, duration: 0.45, ease: 'power4.out'
-                        }, `${enterLabel}+=0.05`);
-                    }
-                    if (subtitle) masterTl.to(subtitle, { opacity: 1, duration: 0.3 }, `${enterLabel}+=0.25`);
-                    masterTl.to({}, { duration: 0.4 }); // Hold mystery on screen
-                }
-
-                // 2. REVEAL SHOWCASE (Mystery lifts up and 3D card sweeps in)
-                if (tag) masterTl.to(tag, { opacity: 0, duration: 0.15 }, revealLabel);
-                if (words.length) {
-                    masterTl.to(words, {
-                        y: -45, opacity: 0, filter: 'blur(6px)',
-                        stagger: { each: 0.04, from: 'end' }, duration: 0.28
-                    }, revealLabel);
-                }
-                if (subtitle) masterTl.to(subtitle, { opacity: 0, duration: 0.2 }, revealLabel);
-
-                masterTl.set(chapter, { pointerEvents: 'auto' }, revealLabel);
-
-                if (showcaseWrap) {
-                    masterTl.to(showcaseWrap, { autoAlpha: 1, pointerEvents: 'auto', duration: 0.35 }, `${revealLabel}+=0.1`);
-                }
-                if (card) {
-                    masterTl.to(card, {
-                        rotateX: 0, y: 0, scale: 1,
-                        duration: 0.6, ease: 'power3.out'
-                    }, `${revealLabel}+=0.1`);
-                }
-
-                // Generous dwell time on the showcase
-                masterTl.to({}, { duration: 0.65 });
-
-                // 3. EXIT CHAPTER (Fade out and exit)
-                if (exitLabel) {
-                    if (card) masterTl.to(card, { y: -35, rotateX: -8, scale: 0.95, duration: 0.25 }, exitLabel);
-                    if (showcaseWrap) masterTl.to(showcaseWrap, { autoAlpha: 0, pointerEvents: 'none', duration: 0.2 }, exitLabel);
-                    masterTl.to(chapter, { autoAlpha: 0, pointerEvents: 'none', duration: 0.1 }, `${exitLabel}+=0.15`);
-                }
-            }
-
-            // Build Chapter 01 (BehBAN) and Chapter 02 (GhostSense RF)
-            buildRDChapter(chapters[0], true, null, 'rd0_reveal', 'rd0_exit');
-            if (chapters[1]) buildRDChapter(chapters[1], false, 'rd1_enter', 'rd1_reveal', null);
-
-            // ScrollTrigger
-            const st = ScrollTrigger.create({
-                trigger: container,
-                start: 'top top',
-                end: '+=240%',
-                pin: true,
-                pinSpacing: true,
-                scrub: 1.2,
-                animation: masterTl,
-                onUpdate: (self) => {
-                    const progress = self.progress;
-                    if (progress < 0.48) {
-                        setActivePill(0);
-                    } else {
-                        setActivePill(1);
-                    }
-                }
-            });
-
-            console.log('[VANTA] R&D Pipeline Scrollytelling initialized — 2 chapters, GSAP pin OK');
+            console.log('[VANTA] Cine Pipeline Scrollytelling v2 initialized — GSAP scrub 0.8, 300vh narrative');
         }
 
         if (document.readyState === 'loading') {
@@ -3190,6 +3210,8 @@ function initEffectsScript() {
             setup();
         }
     })();
+
+
 
 }
 
