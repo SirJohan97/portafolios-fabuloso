@@ -2824,9 +2824,9 @@ function initEffectsScript() {
                 const detailsStrip = chapter.querySelector('.km-details-strip');
                 const metricCards = chapter.querySelectorAll('.km-metric-card');
 
-                // 1. ENTER / HOLD HOOK
+                // 1. ENTER / HOLD HOOK (Generous dwell to absorb the narrative mystery)
                 if (isFirst) {
-                    masterTl.to({}, { duration: 0.35 });
+                    masterTl.to({}, { duration: 1.1 });
                 } else {
                     masterTl.to(chapter, { autoAlpha: 1, zIndex: 10, pointerEvents: 'auto', duration: 0.05 }, enterLabel);
                     if (numeral) masterTl.to(numeral, { autoAlpha: 0.85, scale: 1, y: 0, duration: 0.45, ease: 'power2.out' }, enterLabel);
@@ -2838,7 +2838,7 @@ function initEffectsScript() {
                         }, `${enterLabel}+=0.05`);
                     }
                     if (subtitle) masterTl.to(subtitle, { opacity: 1, duration: 0.3 }, `${enterLabel}+=0.25`);
-                    masterTl.to({}, { duration: 0.35 }); // Hold hook on screen
+                    masterTl.to({}, { duration: 0.9 }); // Hold hook on screen
                 }
 
                 // 2. REVEAL MASTERPIECE (Multi-Device Depth Stagger)
@@ -2899,7 +2899,7 @@ function initEffectsScript() {
                 }
 
                 // Generous dwell time on the operational masterpiece
-                masterTl.to({}, { duration: 0.65 });
+                masterTl.to({}, { duration: 1.1 });
 
                 // 3. EXIT CHAPTER
                 if (exitLabel) {
@@ -2923,6 +2923,7 @@ function initEffectsScript() {
                 start: 'top top',
                 end: 'bottom bottom',
                 scrub: 1.2,
+                refreshPriority: 5,
                 animation: masterTl,
                 onEnter: () => {
                     if (window.setVantaTheme) {

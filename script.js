@@ -1,105 +1,10 @@
 /* =========================================
-   0. CINEMATIC PRELOADER
+   0. PRELOADER DELEGATION
+   Handled with full cinematic authority by preloader-v.js (Monumental GSAP FLIP reveal)
    ========================================= */
 (function() {
-    const _preloader = document.getElementById('preloader');
-    if (!_preloader) return;
-
-    /* --- Canvas de partículas flotantes fondo --- */
-    const plCanvas = document.getElementById('preloader-canvas');
-    const plCtx    = plCanvas ? plCanvas.getContext('2d') : null;
-    let plParticles = [];
-    let plRafId;
-
-    function initPlCanvas() {
-        if (!plCtx) return;
-        plCanvas.width  = window.innerWidth;
-        plCanvas.height = window.innerHeight;
-
-        // Generar 60 partículas flotantes
-        plParticles = Array.from({ length: 60 }, () => ({
-            x: Math.random() * plCanvas.width,
-            y: Math.random() * plCanvas.height,
-            r: Math.random() * 1.5 + 0.4,
-            vx: (Math.random() - 0.5) * 0.4,
-            vy: (Math.random() - 0.5) * 0.4,
-            alpha: Math.random() * 0.5 + 0.1
-        }));
-
-        animatePl();
-    }
-
-    function animatePl() {
-        if (!plCtx) return;
-        // Fondo oscuro semi-sólido (el canvas sirve como fondo del preloader)
-        plCtx.fillStyle = 'rgba(5, 5, 5, 0.96)';
-        plCtx.fillRect(0, 0, plCanvas.width, plCanvas.height);
-        plParticles.forEach(p => {
-            p.x += p.vx; p.y += p.vy;
-            if (p.x < 0) p.x = plCanvas.width;
-            if (p.x > plCanvas.width) p.x = 0;
-            if (p.y < 0) p.y = plCanvas.height;
-            if (p.y > plCanvas.height) p.y = 0;
-            plCtx.beginPath();
-            plCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            plCtx.fillStyle = `rgba(17,212,131,${p.alpha})`;
-            plCtx.fill();
-        });
-        plRafId = requestAnimationFrame(animatePl);
-    }
-
-    initPlCanvas();
-
-    /* --- Barra de progreso y contador animados --- */
-    const plFill = document.querySelector('.pl-fill');
-    const plPct  = document.getElementById('pl-pct');
-    let progress = 0;
-    
-    // Optimización Awwwards: Preloader corto en visitas recurrentes
-    const hasVisited = sessionStorage.getItem('vanta-preloader-seen');
-    const TOTAL_MS = hasVisited ? 500 : 2800; // 500ms si ya visitó la página
-    if (!hasVisited) {
-        sessionStorage.setItem('vanta-preloader-seen', 'true');
-    }
-    
-    const start = performance.now();
-
-    function updateProgress(now) {
-        const elapsed = now - start;
-        const raw = Math.min(elapsed / TOTAL_MS, 1);
-        progress = raw < 0.7
-            ? raw / 0.7 * 85
-            : 85 + (raw - 0.7) / 0.3 * 15;
-        progress = Math.min(progress, 100);
-
-        if (plFill) plFill.style.width = progress + '%';
-        if (plPct)  plPct.textContent  = Math.floor(progress) + '%';
-
-        if (progress < 100) {
-            requestAnimationFrame(updateProgress);
-        }
-    }
-    requestAnimationFrame(updateProgress);
-
-    /* --- Reveal: cortinas + fade del preloader --- */
-    window.setTimeout(() => {
-        cancelAnimationFrame(plRafId);
-        _preloader.classList.add('preloader-hidden');
-
-        // Las cortinas tardan 750ms en abrirse → activamos el Blueprint cuando terminen
-        setTimeout(() => {
-            _preloader.style.display = 'none';
-            // Liberamos la animación del Blueprint exactamente al finalizarse el reveal
-            const blueprintEl = document.querySelector('.blueprint-container');
-            if (blueprintEl) {
-                blueprintEl.classList.remove('blueprint-paused');
-            }
-            // Disparar la entrada dramática de la V 3D
-            if (window.play3DVEntranceAnimation) {
-                window.play3DVEntranceAnimation();
-            }
-        }, 800);
-    }, TOTAL_MS);
+    // Delegated to preloader-v.js
+    console.log('[VANTA] Preloader delegated to preloader-v.js');
 })();
 
 /* =========================================
@@ -549,8 +454,10 @@ function initMainScript() {
         // 1. Dynamic Island: Se transforma en cápsula flotante centrada
         if (p > 0.25) {
             navbar.classList.add('scrolled');
+            document.body.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
+            document.body.classList.remove('scrolled');
         }
 
         // Limpieza de inline styles para ceder control a las clases CSS
@@ -2733,6 +2640,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         }
 
         const scene = new THREE.Scene();
+        window.__debugScene = scene;
         const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.set(0, 0, 7.5);
 
@@ -2741,124 +2649,57 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
         container.appendChild(renderer.domElement);
 
-        // 1. Crear Textura Programática de Partícula con Gradiente Radial
-        function createParticleTexture() {
-            const canvas = document.createElement('canvas');
-            const size = 32;
-            canvas.width = size;
-            canvas.height = size;
-            const ctx = canvas.getContext('2d');
-            const centerX = size / 2;
-            const centerY = size / 2;
-            const radius = size / 2;
+        // ====================================================================
+        // LUSION / ARISTIDE BENOIST LUXURY 3D CENTERPIECE
+        // Liquid Obsidian Glass Parametric Monolith with Real-time Specular Physics
+        // ====================================================================
 
-            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-            gradient.addColorStop(0, 'rgba(255,255,255,1.0)');
-            gradient.addColorStop(0.3, 'rgba(17,212,131,0.85)');
-            gradient.addColorStop(1.0, 'rgba(0,0,0,0)');
-            
-            // Define the circular path for the particle shape
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-            ctx.closePath();
-            
-            ctx.fillStyle = gradient;
-            ctx.fill();
+        // 1. Studio Lighting System (Chiaroscuro Cinematic Lights)
+        const ambientLight = new THREE.AmbientLight(0x0a1018, 1.4);
+        scene.add(ambientLight);
 
-            const tex = new THREE.CanvasTexture(canvas);
-            tex.needsUpdate = true;
-            return tex;
-        }
+        // Key Light: Emerald Specular Rim
+        const keyLight = new THREE.DirectionalLight(0x11d483, 3.8);
+        keyLight.position.set(4.5, 4.0, 5.0);
+        scene.add(keyLight);
 
-        // 2. Configuración de 2,400 Partículas Gravitacionales de Alta Densidad (Optimizado para 60/120 FPS)
-        const particleCount = 2400; 
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(particleCount * 3);
-        const colors = new Float32Array(particleCount * 3);
-        
-        const nodeData = [];             // Posiciones target de la V
-        const disintegrationOffsets = []; // Offsets de disolución cíclica
-        const homeDistances = new Float32Array(particleCount); // Precalculado de distancias
-        
-        const maxHomeRadius = 5.0;
-        let shockwaves = [];             // Cola de ondas expansivas
+        // Fill Light: Cyan Edge Refraction
+        const fillLight = new THREE.DirectionalLight(0x00e5ff, 2.8);
+        fillLight.position.set(-4.5, -3.0, -2.0);
+        scene.add(fillLight);
 
-        // Generar coordenadas tridimensionales de la V y envolvente cuántica
-        for (let i = 0; i < particleCount; i++) {
-            let x, y, z;
-            const isHalo = i >= 1800; // 600 partículas para aura de stardust ambiental
+        // Top Specular Highlight
+        const topLight = new THREE.DirectionalLight(0xffffff, 2.2);
+        topLight.position.set(0, 6.0, 3.0);
+        scene.add(topLight);
 
-            if (isHalo) {
-                // Aura estelar sutil alrededor de la V
-                const ang = Math.random() * Math.PI * 2;
-                const rad = 0.4 + Math.random() * 2.2;
-                x = Math.cos(ang) * rad * 0.9;
-                y = (Math.sin(ang) * rad * 1.1) - 0.2;
-                z = (Math.random() - 0.5) * 1.2;
-            } else if (i < 900) {
-                // Rama izquierda de la V (t de 0 a 1)
-                const t = i / 900;
-                x = -1.35 * (1 - t);
-                y = 1.95 * (1 - t) - 1.55 * t;
-                const rOffset = Math.random() * 0.18;
-                const thetaOffset = Math.random() * Math.PI * 2;
-                x += Math.cos(thetaOffset) * rOffset;
-                y += Math.sin(thetaOffset) * rOffset;
-                z = (Math.random() - 0.5) * 0.45;
-            } else {
-                // Rama derecha de la V (t de 0 a 1)
-                const t = (i - 900) / 900;
-                x = 1.35 * (1 - t);
-                y = 1.95 * (1 - t) - 1.55 * t;
-                const rOffset = Math.random() * 0.18;
-                const thetaOffset = Math.random() * Math.PI * 2;
-                x += Math.cos(thetaOffset) * rOffset;
-                y += Math.sin(thetaOffset) * rOffset;
-                z = (Math.random() - 0.5) * 0.45;
-            }
+        // Interactive Cursor Point Light (follows mouse in 3D world space)
+        const cursorPointLight = new THREE.PointLight(0x11d483, 3.5, 12, 1.8);
+        cursorPointLight.position.set(0, 0, 4.0);
+        scene.add(cursorPointLight);
 
-            positions[i * 3] = x;
-            positions[i * 3 + 1] = y;
-            positions[i * 3 + 2] = z;
+        // 2. High-Poly Parametric Sculpture Geometry (Mobius Infinite Topology)
+        const sculptureGeo = new THREE.TorusKnotGeometry(1.65, 0.48, 160, 36, 2, 3);
+        const originalPositions = Float32Array.from(sculptureGeo.attributes.position.array);
 
-            const vec = new THREE.Vector3(x, y, z);
-            nodeData.push(vec);
-            homeDistances[i] = vec.length() + 1e-6;
-
-            colors[i * 3] = 0.5;
-            colors[i * 3 + 1] = 1.0;
-            colors[i * 3 + 2] = 0.7;
-
-            const offsetStrength = 5.0 + Math.random() * 6.0;
-            const phi = Math.random() * Math.PI * 2;
-            const theta = Math.acos(2 * Math.random() - 1);
-            disintegrationOffsets.push(new THREE.Vector3(
-                Math.sin(theta) * Math.cos(phi) * offsetStrength,
-                Math.sin(theta) * Math.sin(phi) * offsetStrength,
-                Math.cos(theta) * offsetStrength * 0.3
-            ));
-        }
-
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-        // Material premium con AdditiveBlending y tamaño aumentado para densidad
-        const logoMaterial = new THREE.PointsMaterial({
-            size: 7.0,              // 7 píxeles de pantalla exactos
-            sizeAttenuation: false, // Desactivar atenuación para nitidez perfecta sin importar la cámara
-            map: createParticleTexture(),
-            vertexColors: true,
+        // 3. Liquid Obsidian Chrome / Physical Glass Material
+        const sculptureMat = new THREE.MeshPhysicalMaterial({
+            color: 0x05070a,             // Ultra-deep obsidian black
+            roughness: 0.12,             // Mirror-like liquid smoothness
+            metalness: 0.90,             // Chrome reflectivity
+            clearcoat: 1.0,              // Optical glass lacquer coating
+            clearcoatRoughness: 0.08,
+            reflectivity: 0.96,
+            ior: 1.68,
             transparent: true,
-            opacity: 0.85,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-            alphaTest: 0.005
+            opacity: 0.96,
+            wireframe: false
         });
 
-        const points = new THREE.Points(geometry, logoMaterial);
-        
+        const sculptureMesh = new THREE.Mesh(sculptureGeo, sculptureMat);
         const logoGroup = new THREE.Group();
-        logoGroup.add(points);
+        logoGroup.add(sculptureMesh);
+
         logoGroup.scale.setScalar(1.0);
         scene.add(logoGroup);
 
@@ -2884,19 +2725,17 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             originalZ[i] = terrainPosAttr.getZ(i);
         }
 
-        // Posicionamiento responsivo del logo
+        // Posicionamiento responsivo del logo: Centrado en el lienzo mundial para el Spatial Sandwich
         const updateLogoPosition = () => {
-            if (window.innerWidth > 991) {
-                logoGroup.position.x = 3.3; // Totalmente a la derecha en escritorio
-            } else {
-                logoGroup.position.x = 0;   // Centrado en móviles
-            }
+            logoGroup.position.x = 0;
+            logoGroup.position.y = (window.innerWidth > 991 ? -0.1 : 0);
         };
         updateLogoPosition();
 
         // Variables de interacción y física de scroll
         let mouseX = 0, mouseY = 0;
         let targetX = 0, targetY = 0;
+        let normMouseX = 0, normMouseY = 0;
         let lastScrollY = window.scrollY || window.pageYOffset || 0;
         let scrollVelocity = 0;
         let flowOffset = 0;
@@ -2904,8 +2743,10 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         let logoRotationObj = { y: 0.0 };
 
         window.addEventListener('mousemove', (e) => {
-            targetX = (e.clientX - window.innerWidth / (window.innerWidth > 991 ? 1.4 : 2)) * 0.0006;
-            targetY = (e.clientY - window.innerHeight / 2) * 0.0006;
+            normMouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            normMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+            targetX = (e.clientX - window.innerWidth / 2) * 0.0007;
+            targetY = (e.clientY - window.innerHeight / 2) * 0.0007;
         });
 
         window.addEventListener('resize', () => {
@@ -2915,12 +2756,69 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             updateLogoPosition();
         });
 
-        // Disparador de Shockwaves al hacer click en el Hero
-        window.addEventListener('click', (e) => {
-            if (window.scrollY < window.innerHeight * 0.8) {
-                triggerShockwave({ amplitude: 7.5, speed: 12.0, width: 0.8, decay: 1.25 });
+        // Mecánica "Press & Hold" (Quantum Overcharge — Resn)
+        let isHolding = false;
+        let holdCharge = 0.0;
+
+        window.addEventListener('mousedown', (e) => {
+            if (window.scrollY < window.innerHeight * 0.85 && !e.target.closest('a, button, input, textarea')) {
+                isHolding = true;
+                const hint = document.getElementById('hero-interaction-hint');
+                if (hint) hint.classList.add('charging');
+                if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.startOvercharge === 'function') {
+                    window.VANTA_AUDIO.startOvercharge();
+                }
             }
         });
+
+        window.addEventListener('mouseup', () => {
+            if (isHolding) {
+                isHolding = false;
+                const hint = document.getElementById('hero-interaction-hint');
+                if (hint) hint.classList.remove('charging');
+                if (holdCharge > 0.28) {
+                    triggerShockwave({ amplitude: 12.0 * holdCharge + 4.0, speed: 18.0, width: 1.2, decay: 1.1 });
+                    if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.stopOvercharge === 'function') {
+                        window.VANTA_AUDIO.stopOvercharge(true);
+                    }
+                } else {
+                    if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.stopOvercharge === 'function') {
+                        window.VANTA_AUDIO.stopOvercharge(false);
+                    }
+                }
+                holdCharge = 0.0;
+            }
+        });
+
+        window.addEventListener('touchstart', (e) => {
+            if (window.scrollY < window.innerHeight * 0.85 && !e.target.closest('a, button, input, textarea')) {
+                isHolding = true;
+                const hint = document.getElementById('hero-interaction-hint');
+                if (hint) hint.classList.add('charging');
+                if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.startOvercharge === 'function') {
+                    window.VANTA_AUDIO.startOvercharge();
+                }
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => {
+            if (isHolding) {
+                isHolding = false;
+                const hint = document.getElementById('hero-interaction-hint');
+                if (hint) hint.classList.remove('charging');
+                if (holdCharge > 0.28) {
+                    triggerShockwave({ amplitude: 12.0 * holdCharge + 4.0, speed: 18.0, width: 1.2, decay: 1.1 });
+                    if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.stopOvercharge === 'function') {
+                        window.VANTA_AUDIO.stopOvercharge(true);
+                    }
+                } else {
+                    if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.stopOvercharge === 'function') {
+                        window.VANTA_AUDIO.stopOvercharge(false);
+                    }
+                }
+                holdCharge = 0.0;
+            }
+        }, { passive: true });
 
         function triggerShockwave(opts = {}) {
             const { amplitude = 7.5, speed = 12.0, width = 0.8, decay = 1.25 } = opts;
@@ -2948,8 +2846,11 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                 logoRotationObj.y = 0.0;
             }
             
-            // Destello flash blanco (se lerpea en el bucle animate)
-            logoMaterial.color.setRGB(2.5, 2.5, 2.5);
+            // Destello flash blanco sutil en el material
+            if (typeof sculptureMat !== 'undefined') {
+                sculptureMat.emissive = new THREE.Color(0x11d483);
+                sculptureMat.emissiveIntensity = 0.4;
+            }
         };
 
         // Resiliencia: si las cortinas ya se abrieron, arrancar animación
@@ -3003,7 +2904,12 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             if (window.currentPrimaryColor) {
                 primaryColor.setStyle(window.currentPrimaryColor);
             }
-            logoMaterial.color.lerp(primaryColor, 0.06);
+            if (typeof sculptureMat !== 'undefined' && sculptureMat.emissiveIntensity > 0) {
+                sculptureMat.emissiveIntensity *= 0.95;
+            }
+            if (typeof cursorPointLight !== 'undefined') {
+                cursorPointLight.color.lerp(primaryColor, 0.06);
+            }
             terrainMaterial.color.lerp(primaryColor, 0.06);
 
             // --- V LOGO (solo en Hero) ---
@@ -3012,138 +2918,55 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
             let warpBlast = 0;
             if (inHero) {
-                const swayY = Math.sin(time * 0.2) * 0.08;
-                const swayX = Math.cos(time * 0.15) * 0.04;
-                logoGroup.rotation.y = logoRotationObj.y + swayY + mouseX * 0.65;
-                logoGroup.rotation.x = swayX + mouseY * 0.55;
+                // Interactive 3D Cursor Lighting (Dynamic Specular Caustics)
+                cursorPointLight.position.x = mouseX * 5.5;
+                cursorPointLight.position.y = mouseY * 4.5;
 
-                if (isWarpActive && warpP > 0) {
-                    // --- 3D WARP SPEED PORTAL DRIVE ---
-                    // 1. Centering the V as hyperspace initiates (0% to 35%)
-                    const centerFactor = Math.min(1.0, warpP / 0.35);
-                    const baseX = (window.innerWidth > 991 ? 3.3 : 0);
-                    logoGroup.position.x = baseX * (1.0 - centerFactor);
-                    logoGroup.position.y = -0.7 * (1.0 - centerFactor);
-
-                    // 2. Camera Plunge: accelerates forward through the V towards Z = -3.0
-                    const plunge = Math.pow(warpP, 1.8);
-                    camera.position.z = 7.5 - plunge * 10.5;
-
-                    // 3. Optical FOV expansion (hyper-tunnel distortion 50 -> 78)
-                    camera.fov = 50 + Math.pow(warpP, 1.5) * 28;
-                    camera.updateProjectionMatrix();
-
-                    // 4. Logo Scale & Opacity
-                    logoGroup.scale.setScalar(0.92 * (1.0 + warpP * 0.5) * logoScaleObj.value);
-                    const logoOpacity = (warpP < 0.72) ? 0.85 : Math.max(0, (1.0 - (warpP - 0.72) / 0.28) * 0.85);
-                    logoMaterial.opacity = logoOpacity;
-
-                    // 5. Hyperspace blast force for particle dispersal
-                    warpBlast = (warpP > 0.03) ? Math.pow(warpP, 2.3) * 24.0 : 0;
-                } else {
-                    // Standard hero idle state
-                    if (camera.position.z !== 7.5) {
-                        camera.position.set(0, 0, 7.5);
-                    }
-                    if (camera.fov !== 50) {
-                        camera.fov = 50;
-                        camera.updateProjectionMatrix();
-                    }
-                    updateLogoPosition();
-                    const logoOpacity = Math.max(0, 1.0 - progress * 2.5);
-                    logoMaterial.opacity = logoOpacity * 0.85;
-                    logoGroup.scale.setScalar(0.92 * (1.0 - progress * 0.35) * logoScaleObj.value);
-                    logoGroup.position.y = -0.7 + progress * 3.2;
-                }
-
-                // Partículas de la V
-                const posAttr = geometry.getAttribute('position');
-                const colAttr = geometry.getAttribute('color');
+                // Fluid Organic Vertex Rippling (Living Liquid Obsidian — Lusion standard)
+                const posAttr = sculptureGeo.attributes.position;
                 const posArray = posAttr.array;
-                const colArray = colAttr.array;
+                const waveTime = time * 1.35;
+                const mx = mouseX * 2.5;
+                const my = mouseY * 2.5;
 
-                const waveSpeed = 1.3;
-                const waveFreqY = 0.75;
-                const waveFreqX = 0.55;
-                const pulseSpeed = 1.6;
-                const pulseLength = 1.1;
-                const pulseCenter = -1.6 + ((time * pulseSpeed) % (3.6 + pulseLength));
+                for (let i = 0; i < posArray.length; i += 3) {
+                    const ox = originalPositions[i];
+                    const oy = originalPositions[i + 1];
+                    const oz = originalPositions[i + 2];
 
-                // Cursor Gravitational Interaction Coordinates
-                const mouseWorldX = (mouseX / 0.0006) * 0.004;
-                const mouseWorldY = (-mouseY / 0.0006) * 0.004;
+                    const wave = Math.sin(waveTime + ox * 1.6 + oy * 1.2) * 0.075
+                               + Math.cos(waveTime * 0.9 + oz * 1.8) * 0.045;
 
-                for (let i = 0; i < particleCount; i++) {
-                    const i3 = i * 3;
-                    const home = nodeData[i];
-                    const dist = homeDistances[i];
+                    const dCursor = Math.hypot(ox - mx, oy - my);
+                    const cursorRipple = Math.exp(-dCursor * 1.6) * 0.15 * Math.sin(time * 4.0 - dCursor * 2.8);
 
-                    const waveX = Math.sin(time * waveSpeed + home.y * waveFreqY) * 0.12;
-                    const waveY = Math.cos(time * waveSpeed * 0.85 + home.x * waveFreqX) * 0.08;
-                    const waveZ = Math.sin(time * waveSpeed * 1.1 + (home.x + home.y) * 0.5) * 0.08;
-
-                    const distToPulse = Math.abs(home.y - pulseCenter);
-                    let pulseFactor = 0.0;
-                    if (distToPulse < pulseLength) {
-                        pulseFactor = Math.cos((distToPulse / pulseLength) * Math.PI * 0.5);
-                    }
-
-                    const pulseDisplace = pulseFactor * 0.07;
-                    const dirX = home.x > 0 ? 1.0 : -1.0;
-
-                    // Micro-gravitational swirl near mouse
-                    const dx = posArray[i3] - mouseWorldX;
-                    const dy = posArray[i3 + 1] - mouseWorldY;
-                    const mDistSq = dx * dx + dy * dy + 0.15;
-                    let gravX = 0, gravY = 0;
-                    if (mDistSq < 4.0) {
-                        const mForce = 0.12 / mDistSq;
-                        gravX = -dy * mForce * 0.8 + dx * mForce * 0.4;
-                        gravY = dx * mForce * 0.8 + dy * mForce * 0.4;
-                    }
-
-                    let addX = 0, addY = 0, addZ = 0;
-                    for (let w = 0; w < shockwaves.length; w++) {
-                        const sw = shockwaves[w];
-                        const elapsed = Math.max(0, time - sw.t0);
-                        const R = sw.speed * elapsed;
-                        const sigma = sw.width;
-                        const decayFactor = Math.exp(-sw.decay * elapsed);
-                        const g = Math.exp(-((dist - R) * (dist - R)) / (2 * sigma * sigma));
-                        const amp = sw.amplitude * g * decayFactor;
-                        addX += (home.x / dist) * amp;
-                        addY += (home.y / dist) * amp;
-                        addZ += (home.z / dist) * amp * 0.5;
-                    }
-
-                    if (warpBlast > 0) {
-                        addX += (home.x * 2.2 + disintegrationOffsets[i].x * 0.45) * warpBlast;
-                        addY += (home.y * 2.2 + disintegrationOffsets[i].y * 0.45) * warpBlast;
-                        addZ += (home.z * 1.5 + disintegrationOffsets[i].z * 1.3) * warpBlast;
-                    }
-
-                    const lerpFactor = (warpBlast > 0) ? 0.14 : 0.085;
-                    posArray[i3]     += (home.x + waveX + (dirX * pulseDisplace) + addX + gravX - posArray[i3]) * lerpFactor;
-                    posArray[i3 + 1] += (home.y + waveY + addY + gravY - posArray[i3 + 1]) * lerpFactor;
-                    posArray[i3 + 2] += (home.z + waveZ + addZ - posArray[i3 + 2]) * lerpFactor;
-
-                    let bright = 0.55 + Math.sin(time * 2.2 + (i % 8)) * 0.12 + pulseFactor * 1.1;
-                    if (warpBlast > 0) {
-                        bright *= (1.0 + Math.min(warpBlast * 0.15, 3.2));
-                    }
-                    colArray[i3]     = logoMaterial.color.r * bright;
-                    colArray[i3 + 1] = logoMaterial.color.g * bright;
-                    colArray[i3 + 2] = logoMaterial.color.b * bright;
+                    const factor = 1.0 + wave + cursorRipple;
+                    posArray[i]     = ox * factor;
+                    posArray[i + 1] = oy * factor;
+                    posArray[i + 2] = oz * factor;
                 }
                 posAttr.needsUpdate = true;
-                colAttr.needsUpdate = true;
+                sculptureGeo.computeVertexNormals();
 
-                // Limpiar shockwaves vencidas
-                if (shockwaves.length) {
-                    shockwaves = shockwaves.filter(sw => (time - sw.t0) < 3.0);
+                // Silky Gaze Tracking & Continuous Parametric Inertia
+                const swayY = Math.sin(time * 0.22) * 0.04;
+                const swayX = Math.cos(time * 0.18) * 0.03;
+                sculptureMesh.rotation.y += (time * 0.14 + mouseX * 0.85 + swayY - sculptureMesh.rotation.y) * 0.04;
+                sculptureMesh.rotation.x += (mouseY * 0.65 + swayX - sculptureMesh.rotation.x) * 0.04;
+
+                // Scrollytelling Transition (Aristide Benoist Luxury Flow)
+                if (isWarpActive && warpP > 0) {
+                    sculptureMesh.position.y = -warpP * 1.8;
+                    sculptureMesh.position.z = -warpP * 5.5;
+                    sculptureMesh.scale.setScalar((1.0 - warpP * 0.4) * logoScaleObj.value);
+                    sculptureMat.opacity = Math.max(0.0, 1.0 - warpP * 0.85);
+                } else {
+                    sculptureMesh.position.set(0, (window.innerWidth > 991 ? -0.05 : 0), 0);
+                    sculptureMesh.scale.setScalar(1.0 * logoScaleObj.value);
+                    sculptureMat.opacity = 0.96;
                 }
             } else {
-                logoMaterial.opacity = 0;
+                sculptureMat.opacity = 0.0;
                 if (camera.position.z !== 7.5) {
                     camera.position.set(0, 0, 7.5);
                     camera.fov = 50;

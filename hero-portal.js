@@ -1,179 +1,146 @@
 /* ====================================================================
-   HERO-PORTAL.JS — Acto 1: Warp Speed Portal (Awwwards Scrollytelling)
-   Pins #home and scrub-drives:
-   1. Monumental kinetic typography explosion & 3D text detachment
-   2. Three.js camera hyperjump through the quantum particle V
-   3. Dual neon portal rings & optical vignette reveal
+   HERO-PORTAL.JS — Acto 1: Luxury Minimalist Scrollytelling
+   Aristide Benoist / Lusion continuous editorial transition.
+   Smoothly lifts headline and translates the 3D Liquid Obsidian
+   sculpture into the background pedestal for Act 2 (Flagship Works).
    ==================================================================== */
 
-(function initHeroWarpPortal() {
+(function initHeroEditorialScrolly() {
     'use strict';
 
     function setup() {
         if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-            setTimeout(setup, 100);
+            setTimeout(setup, 80);
             return;
         }
 
         const hero = document.getElementById('home');
         if (!hero) return;
 
-        // Ensure GSAP plugins are registered
         gsap.registerPlugin(ScrollTrigger);
 
-        const prefix = hero.querySelector('.htm-prefix');
-        const highlight = hero.querySelector('.htm-highlight');
-        const line2 = hero.querySelector('.htm-line-2');
-        const eyebrow = hero.querySelector('.hero-eyebrow-tag');
-        const subRow = hero.querySelector('.hero-sub-row');
-        const miniBento = hero.querySelector('.hero-mini-bento');
-        const btns = hero.querySelector('.hero-btns');
-        const hudBottom = hero.querySelector('.hero-hud-bottom');
-        const hudDecor = hero.querySelectorAll('.hero-hud-decor');
-        const scrollInd = hero.querySelector('.hero-scroll-indicator');
-
-        const portalStage = hero.querySelector('.hero-portal-stage');
-        const ringOuter = hero.querySelector('.hero-portal-ring.ring-outer');
-        const ringInner = hero.querySelector('.hero-portal-ring.ring-inner');
-        const coreGlow = hero.querySelector('.hero-portal-core-glow');
-        const vortex = hero.querySelector('.hero-portal-vortex');
-        const heroCenter = hero.querySelector('.hero-center-layout');
+        const container = hero.querySelector('.hero-editorial-container');
+        const eyebrow = hero.querySelector('.hero-eyebrow-container');
+        const title = hero.querySelector('.hero-title-editorial');
+        const titleLines = hero.querySelectorAll('.hte-line');
+        const description = hero.querySelector('.hero-description-editorial');
+        const actions = hero.querySelector('.hero-actions-editorial');
+        const scrollIndicator = hero.querySelector('.hero-scroll-indicator');
 
         // Global progress tracking for Three.js engine coupling
         window.__heroWarpProgress = 0.0;
-        window.__heroPinDistance = window.innerHeight;
+        window.__heroPinDistance = window.innerHeight * 0.9;
 
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: hero,
                 start: 'top top',
-                end: () => `+=${window.innerHeight}`,
+                end: () => `+=${window.innerHeight * 0.9}`,
                 pin: true,
-                pinSpacing: false,
-                scrub: 0.8,
+                pinSpacing: true,
+                scrub: 0.6,
                 anticipatePin: 1,
+                refreshPriority: 10,
                 invalidateOnRefresh: true,
                 onUpdate: (self) => {
                     window.__heroWarpProgress = self.progress;
+                    if (self.progress > 0.95) {
+                        hero.style.pointerEvents = 'none';
+                    } else {
+                        hero.style.pointerEvents = 'auto';
+                    }
                 },
                 onLeave: () => {
                     window.__heroWarpProgress = 1.0;
+                    hero.style.pointerEvents = 'none';
                 },
                 onEnterBack: () => {
                     window.__heroWarpProgress = 1.0;
+                    hero.style.pointerEvents = 'auto';
                 },
                 onLeaveBack: () => {
                     window.__heroWarpProgress = 0.0;
+                    hero.style.pointerEvents = 'auto';
                 }
             }
         });
 
-        // 1. Tactical UI Retreat (0.00 -> 0.22)
-        const uiTargets = [eyebrow, subRow, miniBento, btns, hudBottom, scrollInd, ...hudDecor].filter(Boolean);
-        if (uiTargets.length) {
-            tl.to(uiTargets, {
-                y: 35,
+        // 1. Minimal UI Retreat (0.00 -> 0.35)
+        if (scrollIndicator) {
+            tl.to(scrollIndicator, {
+                y: 15,
                 opacity: 0,
-                filter: 'blur(8px)',
-                stagger: 0.02,
-                duration: 0.22,
-                ease: 'power2.inOut'
+                duration: 0.15,
+                ease: 'power2.in'
             }, 0);
         }
 
-        // 2. Kinetic Text Detonation (0.04 -> 0.55)
-        if (prefix) {
-            tl.to(prefix, {
-                x: -140,
-                y: -70,
-                scale: 1.15,
+        if (actions) {
+            tl.to(actions, {
+                y: -25,
                 opacity: 0,
-                filter: 'blur(14px)',
+                filter: 'blur(6px)',
+                duration: 0.25,
+                ease: 'power2.in'
+            }, 0.05);
+        }
+
+        if (description) {
+            tl.to(description, {
+                y: -30,
+                opacity: 0,
+                filter: 'blur(8px)',
+                duration: 0.28,
+                ease: 'power2.in'
+            }, 0.08);
+        }
+
+        if (eyebrow) {
+            tl.to(eyebrow, {
+                y: -20,
+                opacity: 0,
+                duration: 0.20,
+                ease: 'power2.in'
+            }, 0.10);
+        }
+
+        // 2. Authoritative Headline Cinematic Float (0.12 -> 0.65)
+        if (titleLines && titleLines.length) {
+            tl.to(titleLines, {
+                y: -55,
+                opacity: 0,
+                filter: 'blur(16px)',
+                stagger: 0.05,
                 duration: 0.45,
-                ease: 'power2.in'
-            }, 0.04);
-        }
-
-        if (line2) {
-            tl.to(line2, {
-                x: 140,
-                y: 70,
-                scale: 1.15,
+                ease: 'power2.inOut'
+            }, 0.12);
+        } else if (title) {
+            tl.to(title, {
+                y: -55,
                 opacity: 0,
-                filter: 'blur(14px)',
+                filter: 'blur(16px)',
                 duration: 0.45,
-                ease: 'power2.in'
-            }, 0.04);
+                ease: 'power2.inOut'
+            }, 0.12);
         }
 
-        if (highlight) {
-            // "SOBREVIVEN" detaches as a 3D projectile charging straight into the camera
-            tl.to(highlight, {
-                scale: 3.6,
-                y: -15,
-                letterSpacing: '0.14em',
-                duration: 0.48,
-                ease: 'power2.in'
-            }, 0.04);
-
-            tl.to(highlight, {
+        // 3. Stage Container Seamless Docking into Act 2 (0.70 -> 1.0)
+        if (container) {
+            tl.to(container, {
                 opacity: 0,
-                filter: 'blur(22px) drop-shadow(0 0 60px #11d483)',
-                duration: 0.26,
-                ease: 'power2.in'
-            }, 0.24);
+                scale: 0.96,
+                duration: 0.25,
+                ease: 'power1.in'
+            }, 0.70);
         }
 
-        // 3. Quantum Portal Rings & Optical Burst (0.18 -> 0.85)
-        if (portalStage) {
-            tl.to(portalStage, { opacity: 1, duration: 0.1 }, 0.18);
-        }
+        tl.to(hero, {
+            opacity: 0,
+            duration: 0.15,
+            ease: 'power1.in'
+        }, 0.85);
 
-        if (coreGlow) {
-            tl.fromTo(coreGlow, 
-                { scale: 0.1, opacity: 0 },
-                { scale: 3.8, opacity: 0.75, duration: 0.38, ease: 'power2.out' },
-                0.20
-            );
-            tl.to(coreGlow, { opacity: 0, scale: 7.0, duration: 0.24, ease: 'power2.in' }, 0.58);
-        }
-
-        if (ringOuter) {
-            tl.fromTo(ringOuter,
-                { scale: 0.05, opacity: 0 },
-                { scale: 4.5, opacity: 1, duration: 0.35, ease: 'power2.out' },
-                0.22
-            );
-            tl.to(ringOuter, { scale: 14.0, opacity: 0, duration: 0.30, ease: 'power2.in' }, 0.57);
-        }
-
-        if (ringInner) {
-            tl.fromTo(ringInner,
-                { scale: 0.05, opacity: 0 },
-                { scale: 3.5, opacity: 1, duration: 0.32, ease: 'power2.out' },
-                0.24
-            );
-            tl.to(ringInner, { scale: 10.0, opacity: 0, duration: 0.28, ease: 'power2.in' }, 0.56);
-        }
-
-        if (vortex) {
-            tl.fromTo(vortex,
-                { scale: 0.2, opacity: 0 },
-                { scale: 1.5, opacity: 0.95, duration: 0.40, ease: 'power2.out' },
-                0.25
-            );
-            tl.to(vortex, { opacity: 0, duration: 0.25, ease: 'power2.in' }, 0.78);
-        }
-
-        // 4. Hero Content fades cleanly as the dimensional portal transitions (0.65 -> 0.95)
-        if (heroCenter) {
-            tl.to(heroCenter, { opacity: 0, scale: 0.94, filter: 'blur(10px)', duration: 0.25, ease: 'power2.inOut' }, 0.65);
-        }
-
-        // 5. Stage fade out at transition end to hand over to #philosophy (0.85 -> 1.0)
-        tl.to(hero, { opacity: 0, duration: 0.15, ease: 'power1.in' }, 0.85);
-
-        console.log('[VANTA] Hero Warp Speed Portal initialized OK');
+        console.log('[VANTA] Luxury Editorial Hero Scrollytelling initialized OK');
     }
 
     if (document.readyState === 'loading') {

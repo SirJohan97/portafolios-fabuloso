@@ -320,6 +320,91 @@
                 noise.start(t);
             } catch(e) {}
         }
+
+        // ─── 6. Sub-Bass Impact Drop (45Hz Sine Drop for Preloader Reveal) ────
+        playSubImpact() {
+            if (!this.isEnabled) return;
+            this.initContext();
+            if (!this.ctx || !this.masterGain) return;
+
+            try {
+                const t = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(95, t);
+                osc.frequency.exponentialRampToValueAtTime(42, t + 0.35);
+
+                gain.gain.setValueAtTime(0.35, t);
+                gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+
+                osc.connect(gain);
+                gain.connect(this.masterGain);
+
+                osc.start(t);
+                osc.stop(t + 0.6);
+            } catch(e) {}
+        }
+
+        // ─── 7. Resn Quantum Overcharge (Press & Hold Synthesis) ─────────────
+        startOvercharge() {
+            if (!this.isEnabled) return;
+            this.initContext();
+            if (!this.ctx || !this.masterGain || this.overchargeGain) return;
+
+            try {
+                const t = this.ctx.currentTime;
+                this.overchargeOsc = this.ctx.createOscillator();
+                this.overchargeGain = this.ctx.createGain();
+                this.overchargeFilter = this.ctx.createBiquadFilter();
+
+                this.overchargeOsc.type = 'sawtooth';
+                this.overchargeOsc.frequency.setValueAtTime(65, t);
+                this.overchargeOsc.frequency.exponentialRampToValueAtTime(380, t + 1.8);
+
+                this.overchargeFilter.type = 'lowpass';
+                this.overchargeFilter.frequency.setValueAtTime(160, t);
+                this.overchargeFilter.frequency.exponentialRampToValueAtTime(1200, t + 1.8);
+
+                this.overchargeGain.gain.setValueAtTime(0.001, t);
+                this.overchargeGain.gain.linearRampToValueAtTime(0.15, t + 1.8);
+
+                this.overchargeOsc.connect(this.overchargeFilter);
+                this.overchargeFilter.connect(this.overchargeGain);
+                this.overchargeGain.connect(this.masterGain);
+
+                this.overchargeOsc.start(t);
+            } catch(e) {}
+        }
+
+        stopOvercharge(firedShockwave = false) {
+            if (!this.overchargeGain || !this.ctx) return;
+            try {
+                const t = this.ctx.currentTime;
+                this.overchargeGain.gain.cancelScheduledValues(t);
+
+                if (firedShockwave) {
+                    // Dramatic blast burst
+                    this.overchargeGain.gain.setValueAtTime(0.28, t);
+                    this.overchargeGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.45);
+                    this.playSubImpact();
+                } else {
+                    this.overchargeGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.08);
+                }
+
+                setTimeout(() => {
+                    try {
+                        if (this.overchargeOsc) { this.overchargeOsc.stop(); this.overchargeOsc.disconnect(); }
+                        if (this.overchargeFilter) { this.overchargeFilter.disconnect(); }
+                        if (this.overchargeGain) { this.overchargeGain.disconnect(); }
+                    } catch(e) {}
+                    this.overchargeOsc = null;
+                    this.overchargeFilter = null;
+                    this.overchargeGain = null;
+                }, 480);
+            } catch(e) {}
+        }
     }
 
     // Attach global singleton

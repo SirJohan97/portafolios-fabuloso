@@ -61,7 +61,7 @@
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 
     <!-- Silent Production Error Monitor (Active at boot to catch all errors) -->
     <div id="debug-err" style="position: fixed; top: 10px; left: 10px; z-index: 10000; background: rgba(255,0,0,0.85); color: white; padding: 10px; font-family: monospace; font-size: 14px; border-radius: 4px; display: none;"></div>
@@ -116,64 +116,106 @@
     <div id="canvas-3d-container"></div>
 
 
-    <!-- ===== PRELOADER: CINEMATIC V ASSEMBLY (SNELLENBERG BÉZIER MEMBRANE) ===== -->
-    <div id="preloader">
-        <canvas id="preloader-canvas"></canvas>
+    <!-- ===== PRELOADER: CINEMATIC MONUMENTAL FLIP REVEAL ===== -->
+    <div id="preloader" class="preloader-overlay">
+        <!-- Monumental Centered Logo Stage -->
+        <div class="preloader-center-stage" id="preloader-logo-stage">
+            <div class="preloader-logo-hero" id="preloader-floating-logo">
+                <span class="pl-icon">
+                    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <defs>
+                            <filter id="preloaderAuraGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="3" result="blur"/>
+                                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                            </filter>
+                        </defs>
+                        <polygon points="18,1.5 34.5,18 18,34.5 1.5,18"
+                                 stroke="#11d483" stroke-width="1.2" fill="rgba(17,212,131,0.06)"
+                                 stroke-linejoin="round"/>
+                        <line x1="18" y1="1.5" x2="18" y2="5.5" stroke="rgba(17,212,131,0.8)" stroke-width="1.2"/>
+                        <line x1="18" y1="30.5" x2="18" y2="34.5" stroke="rgba(17,212,131,0.8)" stroke-width="1.2"/>
+                        <polyline points="9,12 18,25 27,12"
+                                  stroke="#11d483" stroke-width="2.6"
+                                  stroke-linecap="round" stroke-linejoin="round"
+                                  filter="url(#preloaderAuraGlow)"/>
+                    </svg>
+                </span>
+                <span class="pl-text">VANTA</span>
+            </div>
+            <div class="preloader-meta-reveal" id="preloader-meta">
+                <span class="pm-line"></span>
+                <span class="pm-text">ESTUDIO DE INGENIERÍA DE SOFTWARE &bull; IA</span>
+            </div>
+        </div>
+
         <svg class="preloader-curve-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <path id="preloader-curve-path" d="M 0 0 L 100 0 L 100 100 Q 50 100 0 100 Z" fill="#050505" />
+            <path id="preloader-curve-path" d="M 0 0 L 100 0 L 100 100 Q 50 100 0 100 Z" fill="#030508" />
         </svg>
     </div>
 
-    <nav class="navbar" id="vanta-navbar">
-        <a href="#home" class="logo" aria-label="VANTA">
-            <span class="logo-icon">
-                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <defs>
-                        <filter id="vGlow">
-                            <feGaussianBlur stdDeviation="1.2" result="blur"/>
-                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                        </filter>
-                    </defs>
-                    <polygon points="18,1.5 34.5,18 18,34.5 1.5,18"
-                             stroke="#11d483" stroke-width="1" fill="rgba(17,212,131,0.05)"
-                             stroke-linejoin="round"/>
-                    <line x1="18" y1="1.5" x2="18" y2="5.5" stroke="rgba(17,212,131,0.6)" stroke-width="1"/>
-                    <line x1="18" y1="30.5" x2="18" y2="34.5" stroke="rgba(17,212,131,0.6)" stroke-width="1"/>
-                    <polyline points="9,12 18,25 27,12"
-                              stroke="#11d483" stroke-width="2.2"
-                              stroke-linecap="round" stroke-linejoin="round"
-                              filter="url(#vGlow)"/>
-                </svg>
-            </span>
-            <span class="logo-text">VANTA</span>
-        </a>
-
-        <ul class="nav-links">
-            <div class="nav-indicator-capsule"></div>
-            <li><a href="#home"><span class="nav-roll"><span class="nav-roll-default">Inicio</span><span class="nav-roll-hover" aria-hidden="true">Inicio</span></span></a></li>
-            <li><a href="#portfolio"><span class="nav-roll"><span class="nav-roll-default">Obras</span><span class="nav-roll-hover" aria-hidden="true">Obras</span></span></a></li>
-            <li><a href="#pipeline"><span class="nav-roll"><span class="nav-roll-default">I+D Lab</span><span class="nav-roll-hover" aria-hidden="true">I+D Lab</span></span></a></li>
-            <li><a href="#tech-matrix"><span class="nav-roll"><span class="nav-roll-default">Arquitectura</span><span class="nav-roll-hover" aria-hidden="true">Arquitectura</span></span></a></li>
-            <li><a href="#testimonials"><span class="nav-roll"><span class="nav-roll-default">Reportes</span><span class="nav-roll-hover" aria-hidden="true">Reportes</span></span></a></li>
-            <li><a href="#contact" class="nav-cta"><span class="nav-roll"><span class="nav-roll-default">Iniciar Proyecto</span><span class="nav-roll-hover" aria-hidden="true">Iniciar Proyecto</span></span></a></li>
-        </ul>
-
-        <div class="nav-cockpit-right">
-            <!-- Studio Live World Clock (Caracas GMT-4) -->
-            <div class="nav-clock-pill" title="Hora local del estudio (Caracas GMT-4)">
-                <span class="clock-pulse-dot"></span>
-                <span id="nav-live-clock" class="nav-clock-text">CCS --:-- VET</span>
+    <!-- ===== NAVBAR: AWWWARDS TRIPARTITE ARCHITECTURAL DOCK ===== -->
+    <nav class="navbar vanta-navbar-tripartite" id="vanta-navbar">
+        <!-- 1. Brand Anchor (Receptor del FLIP morph) -->
+        <div class="nav-brand-anchor">
+            <a href="#home" class="logo nav-brand-link" id="navbar-logo-target" aria-label="VANTA">
+                <span class="logo-icon">
+                    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <defs>
+                            <filter id="vNavGlow">
+                                <feGaussianBlur stdDeviation="1.2" result="blur"/>
+                                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                            </filter>
+                        </defs>
+                        <polygon points="18,1.5 34.5,18 18,34.5 1.5,18"
+                                 stroke="#11d483" stroke-width="1" fill="rgba(17,212,131,0.05)"
+                                 stroke-linejoin="round"/>
+                        <line x1="18" y1="1.5" x2="18" y2="5.5" stroke="rgba(17,212,131,0.6)" stroke-width="1"/>
+                        <line x1="18" y1="30.5" x2="18" y2="34.5" stroke="rgba(17,212,131,0.6)" stroke-width="1"/>
+                        <polyline points="9,12 18,25 27,12"
+                                  stroke="#11d483" stroke-width="2.2"
+                                  stroke-linecap="round" stroke-linejoin="round"
+                                  filter="url(#vNavGlow)"/>
+                    </svg>
+                </span>
+                <span class="logo-text">VANTA</span>
+            </a>
+            <div class="nav-brand-status">
+                <span class="nbs-pulse"></span>
+                <span class="nbs-meta">CCS &bull; 2026</span>
             </div>
+        </div>
 
-            <!-- Procedural Audio Equalizer Toggle -->
-            <button id="audio-toggle-btn" class="audio-toggle-btn" aria-label="Activar sonido inmersivo" title="Audio Procedural">
+        <!-- 2. Center Floating Index Deck (Píldora Flotante Ultraligera) -->
+        <div class="nav-center-deck">
+            <div class="nav-deck-capsule">
+                <ul class="nav-links nav-deck-list" id="navDeckList">
+                    <div class="nav-indicator-capsule"></div>
+                    <li><a href="#home" class="active"><span class="ndl-idx">[01]</span><span class="ndl-name">Inicio</span></a></li>
+                    <li><a href="#portfolio"><span class="ndl-idx">[02]</span><span class="ndl-name">Obras</span></a></li>
+                    <li><a href="#pipeline"><span class="ndl-idx">[03]</span><span class="ndl-name">I+D Lab</span></a></li>
+                    <li><a href="#tech-matrix"><span class="ndl-idx">[04]</span><span class="ndl-name">Arquitectura</span></a></li>
+                    <li><a href="#testimonials"><span class="ndl-idx">[05]</span><span class="ndl-name">Reportes</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 3. Right Command Wing (Hardware Audio + CTA) -->
+        <div class="nav-command-wing">
+            <button id="audio-toggle-btn" class="audio-toggle-btn nav-audio-pill" aria-label="Activar sonido inmersivo" title="Audio Procedural">
                 <span class="audio-eq-bars" aria-hidden="true">
                     <span class="eq-bar bar-1"></span>
                     <span class="eq-bar bar-2"></span>
                     <span class="eq-bar bar-3"></span>
+                    <span class="eq-bar bar-4"></span>
                 </span>
                 <span class="audio-status-label" id="audio-status-label">AUDIO: OFF</span>
             </button>
+
+            <a href="#contact" class="nav-cta-luxury magnetic-btn">
+                <span class="ncl-dot"></span>
+                <span class="ncl-text">Iniciar Proyecto</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
 
             <div class="menu-toggle" aria-label="Abrir menú">
                 <i class="fas fa-bars"></i>
@@ -181,84 +223,43 @@
         </div>
     </nav>
 
-    <!-- ===== ACTO 01: HERO ===== -->
-    <header id="home" class="hero">
-
-        <!-- Quantum Warp Speed Portal Stage -->
-        <div class="hero-portal-stage" id="hero-portal-stage" aria-hidden="true">
-            <div class="hero-portal-ring ring-outer"></div>
-            <div class="hero-portal-ring ring-inner"></div>
-            <div class="hero-portal-core-glow"></div>
-            <div class="hero-portal-vortex"></div>
-        </div>
-
-        <div class="hero-center-layout">
-            <div class="hero-content">
-                <div class="hero-title-group">
-                    <span class="hero-eyebrow-tag">// INGENIERÍA DE SOFTWARE &amp; INTELIGENCIA ARTIFICIAL</span>
-                    <h1 class="hero-title-monumental">
-                        <span class="htm-line htm-line-1"><span class="htm-prefix">SISTEMAS QUE</span> <span class="htm-highlight">SOBREVIVEN</span></span>
-                        <span class="htm-line htm-line-2">A SU PROPIO ÉXITO.</span>
-                    </h1>
-                </div>
-
-                <!-- Subtipo editorial con especializaciones -->
-                <div class="hero-sub-row">
-                    <div class="hero-typing-subtitle-wrap">
-                        <span class="subtitle-static">Especialistas en</span>
-                        <span class="subtitle-liquid-word" id="liquid-text">APLICACIONES WEB</span>
-                    </div>
-                </div>
-
-                <!-- Bento mini-stats row -->
-                <div class="hero-mini-bento" aria-label="Estado del estudio">
-                    <div class="hmb-card">
-                        <span class="hmb-dot hmb-dot--green"></span>
-                        <span class="hmb-label">LATAM_EDGE &bull; EST_2026</span>
-                    </div>
-                    <div class="hmb-card">
-                        <span class="hmb-dot hmb-dot--cyan"></span>
-                        <span class="hmb-label">5 AI AGENTS DEPLOYED</span>
-                    </div>
-                    <div class="hmb-card hmb-avail">
-                        <span class="hmb-dot hmb-dot--pulse"></span>
-                        <span class="hmb-label">TOMANDO PROYECTOS Q4 2026</span>
-                    </div>
-                </div>
-
-                <div class="hero-btns-row">
-                    <div class="hero-btns">
-                        <a href="#portfolio" class="btn magnetic-btn"><span class="btn-text">Explorar Obras</span></a>
-                        <a href="#contact" class="btn-outline magnetic-btn hero-btn-contact"><span class="btn-text">Iniciar Proyecto</span> <i class="fas fa-arrow-right"></i></a>
-                    </div>
-
-                    <!-- Orbital Kinetic Stamp (Locomotive Inertial Badge) -->
-                    <div class="hero-orbital-stamp" aria-hidden="true">
-                        <svg viewBox="0 0 140 140">
-                            <path id="stampCircle" d="M 70, 70 m -48, 0 a 48,48 0 1,1 96,0 a 48,48 0 1,1 -96,0" fill="none" />
-                            <text>
-                                <textPath href="#stampCircle">
-                                    • VANTA CORE ENGINEERING • LATAM EDGE • 2026
-                                </textPath>
-                            </text>
-                        </svg>
-                        <div class="stamp-core-icon"><i class="fas fa-bolt"></i></div>
-                    </div>
-                </div>
+    <!-- ===== ACTO 01: HERO (LUXURY MINIMALIST EDITORIAL & ORGANIC SCULPTURE) ===== -->
+    <header id="home" class="hero hero--editorial">
+        <div class="hero-editorial-container">
+            <!-- Eyebrow Architectural Tag -->
+            <div class="hero-eyebrow-container">
+                <span class="hero-eyebrow-tag">// ESTUDIO DE INGENIERÍA DE SOFTWARE &amp; IA</span>
             </div>
-        </div>
 
-        <div class="hero-hud-bottom">
-            <span class="hud-label">EST_2026 // LATAM_EDGE</span>
-            
-            <!-- Downward Gravitational Hook (Teaser de Obra 01) -->
-            <a href="#portfolio" class="hero-gravitational-hook" aria-label="Deslizar hacia Obras Flagship">
-                <span class="hgh-dot"></span>
-                <span class="hgh-label">OBRA INAUGURAL: 01 SVIVA CORE</span>
-                <span class="hgh-icon"><i class="fas fa-chevron-down"></i></span>
-            </a>
+            <!-- Authoritative Editorial Headline -->
+            <h1 class="hero-title-editorial">
+                <span class="hte-line"><span class="hte-word">SISTEMAS</span> <span class="hte-word">QUE</span></span>
+                <span class="hte-line hte-highlight"><span class="hte-italic">PERDURAN</span></span>
+                <span class="hte-line"><span class="hte-word">EN</span> <span class="hte-word">EL</span> <span class="hte-word">CAOS.</span></span>
+            </h1>
 
-            <span class="hud-label">SYS_STATUS: ACTIVE_CORE</span>
+            <!-- Pure Editorial Manifesto Subtitle -->
+            <p class="hero-description-editorial">
+                Diseñamos arquitecturas distribuidas, agentes de inteligencia artificial y plataformas digitales de alta concurrencia concebidas para escalar sin compromisos.
+            </p>
+
+            <!-- Minimalist Luxury Action Group -->
+            <div class="hero-actions-editorial">
+                <a href="#portfolio" class="btn-luxury-primary magnetic-btn">
+                    <span class="blp-text">Explorar Obras</span>
+                    <span class="blp-dot"></span>
+                </a>
+                <a href="#contact" class="btn-luxury-outline magnetic-btn">
+                    <span class="blo-text">Iniciar Proyecto</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Subtle Minimalist Scroll Indicator -->
+            <div class="hero-scroll-indicator" aria-hidden="true">
+                <span class="hsi-line"></span>
+                <span class="hsi-label">SCROLL</span>
+            </div>
         </div>
     </header>
 
@@ -1752,8 +1753,9 @@
     <script src="sound-engine.js?v=120"></script>
     <script src="liquid-glass.js?v=120"></script>
     <script src="preloader-v.js?v=200"></script>
-    <script src="script.js?v=1500"></script>
-    <script src="effects.js?v=2400"></script>
+    <script src="hero-portal.js?v=201"></script>
+    <script src="script.js?v=1502"></script>
+    <script src="effects.js?v=2401"></script>
     <script src="spotlight.js?v=110"></script>
     <script src="testi-stack.js?v=100"></script>
 </body>
