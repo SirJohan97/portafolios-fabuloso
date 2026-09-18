@@ -390,11 +390,120 @@ function initMainScript() {
         });
     }
 
+    // --- INTERACTIVIDAD DE CHIPS DE CONTACTO & WHATSAPP ENRIQUECIDO ---
     const formContacto = document.getElementById('formContactoWa');
+    const typeChips = document.querySelectorAll('#projectTypeChips .contact-chip-btn');
+    const budgetChips = document.querySelectorAll('#budgetChips .contact-chip-btn');
+
+    function initChipsGroup(chips) {
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                chips.forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                if (window._vantaAudio && typeof window._vantaAudio.playClick === 'function') {
+                    window._vantaAudio.playClick();
+                }
+            });
+        });
+    }
+
+    initChipsGroup(typeChips);
+    initChipsGroup(budgetChips);
+
+    // Integración de botones "Cotizar Plan" de la sección Soluciones Comerciales
+    document.querySelectorAll('.sc-cta-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetType = btn.getAttribute('data-type');
+            const targetBudget = btn.getAttribute('data-budget');
+
+            if (targetType) {
+                typeChips.forEach(c => {
+                    if (c.getAttribute('data-type') === targetType) {
+                        typeChips.forEach(x => x.classList.remove('active'));
+                        c.classList.add('active');
+                    }
+                });
+            }
+
+            if (targetBudget) {
+                budgetChips.forEach(c => {
+                    if (c.getAttribute('data-budget') === targetBudget) {
+                        budgetChips.forEach(x => x.classList.remove('active'));
+                        c.classList.add('active');
+                    }
+                });
+            }
+
+            // Scroll suave a la sección de contacto
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+                if (window.lenis) {
+                    window.lenis.scrollTo(contactSection, { duration: 1.2 });
+                } else {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            // Enfoque inmediato al campo de nombre
+            setTimeout(() => {
+                const nameInput = document.getElementById('waNombre');
+                if (nameInput) nameInput.focus();
+            }, 600);
+        });
+    });
+
+    // Conexión del botón de RFP Corporativo de la sección Gobernanza B2B
+    const govRfpBtn = document.getElementById('govRfpBtn');
+    if (govRfpBtn) {
+        govRfpBtn.addEventListener('click', () => {
+            const targetType = 'ERP / Automatización B2B';
+            const targetBudget = 'Enterprise / RFP ($10,000 - $50,000+)';
+
+            typeChips.forEach(c => {
+                if (c.getAttribute('data-type') === targetType) {
+                    typeChips.forEach(x => x.classList.remove('active'));
+                    c.classList.add('active');
+                }
+            });
+
+            budgetChips.forEach(c => {
+                if (c.getAttribute('data-budget') === targetBudget) {
+                    budgetChips.forEach(x => x.classList.remove('active'));
+                    c.classList.add('active');
+                }
+            });
+
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+                if (window.lenis) {
+                    window.lenis.scrollTo(contactSection, { duration: 1.2 });
+                } else {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            setTimeout(() => {
+                const nameInput = document.getElementById('waNombre');
+                if (nameInput) {
+                    nameInput.focus();
+                    nameInput.placeholder = "Nombre de la Empresa o Representante Legal";
+                }
+                const msgInput = document.getElementById('waMensaje');
+                if (msgInput && !msgInput.value) {
+                    msgInput.value = "Estimados Andrés y Johan: Deseamos evaluar los términos de contratación, acuerdos de confidencialidad (NDA) y alcance técnico para una propuesta corporativa...";
+                }
+            }, 600);
+        });
+    }
 
     if (formContacto) {
         formContacto.addEventListener('submit', function(e) {
             e.preventDefault();
+
+            const activeTypeEl   = document.querySelector('#projectTypeChips .contact-chip-btn.active');
+            const activeBudgetEl = document.querySelector('#budgetChips .contact-chip-btn.active');
+            const tipoProyecto   = activeTypeEl ? activeTypeEl.getAttribute('data-type') : 'Sitio Web / Catálogo Negocio';
+            const presupuesto    = activeBudgetEl ? activeBudgetEl.getAttribute('data-budget') : 'Negocio Local (< $500)';
 
             const nombre  = document.getElementById('waNombre').value.trim();
             const email   = document.getElementById('waEmail').value.trim();
@@ -402,7 +511,7 @@ function initMainScript() {
 
             if (!nombre || !email || !mensaje) return;
 
-            const textoMensaje = `¡Hola! Vengo de su sitio web VANTA y requiero cotizar un proyecto.%0A%0A*Nombre:* ${encodeURIComponent(nombre)}%0A*Correo:* ${encodeURIComponent(email)}%0A*Requerimiento:* ${encodeURIComponent(mensaje)}`;
+            const textoMensaje = `¡Hola Johan y Andrés! Vengo del sitio web de VANTA y deseo cotizar una propuesta formal para mi empresa / negocio:%0A%0A*Tipo de Proyecto:* ${encodeURIComponent(tipoProyecto)}%0A*Presupuesto Estimado:* ${encodeURIComponent(presupuesto)}%0A*Nombre / Empresa:* ${encodeURIComponent(nombre)}%0A*Correo Oficial:* ${encodeURIComponent(email)}%0A*Requerimientos / RFP:* ${encodeURIComponent(mensaje)}`;
             const numeroWa     = "584127121162";
             const urlWa        = `https://wa.me/${numeroWa}?text=${textoMensaje}`;
 
@@ -2654,51 +2763,100 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         // Liquid Obsidian Glass Parametric Monolith with Real-time Specular Physics
         // ====================================================================
 
-        // 1. Studio Lighting System (Chiaroscuro Cinematic Lights)
-        const ambientLight = new THREE.AmbientLight(0x0a1018, 1.4);
+        // 1. Studio Lighting System (High-End Chiaroscuro Cinematic Lighting)
+        // Deep, moody ambient light to preserve velvety obsidian shadows
+        const ambientLight = new THREE.AmbientLight(0x020504, 0.35);
         scene.add(ambientLight);
 
-        // Key Light: Emerald Specular Rim
-        const keyLight = new THREE.DirectionalLight(0x11d483, 3.8);
-        keyLight.position.set(4.5, 4.0, 5.0);
+        // Key Light: Pure Emerald Specular Glint (Angled from top-right)
+        const keyLight = new THREE.DirectionalLight(0x10b981, 4.2);
+        keyLight.position.set(5.0, 5.0, 4.5);
         scene.add(keyLight);
 
-        // Fill Light: Cyan Edge Refraction
-        const fillLight = new THREE.DirectionalLight(0x00e5ff, 2.8);
-        fillLight.position.set(-4.5, -3.0, -2.0);
-        scene.add(fillLight);
-
-        // Top Specular Highlight
-        const topLight = new THREE.DirectionalLight(0xffffff, 2.2);
-        topLight.position.set(0, 6.0, 3.0);
+        // Rim Light: Diamond White Sharp Specular (from top-rear to carve brilliant crystalline silhouette)
+        const topLight = new THREE.DirectionalLight(0xffffff, 3.2);
+        topLight.position.set(-2.0, 6.5, 3.0);
         scene.add(topLight);
 
-        // Interactive Cursor Point Light (follows mouse in 3D world space)
-        const cursorPointLight = new THREE.PointLight(0x11d483, 3.5, 12, 1.8);
-        cursorPointLight.position.set(0, 0, 4.0);
+        // Fill Light: Deep Cyan-Emerald Edge Reflection (from bottom-left)
+        const fillLight = new THREE.DirectionalLight(0x059669, 1.8);
+        fillLight.position.set(-5.0, -3.5, 2.0);
+        scene.add(fillLight);
+
+        // Front Subtle Glimmer Light
+        const frontLight = new THREE.DirectionalLight(0x34d399, 1.0);
+        frontLight.position.set(0, 0, 6.0);
+        scene.add(frontLight);
+
+        // Interactive Cursor Point Light (follows mouse with emerald specular radiance)
+        const cursorPointLight = new THREE.PointLight(0x10b981, 3.2, 12, 1.6);
+        cursorPointLight.position.set(0, 0, 3.8);
         scene.add(cursorPointLight);
 
-        // 2. High-Poly Parametric Sculpture Geometry (Mobius Infinite Topology)
-        const sculptureGeo = new THREE.TorusKnotGeometry(1.65, 0.48, 160, 36, 2, 3);
-        const originalPositions = Float32Array.from(sculptureGeo.attributes.position.array);
+        // 2. VANTA Obsidian-Emerald Monolith (Luxury Kinetic Diamond Sculpture)
+        // Noble icosahedral gemstone geometry with balanced mathematical proportions
+        const sculptureGeo = new THREE.IcosahedronGeometry(1.55, 0);
 
-        // 3. Liquid Obsidian Chrome / Physical Glass Material
+        // Deep Liquid Obsidian & Smoked Emerald Crystal Material
+        // Smooth velvety dark core ensures 100% pristine contrast for typography
+        // Razor-sharp specular reflectivity catches breathtaking emerald & diamond glints
         const sculptureMat = new THREE.MeshPhysicalMaterial({
-            color: 0x05070a,             // Ultra-deep obsidian black
-            roughness: 0.12,             // Mirror-like liquid smoothness
-            metalness: 0.90,             // Chrome reflectivity
-            clearcoat: 1.0,              // Optical glass lacquer coating
-            clearcoatRoughness: 0.08,
-            reflectivity: 0.96,
-            ior: 1.68,
+            color: 0x020a06,             // Deep velvet obsidian-emerald black
+            emissive: 0x011a0e,          // Subtle internal quantum absorption
+            emissiveIntensity: 0.30,
+            roughness: 0.05,             // Diamond-grade mirror polish
+            metalness: 0.35,             // Mineral-metallic specular balance
+            clearcoat: 1.0,              // High-gloss optical lacquer
+            clearcoatRoughness: 0.03,
+            reflectivity: 0.98,
+            ior: 1.74,                   // Emerald refractive index
             transparent: true,
-            opacity: 0.96,
-            wireframe: false
+            opacity: 0.86,
+            flatShading: true            // Faceted mineral cuts with high-contrast chiaroscuro
         });
-
         const sculptureMesh = new THREE.Mesh(sculptureGeo, sculptureMat);
+        // Initial architectural isometric tilt
+        sculptureMesh.rotation.set(0.42, 0.35, 0.18);
+
+        // Inner Core: Concentrated Luminous Quantum Heart (Pulsing Energy Inside the Dark Stone)
+        const innerSolidGeo = new THREE.OctahedronGeometry(0.55, 0);
+        const innerSolidMat = new THREE.MeshStandardMaterial({
+            color: 0x059669,
+            emissive: 0x10b981,
+            emissiveIntensity: 2.2,
+            roughness: 0.1,
+            transparent: true,
+            opacity: 0.85
+        });
+        const innerSolidMesh = new THREE.Mesh(innerSolidGeo, innerSolidMat);
+        const innerCoreGroup = new THREE.Group();
+        innerCoreGroup.add(innerSolidMesh);
+
+        // Internal Quantum Core Glow Light (illuminates the obsidian crystal from within)
+        const innerCoreLight = new THREE.PointLight(0x10b981, 3.8, 8, 1.6);
+        innerCoreLight.position.set(0, 0, 0);
+
+        // 3. Precision Horology Horizon (Single Hairline Axis - Ultra Minimalist & Mature)
+        const orbitalGroup = new THREE.Group();
+        orbitalGroup.rotation.x = Math.PI / 2.32; // Elegant shallow horizon tilt
+        orbitalGroup.rotation.y = -Math.PI / 18;
+
+        // Hairline Precision Ring (Subtle watchmaker calibration axis, no childish dust)
+        const ring1Geo = new THREE.TorusGeometry(2.38, 0.0035, 16, 128);
+        const ring1Mat = new THREE.MeshBasicMaterial({
+            color: 0x34d399,
+            transparent: true,
+            opacity: 0.28,
+            blending: THREE.AdditiveBlending
+        });
+        const primaryRing = new THREE.Mesh(ring1Geo, ring1Mat);
+        orbitalGroup.add(primaryRing);
+
         const logoGroup = new THREE.Group();
         logoGroup.add(sculptureMesh);
+        logoGroup.add(innerCoreGroup);
+        logoGroup.add(orbitalGroup);
+        logoGroup.add(innerCoreLight);
 
         logoGroup.scale.setScalar(1.0);
         scene.add(logoGroup);
@@ -2728,7 +2886,8 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         // Posicionamiento responsivo del logo: Centrado en el lienzo mundial para el Spatial Sandwich
         const updateLogoPosition = () => {
             logoGroup.position.x = 0;
-            logoGroup.position.y = (window.innerWidth > 991 ? -0.1 : 0);
+            const isMob = window.innerWidth <= 768;
+            logoGroup.position.y = isMob ? -0.12 : (window.innerWidth <= 991 ? -0.08 : -0.1);
         };
         updateLogoPosition();
 
@@ -2922,51 +3081,48 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                 cursorPointLight.position.x = mouseX * 5.5;
                 cursorPointLight.position.y = mouseY * 4.5;
 
-                // Fluid Organic Vertex Rippling (Living Liquid Obsidian — Lusion standard)
-                const posAttr = sculptureGeo.attributes.position;
-                const posArray = posAttr.array;
-                const waveTime = time * 1.35;
-                const mx = mouseX * 2.5;
-                const my = mouseY * 2.5;
-
-                for (let i = 0; i < posArray.length; i += 3) {
-                    const ox = originalPositions[i];
-                    const oy = originalPositions[i + 1];
-                    const oz = originalPositions[i + 2];
-
-                    const wave = Math.sin(waveTime + ox * 1.6 + oy * 1.2) * 0.075
-                               + Math.cos(waveTime * 0.9 + oz * 1.8) * 0.045;
-
-                    const dCursor = Math.hypot(ox - mx, oy - my);
-                    const cursorRipple = Math.exp(-dCursor * 1.6) * 0.15 * Math.sin(time * 4.0 - dCursor * 2.8);
-
-                    const factor = 1.0 + wave + cursorRipple;
-                    posArray[i]     = ox * factor;
-                    posArray[i + 1] = oy * factor;
-                    posArray[i + 2] = oz * factor;
-                }
-                posAttr.needsUpdate = true;
-                sculptureGeo.computeVertexNormals();
-
-                // Silky Gaze Tracking & Continuous Parametric Inertia
-                const swayY = Math.sin(time * 0.22) * 0.04;
+                // 1. Dynamic 3D Gaze Tracking & High-End Isometric Facet Rotation
+                const swayY = Math.sin(time * 0.24) * 0.04;
                 const swayX = Math.cos(time * 0.18) * 0.03;
-                sculptureMesh.rotation.y += (time * 0.14 + mouseX * 0.85 + swayY - sculptureMesh.rotation.y) * 0.04;
-                sculptureMesh.rotation.x += (mouseY * 0.65 + swayX - sculptureMesh.rotation.x) * 0.04;
+                sculptureMesh.rotation.y += (time * 0.12 + mouseX * 0.65 + swayY - sculptureMesh.rotation.y) * 0.04;
+                sculptureMesh.rotation.x += (0.42 + mouseY * 0.45 + swayX - sculptureMesh.rotation.x) * 0.04;
+                sculptureMesh.rotation.z = 0.18 + Math.sin(time * 0.15) * 0.03;
 
-                // Scrollytelling Transition (Aristide Benoist Luxury Flow)
-                if (isWarpActive && warpP > 0) {
-                    sculptureMesh.position.y = -warpP * 1.8;
-                    sculptureMesh.position.z = -warpP * 5.5;
-                    sculptureMesh.scale.setScalar((1.0 - warpP * 0.4) * logoScaleObj.value);
-                    sculptureMat.opacity = Math.max(0.0, 1.0 - warpP * 0.85);
+                // 2. Quantum Core: Counter-Rotation & Concentrated Pulse
+                innerCoreGroup.rotation.y -= 0.016;
+                innerCoreGroup.rotation.x += 0.010;
+                const pulseScale = 1.0 + Math.sin(time * 2.2) * 0.06;
+                innerCoreGroup.scale.setScalar(pulseScale);
+                innerCoreLight.intensity = 3.2 + Math.sin(time * 2.5) * 0.8;
+
+                // 3. Precision Horology Horizon (Slow Gyroscope Axis)
+                orbitalGroup.rotation.z += 0.0025;
+
+                // 4. Scrollytelling Transition (Aristide Benoist Luxury Flow)
+                const isMob = window.innerWidth <= 768;
+                const isTab = window.innerWidth <= 991;
+                const baseScale = isMob ? 0.44 : (isTab ? 0.72 : 1.0);
+                const defaultPosY = isMob ? 0.08 : (isTab ? -0.04 : -0.05);
+
+                if (isWarpActive && warpP > 0.005) {
+                    logoGroup.position.y = defaultPosY - warpP * 1.8;
+                    logoGroup.position.z = -warpP * 5.5;
+                    logoGroup.scale.setScalar(baseScale * (1.0 - warpP * 0.4) * logoScaleObj.value);
+                    const fade = Math.max(0.0, 1.0 - warpP * 0.85);
+                    sculptureMat.opacity = fade * 0.86;
+                    innerSolidMat.opacity = fade * 0.85;
+                    ring1Mat.opacity = fade * 0.28;
                 } else {
-                    sculptureMesh.position.set(0, (window.innerWidth > 991 ? -0.05 : 0), 0);
-                    sculptureMesh.scale.setScalar(1.0 * logoScaleObj.value);
-                    sculptureMat.opacity = 0.96;
+                    logoGroup.position.set(0, defaultPosY, 0);
+                    logoGroup.scale.setScalar(baseScale * logoScaleObj.value);
+                    sculptureMat.opacity = 0.86;
+                    innerSolidMat.opacity = 0.85;
+                    ring1Mat.opacity = 0.28;
                 }
             } else {
                 sculptureMat.opacity = 0.0;
+                innerSolidMat.opacity = 0.0;
+                ring1Mat.opacity = 0.0;
                 if (camera.position.z !== 7.5) {
                     camera.position.set(0, 0, 7.5);
                     camera.fov = 50;

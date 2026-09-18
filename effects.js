@@ -146,7 +146,7 @@ function initEffectsScript() {
         });
     }
 
-    applyTilt(document.querySelectorAll('.service-card, .pricing-card-inner, .team-card, .testimonial-card'));
+    applyTilt(document.querySelectorAll('.service-card, .pricing-card-inner, .team-card, .testimonial-card, .gov-panel'));
 
 
     /* ============================================================
@@ -1177,9 +1177,11 @@ function initEffectsScript() {
         const themes = [
             { id: 'home',         num: '01', name: 'INICIO',       primary: '#11d483', r:17,  g:212, b:131 },
             { id: 'portfolio',    num: '02', name: 'OBRAS',        primary: '#00e5ff', r:0,   g:229, b:255 },
-            { id: 'tech-matrix',  num: '03', name: 'ARQUITECTURA', primary: '#11d483', r:17,  g:212, b:131 },
-            { id: 'testimonials', num: '04', name: 'REPORTES',     primary: '#a78bfa', r:167, g:139, b:250 },
-            { id: 'contact',      num: '05', name: 'CONTACTO',     primary: '#11d483', r:17,  g:212, b:131 },
+            { id: 'pipeline',     num: '03', name: 'I+D LAB',      primary: '#11d483', r:17,  g:212, b:131 },
+            { id: 'tech-matrix',  num: '04', name: 'ARQUITECTURA', primary: '#11d483', r:17,  g:212, b:131 },
+            { id: 'testimonials', num: '05', name: 'REPORTES',     primary: '#a78bfa', r:167, g:139, b:250 },
+            { id: 'solutions',    num: '06', name: 'SOLUCIONES',   primary: '#10b981', r:16,  g:185, b:129 },
+            { id: 'contact',      num: '07', name: 'CONTACTO',     primary: '#11d483', r:17,  g:212, b:131 },
         ];
 
         const root = document.documentElement;
@@ -2266,141 +2268,141 @@ function initEffectsScript() {
         const stage     = document.getElementById('poker-felt-stage');
         if (!section || !cards.length) return;
 
-        // â”€â”€â”€ Complete Tech Specs Dataset for Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─── Complete Tech Specs Dataset for Modal ───────────────────────────
         const techSpecsData = {
             fastapi: {
                 badge: "BACKEND ENGINE", title: "FastAPI Async",
-                rank: "AS DE CORAZONES â™¥", accent: "#059669", icon: "fas fa-bolt",
-                desc: "Arquitectura backend REST asÃ­ncrona de alta velocidad con tipado Pydantic v2 y OpenAPI v3.",
+                rank: "AS DE CORAZONES ♥", accent: "#059669", icon: "fas fa-bolt",
+                desc: "Arquitectura backend REST asíncrona de alta velocidad con tipado Pydantic v2 y OpenAPI v3.",
                 projects: [
                     { icon: "fas fa-server", name: "Core API Gateway VANTA", desc: "Malla de microservicios procesando 10,000 req/sec." },
-                    { icon: "fas fa-shield-alt", name: "OAuth2 & JWT RS256", desc: "ValidaciÃ³n criptogrÃ¡fica asimÃ©trica sub-milisegundo." }
+                    { icon: "fas fa-shield-alt", name: "OAuth2 & JWT RS256", desc: "Validación criptográfica asimétrica sub-milisegundo." }
                 ],
                 metrics: [ { val: "10k Req/s", lbl: "Concurrencia" }, { val: "< 1.5ms", lbl: "Latencia" }, { val: "Pydantic v2", lbl: "Esquema Estricto" }, { val: "Uvicorn", lbl: "ASGI Core" } ]
             },
             supabase: {
                 badge: "CLOUD & BAAS", title: "Supabase Cloud",
-                rank: "REY DE PICAS â™ ", accent: "#3ECF8E", icon: "fas fa-cloud-upload-alt",
-                desc: "Bases de datos relacionales Postgres en tiempo real con polÃ­ticas RLS, Storage CDN y Edge Functions.",
+                rank: "REY DE PICAS ♠", accent: "#3ECF8E", icon: "fas fa-cloud-upload-alt",
+                desc: "Bases de datos relacionales Postgres en tiempo real con políticas RLS, Storage CDN y Edge Functions.",
                 projects: [
-                    { icon: "fas fa-database", name: "Base de Datos Multi-Tenant", desc: "Streaming WebSocket en vivo y triggers automÃ¡ticos." },
+                    { icon: "fas fa-database", name: "Base de Datos Multi-Tenant", desc: "Streaming WebSocket en vivo y triggers automáticos." },
                     { icon: "fas fa-lock", name: "Row Level Security (RLS)", desc: "Aislamiento granular de datos por cliente." }
                 ],
                 metrics: [ { val: "Realtime", lbl: "WebSockets" }, { val: "100% RLS", lbl: "Seguridad Granular" }, { val: "Edge CDN", lbl: "Global Cache" }, { val: "Postgres", lbl: "ACID Engine" } ]
             },
             react: {
                 badge: "UI FRONTEND", title: "React 19, TS & Core Web",
-                rank: "REINA DE DIAMANTES â™¦", accent: "#61DAFB", icon: "fab fa-react",
+                rank: "REINA DE DIAMANTES ♦", accent: "#61DAFB", icon: "fab fa-react",
                 desc: "Plataformas frontend modulares con React 19, Server Components, TypeScript estricto, HTML5, CSS3 y JS.",
                 projects: [
-                    { icon: "fas fa-desktop", name: "Plataforma Web Studio", desc: "Renderizado reactivo a 60 FPS con animaciones cinÃ©ticas." },
-                    { icon: "fas fa-code", name: "HTML5/CSS3/JS Moderno", desc: "Sin dependencias pesadas, optimizaciÃ³n CSS atÃ³mica." }
+                    { icon: "fas fa-desktop", name: "Plataforma Web Studio", desc: "Renderizado reactivo a 60 FPS con animaciones cinéticas." },
+                    { icon: "fas fa-code", name: "HTML5/CSS3/JS Moderno", desc: "Sin dependencias pesadas, optimización CSS atómica." }
                 ],
                 metrics: [ { val: "100/100", lbl: "Lighthouse" }, { val: "0.0s", lbl: "CLS Layout Shift" }, { val: "Strict TS", lbl: "Tipado Estricto" }, { val: "React 19", lbl: "Server Actions" } ]
             },
             nodejs: {
                 badge: "SERVERLESS ENGINE", title: "Node.js & Vercel Edge",
-                rank: "JOTA DE TRÃ‰BOLES â™£", accent: "#68A063", icon: "fab fa-node-js",
-                desc: "Microservicios en Node.js asÃ­ncronos y canalizaciÃ³n de despliegue serverless continuo en Vercel Edge Network.",
+                rank: "JOTA DE TRÉBOLES ♣", accent: "#68A063", icon: "fab fa-node-js",
+                desc: "Microservicios en Node.js asíncronos y canalización de despliegue serverless continuo en Vercel Edge Network.",
                 projects: [
-                    { icon: "fas fa-network-wired", name: "Edge Microservices Network", desc: "Despliegues globales instantÃ¡neos con latencia cero." },
-                    { icon: "fas fa-rocket", name: "Vercel CI/CD Pipeline", desc: "CompilaciÃ³n atomizada y vistas previas de ramas de Git." }
+                    { icon: "fas fa-network-wired", name: "Edge Microservices Network", desc: "Despliegues globales instantáneos con latencia cero." },
+                    { icon: "fas fa-rocket", name: "Vercel CI/CD Pipeline", desc: "Compilación atomizada y vistas previas de ramas de Git." }
                 ],
-                metrics: [ { val: "< 5ms", lbl: "Edge Response" }, { val: "Serverless", lbl: "Escalado ElÃ¡stico" }, { val: "Node.js 20", lbl: "Runtime LTH" }, { val: "Vercel CDN", lbl: "Cobertura Mundial" } ]
+                metrics: [ { val: "< 5ms", lbl: "Edge Response" }, { val: "Serverless", lbl: "Escalado Elástico" }, { val: "Node.js 20", lbl: "Runtime LTH" }, { val: "Vercel CDN", lbl: "Cobertura Mundial" } ]
             },
             python: {
                 badge: "CORE COMPUTING", title: "Python 3.11 & Flask",
-                rank: "AS DE ESPADAS â™ ", accent: "#3776AB", icon: "fab fa-python",
-                desc: "Motor computacional en Python 3.11 para backend sÃ­ncrono/asÃ­ncrono, micro-APIs en Flask y scripts de datos.",
+                rank: "AS DE ESPADAS ♠", accent: "#3776AB", icon: "fab fa-python",
+                desc: "Motor computacional en Python 3.11 para backend síncrono/asíncrono, micro-APIs en Flask y scripts de datos.",
                 projects: [
                     { icon: "fas fa-microchip", name: "Microservicios Flask", desc: "APIs ligeras de alto rendimiento para procesamiento paralelo." },
-                    { icon: "fas fa-cogs", name: "OrquestaciÃ³n de Datos", desc: "Pipelines de transformaciÃ³n y computaciÃ³n numÃ©rica." }
+                    { icon: "fas fa-cogs", name: "Orquestación de Datos", desc: "Pipelines de transformación y computación numérica." }
                 ],
                 metrics: [ { val: "Python 3.11", lbl: "CPython Async" }, { val: "Flask REST", lbl: "Micro-APIs" }, { val: "Zero-GIL", lbl: "Parallel Workers" }, { val: "100%", lbl: "Estabilidad Backend" } ]
             },
             andres_infra: {
                 badge: "INFRASTRUCTURE", title: "C++, Docker & Git",
-                rank: "DIEZ DE ESPADAS â™ ", accent: "#00599C", icon: "fab fa-docker",
-                desc: "Contenedores Docker aislados, control de versiones colaborativo con Git y mÃ³dulos de bajo nivel en C++.",
+                rank: "DIEZ DE ESPADAS ♠", accent: "#00599C", icon: "fab fa-docker",
+                desc: "Contenedores Docker aislados, control de versiones colaborativo con Git y módulos de bajo nivel en C++.",
                 projects: [
-                    { icon: "fas fa-box", name: "Dockerized Microservices", desc: "Contenedores multi-stage optimizados para producciÃ³n." },
+                    { icon: "fas fa-box", name: "Dockerized Microservices", desc: "Contenedores multi-stage optimizados para producción." },
                     { icon: "fas fa-code-branch", name: "Git Workflow Master", desc: "Pipelines CI/CD automatizados y control estricto de ramas." }
                 ],
-                metrics: [ { val: "Dockerized", lbl: "Aislamiento Total" }, { val: "C++ Native", lbl: "CÃ³mputo Nativo" }, { val: "Git CI/CD", lbl: "Control Versiones" }, { val: "Multi-Cloud", lbl: "Compatibilidad" } ]
+                metrics: [ { val: "Dockerized", lbl: "Aislamiento Total" }, { val: "C++ Native", lbl: "Cómputo Nativo" }, { val: "Git CI/CD", lbl: "Control Versiones" }, { val: "Multi-Cloud", lbl: "Compatibilidad" } ]
             },
             yolo: {
                 badge: "COMPUTER VISION", title: "YOLOv8 AI Vision",
-                rank: "REY DE DIAMANTES â™¦", accent: "#11d483", icon: "fas fa-eye",
-                desc: "Redes convolucionales YOLOv8 para segmentaciÃ³n y detecciÃ³n de objetos en tiempo real 100% locales.",
+                rank: "REY DE DIAMANTES ♦", accent: "#11d483", icon: "fas fa-eye",
+                desc: "Redes convolucionales YOLOv8 para segmentación y detección de objetos en tiempo real 100% locales.",
                 projects: [
-                    { icon: "fas fa-video", name: "Control de Calidad Industrial", desc: "InspecciÃ³n automatizada con 99.4% de precisiÃ³n." },
-                    { icon: "fas fa-camera", name: "Tracking MulticÃ¡mara", desc: "32 objetos simultÃ¡neos sin latencia en la nube." }
+                    { icon: "fas fa-video", name: "Control de Calidad Industrial", desc: "Inspección automatizada con 99.4% de precisión." },
+                    { icon: "fas fa-camera", name: "Tracking Multicámara", desc: "32 objetos simultáneos sin latencia en la nube." }
                 ],
-                metrics: [ { val: "99.4%", lbl: "PrecisiÃ³n mAP" }, { val: "60 FPS", lbl: "Inferencia Local" }, { val: "TensorRT", lbl: "AceleraciÃ³n GPU" }, { val: "0 Cloud", lbl: "Privacidad Total" } ]
+                metrics: [ { val: "99.4%", lbl: "Precisión mAP" }, { val: "60 FPS", lbl: "Inferencia Local" }, { val: "TensorRT", lbl: "Aceleración GPU" }, { val: "0 Cloud", lbl: "Privacidad Total" } ]
             },
             ml: {
                 badge: "ARTIFICIAL INTELLIGENCE", title: "Machine Learning & Neural Nets",
-                rank: "AS DE TRÃ‰BOLES â™£", accent: "#a855f7", icon: "fas fa-brain",
+                rank: "AS DE TRÉBOLES ♣", accent: "#a855f7", icon: "fas fa-brain",
                 desc: "Entrenamiento de modelos de aprendizaje profundo, redes neuronales personalizadas y algoritmos predictivos.",
                 projects: [
-                    { icon: "fas fa-project-diagram", name: "Redes Neuronales Profundas", desc: "ClasificaciÃ³n multivariada y modelos predictivos." },
-                    { icon: "fas fa-chart-line", name: "OptimizaciÃ³n de HiperparÃ¡metros", desc: "Ajuste fino de modelos para mÃ¡xima precisiÃ³n." }
+                    { icon: "fas fa-project-diagram", name: "Redes Neuronales Profundas", desc: "Clasificación multivariada y modelos predictivos." },
+                    { icon: "fas fa-chart-line", name: "Optimización de Hiperparámetros", desc: "Ajuste fino de modelos para máxima precisión." }
                 ],
                 metrics: [ { val: "Deep Learning", lbl: "Redes Neuronales" }, { val: "PyTorch Core", lbl: "Framework AI" }, { val: "Real-time", lbl: "Predicciones" }, { val: "Local AI", lbl: "Sin Intermediarios" } ]
             },
             three: {
                 badge: "3D GRAPHICS", title: "3D Models & Three.js",
-                rank: "REINA DE TRÃ‰BOLES â™£", accent: "#00ffff", icon: "fas fa-cube",
-                desc: "VisualizaciÃ³n 3D interactiva en tiempo real WebGL, modelos 3D PBR, shaders GLSL y animaciones fÃ­sicas.",
+                rank: "REINA DE TRÉBOLES ♣", accent: "#00ffff", icon: "fas fa-cube",
+                desc: "Visualización 3D interactiva en tiempo real WebGL, modelos 3D PBR, shaders GLSL y animaciones físicas.",
                 projects: [
-                    { icon: "fas fa-globe", name: "Universo 3D Portafolio VANTA", desc: "PartÃ­culas fluidas, cristal interactivo y refracciÃ³n." },
+                    { icon: "fas fa-globe", name: "Universo 3D Portafolio VANTA", desc: "Partículas fluidas, cristal interactivo y refracción." },
                     { icon: "fas fa-cube", name: "Modelos 3D PBR", desc: "Carga optimizada de archivos GLTF/GLB con mapas HDRI." }
                 ],
-                metrics: [ { val: "120 FPS", lbl: "Render WebGL" }, { val: "GLSL 3.0", lbl: "Custom Shaders" }, { val: "PBR Materials", lbl: "FÃ­sica de Luz" }, { val: "< 1.2MB", lbl: "Bundle Opt" } ]
+                metrics: [ { val: "120 FPS", lbl: "Render WebGL" }, { val: "GLSL 3.0", lbl: "Custom Shaders" }, { val: "PBR Materials", lbl: "Física de Luz" }, { val: "< 1.2MB", lbl: "Bundle Opt" } ]
             },
             postgres: {
                 badge: "DATABASE ENGINE", title: "PostgreSQL & Neon",
-                rank: "NUEVE DE DIAMANTES â™¦", accent: "#4169E1", icon: "fas fa-database",
-                desc: "Base de datos relacional serverless con aislamiento de transacciones ACID y consultas JSONB hÃ­bridas.",
+                rank: "NUEVE DE DIAMANTES ♦", accent: "#4169E1", icon: "fas fa-database",
+                desc: "Base de datos relacional serverless con aislamiento de transacciones ACID y consultas JSONB híbridas.",
                 projects: [
-                    { icon: "fas fa-database", name: "Motor de Datos Multi-Tenant", desc: "Ãndices B-Tree optimizados + consultas JSONB." },
-                    { icon: "fas fa-cloud", name: "Arquitectura Serverless Neon", desc: "Escalado elÃ¡stico a cero en inactividad." }
+                    { icon: "fas fa-database", name: "Motor de Datos Multi-Tenant", desc: "Índices B-Tree optimizados + consultas JSONB." },
+                    { icon: "fas fa-cloud", name: "Arquitectura Serverless Neon", desc: "Escalado elástico a cero en inactividad." }
                 ],
-                metrics: [ { val: "100%", lbl: "GarantÃ­a ACID" }, { val: "0.001ms", lbl: "Index Lookup" }, { val: "Neon Cloud", lbl: "Serverless Mesh" }, { val: "JSONB", lbl: "Document Hybrid" } ]
+                metrics: [ { val: "100%", lbl: "Garantía ACID" }, { val: "0.001ms", lbl: "Index Lookup" }, { val: "Neon Cloud", lbl: "Serverless Mesh" }, { val: "JSONB", lbl: "Document Hybrid" } ]
             },
             cloudflare: {
                 badge: "CYBER SECURITY", title: "Cloudflare Tunnels",
-                rank: "DIEZ DE DIAMANTES â™¦", accent: "#F38020", icon: "fas fa-shield-alt",
-                desc: "Enrutamiento privado de redes Zero Trust, tÃºneles cifrados de punto a punto y protecciÃ³n anti-DDoS.",
+                rank: "DIEZ DE DIAMANTES ♦", accent: "#F38020", icon: "fas fa-shield-alt",
+                desc: "Enrutamiento privado de redes Zero Trust, túneles cifrados de punto a punto y protección anti-DDoS.",
                 projects: [
                     { icon: "fas fa-user-shield", name: "Arquitectura Zero Trust", desc: "Acceso seguro a servidores locales sin puertos abiertos." },
-                    { icon: "fas fa-network-wired", name: "Cloudflare Edge Tunnels", desc: "TrÃ¡fico encriptado de alta velocidad." }
+                    { icon: "fas fa-network-wired", name: "Cloudflare Edge Tunnels", desc: "Tráfico encriptado de alta velocidad." }
                 ],
-                metrics: [ { val: "Zero Trust", lbl: "Sin Puertos Abiertos" }, { val: "Anti-DDoS", lbl: "ProtecciÃ³n Edge" }, { val: "100% SSL", lbl: "Cifrado Total" }, { val: "< 2ms", lbl: "Latencia TÃºnel" } ]
+                metrics: [ { val: "Zero Trust", lbl: "Sin Puertos Abiertos" }, { val: "Anti-DDoS", lbl: "Protección Edge" }, { val: "100% SSL", lbl: "Cifrado Total" }, { val: "< 2ms", lbl: "Latencia Túnel" } ]
             },
             johan_core: {
                 badge: "CORE ENGINE", title: "Python, C++, Docker & Git",
-                rank: "JOTA DE DIAMANTES â™¦", accent: "#11d483", icon: "fas fa-code-branch",
-                desc: "IntegraciÃ³n de lenguajes de alto rendimiento, cÃ³digo nativo C++, contenedores Docker y flujos Git.",
+                rank: "JOTA DE DIAMANTES ♦", accent: "#11d483", icon: "fas fa-code-branch",
+                desc: "Integración de lenguajes de alto rendimiento, código nativo C++, contenedores Docker y flujos Git.",
                 projects: [
-                    { icon: "fas fa-terminal", name: "Bindings C++ Nativo", desc: "AceleraciÃ³n de cÃ³digo crÃ­tico para procesamiento 3D y AI." },
+                    { icon: "fas fa-terminal", name: "Bindings C++ Nativo", desc: "Aceleración de código crítico para procesamiento 3D y AI." },
                     { icon: "fas fa-boxes", name: "Dockerized Pipelines", desc: "Entornos de entrenamiento aislados en contenedores." }
                 ],
-                metrics: [ { val: "C++ Native", lbl: "CÃ³mputo Nativo" }, { val: "Docker AI", lbl: "Entornos Aislados" }, { val: "Git Flow", lbl: "Control CÃ³digo" }, { val: "Python AI", lbl: "IntegraciÃ³n Core" } ]
+                metrics: [ { val: "C++ Native", lbl: "Cómputo Nativo" }, { val: "Docker AI", lbl: "Entornos Aislados" }, { val: "Git Flow", lbl: "Control Código" }, { val: "Python AI", lbl: "Integración Core" } ]
             },
             vanta_master: {
                 badge: "THE WINNING HAND", title: "CRITERIO",
-                rank: "AS MAESTRO â™ â™¦", accent: "#f0c030", icon: "fas fa-crown",
-                desc: "Sinergia tÃ©cnica de elite por AndrÃ©s & Johan. La combinaciÃ³n perfecta de Full-Stack Cloud, IA y GrÃ¡ficos 3D.",
+                rank: "AS MAESTRO ♠♦", accent: "#f0c030", icon: "fas fa-crown",
+                desc: "Sinergia técnica de elite por Andrés & Johan. La combinación perfecta de Full-Stack Cloud, IA y Gráficos 3D.",
                 projects: [
-                    { icon: "fas fa-user-astronaut", name: "AndrÃ©s â€” Full-Stack & Cloud", desc: "FastAPI, Supabase, React, Node, Python, Flask, C++, Vercel, Docker, Git." },
-                    { icon: "fas fa-robot", name: "Johan â€” AI Vision & 3D", desc: "YOLOv8, Machine Learning, 3D Models, Three.js, Postgres, Cloudflare Tunnels, Python, C++, Docker, Git." }
+                    { icon: "fas fa-user-astronaut", name: "Andrés — Full-Stack & Cloud", desc: "FastAPI, Supabase, React, Node, Python, Flask, C++, Vercel, Docker, Git." },
+                    { icon: "fas fa-robot", name: "Johan — AI Vision & 3D", desc: "YOLOv8, Machine Learning, 3D Models, Three.js, Postgres, Cloudflare Tunnels, Python, C++, Docker, Git." }
                 ],
-                metrics: [ { val: "360Â° Studio", lbl: "Cobertura Total" }, { val: "60 FPS", lbl: "Rendimiento Web" }, { val: "Local AI", lbl: "Inferencia Propia" }, { val: "Awwwards", lbl: "Nivel de Calidad" } ]
+                metrics: [ { val: "360° Studio", lbl: "Cobertura Total" }, { val: "60 FPS", lbl: "Rendimiento Web" }, { val: "Local AI", lbl: "Inferencia Propia" }, { val: "Awwwards", lbl: "Nivel de Calidad" } ]
             }
         };
 
-        function setupPokerDealer() {
+function setupPokerDealer() {
             if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
                 setTimeout(setupPokerDealer, 100);
                 return;
@@ -2942,7 +2944,7 @@ function initEffectsScript() {
                 },
                 onLeave: () => {
                     if (window.setVantaTheme) {
-                        window.setVantaTheme({ id: 'tech-matrix', num: '03', name: 'ARQUITECTURA', primary: '#11d483', r: 17, g: 212, b: 131 });
+                        window.setVantaTheme({ id: 'pipeline', num: '03', name: 'I+D LAB', primary: '#11d483', r: 17, g: 212, b: 131 });
                     }
                 },
                 onUpdate: (self) => {
@@ -3784,9 +3786,171 @@ function initEffectsScript() {
     }
 
     initBioFace3D();
+    
+    /* ============================================================
+       ACTO 06.5: GOBERNANZA, SEGURIDAD & SLAS B2B (SCROLLYTELLING HORIZONTAL MULTI-PLANE PARALLAX)
+       ============================================================ */
+    (function initGovernanceHorizontalParallax() {
+        function setup() {
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+                setTimeout(setup, 100);
+                return;
+            }
+            gsap.registerPlugin(ScrollTrigger);
 
+            const govSection = document.getElementById('governance');
+            if (!govSection) return;
 
+            const cardsTrack = govSection.querySelector('#govCardsTrack');
+            const cardsWrapper = govSection.querySelector('.gov-cards-track-wrapper');
+            const bgWatermark = govSection.querySelector('#govWatermarkLayer');
+            const bgGrid = govSection.querySelector('#govGridLayer');
+            const telemetryRuler = govSection.querySelector('#govTelemetryRuler');
+            const progressBar = govSection.querySelector('#govProgressFill');
+            const currentCounter = govSection.querySelector('#ghcCurrent');
+            const panels = govSection.querySelectorAll('.gov-panel');
 
+            if (!cardsTrack) return;
+
+            // Mobile Native Touch Tracker (<= 991px)
+            if (cardsWrapper) {
+                cardsWrapper.addEventListener('scroll', () => {
+                    if (window.innerWidth <= 991) {
+                        const maxScroll = cardsTrack.scrollWidth - cardsWrapper.clientWidth;
+                        if (maxScroll > 0) {
+                            const prog = cardsWrapper.scrollLeft / maxScroll;
+                            if (progressBar) progressBar.style.width = `${Math.min(100, Math.max(0, prog * 100))}%`;
+                            if (currentCounter) {
+                                const idx = Math.min(5, Math.max(1, Math.floor(prog * 5) + 1));
+                                currentCounter.textContent = `0${idx}`;
+                            }
+                        }
+                    }
+                }, { passive: true });
+            }
+
+            // Desktop Multi-Plane Parallax Scrollytelling (> 991px)
+            let govST = null;
+            let lastReportedIdx = 1;
+
+            function buildTimeline() {
+                if (govST) {
+                    govST.kill();
+                    govST = null;
+                }
+
+                if (window.innerWidth <= 991) {
+                    gsap.set([cardsTrack, bgWatermark, bgGrid, telemetryRuler], { clearProps: "all" });
+                    return;
+                }
+
+                // Calculate exact translation needed so that the last card is fully visible with comfortable breathing room
+                const trackWidth = cardsTrack.scrollWidth;
+                const viewWidth = window.innerWidth;
+                const totalDist = Math.max(0, trackWidth - viewWidth + (viewWidth * 0.12));
+
+                // Layer 0: Depth Watermark (0.35x slow parallax speed for monumental scale)
+                const watermarkDist = totalDist * 0.35;
+
+                // Layer 1: Technical Laser Mesh (0.65x mid parallax speed)
+                const gridDist = totalDist * 0.65;
+
+                // Layer 3: Dynamic Metric Ruler (1.20x accelerated speed closer to camera)
+                const rulerDist = totalDist * 1.20;
+
+                const tl = gsap.timeline({
+                    defaults: { ease: "none" }
+                });
+
+                // Animate the 4 planes in unison across the full scroll distance
+                tl.to(cardsTrack, { x: -totalDist, duration: 1 }, 0)
+                  .to(bgWatermark, { x: -watermarkDist, duration: 1 }, 0)
+                  .to(bgGrid, { x: -gridDist, duration: 1 }, 0)
+                  .to(telemetryRuler, { x: -rulerDist, duration: 1 }, 0);
+
+                // Subtle dynamic card depth and glow modulation across scroll
+                panels.forEach((panel, i) => {
+                    const progressPoint = i / Math.max(1, panels.length - 1);
+                    tl.fromTo(panel,
+                        { borderColor: "rgba(255, 255, 255, 0.08)" },
+                        {
+                            borderColor: i === 0 ? "rgba(0, 229, 255, 0.35)" : (i === panels.length - 1 ? "rgba(255, 149, 0, 0.35)" : "rgba(16, 185, 129, 0.35)"),
+                            duration: 0.25,
+                            yoyo: true,
+                            repeat: 1
+                        },
+                        Math.max(0, progressPoint * 0.85)
+                    );
+                });
+
+                govST = ScrollTrigger.create({
+                    trigger: govSection,
+                    pin: true,
+                    start: "top top",
+                    end: () => `+=${totalDist + 650}`,
+                    scrub: 1.0,
+                    animation: tl,
+                    invalidateOnRefresh: true,
+                    anticipatePin: 1,
+                    onEnter: () => {
+                        if (window.setVantaTheme) {
+                            window.setVantaTheme({ id: 'solutions', num: '06', name: 'GOBERNANZA', primary: '#10b981', r: 16, g: 185, b: 129 });
+                        }
+                    },
+                    onEnterBack: () => {
+                        if (window.setVantaTheme) {
+                            window.setVantaTheme({ id: 'solutions', num: '06', name: 'GOBERNANZA', primary: '#10b981', r: 16, g: 185, b: 129 });
+                        }
+                    },
+                    onUpdate: (self) => {
+                        const p = self.progress;
+                        if (progressBar) {
+                            progressBar.style.width = `${Math.min(100, Math.max(0, p * 100))}%`;
+                        }
+                        
+                        let currentIdx = 1;
+                        if (p < 0.20) currentIdx = 1;
+                        else if (p < 0.40) currentIdx = 2;
+                        else if (p < 0.60) currentIdx = 3;
+                        else if (p < 0.80) currentIdx = 4;
+                        else currentIdx = 5;
+
+                        if (currentCounter) {
+                            currentCounter.textContent = `0${currentIdx}`;
+                        }
+
+                        if (currentIdx !== lastReportedIdx) {
+                            lastReportedIdx = currentIdx;
+                            if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.playChirp === 'function') {
+                                const pan = (currentIdx / 5) * 1.6 - 0.8;
+                                window.VANTA_AUDIO.playChirp(pan, 520 + currentIdx * 45);
+                            }
+                        }
+                    }
+                });
+            }
+
+            buildTimeline();
+
+            // Debounced resize handler
+            let resizeTimer = null;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    buildTimeline();
+                    ScrollTrigger.refresh();
+                }, 200);
+            }, { passive: true });
+
+            console.log('[VANTA] Multi-Plane Governance Parallax Engine initialized');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setup);
+        } else {
+            setup();
+        }
+    })();
 }
 
 if (document.readyState === 'loading') {

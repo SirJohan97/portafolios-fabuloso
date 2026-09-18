@@ -17,7 +17,7 @@
     --text-dim: #bbb;
     --border-subtle: #333333;
     --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --font-main: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+    --font-main: 'Plus Jakarta Sans', 'Space Grotesk', sans-serif;
     --font-display: 'Syne', sans-serif;
     --radius-sm: 4px;
     --radius-md: 4px;
@@ -1295,8 +1295,8 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     to { transform: rotate(360deg); }
 }
 
-/* Scroll indicator - liquid mouse capsule */
-.hero-scroll-indicator {
+/* Legacy scroll indicator disabled in favor of Act 01 Editorial Indicator */
+.legacy-hero-scroll-indicator {
     position: absolute;
     bottom: 2.2rem;
     left: 50%;
@@ -1306,31 +1306,6 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     align-items: center;
     pointer-events: none;
     z-index: 10;
-}
-
-/* Mouse shell outline */
-.hero-scroll-indicator::before {
-    content: '';
-    display: block;
-    width: 22px;
-    height: 36px;
-    border: 1.5px solid var(--primary);
-    border-radius: 11px;
-    opacity: 0.55;
-    box-shadow: 0 0 8px rgba(17, 212, 131, 0.15);
-}
-
-/* Dripping dot inside */
-.hero-scroll-indicator span {
-    position: absolute;
-    top: 7px;
-    display: block;
-    width: 3.5px;
-    height: 9px;
-    background: var(--primary);
-    border-radius: 2px;
-    box-shadow: 0 0 6px var(--primary);
-    animation: liquidScrollDrip 1.8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
 }
 
 @keyframes liquidScrollDrip {
@@ -8827,7 +8802,7 @@ html.lenis body {
     margin: 0 auto 1.4rem;
     user-select: none;
     pointer-events: auto;
-    text-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+    text-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
 }
 
 .hte-line {
@@ -8854,10 +8829,10 @@ html.lenis body {
     font-weight: 400 !important;
     letter-spacing: -0.015em !important;
     text-transform: none !important;
-    background: linear-gradient(135deg, #11D483 0%, #00E5FF 55%, #FFFFFF 100%);
+    background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 45%, #34D399 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 35px rgba(17, 212, 131, 0.5));
+    filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.3));
     padding: 0 0.18em;
     will-change: transform, opacity, filter;
 }
@@ -8868,10 +8843,11 @@ html.lenis body {
     font-family: var(--font-main);
     font-size: clamp(0.95rem, 1.15vw, 1.12rem);
     line-height: 1.65;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(255, 255, 255, 0.82);
     margin: 0 auto 2.4rem;
     pointer-events: auto;
     font-weight: 400;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
 }
 
 /* 5. Minimalist Luxury Action Group */
@@ -8948,6 +8924,10 @@ html.lenis body {
 
 /* 6. Subtle Minimalist Scroll Indicator */
 .hero-scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8955,6 +8935,7 @@ html.lenis body {
     pointer-events: auto;
     opacity: 0.55;
     transition: opacity 0.3s ease;
+    z-index: 10;
 }
 
 .hero-scroll-indicator:hover {
