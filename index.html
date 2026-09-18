@@ -116,15 +116,15 @@
     <div id="canvas-3d-container"></div>
 
 
-    <!-- ===== PRELOADER: CINEMATIC V ASSEMBLY ===== -->
+    <!-- ===== PRELOADER: CINEMATIC V ASSEMBLY (SNELLENBERG BÉZIER MEMBRANE) ===== -->
     <div id="preloader">
         <canvas id="preloader-canvas"></canvas>
-        <!-- Reveal curtains -->
-        <div class="curtain curtain-top"></div>
-        <div class="curtain curtain-bottom"></div>
+        <svg class="preloader-curve-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path id="preloader-curve-path" d="M 0 0 L 100 0 L 100 100 Q 50 100 0 100 Z" fill="#050505" />
+        </svg>
     </div>
 
-    <nav class="navbar">
+    <nav class="navbar" id="vanta-navbar">
         <a href="#home" class="logo" aria-label="VANTA">
             <span class="logo-icon">
                 <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -150,21 +150,34 @@
 
         <ul class="nav-links">
             <div class="nav-indicator-capsule"></div>
-            <li><a href="#home">Inicio</a></li>
-            <li><a href="#portfolio">Obras</a></li>
-            <li><a href="#pipeline">I+D Lab</a></li>
-            <li><a href="#tech-matrix">Arquitectura</a></li>
-            <li><a href="#testimonials">Reportes</a></li>
-            <li><a href="#contact" class="nav-cta">Iniciar Proyecto</a></li>
+            <li><a href="#home"><span class="nav-roll"><span class="nav-roll-default">Inicio</span><span class="nav-roll-hover" aria-hidden="true">Inicio</span></span></a></li>
+            <li><a href="#portfolio"><span class="nav-roll"><span class="nav-roll-default">Obras</span><span class="nav-roll-hover" aria-hidden="true">Obras</span></span></a></li>
+            <li><a href="#pipeline"><span class="nav-roll"><span class="nav-roll-default">I+D Lab</span><span class="nav-roll-hover" aria-hidden="true">I+D Lab</span></span></a></li>
+            <li><a href="#tech-matrix"><span class="nav-roll"><span class="nav-roll-default">Arquitectura</span><span class="nav-roll-hover" aria-hidden="true">Arquitectura</span></span></a></li>
+            <li><a href="#testimonials"><span class="nav-roll"><span class="nav-roll-default">Reportes</span><span class="nav-roll-hover" aria-hidden="true">Reportes</span></span></a></li>
+            <li><a href="#contact" class="nav-cta"><span class="nav-roll"><span class="nav-roll-default">Iniciar Proyecto</span><span class="nav-roll-hover" aria-hidden="true">Iniciar Proyecto</span></span></a></li>
         </ul>
 
-        <!-- Audio UI Toggle (Minimalist Icon) -->
-        <button id="audio-toggle-btn" class="audio-toggle-btn" aria-label="Activar sonido" title="Sonido">
-            <span class="audio-icon-off"><i class="fas fa-volume-mute"></i></span>
-            <span class="audio-icon-on" style="display:none"><i class="fas fa-volume-up"></i></span>
-        </button>
-        <div class="menu-toggle">
-            <i class="fas fa-bars"></i>
+        <div class="nav-cockpit-right">
+            <!-- Studio Live World Clock (Caracas GMT-4) -->
+            <div class="nav-clock-pill" title="Hora local del estudio (Caracas GMT-4)">
+                <span class="clock-pulse-dot"></span>
+                <span id="nav-live-clock" class="nav-clock-text">CCS --:-- VET</span>
+            </div>
+
+            <!-- Procedural Audio Equalizer Toggle -->
+            <button id="audio-toggle-btn" class="audio-toggle-btn" aria-label="Activar sonido inmersivo" title="Audio Procedural">
+                <span class="audio-eq-bars" aria-hidden="true">
+                    <span class="eq-bar bar-1"></span>
+                    <span class="eq-bar bar-2"></span>
+                    <span class="eq-bar bar-3"></span>
+                </span>
+                <span class="audio-status-label" id="audio-status-label">AUDIO: OFF</span>
+            </button>
+
+            <div class="menu-toggle" aria-label="Abrir menú">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
     </nav>
 
@@ -213,20 +226,39 @@
                     </div>
                 </div>
 
-                <div class="hero-btns">
-                    <a href="#portfolio" class="btn magnetic-btn">Explorar Obras</a>
-                    <a href="#contact" class="btn-outline magnetic-btn hero-btn-contact">Iniciar Proyecto <i class="fas fa-arrow-right"></i></a>
+                <div class="hero-btns-row">
+                    <div class="hero-btns">
+                        <a href="#portfolio" class="btn magnetic-btn"><span class="btn-text">Explorar Obras</span></a>
+                        <a href="#contact" class="btn-outline magnetic-btn hero-btn-contact"><span class="btn-text">Iniciar Proyecto</span> <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Orbital Kinetic Stamp (Locomotive Inertial Badge) -->
+                    <div class="hero-orbital-stamp" aria-hidden="true">
+                        <svg viewBox="0 0 140 140">
+                            <path id="stampCircle" d="M 70, 70 m -48, 0 a 48,48 0 1,1 96,0 a 48,48 0 1,1 -96,0" fill="none" />
+                            <text>
+                                <textPath href="#stampCircle">
+                                    • VANTA CORE ENGINEERING • LATAM EDGE • 2026
+                                </textPath>
+                            </text>
+                        </svg>
+                        <div class="stamp-core-icon"><i class="fas fa-bolt"></i></div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="hero-hud-bottom">
             <span class="hud-label">EST_2026 // LATAM_EDGE</span>
-            <span class="hud-label">SYS_STATUS: ACTIVE_CORE</span>
-        </div>
+            
+            <!-- Downward Gravitational Hook (Teaser de Obra 01) -->
+            <a href="#portfolio" class="hero-gravitational-hook" aria-label="Deslizar hacia Obras Flagship">
+                <span class="hgh-dot"></span>
+                <span class="hgh-label">OBRA INAUGURAL: 01 SVIVA CORE</span>
+                <span class="hgh-icon"><i class="fas fa-chevron-down"></i></span>
+            </a>
 
-        <div class="hero-scroll-indicator">
-            <span></span>
+            <span class="hud-label">SYS_STATUS: ACTIVE_CORE</span>
         </div>
     </header>
 

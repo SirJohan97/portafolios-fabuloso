@@ -1179,6 +1179,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-right: 75px;
 }
 
 .hero-hud-bottom .hud-label {
@@ -5269,4 +5270,243 @@
         min-height: 220px;
         height: 220px;
     }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   AWWWARDS SOTY ELEVATION: COCKPIT NAVBAR & DYNAMIC ISLAND
+   ════════════════════════════════════════════════════════════════ */
+
+/* Nav Text-Roll Ticker (Locomotive / Snellenberg Dual-Layer) */
+.nav-roll {
+    display: inline-flex;
+    flex-direction: column;
+    height: 1.2em;
+    overflow: hidden;
+    position: relative;
+    line-height: 1.2em;
+    vertical-align: middle;
+}
+
+.nav-roll-default,
+.nav-roll-hover {
+    display: inline-block;
+    transition: transform 0.36s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    will-change: transform;
+}
+
+.nav-roll-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(115%);
+    color: var(--primary-light, #11d483);
+    opacity: 0;
+}
+
+.nav-links a:hover .nav-roll-default {
+    transform: translateY(-115%);
+    opacity: 0;
+}
+
+.nav-links a:hover .nav-roll-hover {
+    transform: translateY(0%);
+    opacity: 1;
+}
+
+/* Nav Cockpit Right Controls */
+.nav-cockpit-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Studio Live World Clock */
+.nav-clock-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    transition: border-color 0.3s ease;
+}
+
+.nav-clock-pill:hover {
+    border-color: rgba(17, 212, 131, 0.3);
+}
+
+.clock-pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #11d483;
+    box-shadow: 0 0 8px #11d483;
+    animation: clockPulse 2s infinite ease-in-out;
+}
+
+@keyframes clockPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.75); }
+}
+
+/* Audio Procedural Equalizer Button */
+.audio-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.65);
+    padding: 5px 12px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.audio-toggle-btn:hover {
+    background: rgba(17, 212, 131, 0.08);
+    border-color: rgba(17, 212, 131, 0.35);
+    color: #ffffff;
+}
+
+.audio-toggle-btn.active {
+    background: rgba(17, 212, 131, 0.12);
+    border-color: rgba(17, 212, 131, 0.5);
+    color: #11d483;
+    box-shadow: 0 0 16px rgba(17, 212, 131, 0.2);
+}
+
+.audio-eq-bars {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+    width: 10px;
+}
+
+.audio-eq-bars .eq-bar {
+    width: 2px;
+    height: 3px;
+    background: currentColor;
+    border-radius: 1px;
+    transition: height 0.2s ease;
+}
+
+.audio-toggle-btn.active .bar-1 {
+    animation: eqBounce1 0.65s infinite ease-in-out alternate;
+}
+.audio-toggle-btn.active .bar-2 {
+    animation: eqBounce2 0.5s infinite ease-in-out alternate 0.15s;
+}
+.audio-toggle-btn.active .bar-3 {
+    animation: eqBounce3 0.8s infinite ease-in-out alternate 0.3s;
+}
+
+@keyframes eqBounce1 { 0% { height: 3px; } 100% { height: 11px; } }
+@keyframes eqBounce2 { 0% { height: 4px; } 100% { height: 12px; } }
+@keyframes eqBounce3 { 0% { height: 2px; } 100% { height: 9px; } }
+
+/* Hero Buttons Row & Orbital Kinetic Stamp */
+.hero-btns-row {
+    display: flex;
+    align-items: center;
+    gap: 2.2rem;
+    margin-top: 1.8rem;
+    flex-wrap: wrap;
+}
+
+.hero-orbital-stamp {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+.hero-orbital-stamp svg {
+    width: 100%;
+    height: 100%;
+    animation: orbitRotate 20s linear infinite;
+}
+
+.hero-orbital-stamp text {
+    font-family: 'Space Mono', monospace;
+    font-size: 10.5px;
+    fill: rgba(17, 212, 131, 0.75);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.stamp-core-icon {
+    position: absolute;
+    font-size: 16px;
+    color: #11d483;
+    filter: drop-shadow(0 0 8px rgba(17, 212, 131, 0.8));
+}
+
+@keyframes orbitRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Downward Gravitational Hook (Teaser Obra 01 SVIVA) */
+.hero-gravitational-hook {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50px;
+    color: rgba(255, 255, 255, 0.75);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-gravitational-hook:hover {
+    background: rgba(17, 212, 131, 0.12);
+    border-color: rgba(17, 212, 131, 0.4);
+    color: #ffffff;
+    transform: translateY(2px);
+    box-shadow: 0 4px 16px rgba(17, 212, 131, 0.25);
+}
+
+.hero-gravitational-hook .hgh-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #11d483;
+    box-shadow: 0 0 6px #11d483;
+}
+
+.hero-gravitational-hook .hgh-icon {
+    font-size: 0.62rem;
+    color: #11d483;
+    transition: transform 0.3s ease;
+}
+
+.hero-gravitational-hook:hover .hgh-icon {
+    transform: translateY(3px);
+}
+
+@media (max-width: 768px) {
+    .nav-clock-pill { display: none; }
+    .hero-orbital-stamp { display: none; }
+    .hero-gravitational-hook { display: none; }
 }

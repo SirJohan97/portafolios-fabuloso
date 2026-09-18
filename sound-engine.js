@@ -86,15 +86,21 @@
             if (btn) {
                 const iconOff = btn.querySelector('.audio-icon-off');
                 const iconOn  = btn.querySelector('.audio-icon-on');
+                const label   = btn.querySelector('.audio-status-label');
                 if (this.isEnabled) {
                     if (iconOff) iconOff.style.display = 'none';
                     if (iconOn)  iconOn.style.display = 'inline-block';
+                    if (label)   label.textContent = 'AUDIO: ON';
                     btn.classList.add('active');
                 } else {
                     if (iconOff) iconOff.style.display = 'inline-block';
                     if (iconOn)  iconOn.style.display = 'none';
+                    if (label)   label.textContent = 'AUDIO: OFF';
                     btn.classList.remove('active');
                 }
+            }
+            if (window.UISound && window.UISound.enabled !== this.isEnabled) {
+                window.UISound.enabled = this.isEnabled;
             }
         }
 

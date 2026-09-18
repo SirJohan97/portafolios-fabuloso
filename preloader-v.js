@@ -1,15 +1,12 @@
 /* ====================================================================
-   PRELOADER-V.JS — Awwwards-Grade Cinematic Vanta Logo Preloader
-   
-   Features:
-   1. Dynamic Column Curtain: Replaces 2-part curtains with 5 staggered
-      vertical columns that slide away in a wave.
-   2. Interactive Cyber Grid: A WebGL-like 2D grid that warps under
-      the progress and mouse movement.
-   3. Custom Vector Animated Logo: Draws the official VANTA logo (Diamond
-      Frame + V Chevron) dynamically with progress-based path drawing.
-   4. Kinetic Text: "V A N T A" text expands letter-spacing on progress.
-   5. Cybernetic Diagnostic Console: Real-time boot logs typing in the corner.
+   PRELOADER-V.JS — Awwwards SOTY Cinematic Minimalist Preloader
+   ────────────────────────────────────────────────────────────────────
+   • 100% Pure Minimalist Aesthetic (No corner clutter / Zero distraction)
+   • High-Contrast Glowing Vector Diamond + Chevron V Monogram
+   • Fast 1.2s Non-Linear Psychological Ease (Snappy & High-Performance)
+   • Dennis Snellenberg Elastic Bézier Curve Membrane Exit (Q Curve Morph)
+   • Lead-in Overlap: Unlocks Hero Entrance at 60% of Curtain Retraction
+   • Automatic GPU Shader Warm-Up Integration
    ==================================================================== */
 
 (function initVPreloader() {
@@ -18,36 +15,17 @@
     const preloader = document.getElementById('preloader');
     if (!preloader) return;
 
-    // Lock scroll during preloading
+    // 1. Lock scroll during preloading
     document.body.style.overflow = 'hidden';
     window.scrollTo(0, 0);
     if (window.history && window.history.scrollRestoration) {
         window.history.scrollRestoration = 'manual';
     }
 
-    // ─── 1. Build Curtain Columns Dynamically ───
-    preloader.querySelectorAll('.curtain').forEach(c => c.remove());
-    
-    const COL_COUNT = 5;
-    const columns = [];
-    for (let i = 0; i < COL_COUNT; i++) {
-        const col = document.createElement('div');
-        col.className = 'preloader-column';
-        col.style.cssText = `
-            position: absolute;
-            top: 0;
-            left: ${i * (100 / COL_COUNT)}%;
-            width: ${100 / COL_COUNT}%;
-            height: 100%;
-            background: #050505;
-            z-index: 1;
-            transform: translateY(0);
-        `;
-        preloader.appendChild(col);
-        columns.push(col);
-    }
+    // Clean any old legacy curtain elements if present
+    preloader.querySelectorAll('.curtain, .preloader-column').forEach(c => c.remove());
 
-    // ─── 2. Setup Canvas ───
+    // 2. Setup Canvas
     const canvas = document.getElementById('preloader-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -64,171 +42,111 @@
         cy = H / 2;
     });
 
-    // ─── 3. Cybernetic Boot Logs ───
-    const BOOT_LOGS = [
-        'SYSTEM: INITIALIZING VANTA_CORE_v4.0.2',
-        'KERNEL: LOADING QUANTUM_GRID_MATRIX... OK',
-        'MODULE: INJECTING VISCOUS_SLIME_FLOW... OK',
-        'THREE_JS: COUPLING VERTEX_SHADERS... OK',
-        'NAV: BUFFERING ASYNC_PORTFOLIO_TRACK... OK',
-        'THEME: ACCELERATING NEON_GREEN_EMISSIVES... OK',
-        'STATUS: VANTA_CORE IS READY'
-    ];
-    let logIndex = 0;
-    let currentLogs = [];
-    
-    function addLog() {
-        if (logIndex < BOOT_LOGS.length) {
-            currentLogs.push(BOOT_LOGS[logIndex]);
-            if (currentLogs.length > 5) currentLogs.shift();
-            logIndex++;
-            setTimeout(addLog, 450 + Math.random() * 300);
-        }
-    }
-    setTimeout(addLog, 200);
-
-    // ─── 4. Animation State ───
-    const TOTAL_MS = sessionStorage.getItem('vanta-preloader-seen') ? 1600 : 3600;
+    // 3. Fast & Snappy Animation Timing (1.25s first visit, 0.65s revisit)
+    const hasSeen = sessionStorage.getItem('vanta-preloader-seen');
+    const TOTAL_MS = hasSeen ? 650 : 1250;
+    sessionStorage.setItem('vanta-preloader-seen', 'true');
     const startTime = performance.now();
+
     let mouseX = cx, mouseY = cy;
-
     window.addEventListener('mousemove', (e) => {
-        mouseX += (e.clientX - mouseX) * 0.1;
-        mouseY += (e.clientY - mouseY) * 0.1;
-    });
+        mouseX += (e.clientX - mouseX) * 0.12;
+        mouseY += (e.clientY - mouseY) * 0.12;
+    }, { passive: true });
 
-    // ─── 5. Grid Particles ───
-    const gridRows = 16;
-    const gridCols = 16;
-    const gridPoints = [];
-    for (let r = 0; r <= gridRows; r++) {
-        for (let c = 0; c <= gridCols; c++) {
-            gridPoints.push({
-                rx: c / gridCols,
-                ry: r / gridRows,
-            });
-        }
+    // Subtle ambient dust particles (only 40 ultra-discrete particles)
+    const dustCount = 40;
+    const dust = [];
+    for (let i = 0; i < dustCount; i++) {
+        dust.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 1.5 + 0.5,
+            speedY: -0.2 - Math.random() * 0.4,
+            opacity: Math.random() * 0.4 + 0.1
+        });
     }
 
-    // ─── 6. Main Loop ───
-    function loop(ts) {
-        const elapsed = ts - startTime;
-        const progress = Math.min(elapsed / TOTAL_MS, 1);
+    let isRevealing = false;
 
-        // Clear
+    // 4. Main Drawing Loop
+    function loop(ts) {
+        if (isRevealing) return;
+
+        const elapsed = ts - startTime;
+        // Non-linear cubic ease for progress: rapid acceleration then confident snap
+        const rawT = Math.min(elapsed / TOTAL_MS, 1.0);
+        const progress = Math.min(1.0, 1 - Math.pow(1 - rawT, 3.2));
+
+        // Background: Deep void black
         ctx.fillStyle = '#050505';
         ctx.fillRect(0, 0, W, H);
 
-        // A. Draw Warping Cyber Grid
-        ctx.strokeStyle = 'rgba(17, 212, 131, 0.08)';
-        ctx.lineWidth = 1;
-
-        for (let r = 0; r <= gridRows; r++) {
+        // A. Subtle ambient floating dust
+        ctx.fillStyle = 'rgba(17, 212, 131, 0.25)';
+        for (let i = 0; i < dust.length; i++) {
+            const p = dust[i];
+            p.y += p.speedY;
+            if (p.y < 0) p.y = H;
             ctx.beginPath();
-            for (let c = 0; c <= gridCols; c++) {
-                const pt = gridPoints[r * (gridCols + 1) + c];
-                const baseX = pt.rx * W;
-                const baseY = pt.ry * H;
-
-                const dx = mouseX - baseX;
-                const dy = mouseY - baseY;
-                const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-                const force = Math.max(0, (200 - dist) / 200) * 45 * (1 - progress);
-
-                const px = baseX - (dx / dist) * force;
-                const py = baseY - (dy / dist) * force;
-
-                if (c === 0) ctx.moveTo(px, py);
-                else ctx.lineTo(px, py);
-            }
-            ctx.stroke();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
         }
 
-        for (let c = 0; c <= gridCols; c++) {
-            ctx.beginPath();
-            for (let r = 0; r <= gridRows; r++) {
-                const pt = gridPoints[r * (gridCols + 1) + c];
-                const baseX = pt.rx * W;
-                const baseY = pt.ry * H;
+        // B. Draw High-Contrast Glowing Monogram
+        drawLuminousLogo(progress, ts);
 
-                const dx = mouseX - baseX;
-                const dy = mouseY - baseY;
-                const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-                const force = Math.max(0, (200 - dist) / 200) * 45 * (1 - progress);
-
-                const px = baseX - (dx / dist) * force;
-                const py = baseY - (dy / dist) * force;
-
-                if (r === 0) ctx.moveTo(px, py);
-                else ctx.lineTo(px, py);
-            }
-            ctx.stroke();
-        }
-
-        // B. Draw Custom Vector Animated VANTA Logo
-        drawAnimatedLogo(progress, ts);
-
-        // C. Render Corner Diagnostic Console logs
-        ctx.save();
-        ctx.font = '11px "Courier New", monospace';
-        ctx.fillStyle = 'rgba(17, 212, 131, 0.5)';
-        ctx.textAlign = 'left';
-        
-        const logX = 40;
-        let logY = H - 180;
-        ctx.fillText('// VANTA DIAGNOSTIC DATASTREAM', logX, logY - 20);
-        
-        ctx.strokeStyle = 'rgba(17, 212, 131, 0.2)';
-        ctx.beginPath();
-        ctx.moveTo(logX, logY - 12);
-        ctx.lineTo(logX + 280, logY - 12);
-        ctx.stroke();
-
-        currentLogs.forEach((log, index) => {
-            ctx.fillText(log, logX, logY + index * 22);
-        });
-        ctx.restore();
-
-        // Continue or Reveal
-        if (progress < 1) {
+        // C. Progress or Reveal Trigger
+        if (rawT < 1.0) {
             requestAnimationFrame(loop);
         } else {
-            triggerReveal();
+            isRevealing = true;
+            triggerSnellenbergReveal();
         }
     }
 
-    // ─── 7. Logo Drawing Logic ───
-    function drawAnimatedLogo(progress, ts) {
-        const size = Math.min(130, W * 0.28); // diamond size
-        const ly = cy - 25; // center Y of diamond
+    // 5. Monogram Drawing with Specular Lighting & Neon Emissives
+    function drawLuminousLogo(progress, ts) {
+        const size = Math.min(140, Math.max(90, W * 0.22));
+        const ly = cy - 30;
 
-        const top = { x: cx, y: ly - size };
-        const right = { x: cx + size, y: ly };
+        const top    = { x: cx, y: ly - size };
+        const right  = { x: cx + size, y: ly };
         const bottom = { x: cx, y: ly + size };
-        const left = { x: cx - size, y: ly };
+        const left   = { x: cx - size, y: ly };
 
         ctx.save();
 
-        // 1. Draw Diamond Frame stroke dynamically
+        // Ambient radial glow behind diamond
+        const glowGrad = ctx.createRadialGradient(cx, ly, size * 0.1, cx, ly, size * 1.8);
+        glowGrad.addColorStop(0, `rgba(17, 212, 131, ${progress * 0.22})`);
+        glowGrad.addColorStop(0.5, `rgba(17, 212, 131, ${progress * 0.06})`);
+        glowGrad.addColorStop(1, 'rgba(5, 5, 5, 0)');
+        ctx.fillStyle = glowGrad;
+        ctx.beginPath();
+        ctx.arc(cx, ly, size * 1.8, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 1. Diamond Frame Vector Lines
         ctx.strokeStyle = '#11d483';
-        ctx.shadowColor = '#11d483';
-        ctx.shadowBlur = 12;
-        ctx.lineWidth = 1.5;
+        ctx.shadowColor = 'rgba(17, 212, 131, 0.9)';
+        ctx.shadowBlur = 18;
+        ctx.lineWidth = 2.2;
         ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
 
-        // Stagger diamond lines based on progress
-        const t1 = Math.min(1, Math.max(0, progress / 0.18));
-        const t2 = Math.min(1, Math.max(0, (progress - 0.18) / 0.18));
-        const t3 = Math.min(1, Math.max(0, (progress - 0.36) / 0.18));
-        const t4 = Math.min(1, Math.max(0, (progress - 0.54) / 0.18));
+        const t1 = Math.min(1, Math.max(0, progress / 0.25));
+        const t2 = Math.min(1, Math.max(0, (progress - 0.2) / 0.25));
+        const t3 = Math.min(1, Math.max(0, (progress - 0.4) / 0.25));
+        const t4 = Math.min(1, Math.max(0, (progress - 0.6) / 0.25));
 
-        // Line 1: Top to Right
+        // Line 1: Top -> Right
         ctx.beginPath();
         ctx.moveTo(top.x, top.y);
         ctx.lineTo(top.x + (right.x - top.x) * t1, top.y + (right.y - top.y) * t1);
         ctx.stroke();
 
-        // Line 2: Right to Bottom
+        // Line 2: Right -> Bottom
         if (t2 > 0) {
             ctx.beginPath();
             ctx.moveTo(right.x, right.y);
@@ -236,7 +154,7 @@
             ctx.stroke();
         }
 
-        // Line 3: Bottom to Left
+        // Line 3: Bottom -> Left
         if (t3 > 0) {
             ctx.beginPath();
             ctx.moveTo(bottom.x, bottom.y);
@@ -244,7 +162,7 @@
             ctx.stroke();
         }
 
-        // Line 4: Left to Top
+        // Line 4: Left -> Top
         if (t4 > 0) {
             ctx.beginPath();
             ctx.moveTo(left.x, left.y);
@@ -252,9 +170,9 @@
             ctx.stroke();
         }
 
-        // Fill background of diamond softly
-        if (progress > 0.45) {
-            ctx.fillStyle = `rgba(17, 212, 131, ${(progress - 0.45) * 0.12})`;
+        // Diamond Interior Hue
+        if (progress > 0.4) {
+            ctx.fillStyle = `rgba(17, 212, 131, ${(progress - 0.4) * 0.1})`;
             ctx.beginPath();
             ctx.moveTo(top.x, top.y);
             ctx.lineTo(right.x, right.y);
@@ -264,21 +182,21 @@
             ctx.fill();
         }
 
-        // 2. Draw V Chevron inside dynamically
-        // Chevron coordinates inside diamond
-        const vTopLeft = { x: cx - size * 0.45, y: ly - size * 0.28 };
-        const vBottom  = { x: cx, y: ly + size * 0.4 };
-        const vTopRight= { x: cx + size * 0.45, y: ly - size * 0.28 };
+        // 2. Bold V Chevron with Specular Shine
+        const vTopLeft  = { x: cx - size * 0.44, y: ly - size * 0.25 };
+        const vBottom   = { x: cx, y: ly + size * 0.42 };
+        const vTopRight = { x: cx + size * 0.44, y: ly - size * 0.25 };
 
-        const tv = Math.min(1, Math.max(0, (progress - 0.45) / 0.35)); // draws from progress 0.45 to 0.8
+        const tv = Math.min(1, Math.max(0, (progress - 0.35) / 0.45));
         if (tv > 0) {
-            ctx.strokeStyle = '#11d483';
-            ctx.lineWidth = 5.5;
+            ctx.strokeStyle = '#ffffff';
+            ctx.shadowColor = '#11d483';
+            ctx.shadowBlur = 24;
+            ctx.lineWidth = 6.0;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.beginPath();
-            
-            // Left arm to bottom vertex, then bottom vertex to right arm
+
             if (tv <= 0.5) {
                 const subT = tv / 0.5;
                 ctx.moveTo(vTopLeft.x, vTopLeft.y);
@@ -290,45 +208,50 @@
                 ctx.lineTo(vBottom.x + (vTopRight.x - vBottom.x) * subT, vBottom.y + (vTopRight.y - vBottom.y) * subT);
             }
             ctx.stroke();
+
+            // Inner Neon Core Stroke
+            ctx.strokeStyle = '#11d483';
+            ctx.lineWidth = 3.2;
+            ctx.stroke();
         }
 
-        // 3. Draw "V A N T A" Brand text below
+        // 3. Kinetic Brand "V A N T A"
         if (progress > 0.3) {
-            const textAlpha = Math.min(1, (progress - 0.3) / 0.5);
-            const letterSpacing = 8 + (progress * 18); // Dynamic spacing expansion
-            
-            ctx.font = '700 24px "Courier New", monospace';
-            ctx.fillStyle = `rgba(17, 212, 131, ${textAlpha})`;
+            const alpha = Math.min(1, (progress - 0.3) / 0.45);
+            const tracking = 14 + (progress * 12);
+            ctx.font = '700 22px "Space Mono", "Courier New", monospace';
+            ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.95})`;
+            ctx.shadowColor = 'rgba(17, 212, 131, 0.6)';
+            ctx.shadowBlur = 10;
             ctx.textAlign = 'center';
 
-            // Custom letter spacing drawing
-            const brandText = 'VANTA';
-            const totalW = (brandText.length - 1) * letterSpacing;
-            let startX = cx - totalW / 2;
-            const textY = ly + size + 42;
+            const brand = 'VANTA';
+            const totalW = (brand.length - 1) * tracking;
+            const startX = cx - totalW / 2;
+            const textY = ly + size + 46;
 
-            for (let i = 0; i < brandText.length; i++) {
-                ctx.fillText(brandText[i], startX + i * letterSpacing, textY);
+            for (let i = 0; i < brand.length; i++) {
+                ctx.fillText(brand[i], startX + i * tracking, textY);
             }
         }
 
-        // 4. Progress percentage line & number right below text
+        // 4. Dynamic Percentage Counter (Minimalist & Clean)
         const pct = Math.floor(progress * 100);
-        ctx.font = '600 11px "Courier New", monospace';
-        ctx.fillStyle = 'rgba(17, 212, 131, 0.4)';
-        ctx.fillText(`BOOTING_CORE_DAT: ${pct}%`, cx, ly + size + 74);
+        ctx.font = '600 12px "Space Mono", monospace';
+        ctx.fillStyle = 'rgba(17, 212, 131, 0.75)';
+        ctx.shadowBlur = 0;
+        ctx.textAlign = 'center';
+        ctx.fillText(`[ ${pct.toString().padStart(2, '0')}% ]`, cx, ly + size + 78);
 
         ctx.restore();
     }
 
-    // ─── 8. Staggered Column Curtain Transition ───
-    function triggerReveal() {
+    // 6. Dennis Snellenberg Bézier Curve Membrane Exit
+    function triggerSnellenbergReveal() {
+        const svgPath = document.getElementById('preloader-curve-path');
+
         if (typeof gsap !== 'undefined') {
-            gsap.to(columns, {
-                y: (i) => i % 2 === 0 ? '-100%' : '100%',
-                duration: 1.1,
-                stagger: 0.08,
-                ease: 'power4.inOut',
+            const tl = gsap.timeline({
                 onComplete: () => {
                     preloader.style.display = 'none';
                     document.body.style.overflow = '';
@@ -336,24 +259,72 @@
                         window.lenis.start();
                         window.lenis.scrollTo(0, { immediate: true });
                     }
-                    if (window.play3DVEntranceAnimation) {
-                        window.play3DVEntranceAnimation();
-                    }
                 }
             });
-            gsap.to(canvas, { opacity: 0, duration: 0.5 });
+
+            // A. SVG Membrane Stretch: Pulls down then snaps up
+            if (svgPath) {
+                tl.fromTo(svgPath,
+                    { attr: { d: "M 0 0 L 100 0 L 100 100 Q 50 180 0 100 Z" } },
+                    {
+                        attr: { d: "M 0 0 L 100 0 L 100 0 Q 50 0 0 0 Z" },
+                        duration: 0.95,
+                        ease: "power4.inOut"
+                    }, 0);
+            }
+
+            // B. Whole Preloader flies up with Snellenberg cubic bezier
+            tl.to(preloader, {
+                yPercent: -100,
+                duration: 0.95,
+                ease: gsap.parseEase("cubic-bezier(0.76, 0, 0.24, 1)")
+            }, 0);
+
+            // C. Canvas fade out simultaneously
+            tl.to(canvas, { opacity: 0, duration: 0.4 }, 0);
+
+            // D. LEAD-IN OVERLAP: At 52% of the curtain pull, fire Hero entrance!
+            tl.call(() => {
+                if (typeof window.play3DVEntranceAnimation === 'function') {
+                    window.play3DVEntranceAnimation();
+                } else {
+                    let retries = 0;
+                    const chk = setInterval(() => {
+                        if (typeof window.play3DVEntranceAnimation === 'function') {
+                            clearInterval(chk);
+                            window.play3DVEntranceAnimation();
+                        } else if (++retries > 20) {
+                            clearInterval(chk);
+                        }
+                    }, 50);
+                }
+                // Animate hero titles into view
+                gsap.fromTo('.htm-line',
+                    { y: 60, opacity: 0 },
+                    { y: 0, opacity: 1, stagger: 0.08, duration: 1.1, ease: 'power4.out' }
+                );
+                gsap.fromTo('.hero-eyebrow-tag',
+                    { y: -20, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
+                );
+                gsap.fromTo('#vanta-navbar',
+                    { y: -30, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }
+                );
+                gsap.fromTo('.hero-sub-row, .hero-mini-bento, .hero-btns-row, .hero-hud-bottom',
+                    { y: 25, opacity: 0 },
+                    { y: 0, opacity: 1, stagger: 0.08, duration: 1.0, ease: 'power3.out' }
+                );
+            }, null, 0.52);
+
         } else {
-            columns.forEach((col, i) => {
-                col.style.transform = i % 2 === 0 ? 'translateY(-100%)' : 'translateY(100%)';
-                col.style.transition = 'transform 0.8s cubic-bezier(0.85, 0, 0.15, 1)';
-            });
+            // Fallback if GSAP is unavailable
+            preloader.style.transition = 'transform 0.85s cubic-bezier(0.76, 0, 0.24, 1)';
+            preloader.style.transform = 'translateY(-100%)';
             setTimeout(() => {
                 preloader.style.display = 'none';
                 document.body.style.overflow = '';
-                if (window.lenis) {
-                    window.lenis.start();
-                    window.lenis.scrollTo(0, { immediate: true });
-                }
+                if (window.lenis) window.lenis.start();
                 if (window.play3DVEntranceAnimation) window.play3DVEntranceAnimation();
             }, 850);
         }

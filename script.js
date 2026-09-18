@@ -276,15 +276,19 @@ function initMainScript() {
     if (window.innerWidth > 991 && cursor && !isTouchDevice) {
         document.body.classList.add('custom-cursor-active');
  
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-        let c1X = mouseX, c1Y = mouseY;
-        let c2X = mouseX, c2Y = mouseY;
+        let mouseX = -100;
+        let mouseY = -100;
+        let c1X = -100, c1Y = -100;
+        let c2X = -100, c2Y = -100;
         let cursorRafId = null;
         let isCursorRunning = false;
+        let hasMovedMouse = false;
+
+        cursor.style.opacity = '0';
+        if (cursor2) cursor2.style.opacity = '0';
 
         function startCursorLoop() {
-            if (!isCursorRunning && !document.hidden) {
+            if (!isCursorRunning && !document.hidden && hasMovedMouse) {
                 isCursorRunning = true;
                 renderCursor();
             }
@@ -299,6 +303,15 @@ function initMainScript() {
         }
  
         document.addEventListener('mousemove', e => {
+            if (!hasMovedMouse) {
+                hasMovedMouse = true;
+                c1X = e.clientX;
+                c1Y = e.clientY;
+                c2X = e.clientX;
+                c2Y = e.clientY;
+                cursor.style.opacity = '1';
+                if (cursor2) cursor2.style.opacity = '1';
+            }
             mouseX = e.clientX;
             mouseY = e.clientY;
             startCursorLoop();
@@ -306,13 +319,15 @@ function initMainScript() {
  
         document.addEventListener('mouseleave', () => {
             cursor.style.opacity = '0';
-            cursor2.style.opacity = '0';
+            if (cursor2) cursor2.style.opacity = '0';
             stopCursorLoop();
         });
         document.addEventListener('mouseenter', () => {
-            cursor.style.opacity = '1';
-            cursor2.style.opacity = '1';
-            startCursorLoop();
+            if (hasMovedMouse) {
+                cursor.style.opacity = '1';
+                if (cursor2) cursor2.style.opacity = '1';
+                startCursorLoop();
+            }
         });
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
@@ -531,38 +546,21 @@ function initMainScript() {
 
         const p = navCurrentP; // 0.0 en Hero -> 1.0 al salir del Hero
 
-        // 1. Estado colapsado: sin recuadros, 100% transparente para máxima inmersión
-        if (p > 0.85) {
-            navbar.classList.add('scrolled-out');
+        // 1. Dynamic Island: Se transforma en cápsula flotante centrada
+        if (p > 0.25) {
+            navbar.classList.add('scrolled');
         } else {
-            navbar.classList.remove('scrolled-out');
+            navbar.classList.remove('scrolled');
         }
 
-        if (p < 0.85) {
-            const bgAlpha = (1 - p) * 0.45;
-            const borderAlpha = (1 - p) * 0.05;
-            const shadowAlpha = (1 - p) * 0.5;
-            const blurPx = (1 - p) * 22;
+        // Limpieza de inline styles para ceder control a las clases CSS
+        navbar.style.background = '';
+        navbar.style.borderColor = '';
+        navbar.style.boxShadow = '';
+        navbar.style.backdropFilter = '';
+        navbar.style.webkitBackdropFilter = '';
 
-            navbar.style.background = `rgba(10, 10, 10, ${bgAlpha.toFixed(3)})`;
-            navbar.style.borderColor = `rgba(255, 255, 255, ${borderAlpha.toFixed(3)})`;
-            navbar.style.boxShadow = `0 10px 40px rgba(0, 0, 0, ${shadowAlpha.toFixed(3)})`;
-            navbar.style.backdropFilter = `blur(${blurPx.toFixed(1)}px)`;
-            navbar.style.webkitBackdropFilter = `blur(${blurPx.toFixed(1)}px)`;
-        } else {
-            navbar.style.background = '';
-            navbar.style.borderColor = '';
-            navbar.style.boxShadow = '';
-            navbar.style.backdropFilter = '';
-            navbar.style.webkitBackdropFilter = '';
-        }
-
-        // 2. Enlaces del menú: se desvanecen suavemente según el progreso del scroll
-        if (navMenuContainer && !navbar.classList.contains('scrolled-out')) {
-            navMenuContainer.style.opacity = Math.max(0, 1 - p * 1.25).toFixed(3);
-            navMenuContainer.style.transform = `translate3d(0, ${(-p * 12).toFixed(1)}px, 0)`;
-            navMenuContainer.style.pointerEvents = p > 0.65 ? 'none' : 'all';
-        } else if (navMenuContainer && navbar.classList.contains('scrolled-out')) {
+        if (navMenuContainer) {
             navMenuContainer.style.opacity = '';
             navMenuContainer.style.transform = '';
             navMenuContainer.style.pointerEvents = '';
@@ -2851,7 +2849,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             map: createParticleTexture(),
             vertexColors: true,
             transparent: true,
-            opacity: 0.0,           // Inicia invisible, se anima en la entrada
+            opacity: 0.85,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
             alphaTest: 0.005
@@ -2861,7 +2859,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         
         const logoGroup = new THREE.Group();
         logoGroup.add(points);
-        logoGroup.scale.setScalar(0.0001); // Escala inicial cero
+        logoGroup.scale.setScalar(1.0);
         scene.add(logoGroup);
 
         // 3. Crear Terreno de Rejilla Vectorial (PlaneGeometry para el fondo)
@@ -2902,8 +2900,8 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         let lastScrollY = window.scrollY || window.pageYOffset || 0;
         let scrollVelocity = 0;
         let flowOffset = 0;
-        let logoScaleObj = { value: 0.0001 };
-        let logoRotationObj = { y: 3.5 };
+        let logoScaleObj = { value: 1.0 };
+        let logoRotationObj = { y: 0.0 };
 
         window.addEventListener('mousemove', (e) => {
             targetX = (e.clientX - window.innerWidth / (window.innerWidth > 991 ? 1.4 : 2)) * 0.0006;
@@ -2932,19 +2930,18 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
         // 4. Función global de entrada elástica de la V + Flash
         window.play3DVEntranceAnimation = function() {
-            
             if (typeof gsap !== 'undefined') {
                 gsap.killTweensOf(logoScaleObj);
                 gsap.killTweensOf(logoRotationObj);
                 
                 gsap.fromTo(logoScaleObj,
-                    { value: 0.0001 },
+                    { value: 0.05 },
                     { value: 1.0, duration: 2.2, ease: 'elastic.out(0.85, 0.68)' }
                 );
                 
                 gsap.fromTo(logoRotationObj,
-                    { y: 3.5 },
-                    { y: 0.0, duration: 2.8, ease: 'power2.out' }
+                    { y: -0.55 },
+                    { y: 0.0, duration: 2.6, ease: 'power3.out' }
                 );
             } else {
                 logoScaleObj.value = 1.0;
@@ -2952,7 +2949,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             }
             
             // Destello flash blanco (se lerpea en el bucle animate)
-            logoMaterial.color.setRGB(2.0, 2.0, 2.0);
+            logoMaterial.color.setRGB(2.5, 2.5, 2.5);
         };
 
         // Resiliencia: si las cortinas ya se abrieron, arrancar animación
@@ -3533,16 +3530,22 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             if (btn) {
                 const iconOff = btn.querySelector('.audio-icon-off');
                 const iconOn  = btn.querySelector('.audio-icon-on');
+                const label   = btn.querySelector('.audio-status-label');
                 if (this.enabled) {
                     if (iconOff) iconOff.style.display = 'none';
                     if (iconOn)  iconOn.style.display = 'inline-block';
+                    if (label)   label.textContent = 'AUDIO: ON';
                     btn.classList.add('active');
                     this.playClick();
                 } else {
                     if (iconOff) iconOff.style.display = 'inline-block';
                     if (iconOn)  iconOn.style.display = 'none';
+                    if (label)   label.textContent = 'AUDIO: OFF';
                     btn.classList.remove('active');
                 }
+            }
+            if (window.VANTA_AUDIO && window.VANTA_AUDIO.isEnabled !== this.enabled) {
+                window.VANTA_AUDIO.isEnabled = this.enabled;
             }
             return this.enabled;
         },
@@ -3597,6 +3600,36 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         el.addEventListener('mouseenter', () => UISound.playTick());
         el.addEventListener('click', () => UISound.playClick());
     });
+
+    // ─── 🕒 STUDIO LIVE WORLD CLOCK (CARACAS GMT-4) ───
+    function initLiveWorldClock() {
+        const clockEl = document.getElementById('nav-live-clock');
+        if (!clockEl) return;
+
+        function updateClock() {
+            try {
+                const now = new Date();
+                const options = {
+                    timeZone: 'America/Caracas',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                };
+                const timeStr = new Intl.DateTimeFormat('en-GB', options).format(now);
+                clockEl.textContent = `CCS ${timeStr} VET`;
+            } catch (e) {
+                const now = new Date();
+                const hh = String((now.getUTCHours() - 4 + 24) % 24).padStart(2, '0');
+                const mm = String(now.getUTCMinutes()).padStart(2, '0');
+                const ss = String(now.getUTCSeconds()).padStart(2, '0');
+                clockEl.textContent = `CCS ${hh}:${mm}:${ss} VET`;
+            }
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+    }
+    initLiveWorldClock();
 
     // ─── 🌐 TECH BENTO GRID TILT ───
     function initTechBentoTilt() {
