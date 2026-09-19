@@ -36,12 +36,7 @@
 
         window.__vantaLenis = lenis;
 
-        // Pausar durante scrolls horizontales
-        const horizontalContainers = document.querySelectorAll('.portfolio-scroll-container, .testimonials-section');
-        horizontalContainers.forEach(container => {
-            container.addEventListener('mouseenter', () => lenis && lenis.stop());
-            container.addEventListener('mouseleave', () => lenis && lenis.start());
-        });
+        // Lenis smooth scroll fully active without artificial lockouts
 
         console.log('[VANTA] Lenis smooth scroll OK');
     }

@@ -567,75 +567,10 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       13. TESTIMONIALS HORIZONTAL PINNED SCROLL (Ultra-Optimized)
+       13. TESTIMONIALS HORIZONTAL PINNED SCROLL (Delegated to Swipe Deck)
        ============================================================ */
     (function initTestimonialsHorizontalScroll() {
-        const testimonialsSection = document.querySelector('.testimonials-section');
-        const testimonialsTrack   = document.getElementById('testimonialsTrack');
-        const testimonialsProgress = document.getElementById('testimonialsProgress');
-        const testimonialCards    = document.querySelectorAll('.testimonial-card-h');
-        
-        if (testimonialsSection && testimonialsTrack && window.innerWidth >= 768) {
-            let sectionTop = 0;
-            let sectionH = 0;
-            function cacheLayout() {
-                let top = 0;
-                let obj = testimonialsSection;
-                while (obj) {
-                    top += obj.offsetTop;
-                    obj = obj.offsetParent;
-                }
-                sectionTop = top;
-                sectionH = testimonialsSection.offsetHeight;
-            }
-            cacheLayout();
-            window.addEventListener('resize', cacheLayout, { passive: true });
-
-            let lastActiveIndex = -1;
-            function updateTestimonialsScroll() {
-                const scrollY = window.scrollY || window.pageYOffset || 0;
-                const vpH = window.innerHeight;
-
-                // Viewport Culling
-                if (scrollY < sectionTop - vpH || scrollY > sectionTop + sectionH) return;
-
-                const scrolled = scrollY - sectionTop; 
-                const scrollable = sectionH - vpH; 
-                if (scrollable <= 0) return;
-
-                let progress = scrolled / scrollable; 
-                progress = Math.max(0, Math.min(1, progress));
-
-                const totalTranslate = (testimonialCards.length - 1) * window.innerWidth;
-                const translateX = progress * totalTranslate;
-
-                testimonialsTrack.style.transform = `translate3d(-${translateX.toFixed(1)}px, 0, 0)`;
-
-                if (testimonialsProgress) {
-                    testimonialsProgress.style.width = (progress * 100).toFixed(1) + '%';
-                }
-
-                const activeIndex = Math.round(progress * (testimonialCards.length - 1));
-                if (activeIndex !== lastActiveIndex) {
-                    lastActiveIndex = activeIndex;
-                    testimonialCards.forEach((card, i) => {
-                        if (i === activeIndex) card.classList.add('in-view');
-                        else card.classList.remove('in-view');
-                    });
-                }
-            }
-
-            if (window.lenis) {
-                window.lenis.on('scroll', updateTestimonialsScroll);
-            } else {
-                window.addEventListener('scroll', updateTestimonialsScroll, { passive: true });
-            }
-
-            updateTestimonialsScroll();
-            if (testimonialCards[0]) testimonialCards[0].classList.add('in-view');
-        } else if (testimonialCards.length > 0) {
-            testimonialCards.forEach(c => c.classList.add('in-view'));
-        }
+        // Obsolete: Testimonials is powered by the interactive Swipe Deck.
     })();
 
 
@@ -3847,7 +3782,7 @@ function setupPokerDealer() {
                 // Calculate exact translation needed so that the last card is fully visible with comfortable breathing room
                 const trackWidth = cardsTrack.scrollWidth;
                 const viewWidth = window.innerWidth;
-                const totalDist = Math.max(0, trackWidth - viewWidth + (viewWidth * 0.12));
+                const totalDist = Math.max(0, trackWidth - viewWidth + (viewWidth * 0.08));
 
                 // Layer 0: Depth Watermark (0.35x slow parallax speed for monumental scale)
                 const watermarkDist = totalDist * 0.35;
@@ -3887,20 +3822,28 @@ function setupPokerDealer() {
                     trigger: govSection,
                     pin: true,
                     start: "top top",
-                    end: () => `+=${totalDist + 650}`,
-                    scrub: 1.0,
+                    end: () => `+=${Math.round(totalDist + 150)}`,
+                    scrub: 0.8,
                     animation: tl,
                     invalidateOnRefresh: true,
                     anticipatePin: 1,
                     onEnter: () => {
+                        document.body.classList.add('in-gov-scrolly');
                         if (window.setVantaTheme) {
                             window.setVantaTheme({ id: 'solutions', num: '06', name: 'GOBERNANZA', primary: '#10b981', r: 16, g: 185, b: 129 });
                         }
                     },
                     onEnterBack: () => {
+                        document.body.classList.add('in-gov-scrolly');
                         if (window.setVantaTheme) {
                             window.setVantaTheme({ id: 'solutions', num: '06', name: 'GOBERNANZA', primary: '#10b981', r: 16, g: 185, b: 129 });
                         }
+                    },
+                    onLeave: () => {
+                        document.body.classList.remove('in-gov-scrolly');
+                    },
+                    onLeaveBack: () => {
+                        document.body.classList.remove('in-gov-scrolly');
                     },
                     onUpdate: (self) => {
                         const p = self.progress;
