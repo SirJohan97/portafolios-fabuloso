@@ -1933,7 +1933,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     z-index: 1;
 }
 
-/* PLAYER SEATS — Engineering editorial stations */
+/* PLAYER SEATS — Engineering editorial stations with 3D avatar flipper */
 .player-seat {
     position: absolute;
     left: 50%;
@@ -1941,15 +1941,129 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     z-index: 30;
     display: flex;
     align-items: center;
+    gap: 0.85rem;
     background: rgba(4, 7, 12, 0.96);
     border: 1px solid rgba(17, 212, 131, 0.28);
-    padding: 0.4rem 1.2rem;
-    border-radius: 4px;
+    padding: 0.35rem 1.1rem 0.35rem 0.45rem;
+    border-radius: 6px;
     box-shadow: 0 8px 30px rgba(0,0,0,0.95);
     will-change: transform, opacity;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.player-seat:hover {
+    border-color: rgba(17, 212, 131, 0.6);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.98), 0 0 20px rgba(17, 212, 131, 0.15);
 }
 .seat-top    { top: 14px; }
 .seat-bottom { bottom: 14px; }
+
+/* ─── FOUNDER AVATAR 3D FLIPPER (Concept ↔ Real) ─── */
+.founder-avatar-flipper {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    perspective: 700px;
+    flex-shrink: 0;
+}
+.flipper-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 50%;
+}
+.founder-avatar-flipper:hover .flipper-card,
+.founder-avatar-flipper.flipped .flipper-card,
+.player-seat:hover .founder-avatar-flipper .flipper-card {
+    transform: rotateY(180deg);
+}
+
+.flipper-face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border: 1.5px solid rgba(17, 212, 131, 0.5);
+    box-shadow: 0 0 12px rgba(17, 212, 131, 0.25), inset 0 0 8px rgba(0, 0, 0, 0.7);
+    background: #06090e;
+}
+
+.flipper-front {
+    transform: rotateY(0deg);
+}
+
+.flipper-back {
+    transform: rotateY(180deg);
+    border-color: rgba(240, 192, 48, 0.7);
+    box-shadow: 0 0 14px rgba(240, 192, 48, 0.3), inset 0 0 8px rgba(0, 0, 0, 0.7);
+}
+
+.founder-avatar-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+}
+
+/* Illustrated Concept Avatar */
+.avatar-illus {
+    object-fit: cover;
+    object-position: 50% 12%;
+    transform: scale(1.15);
+    filter: contrast(1.05) brightness(1.02);
+}
+
+/* Real Production Founder Photo */
+.avatar-real {
+    object-fit: cover;
+    object-position: center center;
+    filter: contrast(1.08) saturate(1.05);
+}
+
+/* Micro-tag pill on avatar */
+.flipper-tag {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(3, 6, 11, 0.92);
+    font-family: monospace;
+    font-size: 0.32rem;
+    font-weight: 800;
+    color: #11d483;
+    text-align: center;
+    letter-spacing: 0.5px;
+    padding: 1px 0;
+    border-top: 1px solid rgba(17, 212, 131, 0.3);
+    text-transform: uppercase;
+    line-height: 1.1;
+}
+.flipper-tag.tag-real {
+    color: #f0c030;
+    border-top-color: rgba(240, 192, 48, 0.45);
+}
+
+/* Holographic orbital ring */
+.founder-avatar-flipper::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1px dashed rgba(17, 212, 131, 0.3);
+    animation: rotateAvatarRing 14s linear infinite;
+    pointer-events: none;
+}
+@keyframes rotateAvatarRing {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
 
 /* EDITORIAL PLAYER STATION BADGE */
 .player-station-badge {
@@ -2409,6 +2523,16 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 .project-chip i {
     font-size: 1.3rem;
     color: var(--modal-accent, #11d483);
+}
+.project-chip-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 12%;
+    border: 1.5px solid var(--modal-accent, #f0c030);
+    box-shadow: 0 0 10px rgba(240, 192, 48, 0.4);
+    flex-shrink: 0;
 }
 .project-chip-info {
     display: flex;

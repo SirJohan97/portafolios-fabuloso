@@ -2328,10 +2328,10 @@ function initEffectsScript() {
             vanta_master: {
                 badge: "THE WINNING HAND", title: "CRITERIO",
                 rank: "AS MAESTRO ♠♦", accent: "#f0c030", icon: "fas fa-crown",
-                desc: "Sinergia técnica de elite por Andrés & Johan. La combinación perfecta de Full-Stack Cloud, IA y Gráficos 3D.",
+                desc: "Sinergia técnica de elite por Andrés Morales & Johan Fernández. La combinación perfecta de Full-Stack Cloud, IA y Gráficos 3D.",
                 projects: [
-                    { icon: "fas fa-user-astronaut", name: "Andrés — Full-Stack & Cloud", desc: "FastAPI, Supabase, React, Node, Python, Flask, C++, Vercel, Docker, Git." },
-                    { icon: "fas fa-robot", name: "Johan — AI Vision & 3D", desc: "YOLOv8, Machine Learning, 3D Models, Three.js, Postgres, Cloudflare Tunnels, Python, C++, Docker, Git." }
+                    { icon: "img/team/andres_robin.png", isAvatar: true, name: "Andrés Morales — Full-Stack & Cloud", desc: "FastAPI, Supabase, React, Node, Python, Flask, C++, Vercel, Docker, Git." },
+                    { icon: "img/team/johan_gohan.png", isAvatar: true, name: "Johan Fernández — AI Vision & 3D", desc: "YOLOv8, Machine Learning, 3D Models, Three.js, Postgres, Cloudflare Tunnels, Python, C++, Docker, Git." }
                 ],
                 metrics: [ { val: "360° Studio", lbl: "Cobertura Total" }, { val: "60 FPS", lbl: "Rendimiento Web" }, { val: "Local AI", lbl: "Inferencia Propia" }, { val: "Awwwards", lbl: "Nivel de Calidad" } ]
             }
@@ -2620,7 +2620,7 @@ function setupPokerDealer() {
                 const pEl = document.getElementById('modal-projects');
                 if (pEl) pEl.innerHTML = d.projects.map(p => `
                     <div class="project-chip" style="--modal-accent:${d.accent}">
-                        <i class="${p.icon}"></i>
+                        ${p.isAvatar ? `<img src="${p.icon}" class="project-chip-avatar" alt="${p.name}" />` : `<i class="${p.icon}"></i>`}
                         <div class="project-chip-info">
                             <span class="project-chip-title">${p.name}</span>
                             <span class="project-chip-desc">${p.desc}</span>
@@ -2650,6 +2650,17 @@ function setupPokerDealer() {
             if (backdrop)  backdrop.addEventListener('click', closeModal);
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && modal && modal.classList.contains('active')) closeModal();
+            });
+
+            // Founder avatar 3D flip interaction (Concept ↔ Real)
+            document.querySelectorAll(".player-seat").forEach(seat => {
+                seat.addEventListener("click", () => {
+                    const flipper = seat.querySelector(".founder-avatar-flipper");
+                    if (flipper) {
+                        flipper.classList.toggle("flipped");
+                        playTick(720, 0.05);
+                    }
+                });
             });
         }
 
