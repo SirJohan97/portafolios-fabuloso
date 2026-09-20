@@ -165,7 +165,10 @@
                     duration: 0.85,
                     stagger: 0.08,
                     ease: 'power3.out',
-                    delay: 0.45
+                    delay: 0.45,
+                    onComplete: () => {
+                        gsap.set(navElements, { clearProps: 'transform,opacity,filter' });
+                    }
                 });
             }
         });

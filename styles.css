@@ -215,6 +215,131 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   DYNAMIC CLEAN SCROLL MODE (AWWWARDS SOTY FOCUS)
+   Viewport automatically clears upon scrolling:
+   - Central Deck, Audio Pill & Project CTA slide up & dissolve.
+   - Top-left brand collapses into a precision glowing circular badge.
+   ───────────────────────────────────────────────────────────── */
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-center-deck {
+    opacity: 0 !important;
+    transform: translateY(-28px) scale(0.92) !important;
+    filter: blur(8px) !important;
+    pointer-events: none !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-command-wing {
+    opacity: 0 !important;
+    transform: translateY(-28px) scale(0.92) !important;
+    filter: blur(8px) !important;
+    pointer-events: none !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-anchor {
+    padding: 0 !important;
+    gap: 0 !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    border-radius: 50% !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: rgba(6, 10, 16, 0.88) !important;
+    backdrop-filter: blur(24px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+    border: 1px solid rgba(17, 212, 131, 0.42) !important;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75), 0 0 20px rgba(17, 212, 131, 0.25) !important;
+    cursor: pointer !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-anchor:hover {
+    border-color: rgba(17, 212, 131, 0.85) !important;
+    box-shadow: 0 12px 38px rgba(0, 0, 0, 0.85), 0 0 30px rgba(17, 212, 131, 0.5) !important;
+    transform: scale(1.08) translateY(-1px) !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-link {
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-content: center !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-link .logo-icon {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    margin: 0 !important;
+    opacity: 1 !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-link .logo-icon svg {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    filter: drop-shadow(0 0 8px rgba(17, 212, 131, 0.85)) !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-link .logo-text {
+    max-width: 0 !important;
+    opacity: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -6px !important;
+    transform: scale(0.6) !important;
+    pointer-events: none !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-status {
+    max-width: 0 !important;
+    opacity: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-left: 0px solid transparent !important;
+    pointer-events: none !important;
+}
+
+/* --- HUD Peek Mode on Top Screen Hover --- */
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-center-deck {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+    filter: blur(0px) !important;
+    pointer-events: auto !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-command-wing {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+    filter: blur(0px) !important;
+    pointer-events: auto !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-brand-anchor {
+    padding: 0.38rem 1rem 0.38rem 0.6rem !important;
+    gap: 0.85rem !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: auto !important;
+    max-width: 320px !important;
+    border-radius: 999px !important;
+    justify-content: flex-start !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-brand-link .logo-text {
+    max-width: 140px !important;
+    opacity: 1 !important;
+    letter-spacing: 0.08em !important;
+    transform: scale(1) !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-brand-status {
+    max-width: 160px !important;
+    opacity: 1 !important;
+    padding-left: 0.75rem !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
    1. WING LEFT: BRAND ANCHOR
    ───────────────────────────────────────────────────────────── */
 .nav-brand-anchor {
@@ -228,8 +353,17 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     border: 1px solid rgba(255, 255, 255, 0.09);
     border-radius: 999px;
     box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform, opacity;
+    transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                min-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                padding 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                gap 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                border-radius 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease,
+                background 0.3s ease,
+                box-shadow 0.35s ease,
+                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity, width, padding;
 }
 
 .nav-brand-anchor:hover {
@@ -244,6 +378,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     gap: 0.65rem;
     text-decoration: none;
     color: #FFFFFF;
+    transition: gap 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-brand-link .logo-icon {
@@ -252,8 +387,10 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     justify-content: center;
     width: 30px;
     height: 30px;
+    min-width: 30px;
     opacity: 1;
     overflow: visible;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-brand-link .logo-icon svg {
@@ -261,6 +398,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     height: 30px;
     min-width: 30px;
     filter: drop-shadow(0 0 10px rgba(17, 212, 131, 0.65));
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
 }
 
 .nav-brand-link .logo-text {
@@ -269,6 +407,18 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     font-size: 1.05rem;
     letter-spacing: 0.08em;
     color: #FFFFFF;
+    display: inline-block;
+    max-width: 140px;
+    white-space: nowrap;
+    overflow: hidden;
+    opacity: 1;
+    transform-origin: left center;
+    transition: max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.3s ease,
+                letter-spacing 0.35s ease,
+                margin 0.35s ease,
+                transform 0.35s ease;
+    will-change: max-width, opacity, letter-spacing;
 }
 
 .nav-brand-status {
@@ -277,6 +427,15 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     gap: 0.45rem;
     padding-left: 0.75rem;
     border-left: 1px solid rgba(255, 255, 255, 0.12);
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    opacity: 1;
+    transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.25s ease,
+                padding 0.35s ease,
+                border-color 0.25s ease;
+    will-change: max-width, opacity, padding;
 }
 
 .nav-brand-status .nbs-pulse {
@@ -309,7 +468,10 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    will-change: transform, opacity;
+    will-change: transform, opacity, filter;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.35s ease,
+                filter 0.35s ease;
 }
 
 .nav-deck-capsule {
@@ -427,7 +589,10 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    will-change: transform, opacity;
+    will-change: transform, opacity, filter;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.35s ease,
+                filter 0.35s ease;
 }
 
 /* Audio Procedural Pill */

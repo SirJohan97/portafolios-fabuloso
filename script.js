@@ -524,80 +524,70 @@ function initMainScript() {
     }
 
     /* =========================================
-       8. NAVBAR SMART HIDE-ON-SCROLL & PROGRESS
+       8. NAVBAR SMART HIDE-ON-SCROLL & LOGO MORPH
+       Dynamic Clean Mode (Awwwards SOTY Focus)
        ========================================= */
-    const navbar = document.querySelector('.navbar');
-    const logoEl = document.querySelector('.logo');
+    const navbar = document.getElementById('vanta-navbar') || document.querySelector('.navbar');
+    const navbarLogoTarget = document.getElementById('navbar-logo-target');
 
-    // Motor de Interpolación Física Lerp para Navbar y Logo (Awwwards Grade)
-    let navTargetP  = 0;
-    let navCurrentP = 0;
-    let isNavLerpRunning = false;
-
-    const logoIcon = document.querySelector('.logo-icon');
-    const hideLtrs = document.querySelectorAll('.logo .l.hide');
-    const navMenuContainer = document.querySelector('.nav-links');
+    let isScrolledClean = false;
 
     function updateNavbar(scrollY) {
-        // Progreso continuo 0.0 -> 1.0 según la salida del Hero (0px a 260px)
-        navTargetP = Math.min(1, Math.max(0, scrollY / 260));
+        if (!navbar) return;
 
-        if (!isNavLerpRunning) {
-            isNavLerpRunning = true;
-            requestAnimationFrame(renderNavLerp);
+        // Umbral de scroll para limpiar la pantalla de manera elegante (55px)
+        const shouldBeScrolled = scrollY > 55;
+
+        if (shouldBeScrolled !== isScrolledClean) {
+            isScrolledClean = shouldBeScrolled;
+            if (isScrolledClean) {
+                navbar.classList.add('nav-scrolled-clean', 'scrolled');
+                document.body.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled-clean', 'scrolled', 'nav-peek');
+                document.body.classList.remove('scrolled');
+            }
         }
     }
 
-    function renderNavLerp() {
-        const diff = navTargetP - navCurrentP;
-        if (Math.abs(diff) > 0.0005) {
-            navCurrentP += diff * 0.09; // lerp continuo ultra-fluido a 60fps
-            requestAnimationFrame(renderNavLerp);
-        } else {
-            navCurrentP = navTargetP;
-            isNavLerpRunning = false;
+    // Logo click: retorno ultra-fluido al inicio
+    if (navbarLogoTarget) {
+        navbarLogoTarget.addEventListener('click', (e) => {
+            const href = navbarLogoTarget.getAttribute('href');
+            if (href === '#home' || href === '#') {
+                e.preventDefault();
+                if (window.lenis) {
+                    window.lenis.scrollTo(0, { duration: 1.1, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+        });
+    }
+
+    // Smart HUD Peek: si el cursor se acerca al borde superior (< 48px), la barra reaparece sutilmente
+    let peekActive = false;
+    window.addEventListener('mousemove', (e) => {
+        if (!isScrolledClean || !navbar) return;
+        if (e.clientY <= 48) {
+            if (!peekActive) {
+                peekActive = true;
+                navbar.classList.add('nav-peek');
+            }
+        } else if (e.clientY > 90) {
+            if (peekActive) {
+                peekActive = false;
+                navbar.classList.remove('nav-peek');
+            }
         }
+    }, { passive: true });
 
-        const p = navCurrentP; // 0.0 en Hero -> 1.0 al salir del Hero
-
-        // 1. Dynamic Island: Se transforma en cápsula flotante centrada
-        if (p > 0.25) {
-            navbar.classList.add('scrolled');
-            document.body.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-            document.body.classList.remove('scrolled');
-        }
-
-        // Limpieza de inline styles para ceder control a las clases CSS
-        navbar.style.background = '';
-        navbar.style.borderColor = '';
-        navbar.style.boxShadow = '';
-        navbar.style.backdropFilter = '';
-        navbar.style.webkitBackdropFilter = '';
-
-        if (navMenuContainer) {
-            navMenuContainer.style.opacity = '';
-            navMenuContainer.style.transform = '';
-            navMenuContainer.style.pointerEvents = '';
-        }
-
-        // 3. Icono morfológico del logo: emerge desde 0px a 34px de ancho
-        if (logoIcon) {
-            const iconW = p * 34;
-            const iconMargin = p * 10;
-            logoIcon.style.width = `${iconW.toFixed(1)}px`;
-            logoIcon.style.marginRight = `${iconMargin.toFixed(1)}px`;
-            logoIcon.style.opacity = p.toFixed(3);
-        }
-
-        // 4. Letras A, N, T: colapsan suavemente en cascada
-        hideLtrs.forEach(ltr => {
-            const ltrOpacity = Math.max(0, 1 - p * 1.35);
-            const ltrW = Math.max(0, (1 - p) * 2);
-            ltr.style.opacity = ltrOpacity.toFixed(3);
-            ltr.style.maxWidth = `${ltrW.toFixed(2)}ch`;
-            ltr.style.letterSpacing = `${((1 - p) * 5).toFixed(1)}px`;
+    if (navbar) {
+        navbar.addEventListener('mouseleave', () => {
+            if (isScrolledClean && peekActive) {
+                peekActive = false;
+                navbar.classList.remove('nav-peek');
+            }
         });
     }
 
