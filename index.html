@@ -1470,45 +1470,39 @@
         </div>
     </section>
 
-    <!-- ===== ACTO 06: MODELOS DE DESPLIEGUE COMERCIAL & GOBERNANZA B2B ===== -->
+    <!-- ===== ACTO 06: VANTA ATELIER — MODELOS DE DESPLIEGUE & BLINDAJE B2B ===== -->
     <section id="solutions" class="gov-parallax-section" aria-label="Modelos de Despliegue Comercial y Marco de Gobernanza B2B">
         
-        <!-- Divisor Orgánico Líquido de Entrada (Cúpula Bézier mdebeauty.com) -->
-        <div class="vanta-organic-divider vod-entrance" aria-hidden="true">
-            <svg class="vod-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <defs>
-                    <filter id="vantaVeilGlow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="2" result="blur" />
-                        <feMerge>
-                            <feMergeNode in="blur" />
-                            <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                    </filter>
-                </defs>
-                <path id="vodEntranceFill" d="M 0 100 L 100 100 L 100 0 Q 50 100 0 0 Z" fill="#030508" />
-                <path id="vodEntranceStroke" d="M 0 0 Q 50 100 100 0" fill="none" stroke="#11D483" stroke-width="0.8" vector-effect="non-scaling-stroke" filter="url(#vantaVeilGlow)" opacity="0.85" />
-            </svg>
-        </div>
-
         <!-- Sticky Pin Stage (100vh) -->
         <div class="gov-parallax-pin" id="govParallaxPin">
+
+            <!-- Velo Líquido Cinemático de Entrada (mdebeauty.com) -->
+            <div class="vanta-liquid-curtain vlc--entrance" id="vlcEntrance" aria-hidden="true">
+                <svg class="vlc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <defs>
+                        <filter id="vlcGlow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="1.5" result="blur" />
+                            <feMerge>
+                                <feMergeNode in="blur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <path id="vlcEntranceFill" d="M 0 0 L 100 0 L 100 82 Q 50 100 0 82 Z" fill="#07090E" />
+                    <path id="vlcEntranceStroke" d="M 0 82 Q 50 100 100 82" fill="none" stroke="#11D483" stroke-width="0.8" vector-effect="non-scaling-stroke" filter="url(#vlcGlow)" opacity="0.95" />
+                </svg>
+            </div>
 
             <!-- Capa 0: Fondo Profundo Tipográfico Monumental (Parallax Lento ~0.35x) -->
             <div class="gov-bg-watermark-layer" id="govWatermarkLayer" aria-hidden="true">
                 <div class="gov-watermark-text">
-                    <span>SOLUCIONES CLARAS</span>
+                    <span>VANTA ATELIER</span>
                     <span class="gwm-sep">•</span>
-                    <span>DESPLIEGUE PYMES &amp; ENTERPRISE</span>
+                    <span>MODELOS DE ENGAGEMENT</span>
                     <span class="gwm-sep">•</span>
-                    <span>CÓDIGO 100% PROPIO</span>
+                    <span>CÓDIGO 100% AUDITABLE</span>
                     <span class="gwm-sep">•</span>
-                    <span>99.95% SLA GUARANTEED</span>
-                    <span class="gwm-sep">•</span>
-                    <span>POSTGRESQL &amp; REDIS QUEUES</span>
-                    <span class="gwm-sep">•</span>
-                    <span>WORK FOR HIRE CONTRACTS</span>
-                    <span class="gwm-sep">•</span>
-                    <span>K6 STRESS BENCHMARKS</span>
+                    <span>SLA CRÍTICO &lt; 2H</span>
                     <span class="gwm-sep">•</span>
                     <span>MILESTONE ESCROW</span>
                 </div>
@@ -1521,268 +1515,331 @@
                     <span class="gll-line gl-1"></span>
                     <span class="gll-line gl-2"></span>
                     <span class="gll-line gl-3"></span>
-                    <span class="gll-line gl-4"></span>
-                    <span class="gll-line gl-5"></span>
                 </div>
             </div>
 
             <!-- HUD Superior Fijo en el Pin Stage -->
-            <div class="gov-hud-fixed">
+            <div class="gov-hud-fixed" id="govHudFixed">
                 <div class="gov-hud-left">
-                    <span class="cap-eyebrow">// MODELOS_DE_DESPLIEGUE &amp; GOBERNANZA B2B // DE NEGOCIOS LOCALES A ENTERPRISE</span>
-                    <h2 class="gov-hud-title">Soluciones Claras. Blindaje Total.</h2>
+                    <span class="hud-mono-tag">// ACTO 06 &bull; ATELIER</span>
+                    <span class="hud-mono-sep">//</span>
+                    <span class="hud-mono-active" id="pavilionActiveTitle">01. DESPLIEGUE COMERCIAL</span>
                 </div>
                 <div class="gov-hud-right">
                     <div class="gov-hud-counter">
                         <span class="ghc-current" id="ghcCurrent">01</span>
                         <span class="ghc-sep">/</span>
-                        <span class="ghc-total">09</span>
+                        <span class="ghc-total">03</span>
                     </div>
                     <div class="gov-progress-track">
                         <div class="gov-progress-fill" id="govProgressFill"></div>
                     </div>
-                    <span class="gov-scroll-hint">DESLIZA <i class="fas fa-arrow-right"></i></span>
+                    <span class="gov-scroll-hint">PANORÁMICA <i class="fas fa-arrow-right"></i></span>
                 </div>
             </div>
 
-            <!-- Capa 2: Pista Horizontal de Tarjetas de Alto Rendimiento (Velocidad 1.0x) -->
+            <!-- Capa 2: Pista Panorámica Widescreen de 3 Pabellones (100vw cada uno) -->
             <div class="gov-cards-track-wrapper">
-                <div class="gov-cards-track" id="govCardsTrack">
+                <div class="gov-cards-track pavilion-track" id="govCardsTrack">
 
-                    <!-- Panel 01: Presencia Comercial & Catálogo Web -->
-                    <div class="gov-panel gov-panel--pyme" data-plan="catalogo">
-                        <div class="gov-card-top">
-                            <span class="gov-idx">01 / 09</span>
-                            <span class="gov-badge gov-badge--cyan"><i class="fas fa-store"></i> NEGOCIO LOCAL</span>
-                        </div>
-                        <h3 class="gov-title">Presencia Comercial &amp; Catálogo Web</h3>
-                        <p class="gov-desc">Ideal para pastelerías, cafeterías, comercios y servicios que necesitan aparecer en Google y recibir pedidos directos por WhatsApp.</p>
-                        <div class="gov-pricing-pill">
-                            <span class="gpp-val">Desde &lt; $300 <small>USD</small></span>
-                            <span class="gpp-time"><i class="fas fa-bolt"></i> 5 a 7 días hábiles</span>
-                        </div>
-                        <ul class="gov-list">
-                            <li><i class="fas fa-check-circle"></i> Catálogo digital HD o vitrina interactiva</li>
-                            <li><i class="fas fa-check-circle"></i> Botón WhatsApp con formato prellenado</li>
-                            <li><i class="fas fa-check-circle"></i> Google Maps, dirección, horarios y SEO</li>
-                            <li><i class="fas fa-check-circle"></i> Carga ultra rápida (&lt; 1s) en smartphones</li>
-                            <li><i class="fas fa-check-circle"></i> Dominio y hosting SSL 100% tuyo</li>
-                        </ul>
-                        <div class="gov-cta-action">
-                            <button type="button" class="btn-gov-pyme magnetic-btn" data-type="Sitio Web / Catálogo Negocio" data-budget="Negocio Local (< $500)">
-                                <span>Cotizar Catálogo Web</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <!-- ==========================================
+                         PABELLÓN 01: EL DESPLIEGUE COMERCIAL (100vw)
+                         ========================================== -->
+                    <div class="gov-panel pavilion-screen pavilion--commercial" id="pavilionCommercial" data-pavilion-idx="1" data-title="01. Despliegue Comercial Pymes">
+                        <div class="pav-comm-grid">
+                            <!-- Columna Izquierda: Manifiesto Editorial Pymes -->
+                            <div class="pav-comm-editorial">
+                                <span class="pav-kicker"><i class="fas fa-store"></i> NEGOCIOS LOCALES REALES // SIN RODEOS</span>
+                                <h3 class="pav-headline">Software de autor.<br><span class="text-gradient-cyan">Cero alquileres. Cero humo.</span></h3>
+                                <p class="pav-lead">Digitalizamos pastelerías, comercios, clínicas y restaurantes con tecnología de élite. Sin cobrarte cuotas mensuales por tu propia web y con entrega garantizada en días.</p>
+                                
+                                <div class="pav-founder-guarantee">
+                                    <div class="pfg-badge"><i class="fas fa-handshake"></i></div>
+                                    <div class="pfg-body">
+                                        <strong>Trato directo con los fundadores</strong>
+                                        <p>Johan y Andrés programan tu solución y te atienden en Caracas directamente por WhatsApp.</p>
+                                    </div>
+                                </div>
 
-                    <!-- Panel 02: E-Commerce & Menú QR Kiosko -->
-                    <div class="gov-panel gov-panel--featured" data-plan="kiosko">
-                        <div class="gov-featured-tag"><i class="fas fa-star"></i> MÁS DEMANDADO // GASTRONOMÍA &amp; RETAIL</div>
-                        <div class="gov-card-top">
-                            <span class="gov-idx">02 / 09</span>
-                            <span class="gov-badge"><i class="fas fa-qrcode"></i> SISTEMA POS &amp; COMANDAS</span>
-                        </div>
-                        <h3 class="gov-title">E-Commerce &amp; Menú QR Kiosko</h3>
-                        <p class="gov-desc">Inspirado en nuestro caso <em>Kiosko Azul</em>: pedidos en mesa sin apps, monitor de cocina en vivo, carrito y cuadre de caja.</p>
-                        <div class="gov-pricing-pill">
-                            <span class="gpp-val">$300 – $1,200 <small>USD</small></span>
-                            <span class="gpp-time"><i class="fas fa-clock"></i> 10 a 14 días hábiles</span>
-                        </div>
-                        <ul class="gov-list">
-                            <li><i class="fas fa-check-circle"></i> Menú QR interactivo en mesas sin apps</li>
-                            <li><i class="fas fa-check-circle"></i> Carrito interactivo con notas de cocina</li>
-                            <li><i class="fas fa-check-circle"></i> Cobro multimoneda: Pago Móvil, Zelle y Punto</li>
-                            <li><i class="fas fa-check-circle"></i> Monitor FIFO de despacho para cocina en vivo</li>
-                            <li><i class="fas fa-check-circle"></i> Panel de control para precios y stock al instante</li>
-                        </ul>
-                        <div class="gov-cta-action">
-                            <button type="button" class="btn-gov-pyme btn-gov-pyme--featured magnetic-btn" data-type="Menú QR / Kiosko Local" data-budget="Pyme &amp; E-Commerce ($500 - $2,500)">
-                                <span>Solicitar Sistema Kiosko</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Panel 03: Sistemas a Medida & Agentes IA -->
-                    <div class="gov-panel gov-panel--pyme" data-plan="custom">
-                        <div class="gov-card-top">
-                            <span class="gov-idx">03 / 09</span>
-                            <span class="gov-badge gov-badge--amber"><i class="fas fa-microchip"></i> AUTOMATIZACIÓN &amp; IA</span>
-                        </div>
-                        <h3 class="gov-title">Sistemas a Medida &amp; Agentes IA</h3>
-                        <p class="gov-desc">Control total de inventario multi-sucursal, CRM operativo, facturación y bots de WhatsApp con IA que atienden clientes y cierran ventas 24/7.</p>
-                        <div class="gov-pricing-pill">
-                            <span class="gpp-val">Desde $1,200 <small>USD</small></span>
-                            <span class="gpp-time"><i class="fas fa-tasks"></i> Sprints por hitos</span>
-                        </div>
-                        <ul class="gov-list">
-                            <li><i class="fas fa-check-circle"></i> Backend dedicado PostgreSQL robusto</li>
-                            <li><i class="fas fa-check-circle"></i> Bot WhatsApp con IA integrada 24/7</li>
-                            <li><i class="fas fa-check-circle"></i> Sincronización multi-almacén en tiempo real</li>
-                            <li><i class="fas fa-check-circle"></i> Roles para cajeros, gerentes y dueños</li>
-                            <li><i class="fas fa-check-circle"></i> Garantía de código y soporte SLA empresarial</li>
-                        </ul>
-                        <div class="gov-cta-action">
-                            <button type="button" class="btn-gov-pyme magnetic-btn" data-type="ERP / Automatización B2B" data-budget="Corporativo / ERP ($2,500 - $10,000)">
-                                <span>Diseñar a Medida</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Panel 04: Las 3 Reglas de Oro VANTA (Bridge Card) -->
-                    <div class="gov-panel gov-panel--bridge">
-                        <div class="gov-card-top">
-                            <span class="gov-idx">04 / 09</span>
-                            <span class="gov-badge gov-badge--gold"><i class="fas fa-award"></i> LAS 3 REGLAS DE ORO</span>
-                        </div>
-                        <h3 class="gov-title">Manifiesto de Confianza VANTA</h3>
-                        <p class="gov-desc">Nuestra filosofía intransigente tanto para el comercio local como para la corporación multinacional:</p>
-                        <div class="gov-rules-list">
-                            <div class="grl-item">
-                                <span class="grl-num">01</span>
-                                <div>
-                                    <strong>Hablamos en cristiano</strong>
-                                    <p>Cero tecnicismos confusos. Te explicamos exactamente qué hace tu sistema y cómo te ayuda a vender más.</p>
+                                <div class="pav-fast-action">
+                                    <a href="https://wa.me/584127121162?text=Hola%20Johan%20y%20Andr%C3%A9s,%20deseo%20cotizar%20un%20proyecto%20para%20mi%20negocio" target="_blank" rel="noopener noreferrer" class="btn-pav-whatsapp magnetic-btn">
+                                        <i class="fab fa-whatsapp"></i>
+                                        <span>Hablar directamente por WhatsApp</span>
+                                    </a>
                                 </div>
                             </div>
-                            <div class="grl-item">
-                                <span class="grl-num">02</span>
-                                <div>
-                                    <strong>Código y Dominio 100% Tuyos</strong>
-                                    <p>Sin alquileres abusivos ni trampas. Acceso absoluto a tu repositorio, dominio y bases de datos.</p>
+
+                            <!-- Columna Derecha: Dual-Podium de Cristal Líquido -->
+                            <div class="pav-comm-podiums">
+                                <!-- Podio A: Presencia & Catálogo Web -->
+                                <div class="pav-podium">
+                                    <div class="podium-header">
+                                        <span class="podium-kicker">// NIVEL_01 // COMERCIO LOCAL</span>
+                                        <h4 class="podium-title">Presencia &amp; Catálogo Web</h4>
+                                        <div class="podium-price-tag">
+                                            <span class="ppt-amount">Desde &lt; $300 <small>USD</small></span>
+                                            <span class="ppt-time"><i class="fas fa-bolt"></i> 5 a 7 días</span>
+                                        </div>
+                                    </div>
+                                    <p class="podium-desc">Ideal para cafeterías, pastelerías y servicios que necesitan aparecer en Google y recibir pedidos directos por WhatsApp.</p>
+                                    <div class="podium-specs">
+                                        <div class="spec-row">
+                                            <span class="spec-key">VITRINA</span>
+                                            <span class="spec-val">Catálogo HD interactivo con fotos</span>
+                                        </div>
+                                        <div class="spec-row">
+                                            <span class="spec-key">CONVERSIÓN</span>
+                                            <span class="spec-val">Botón WhatsApp con mensaje prellenado</span>
+                                        </div>
+                                        <div class="spec-row">
+                                            <span class="spec-key">UBICACIÓN</span>
+                                            <span class="spec-val">Google Maps integrado &amp; SEO local</span>
+                                        </div>
+                                        <div class="spec-row">
+                                            <span class="spec-key">PROPIEDAD</span>
+                                            <span class="spec-val">Dominio y hosting SSL 100% a tu nombre</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-podium-cta magnetic-btn btn-gov-pyme" data-target-type="web" data-target-budget="300-800">
+                                        <span>Cotizar Catálogo Web ($300)</span>
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="grl-item">
-                                <span class="grl-num">03</span>
-                                <div>
-                                    <strong>Trato Directo con los Fundadores</strong>
-                                    <p>Te atienden y programan Andrés Morales y Johan Fernández directamente en Caracas por WhatsApp.</p>
+
+                                <!-- Podio B: E-Commerce & Menú QR Kiosko -->
+                                <div class="pav-podium pav-podium--featured">
+                                    <div class="podium-glow-badge"><i class="fas fa-star"></i> MÁS DEMANDADO // GASTRONOMÍA &amp; RETAIL</div>
+                                    <div class="podium-header">
+                                        <span class="podium-kicker">// NIVEL_02 // POS &amp; COMANDAS</span>
+                                        <h4 class="podium-title">E-Commerce &amp; Menú QR Kiosko</h4>
+                                        <div class="podium-price-tag">
+                                            <span class="ppt-amount">$300 – $1,200 <small>USD</small></span>
+                                            <span class="ppt-time"><i class="fas fa-clock"></i> 10 a 14 días</span>
+                                        </div>
+                                    </div>
+                                    <p class="podium-desc">Inspirado en nuestro caso <em>Kiosko Azul</em>: pedidos en mesa sin descargar apps, monitor de cocina en vivo y cobros multimoneda.</p>
+                                    <div class="podium-specs">
+                                        <div class="spec-row">
+                                            <span class="spec-key">AUTOSERVICIO</span>
+                                            <span class="spec-val">Menú QR en mesas (sin descargar apps)</span>
+                                        </div>
+                                        <div class="spec-row">
+                                            <span class="spec-key">DESPACHO</span>
+                                            <span class="spec-val">Monitor de cocina en vivo (FIFO)</span>
+                                        </div>
+                                        <div class="spec-row">
+                                            <span class="spec-key">PAGOS</span>
+                                            <span class="spec-val">Pago Móvil, Zelle y Punto multimoneda</span>
+                                        </div>
+                                        <div class="spec-row">
+                                            <span class="spec-key">ADMIN</span>
+                                            <span class="spec-val">Panel de control de stock y precios vivo</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-podium-cta btn-podium-cta--featured magnetic-btn btn-gov-pyme" data-target-type="ecommerce" data-target-budget="800-2500">
+                                        <span>Solicitar Sistema Kiosko</span>
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="gov-intro-stats">
-                            <div class="gis-item">
-                                <span class="gis-val">100%</span>
-                                <span class="gis-lbl">Código Tuyo</span>
+                    </div>
+
+                    <!-- ==========================================
+                         PABELLÓN 02: EL MANIFIESTO DE CONFIANZA (100vw)
+                         ========================================== -->
+                    <div class="gov-panel pavilion-screen pavilion--manifesto" id="pavilionManifesto" data-pavilion-idx="2" data-title="02. El Manifiesto de las 3 Reglas de Oro">
+                        <div class="pav-mani-wrap">
+                            <div class="pav-mani-header text-center">
+                                <span class="pav-kicker">// ÉTICA DE INGENIERÍA // SIN LETRA PEQUEÑA</span>
+                                <h3 class="pav-headline">Las 3 Reglas de Oro VANTA</h3>
+                                <p class="pav-lead pav-lead--centered">Nuestra postura intransigente tanto para el comercio local como para la corporación multinacional.</p>
                             </div>
-                            <div class="gis-item">
-                                <span class="gis-val">&lt; 2H</span>
-                                <span class="gis-lbl">SLA Sev 1</span>
+
+                            <!-- Tríptico Monolítico Escultórico -->
+                            <div class="pav-triptych-grid">
+                                <!-- Monolito 01 -->
+                                <div class="triptych-monolith">
+                                    <div class="tm-top">
+                                        <span class="tm-num">01</span>
+                                        <span class="tm-kicker">COMUNICACIÓN PURA</span>
+                                    </div>
+                                    <h4 class="tm-title">Hablamos en cristiano.</h4>
+                                    <p class="tm-text">Cero tecnicismos rebuscados para justificar sobrecostes. Te explicamos cada función en términos de negocio, conversiones y ahorro real de horas hombre.</p>
+                                    <div class="tm-footer-metric">
+                                        <span class="tfm-val">100%</span>
+                                        <span class="tfm-lbl">Transparencia en cotización</span>
+                                    </div>
+                                </div>
+
+                                <!-- Monolito 02 -->
+                                <div class="triptych-monolith triptych-monolith--highlight">
+                                    <div class="tm-top">
+                                        <span class="tm-num">02</span>
+                                        <span class="tm-kicker">PROPIEDAD ABSOLUTA</span>
+                                    </div>
+                                    <h4 class="tm-title">Código y Dominio 100% Tuyos.</h4>
+                                    <p class="tm-text">Sin mensualidades abusivas de alquiler ni candados propietarios. El repositorio privado de GitHub, la base de datos y los dominios son legalmente tuyos desde el día 1.</p>
+                                    <div class="tm-footer-metric">
+                                        <span class="tfm-val">0 Lock-In</span>
+                                        <span class="tfm-lbl">Work-For-Hire contractual</span>
+                                    </div>
+                                </div>
+
+                                <!-- Monolito 03 -->
+                                <div class="triptych-monolith">
+                                    <div class="tm-top">
+                                        <span class="tm-num">03</span>
+                                        <span class="tm-kicker">EQUIPO REAL</span>
+                                    </div>
+                                    <h4 class="tm-title">Trato Directo con los Fundadores.</h4>
+                                    <p class="tm-text">Sin intermediarios, redactores ni ejecutivos de cuenta juniors. Johan Fernández y Andrés Morales diseñan, programan y dan soporte a tu solución directamente.</p>
+                                    <div class="tm-footer-metric">
+                                        <span class="tfm-val">&lt; 15 min</span>
+                                        <span class="tfm-lbl">Respuesta directa de fundadores</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="gis-item">
-                                <span class="gis-val">ACID</span>
-                                <span class="gis-lbl">PostgreSQL</span>
+
+                            <!-- Telemetría Dinámica Inferior -->
+                            <div class="pav-telemetry-strip">
+                                <div class="pts-item"><span class="pts-dot"></span><span>100% PROPIEDAD INTELECTUAL</span></div>
+                                <div class="pts-sep">//</div>
+                                <div class="pts-item"><span class="pts-dot"></span><span>&lt; 2H SLA INCIDENCIAS SEV 1</span></div>
+                                <div class="pts-sep">//</div>
+                                <div class="pts-item"><span class="pts-dot"></span><span>ACID POSTGRESQL &amp; REDIS STREAMS</span></div>
+                                <div class="pts-sep">//</div>
+                                <div class="pts-item"><span class="pts-dot"></span><span>DESARROLLO EN CARACAS CON ALCANCE GLOBAL</span></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Panel 05: Facturación Fiscal & Marco Legal Formal -->
-                    <div class="gov-panel">
-                        <div class="gov-card-top">
-                            <span class="gov-idx">05 / 09</span>
-                            <span class="gov-badge"><i class="fas fa-file-contract"></i> COMPLIANCE LEGAL</span>
-                        </div>
-                        <h3 class="gov-title">Facturación Fiscal &amp; Marco Legal Formal</h3>
-                        <p class="gov-desc">Entidad mercantil constituida con RIF comercial en Venezuela y estructura legal para acuerdos de contratación internacional. Emisión formal de facturas fiscales, contratos mercantiles y acuerdos de confidencialidad (NDA) vinculantes.</p>
-                        <ul class="gov-list">
-                            <li><i class="fas fa-check-shield"></i> RIF y personalidad jurídica auditable</li>
-                            <li><i class="fas fa-check-shield"></i> Contratos de desarrollo con validez mercantil</li>
-                            <li><i class="fas fa-check-shield"></i> Cuentas bancarias corporativas directas</li>
-                        </ul>
-                    </div>
+                    <!-- ==========================================
+                         PABELLÓN 03: GOBERNANZA & INFRAESTRUCTURA B2B (100vw)
+                         ========================================== -->
+                    <div class="gov-panel pavilion-screen pavilion--governance" id="pavilionGovernance" data-pavilion-idx="3" data-title="03. Gobernanza &amp; Blindaje B2B">
+                        <div class="pav-gov-wrap">
+                            <div class="pav-gov-top">
+                                <div>
+                                    <span class="pav-kicker">// B2B COMPLIANCE &amp; ENTERPRISE READINESS</span>
+                                    <h3 class="pav-headline">Infraestructura Crítica.<br><span class="text-gradient-amber">Blindaje Legal y Contractual.</span></h3>
+                                </div>
+                                <div class="pav-gov-lead-box">
+                                    <p>Diseñado para comités de compra, directores de operaciones y auditorías tecnológicas que exigen certeza jurídica, SLA formal y código escalable.</p>
+                                </div>
+                            </div>
 
-                    <!-- Panel 06: Custodia y Cesión Absoluta del Código Fuente -->
-                    <div class="gov-panel">
-                        <div class="gov-card-top">
-                            <span class="gov-idx">06 / 09</span>
-                            <span class="gov-badge"><i class="fas fa-code-branch"></i> PROPIEDAD TOTAL</span>
-                        </div>
-                        <h3 class="gov-title">Custodia y Cesión Absoluta de Código</h3>
-                        <p class="gov-desc">El desarrollo se ejecuta directamente en la organización privada de GitHub o GitLab de tu empresa desde el Día 1. Cada commit está documentado y versionado; la propiedad intelectual y el código fuente te pertenecen al 100%.</p>
-                        <ul class="gov-list">
-                            <li><i class="fas fa-check-shield"></i> 100% cesión de derechos patrimoniales (Work-For-Hire)</li>
-                            <li><i class="fas fa-check-shield"></i> Cero lock-in tecnológico ni dependencias propietarias</li>
-                            <li><i class="fas fa-check-shield"></i> Repositorios privados y pipelines CI/CD auditados</li>
-                        </ul>
-                    </div>
+                            <!-- Matriz de Telemetría Técnica (4 Cuadrantes Blueprint) -->
+                            <div class="pav-gov-quadrant">
+                                <!-- Cuadrante 01 -->
+                                <div class="pgq-card">
+                                    <div class="pgq-header">
+                                        <span class="pgq-code">[ COMPLIANCE_FISCAL_Y_RIF ]</span>
+                                        <span class="pgq-tag"><i class="fas fa-file-invoice"></i> LEGAL</span>
+                                    </div>
+                                    <h4 class="pgq-title">Facturación Fiscal &amp; Personalidad Jurídica</h4>
+                                    <p class="pgq-desc">Entidad mercantil formal en Venezuela con RIF comercial para emisión de facturación fiscal legal y acuerdos mercantiles de contratación internacional con NDA bilateral.</p>
+                                    <div class="pgq-meta">
+                                        <span>RIF Mercantil Venezolano</span>
+                                        <span>Cuentas Corporativas</span>
+                                    </div>
+                                </div>
 
-                    <!-- Panel 07: SLA de Soporte Crítico -->
-                    <div class="gov-panel">
-                        <div class="gov-card-top">
-                            <span class="gov-idx">07 / 09</span>
-                            <span class="gov-badge"><i class="fas fa-heartbeat"></i> SLA CRÍTICO</span>
-                        </div>
-                        <h3 class="gov-title">SLA Crítico: Respuesta &lt; 2h (Severidad 1)</h3>
-                        <p class="gov-desc">Acuerdos de nivel de servicio garantizados por anexo contractual para operaciones de misión crítica: inventarios, ERP y pasarelas de pago. Soporte técnico prioritario y procedimientos de recuperación ante desastres.</p>
-                        <ul class="gov-list">
-                            <li><i class="fas fa-check-shield"></i> Tiempo de respuesta &lt; 2h en incidencias Severidad 1</li>
-                            <li><i class="fas fa-check-shield"></i> Políticas de respaldos diarios georredundantes</li>
-                            <li><i class="fas fa-check-shield"></i> Objetivos RTO &lt; 4h y RPO &lt; 2h para bases de datos</li>
-                        </ul>
-                    </div>
+                                <!-- Cuadrante 02 -->
+                                <div class="pgq-card">
+                                    <div class="pgq-header">
+                                        <span class="pgq-code">[ CUSTODIA_WORK_FOR_HIRE ]</span>
+                                        <span class="pgq-tag"><i class="fas fa-code-branch"></i> PROPIEDAD</span>
+                                    </div>
+                                    <h4 class="pgq-title">Cesión Absoluta del Código Fuente</h4>
+                                    <p class="pgq-desc">Desarrollamos directamente en la organización privada de GitHub o GitLab de tu empresa. Cada commit documentado; la propiedad intelectual te pertenece al 100%.</p>
+                                    <div class="pgq-meta">
+                                        <span>Work-For-Hire 100%</span>
+                                        <span>Pipelines CI/CD Privados</span>
+                                    </div>
+                                </div>
 
-                    <!-- Panel 08: Arquitectura Desacoplada & Stress Testing -->
-                    <div class="gov-panel">
-                        <div class="gov-card-top">
-                            <span class="gov-idx">08 / 09</span>
-                            <span class="gov-badge"><i class="fas fa-tachometer-alt"></i> RENDIMIENTO K6</span>
-                        </div>
-                        <h3 class="gov-title">Arquitectura Desacoplada &amp; Pruebas k6</h3>
-                        <p class="gov-desc">Infraestructura backend diseñada para alta concurrencia: colas de mensajería asíncronas con Redis, Celery ou RabbitMQ desacopladas de PostgreSQL. Validamos capacidad bajo estrés con k6 y Locust (&gt;500 req/s p95 &lt; 85ms).</p>
-                        <ul class="gov-list">
-                            <li><i class="fas fa-check-shield"></i> Brokers de colas asíncronas para cero cuellos de botella</li>
-                            <li><i class="fas fa-check-shield"></i> Pruebas de estrés documentadas previas al paso a prod</li>
-                            <li><i class="fas fa-check-shield"></i> Pool de conexiones PostgreSQL transaccional seguro</li>
-                        </ul>
-                    </div>
+                                <!-- Cuadrante 03 -->
+                                <div class="pgq-card">
+                                    <div class="pgq-header">
+                                        <span class="pgq-code">[ SLA_CRÍTICO_SEV1 ]</span>
+                                        <span class="pgq-tag"><i class="fas fa-heartbeat"></i> SLA &lt; 2H</span>
+                                    </div>
+                                    <h4 class="pgq-title">SLA Contractual de Misión Crítica</h4>
+                                    <p class="pgq-desc">Garantía formal de respuesta &lt; 2h para incidencias de Severidad 1 en operaciones críticas: pasarelas de pago, inventarios y ERP con respaldos georredundantes diarios.</p>
+                                    <div class="pgq-meta">
+                                        <span>RTO &lt; 4h / RPO &lt; 2h</span>
+                                        <span>Soporte 24/7 de Guardia</span>
+                                    </div>
+                                </div>
 
-                    <!-- Panel 09: Modelo Milestone Escrow & Cierre RFP -->
-                    <div class="gov-panel gov-panel--cta">
-                        <div class="gov-card-top">
-                            <span class="gov-idx">09 / 09</span>
-                            <span class="gov-badge gov-badge--amber"><i class="fas fa-handshake"></i> MILESTONE ESCROW</span>
-                        </div>
-                        <h3 class="gov-title">Contratación por Hitos &amp; Garantía 60 Días</h3>
-                        <p class="gov-desc">Estructuramos proyectos corporativos en sprints con pagos liberados contra entregables validados en ambiente de staging. Respaldado por 60 días de garantía post-producción sin costos adicionales.</p>
-                        <div class="gov-cta-action">
-                            <button type="button" class="btn-gov-rfp magnetic-btn" id="govRfpBtn">
-                                <span>Solicitar Dossier &amp; RFP</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
-                            <span class="gov-cta-subtext"><i class="fas fa-lock"></i> Acuerdo NDA y cotización formal</span>
+                                <!-- Cuadrante 04 -->
+                                <div class="pgq-card">
+                                    <div class="pgq-header">
+                                        <span class="pgq-code">[ STRESS_BENCHMARK_K6 ]</span>
+                                        <span class="pgq-tag"><i class="fas fa-tachometer-alt"></i> RENDIMIENTO</span>
+                                    </div>
+                                    <h4 class="pgq-title">Arquitectura k6 &amp; Concurrencia Probada</h4>
+                                    <p class="pgq-desc">Infraestructura backend desacoplada (PostgreSQL + colas asíncronas Redis/Celery) validada con k6 y Locust (&gt; 500 req/s, latencia p95 &lt; 85ms) previo a producción.</p>
+                                    <div class="pgq-meta">
+                                        <span>&gt; 500 req/s Certificados</span>
+                                        <span>Pool PostgreSQL Concurrente</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Módulo de Contratación por Hitos & RFP -->
+                            <div class="pav-gov-contract-strip">
+                                <div class="pgcs-info">
+                                    <div class="pgcs-icon"><i class="fas fa-handshake"></i></div>
+                                    <div>
+                                        <strong>Contratación por Hitos (Milestone Escrow) &amp; Garantía 60 Días</strong>
+                                        <p>Estructuramos proyectos corporativos en sprints con pagos liberados contra entregables verificados en staging + 60 días de soporte post-lanzamiento.</p>
+                                    </div>
+                                </div>
+                                <div class="pgcs-action">
+                                    <button type="button" class="btn-gov-rfp magnetic-btn" id="govRfpBtn" data-target-type="custom" data-target-budget="2500+">
+                                        <span>Solicitar Dossier &amp; RFP</span>
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                 </div>
             </div>
 
-            <!-- Capa 3: Regla de Telemetría Dinámica Inferior (Parallax Acelerado ~1.20x) -->
+            <!-- Capa 3: Regla de Telemetría Dinámica Inferior (Parallax Acelerado ~1.25x) -->
             <div class="gov-telemetry-ruler" id="govTelemetryRuler" aria-hidden="true">
                 <div class="gtr-track">
                     <span>0000m // PROTOCOLO_ACTIVO</span>
-                    <span class="gtr-tick"></span><span>0250m // PYME_CATALOGO</span>
-                    <span class="gtr-tick"></span><span>0500m // KIOSKO_AZUL</span>
-                    <span class="gtr-tick"></span><span>0750m // AGENTES_IA</span>
-                    <span class="gtr-tick"></span><span>1000m // MANIFIESTO_VANTA</span>
-                    <span class="gtr-tick"></span><span>1250m // RIF_COMPLIANT</span>
-                    <span class="gtr-tick"></span><span>1500m // WORK_FOR_HIRE</span>
-                    <span class="gtr-tick"></span><span>1750m // SLA_SEV1_2H</span>
-                    <span class="gtr-tick"></span><span>2000m // K6_BENCHMARKS</span>
-                    <span class="gtr-tick"></span><span>2250m // MILESTONE_ESCROW</span>
-                    <span class="gtr-tick"></span><span>2500m // LISTO_PARA_PRODUCCION</span>
+                    <span class="gtr-tick"></span><span>0500m // PYME_CATALOGO_Y_KIOSKO</span>
+                    <span class="gtr-tick"></span><span>1000m // MANIFIESTO_3_REGLAS_DE_ORO</span>
+                    <span class="gtr-tick"></span><span>1500m // WORK_FOR_HIRE_100%</span>
+                    <span class="gtr-tick"></span><span>2000m // SLA_SEV1_2H_Y_K6</span>
+                    <span class="gtr-tick"></span><span>2500m // MILESTONE_ESCROW_RFP</span>
+                    <span class="gtr-tick"></span><span>3000m // PRODUCCION_CERTIFICADA</span>
                 </div>
             </div>
 
-        </div>
+            <!-- Velo Líquido Cinemático de Salida hacia Contacto (mdebeauty.com) -->
+            <div class="vanta-liquid-curtain vlc--exit" id="vlcExit" aria-hidden="true">
+                <svg class="vlc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <defs>
+                        <filter id="vlcGlowExit" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="1.5" result="blur" />
+                            <feMerge>
+                                <feMergeNode in="blur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <path id="vlcExitFill" d="M 0 100 L 100 100 L 100 18 Q 50 0 0 18 Z" fill="#07090E" />
+                    <path id="vlcExitStroke" d="M 0 18 Q 50 0 100 18" fill="none" stroke="#11D483" stroke-width="0.8" vector-effect="non-scaling-stroke" filter="url(#vlcGlowExit)" opacity="0.95" />
+                </svg>
+            </div>
 
-        <!-- Divisor Orgánico Líquido de Salida hacia Contacto -->
-        <div class="vanta-organic-divider vod-exit" aria-hidden="true">
-            <svg class="vod-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path id="vodExitFill" d="M 0 100 L 100 100 L 100 0 Q 50 0 0 0 Z" fill="#111111" />
-                <path id="vodExitStroke" d="M 0 0 Q 50 0 100 0" fill="none" stroke="rgba(17,212,131,0.5)" stroke-width="0.6" vector-effect="non-scaling-stroke" />
-            </svg>
         </div>
     </section>
 

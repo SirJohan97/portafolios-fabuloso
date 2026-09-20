@@ -5892,28 +5892,33 @@ body.in-gov-scrolly .hud-sidebar {
     transition: opacity 0.35s ease, transform 0.35s ease !important;
 }
 
-/* Divisores Orgánicos Líquidos (mdebeauty.com / Bézier Threshold) */
-.vanta-organic-divider {
+/* ============================================================
+   ACTO 06: VANTA ATELIER — 3 PABELLONES CINEMÁTICOS & VELO LÍQUIDO (mdebeauty.com)
+   ============================================================ */
+
+/* Velo Líquido Full-Viewport Cinemático (mdebeauty.com) */
+.vanta-liquid-curtain {
     position: absolute;
+    top: 0;
     left: 0;
     width: 100%;
-    height: 120px;
+    height: 100%;
     pointer-events: none;
-    z-index: 15;
+    z-index: 35;
     overflow: hidden;
     contain: paint;
     will-change: transform;
 }
 
-.vod-entrance {
-    top: -119px;
+.vlc--entrance {
+    transform: translateY(0%);
 }
 
-.vod-exit {
-    bottom: -1px;
+.vlc--exit {
+    transform: translateY(100%);
 }
 
-.vod-svg {
+.vlc-svg {
     display: block;
     width: 100%;
     height: 100%;
@@ -5935,7 +5940,6 @@ body.in-gov-scrolly .hud-sidebar {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-top: clamp(6.2rem, 10.5vh, 8rem);
     overflow: hidden;
     box-sizing: border-box;
 }
@@ -5946,7 +5950,7 @@ body.in-gov-scrolly .hud-sidebar {
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    width: 480vw;
+    width: 380vw;
     z-index: 1;
     pointer-events: none;
     user-select: none;
@@ -5955,19 +5959,19 @@ body.in-gov-scrolly .hud-sidebar {
 
 .gov-watermark-text {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(4.5rem, 8vw, 7.5rem);
+    font-size: clamp(5rem, 9vw, 9rem);
     font-weight: 800;
     color: rgba(255, 255, 255, 0.022);
     white-space: nowrap;
     display: flex;
     align-items: center;
-    gap: 3.5rem;
-    letter-spacing: 0.16em;
+    gap: 4rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
 }
 
 .gwm-sep {
-    color: rgba(16, 185, 129, 0.15);
+    color: rgba(17, 212, 131, 0.18);
 }
 
 /* Capa 1: Rejilla Técnica & Líneas de Datos (Parallax Medio ~0.65x) */
@@ -5975,7 +5979,7 @@ body.in-gov-scrolly .hud-sidebar {
     position: absolute;
     top: 0;
     left: 0;
-    width: 420vw;
+    width: 350vw;
     height: 100%;
     z-index: 2;
     pointer-events: none;
@@ -5989,9 +5993,9 @@ body.in-gov-scrolly .hud-sidebar {
     width: 100%;
     height: 100%;
     background-image: 
-        linear-gradient(rgba(17, 212, 131, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(17, 212, 131, 0.04) 1px, transparent 1px);
-    background-size: 70px 70px;
+        linear-gradient(rgba(17, 212, 131, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(17, 212, 131, 0.035) 1px, transparent 1px);
+    background-size: 80px 80px;
     mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
     -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
 }
@@ -6012,46 +6016,49 @@ body.in-gov-scrolly .hud-sidebar {
     background: linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.2) 50%, transparent 100%);
 }
 
-.gl-1 { left: 15vw; }
-.gl-2 { left: 65vw; }
-.gl-3 { left: 125vw; }
-.gl-4 { left: 190vw; }
-.gl-5 { left: 260vw; }
+.gl-1 { left: 25vw; }
+.gl-2 { left: 120vw; }
+.gl-3 { left: 220vw; }
 
 /* HUD Superior Fijo en el Pin Stage */
 .gov-hud-fixed {
     position: absolute;
-    top: clamp(5.6rem, 9vh, 7rem);
+    top: clamp(4.6rem, 6.8vh, 5.6rem);
     left: 0;
     width: 100%;
-    padding: 0 4.5vw;
+    padding: 0 5.5vw;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    z-index: 10;
+    align-items: center;
+    z-index: 20;
     pointer-events: none;
     box-sizing: border-box;
 }
 
 .gov-hud-left {
     pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
-.gov-hud-left .cap-eyebrow {
-    display: inline-block;
-    margin-bottom: 0.25rem;
-    font-size: 0.66rem;
-    letter-spacing: 0.14em;
-    color: #34D399;
+.hud-mono-tag {
+    color: rgba(255, 255, 255, 0.45);
 }
 
-.gov-hud-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(1.3rem, 2.1vw, 1.95rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: #FFFFFF;
-    margin: 0;
+.hud-mono-sep {
+    color: rgba(17, 212, 131, 0.5);
+}
+
+.hud-mono-active {
+    color: #11D483;
+    font-weight: 700;
+    transition: opacity 0.25s ease;
+    text-shadow: 0 0 10px rgba(17, 212, 131, 0.35);
 }
 
 .gov-hud-right {
@@ -6071,7 +6078,7 @@ body.in-gov-scrolly .hud-sidebar {
 }
 
 .ghc-current {
-    color: #34D399;
+    color: #11D483;
     font-weight: 700;
 }
 
@@ -6087,8 +6094,8 @@ body.in-gov-scrolly .hud-sidebar {
 .gov-progress-fill {
     width: 0%;
     height: 100%;
-    background: linear-gradient(90deg, #10B981, #34D399);
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+    background: linear-gradient(90deg, #00E5FF, #11D483);
+    box-shadow: 0 0 10px rgba(17, 212, 131, 0.6);
     transition: width 0.1s linear;
 }
 
@@ -6102,219 +6109,331 @@ body.in-gov-scrolly .hud-sidebar {
     gap: 6px;
 }
 
-/* Capa 2: Pista Horizontal de Tarjetas (Velocidad 1.0x) */
+/* Capa 2: Pista Panorámica Widescreen */
 .gov-cards-track-wrapper {
     position: relative;
     width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
     z-index: 6;
-    padding-left: 4.5vw;
-    box-sizing: border-box;
+    overflow: hidden;
 }
 
-.gov-cards-track {
+.pavilion-track {
     display: flex;
-    gap: 2rem;
     width: max-content;
+    height: 100%;
     align-items: stretch;
-    padding-right: 12vw;
     will-change: transform;
 }
 
-/* Paneles de Gobernanza Obsidian Monolith */
-.gov-panel {
-    width: clamp(340px, 28vw, 420px);
-    min-height: 440px;
-    background: linear-gradient(165deg, rgba(13, 19, 29, 0.85) 0%, rgba(6, 9, 14, 0.95) 100%);
+/* Pantalla individual del Pabellón (100vw cada uno) */
+.pavilion-screen {
+    width: 100vw;
+    min-width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    min-height: 720px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(5.4rem, 8vh, 6.8rem) 5.5vw clamp(2rem, 3.5vh, 3rem);
+    box-sizing: border-box;
+    position: relative;
+    border: none;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    overflow: hidden;
+}
+
+/* ==========================================
+   PABELLÓN 01: EL DESPLIEGUE COMERCIAL (Pymes)
+   ========================================== */
+.pav-comm-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    gap: clamp(1.8rem, 3.2vw, 3.8rem);
+    align-items: center;
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.pav-kicker {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(0.65rem, 0.8vw, 0.75rem);
+    letter-spacing: 0.16em;
+    color: #00E5FF;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pav-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.75rem, 2.4vw, 2.7rem);
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    margin: 0 0 0.85rem;
+    word-break: break-word;
+}
+
+.text-gradient-cyan {
+    background: linear-gradient(135deg, #00E5FF 0%, #38BDF8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-amber {
+    background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pav-lead {
+    font-family: var(--font-main);
+    font-size: clamp(0.85rem, 0.95vw, 1rem);
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.55;
+    margin: 0 0 1.2rem;
+    max-width: 500px;
+}
+
+.pav-founder-guarantee {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 0.8rem 1.1rem;
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-top: 1px solid rgba(16, 185, 129, 0.35);
-    border-radius: 20px;
-    padding: 2rem 1.85rem;
+    border-left: 2px solid #00E5FF;
+    border-radius: 12px;
+    margin-bottom: 1.2rem;
+    max-width: 480px;
+}
+
+.pfg-badge {
+    color: #00E5FF;
+    font-size: 1.1rem;
+    margin-top: 2px;
+}
+
+.pfg-body strong {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.88rem;
+    color: #FFFFFF;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.pfg-body p {
+    font-family: var(--font-main);
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.62);
+    line-height: 1.4;
+    margin: 0;
+}
+
+.btn-pav-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    background: rgba(37, 211, 102, 0.12);
+    border: 1px solid rgba(37, 211, 102, 0.4);
+    color: #25D366;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-pav-whatsapp:hover {
+    background: #25D366;
+    color: #04120B;
+    box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Dual-Podium de Cristal Líquido */
+.pav-comm-podiums {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 1.4vw, 1.6rem);
+    align-items: stretch;
+}
+
+.pav-podium {
+    background: linear-gradient(165deg, rgba(13, 20, 32, 0.85) 0%, rgba(6, 9, 15, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-top: 1px solid rgba(0, 229, 255, 0.4);
+    border-radius: 18px;
+    padding: clamp(1.3rem, 1.9vh, 1.8rem) clamp(1.1rem, 1.4vw, 1.5rem);
     display: flex;
     flex-direction: column;
-    backdrop-filter: blur(28px);
-    -webkit-backdrop-filter: blur(28px);
     position: relative;
-    overflow: hidden;
-    box-sizing: border-box;
-    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 30px rgba(16, 185, 129, 0.05);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.35s ease;
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.gov-panel::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 15%;
-    right: 15%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.6), transparent);
-    pointer-events: none;
-}
-
-.gov-panel:hover {
+.pav-podium:hover {
     transform: translateY(-4px);
-    border-color: rgba(16, 185, 129, 0.45);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 32px rgba(16, 185, 129, 0.15);
+    border-color: rgba(0, 229, 255, 0.5);
+    box-shadow: 0 30px 70px -10px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 229, 255, 0.12);
 }
 
-.gov-panel--featured {
+.pav-podium--featured {
     border-color: rgba(16, 185, 129, 0.45);
-    background: linear-gradient(165deg, rgba(16, 185, 129, 0.12) 0%, rgba(6, 9, 14, 0.96) 100%);
-    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 35px rgba(16, 185, 129, 0.12);
+    border-top: 1px solid #11D483;
+    background: linear-gradient(165deg, rgba(16, 185, 129, 0.12) 0%, rgba(6, 9, 15, 0.98) 100%);
+    box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.9), 0 0 35px rgba(16, 185, 129, 0.12);
 }
 
-.gov-featured-tag {
+.pav-podium--featured:hover {
+    border-color: #11D483;
+    box-shadow: 0 35px 80px -10px rgba(0, 0, 0, 0.95), 0 0 45px rgba(17, 212, 131, 0.2);
+}
+
+.podium-glow-badge {
     position: absolute;
     top: -1px;
     left: 50%;
     transform: translateX(-50%);
-    background: #10B981;
+    background: #11D483;
     color: #030805;
     font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
+    font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     padding: 4px 14px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     white-space: nowrap;
-    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+    box-shadow: 0 4px 14px rgba(17, 212, 131, 0.4);
 }
 
-.gov-panel--bridge {
-    background: linear-gradient(165deg, rgba(20, 24, 34, 0.92) 0%, rgba(6, 9, 14, 0.98) 100%);
-    border-color: rgba(255, 215, 0, 0.28);
-    border-top: 1px solid rgba(255, 215, 0, 0.55);
-    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 215, 0, 0.08);
-}
-
-.gov-panel--bridge::before {
-    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.7), transparent);
-}
-
-.gov-panel--cta {
-    background: linear-gradient(165deg, rgba(255, 149, 0, 0.08) 0%, rgba(6, 9, 14, 0.96) 100%);
-    border-color: rgba(255, 149, 0, 0.3);
-    border-top: 1px solid rgba(255, 149, 0, 0.45);
-}
-
-.gov-panel--cta::before {
-    background: linear-gradient(90deg, transparent, rgba(255, 149, 0, 0.7), transparent);
-}
-
-.gov-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.2rem;
-}
-
-.gov-idx {
+.podium-kicker {
     font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    font-size: 0.64rem;
     color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.12em;
+    display: block;
+    margin-bottom: 0.4rem;
 }
 
-.gov-badge {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    padding: 4px 10px;
-    border-radius: 100px;
-    background: rgba(16, 185, 129, 0.12);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    color: #34D399;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.gov-badge--cyan {
-    background: rgba(0, 229, 255, 0.12);
-    border-color: rgba(0, 229, 255, 0.3);
-    color: #00E5FF;
-}
-
-.gov-badge--amber {
-    background: rgba(255, 149, 0, 0.12);
-    border-color: rgba(255, 149, 0, 0.3);
-    color: #FF9500;
-}
-
-.gov-badge--gold {
-    background: rgba(255, 215, 0, 0.12);
-    border-color: rgba(255, 215, 0, 0.35);
-    color: #FFD700;
-}
-
-.gov-title {
+.podium-title {
     font-family: 'Syne', sans-serif;
-    font-size: 1.25rem;
+    font-size: clamp(1.15rem, 1.5vw, 1.4rem);
     font-weight: 700;
     color: #FFFFFF;
-    margin: 0 0 0.85rem;
-    line-height: 1.3;
+    margin: 0 0 0.8rem;
+    line-height: 1.25;
 }
 
-.gov-desc {
-    font-family: var(--font-main);
-    font-size: 0.84rem;
-    color: rgba(255, 255, 255, 0.65);
-    line-height: 1.55;
-    margin-bottom: 1.2rem;
-    flex-grow: 1;
-}
-
-.gov-pricing-pill {
+.podium-price-tag {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 12px;
-    padding: 10px 14px;
-    background: rgba(16, 185, 129, 0.08);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    border-radius: 12px;
-    margin-bottom: 1.2rem;
+    gap: 10px;
+    padding: 9px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    margin-bottom: 0.9rem;
 }
 
-.gpp-val {
+.ppt-amount {
     font-family: 'Space Mono', monospace;
     font-size: 1.15rem;
     font-weight: 700;
-    color: #34D399;
+    color: #00E5FF;
 }
 
-.gpp-val small {
-    font-size: 0.7rem;
+.pav-podium--featured .ppt-amount {
+    color: #11D483;
+}
+
+.ppt-amount small {
+    font-size: 0.68rem;
     color: rgba(255, 255, 255, 0.5);
     font-weight: 400;
 }
 
-.gpp-time {
+.ppt-time {
     font-family: var(--font-main);
     font-size: 0.72rem;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(255, 255, 255, 0.7);
     display: inline-flex;
     align-items: center;
     gap: 5px;
 }
 
-.gpp-time i {
-    color: #10B981;
+.podium-desc {
+    font-family: var(--font-main);
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.5;
+    margin: 0 0 1.1rem;
+    flex-grow: 1;
 }
 
-.btn-gov-pyme {
+.podium-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 0.9rem 0;
+    margin-bottom: 1.1rem;
+}
+
+.spec-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.76rem;
+    gap: 10px;
+}
+
+.spec-key {
     font-family: 'Space Mono', monospace;
-    font-size: 0.78rem;
+    font-size: 0.62rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+}
+
+.spec-val {
+    font-family: var(--font-main);
+    color: rgba(255, 255, 255, 0.85);
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-podium-cta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.76rem;
     font-weight: 700;
     letter-spacing: 0.05em;
-    padding: 12px 20px;
+    padding: 12px 18px;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.06);
-    color: #FFFFFF;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 229, 255, 0.12);
+    color: #00E5FF;
+    border: 1px solid rgba(0, 229, 255, 0.35);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -6324,139 +6443,345 @@ body.in-gov-scrolly .hud-sidebar {
     transition: all 0.25s ease;
 }
 
-.btn-gov-pyme:hover {
-    background: rgba(16, 185, 129, 0.18);
-    border-color: #10B981;
-    color: #34D399;
+.btn-podium-cta:hover {
+    background: #00E5FF;
+    color: #030805;
+    box-shadow: 0 6px 24px rgba(0, 229, 255, 0.4);
     transform: translateY(-2px);
-    box-shadow: 0 4px 18px rgba(16, 185, 129, 0.25);
 }
 
-.btn-gov-pyme--featured {
-    background: #10B981;
-    color: #04120B;
+.btn-podium-cta--featured {
+    background: #11D483;
+    color: #030805;
     border: none;
-    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
+    box-shadow: 0 6px 24px rgba(17, 212, 131, 0.35);
 }
 
-.btn-gov-pyme--featured:hover {
+.btn-podium-cta--featured:hover {
     background: #34D399;
-    color: #04120B;
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+    color: #030805;
+    box-shadow: 0 8px 30px rgba(17, 212, 131, 0.5);
 }
 
-.gov-rules-list {
+/* ==========================================
+   PABELLÓN 02: EL MANIFIESTO DE CONFIANZA
+   ========================================== */
+.pav-mani-wrap {
+    width: 100%;
+    max-width: 1420px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
-    margin-bottom: 1.2rem;
-    flex-grow: 1;
+    gap: clamp(1.2rem, 2vh, 1.8rem);
 }
 
-.grl-item {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
+.pav-mani-header {
+    max-width: 760px;
+    margin: 0 auto;
 }
 
-.grl-num {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #FFD700;
-    background: rgba(255, 215, 0, 0.1);
-    border: 1px solid rgba(255, 215, 0, 0.25);
-    padding: 2px 7px;
-    border-radius: 6px;
-    line-height: 1;
-    margin-top: 2px;
-    flex-shrink: 0;
+.pav-mani-header .pav-headline {
+    font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+    margin: 0 0 0.35rem;
 }
 
-.grl-item strong {
-    font-family: var(--font-main);
-    font-size: 0.82rem;
-    color: #FFFFFF;
-    display: block;
-    margin-bottom: 2px;
-}
-
-.grl-item p {
-    font-family: var(--font-main);
-    font-size: 0.72rem;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.4;
+.pav-mani-header .pav-lead {
+    font-size: clamp(0.85rem, 0.95vw, 0.98rem);
     margin: 0;
 }
 
-.gov-intro-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;
-    padding-top: 1.2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+.pav-lead--centered {
+    text-align: center;
+    margin: 0 auto;
 }
 
-.gis-item {
+.pav-triptych-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.2rem, 2vw, 2.2rem);
+}
+
+.triptych-monolith {
+    background: linear-gradient(170deg, rgba(18, 24, 36, 0.7) 0%, rgba(8, 11, 18, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    padding: clamp(1.8rem, 2.8vh, 2.5rem) clamp(1.5rem, 1.8vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    transition: all 0.35s ease;
+}
+
+.triptych-monolith:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 30px 70px -10px rgba(0, 0, 0, 0.9);
+}
+
+.triptych-monolith--highlight {
+    background: linear-gradient(170deg, rgba(25, 32, 48, 0.85) 0%, rgba(9, 13, 22, 0.98) 100%);
+    border-color: rgba(255, 215, 0, 0.35);
+    border-top: 1px solid #FFD700;
+    box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.95), 0 0 35px rgba(255, 215, 0, 0.08);
+}
+
+.tm-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+}
+
+.tm-num {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 4.5vw, 4.2rem);
+    font-weight: 800;
+    line-height: 0.85;
+    color: rgba(255, 255, 255, 0.2);
+    letter-spacing: -0.05em;
+}
+
+.triptych-monolith--highlight .tm-num {
+    color: #FFD700;
+}
+
+.tm-kicker {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+}
+
+.tm-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0 0 0.85rem;
+    line-height: 1.25;
+}
+
+.tm-text {
+    font-family: var(--font-main);
+    font-size: 0.84rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+    flex-grow: 1;
+}
+
+.tm-footer-metric {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 1rem;
     display: flex;
     flex-direction: column;
     gap: 3px;
 }
 
-.gis-val {
+.tfm-val {
     font-family: 'Space Mono', monospace;
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    color: #34D399;
+    color: #FFFFFF;
 }
 
-.gis-lbl {
+.triptych-monolith--highlight .tfm-val {
+    color: #FFD700;
+}
+
+.tfm-lbl {
     font-family: var(--font-main);
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.pav-telemetry-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    padding: 10px 22px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
     font-size: 0.68rem;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.2;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.1em;
+    width: max-content;
+    margin: 0 auto;
 }
 
-.gov-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    padding-top: 1.1rem;
-}
-
-.gov-list li {
-    font-family: var(--font-main);
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.82);
-    display: flex;
+.pts-item {
+    display: inline-flex;
     align-items: center;
     gap: 8px;
 }
 
-.gov-list li i {
-    color: #10B981;
-    font-size: 0.72rem;
+.pts-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #11D483;
+    box-shadow: 0 0 8px #11D483;
 }
 
-.gov-cta-action {
+.pts-sep {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================
+   PABELLÓN 03: GOBERNANZA & INFRAESTRUCTURA B2B
+   ========================================== */
+.pav-gov-wrap {
+    width: 100%;
+    max-width: 1420px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    padding-top: 1.2rem;
+    gap: clamp(1.1rem, 1.8vh, 1.6rem);
 }
 
-.gov-cta-subtext {
+.pav-gov-top {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 2.5rem;
+    align-items: flex-end;
+}
+
+.pav-gov-top .pav-headline {
+    font-size: clamp(1.75rem, 2.3vw, 2.5rem);
+    margin: 0;
+}
+
+.pav-gov-lead-box p {
     font-family: var(--font-main);
-    font-size: 0.72rem;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: clamp(0.85rem, 0.95vw, 0.98rem);
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.55;
+    margin: 0;
+}
+
+.pav-gov-quadrant {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(0.7rem, 1vw, 1.15rem);
+}
+
+.pgq-card {
+    background: linear-gradient(165deg, rgba(14, 18, 28, 0.85) 0%, rgba(6, 9, 15, 0.98) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(245, 158, 11, 0.35);
+    border-radius: 16px;
+    padding: clamp(1rem, 1.4vh, 1.3rem) clamp(0.95rem, 1.1vw, 1.25rem);
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    transition: all 0.3s ease;
+}
+
+.pgq-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(245, 158, 11, 0.5);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 25px rgba(245, 158, 11, 0.1);
+}
+
+.pgq-header {
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: space-between;
+    margin-bottom: 0.65rem;
+}
+
+.pgq-code {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: #F59E0B;
+    letter-spacing: 0.06em;
+}
+
+.pgq-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    color: rgba(255, 255, 255, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pgq-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.28;
+    margin: 0 0 0.45rem;
+}
+
+.pgq-desc {
+    font-family: var(--font-main);
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.62);
+    line-height: 1.48;
+    margin: 0 0 0.8rem;
+    flex-grow: 1;
+}
+
+.pgq-meta {
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding-top: 0.65rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.pav-gov-contract-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 0.95rem 1.6rem;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(6, 9, 15, 0.95) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.85);
+}
+
+.pgcs-info {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.pgcs-icon {
+    font-size: 1.6rem;
+    color: #F59E0B;
+}
+
+.pgcs-info strong {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.98rem;
+    color: #FFFFFF;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.pgcs-info p {
+    font-family: var(--font-main);
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
+    line-height: 1.4;
 }
 
 .btn-gov-rfp {
@@ -6474,6 +6799,7 @@ body.in-gov-scrolly .hud-sidebar {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    white-space: nowrap;
     transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
     box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
 }
@@ -6484,12 +6810,12 @@ body.in-gov-scrolly .hud-sidebar {
     box-shadow: 0 8px 28px rgba(16, 185, 129, 0.45);
 }
 
-/* Capa 3: Regla de Telemetría Inferior (Parallax ~1.20x) */
+/* Capa 3: Regla de Telemetría Inferior (Parallax ~1.25x) */
 .gov-telemetry-ruler {
     position: absolute;
-    bottom: 2rem;
+    bottom: 1.5rem;
     left: 0;
-    width: 420vw;
+    width: 350vw;
     z-index: 4;
     pointer-events: none;
     will-change: transform;
@@ -6497,7 +6823,7 @@ body.in-gov-scrolly .hud-sidebar {
 
 .gtr-track {
     font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     color: rgba(255, 255, 255, 0.22);
     letter-spacing: 0.16em;
     display: flex;
@@ -6513,16 +6839,10 @@ body.in-gov-scrolly .hud-sidebar {
     background: rgba(255, 255, 255, 0.12);
 }
 
-/* Fallback Móvil (<= 991px): Swipe Táctil Nativo */
+/* Responsive Mobile (<= 991px): Adapta los 3 pabellones verticalmente */
 @media (max-width: 991px) {
-    .vanta-organic-divider {
-        height: 70px;
-    }
-    .vod-entrance {
-        top: -69px;
-    }
-    .vod-exit {
-        bottom: -1px;
+    .vanta-liquid-curtain {
+        display: none !important;
     }
 
     .gov-parallax-section {
@@ -6557,17 +6877,40 @@ body.in-gov-scrolly .hud-sidebar {
         display: none;
     }
 
-    .gov-cards-track {
+    .pavilion-track {
         padding-right: 1.25rem;
-        gap: 1.25rem;
+        gap: 1.5rem;
     }
 
-    .gov-panel {
-        width: 85vw;
-        min-width: 290px;
+    .pavilion-screen {
+        width: 90vw;
+        height: auto;
         min-height: auto;
         scroll-snap-align: center;
-        padding: 1.75rem 1.5rem;
+        padding: 1.5rem;
+    }
+
+    .pav-comm-grid,
+    .pav-gov-top {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .pav-comm-podiums,
+    .pav-triptych-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+
+    .pav-gov-quadrant {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .pav-gov-contract-strip {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.2rem;
     }
 
     .gov-bg-watermark-layer,
@@ -6575,4 +6918,5 @@ body.in-gov-scrolly .hud-sidebar {
         display: none;
     }
 }
+
 
