@@ -1039,40 +1039,54 @@
                         <!-- Real 3D Rounded Poker Table Section -->
         <div class="poker-pinned-wrapper">
             <div class="poker-header">
-                <span class="hud-label">// VANTA_ENGINEERING_POKER_DECK.SYS</span>
+                <span class="hud-label">// VANTA ENGINEERING STAGE — 2025</span>
                 <h2 class="section-title"><span class="reveal-word">Arquitectura</span> <span class="reveal-word">&amp;</span> <span class="reveal-word">Capacidades</span></h2>
-                <p class="section-subtitle">Mazo de cartas tecnológicas de élite en mesa de póker Heads-Up (Andrés vs. Johan).</p>
+                <p class="section-subtitle">Doce cartas técnicas. Dos ingenieros. Una mesa de criterio.</p>
             </div>
 
-            <!-- Real 3D Rounded Poker Table Container -->
             <div class="poker-table-container">
                 <div class="poker-table-felt" id="poker-table-felt">
                     <div class="table-border-inner"></div>
-                    <div class="table-bet-ring"></div>
-                    <div class="table-pot-indicator">POT // 100% VANTA STACK</div>
-                    <div class="table-watermark">VANTA HEADS-UP ARENA</div>
+                    <div class="table-watermark">VANTA STUDIO · A &amp; J</div>
 
-                    <!-- Top Player Seat: ANDRÉS (Outer Top Rail) -->
+                    <!-- Blueprint SVG grid — subtle engineering reference -->
+                    <svg class="table-blueprint-grid" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <pattern id="bp-dot" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+                                <circle cx="14" cy="14" r="0.9" fill="rgba(17,212,131,0.14)"/>
+                            </pattern>
+                            <pattern id="bp-cross" x="0" y="0" width="84" height="84" patternUnits="userSpaceOnUse">
+                                <line x1="42" y1="34" x2="42" y2="50" stroke="rgba(17,212,131,0.09)" stroke-width="0.6"/>
+                                <line x1="34" y1="42" x2="50" y2="42" stroke="rgba(17,212,131,0.09)" stroke-width="0.6"/>
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#bp-dot)"/>
+                        <rect width="100%" height="100%" fill="url(#bp-cross)"/>
+                    </svg>
+
+                    <!-- Top Player Station: ANDRÉS — editorial typographic badge -->
                     <div class="player-seat seat-top" id="seat-andres">
-                        <div class="casino-chip chip-andres">
-                            <span class="chip-label">ANDRÉS</span>
-                            <span class="chip-value">♠</span>
-                        </div>
-                        <div class="seat-badge">
-                            <span class="seat-role">// FULL-STACK &amp; CLOUD</span>
-                            <span class="seat-name">ANDRÉS</span>
+                        <div class="player-station-badge">
+                            <span class="station-label">ANDRÉS BECERRA</span>
+                            <span class="station-role">BACKEND · CLOUD · DISTRIBUTED SYSTEMS</span>
+                            <div class="station-metrics">
+                                <span class="station-metric"><em>10k</em> REQ/S</span>
+                                <div class="station-metric-divider"></div>
+                                <span class="station-metric">SAP <em>ERP</em> LIVE</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Bottom Player Seat: JOHAN (Outer Bottom Rail) -->
+                    <!-- Bottom Player Station: JOHAN — editorial typographic badge -->
                     <div class="player-seat seat-bottom" id="seat-johan">
-                        <div class="seat-badge">
-                            <span class="seat-role">// AI &amp; 3D GRAPHICS</span>
-                            <span class="seat-name">JOHAN</span>
-                        </div>
-                        <div class="casino-chip chip-johan">
-                            <span class="chip-label">JOHAN</span>
-                            <span class="chip-value">♦</span>
+                        <div class="player-station-badge">
+                            <span class="station-label">JOHAN JIMÉNEZ</span>
+                            <span class="station-role">AI VISION · REALTIME GRAPHICS · C++</span>
+                            <div class="station-metrics">
+                                <span class="station-metric"><em>60 FPS</em> LOCAL AI</span>
+                                <div class="station-metric-divider"></div>
+                                <span class="station-metric"><em>120 FPS</em> PBR</span>
+                            </div>
                         </div>
                     </div>
 
@@ -1080,7 +1094,7 @@
                     <div class="poker-felt-stage" id="poker-felt-stage">
 
                         <!-- ===== MANO DE ANDRÉS (TOP CARDS) ===== -->
-                        <!-- Card A1: FastAPI Async (As de Corazones ♥) -->
+                        <!-- Card A1: FastAPI Async — SVG: async event-loop spiral -->
                         <div class="poker-card card-andres" data-index="0" data-player="andres" data-tech="fastapi" style="--poker-accent: #059669;">
                             <div class="poker-card-inner">
                                 <div class="card-face card-back">
@@ -1093,16 +1107,26 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">A</span><span class="pip-suit" style="color: #059669;">♥</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">BACKEND // ASYNC</div>
-                                        <div class="poker-hero-art" style="color: #059669;"><i class="fas fa-bolt poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="28" cy="28" r="24" stroke="#059669" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.3"/>
+                                                <circle cx="28" cy="28" r="16" stroke="#059669" stroke-width="0.9" stroke-dasharray="4 2" opacity="0.5"/>
+                                                <circle cx="28" cy="28" r="8"  stroke="#059669" stroke-width="1.2" opacity="0.8"/>
+                                                <path d="M28 12 Q40 20 40 28 Q40 40 28 44 Q16 40 16 28 Q16 16 28 12Z" stroke="#059669" stroke-width="1" fill="none" opacity="0.45"/>
+                                                <circle cx="28" cy="28" r="2.5" fill="#059669"/>
+                                                <line x1="28" y1="28" x2="28" y2="12" stroke="#059669" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+                                                <line x1="28" y1="28" x2="40" y2="35" stroke="#059669" stroke-width="0.9" stroke-linecap="round" opacity="0.7"/>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">FastAPI Async</h3>
-                                        <p class="poker-card-desc">APIs de baja latencia OpenAPI v3.</p>
-                                        <button class="poker-inspect-btn" data-tech="fastapi"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">10,000 req/s</p>
+                                        <button class="poker-inspect-btn" data-tech="fastapi">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card A2: Supabase Cloud (Rey de Picas ♠) -->
+                        <!-- Card A2: Supabase Cloud — SVG: realtime websocket branches -->
                         <div class="poker-card card-andres" data-index="1" data-player="andres" data-tech="supabase" style="--poker-accent: #3ECF8E;">
                             <div class="poker-card-inner">
                                 <div class="card-face card-back">
@@ -1115,10 +1139,26 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">K</span><span class="pip-suit">♠</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">CLOUD // BAAS</div>
-                                        <div class="poker-hero-art" style="color: #3ECF8E;"><i class="fas fa-cloud-upload-alt poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="20" y="6" width="16" height="8" rx="2" stroke="#3ECF8E" stroke-width="1.1" fill="rgba(62,207,142,0.1)"/>
+                                                <line x1="28" y1="14" x2="28" y2="22" stroke="#3ECF8E" stroke-width="1" opacity="0.7"/>
+                                                <rect x="6" y="22" width="13" height="7" rx="2" stroke="#3ECF8E" stroke-width="1" fill="rgba(62,207,142,0.07)"/>
+                                                <rect x="37" y="22" width="13" height="7" rx="2" stroke="#3ECF8E" stroke-width="1" fill="rgba(62,207,142,0.07)"/>
+                                                <line x1="28" y1="22" x2="12" y2="22" stroke="#3ECF8E" stroke-width="0.9" opacity="0.6"/>
+                                                <line x1="28" y1="22" x2="44" y2="22" stroke="#3ECF8E" stroke-width="0.9" opacity="0.6"/>
+                                                <line x1="12" y1="29" x2="12" y2="37" stroke="#3ECF8E" stroke-width="0.8" opacity="0.5"/>
+                                                <line x1="44" y1="29" x2="44" y2="37" stroke="#3ECF8E" stroke-width="0.8" opacity="0.5"/>
+                                                <rect x="6"  y="37" width="12" height="6" rx="1.5" stroke="#3ECF8E" stroke-width="0.9" fill="rgba(62,207,142,0.1)"/>
+                                                <rect x="38" y="37" width="12" height="6" rx="1.5" stroke="#3ECF8E" stroke-width="0.9" fill="rgba(62,207,142,0.1)"/>
+                                                <circle cx="28" cy="46" r="3" stroke="#3ECF8E" stroke-width="1" fill="rgba(62,207,142,0.15)"/>
+                                                <line x1="28" y1="29" x2="28" y2="43" stroke="#3ECF8E" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.5"/>
+                                                <text x="28" y="10" font-size="3.8" fill="#3ECF8E" text-anchor="middle" font-family="monospace" opacity="0.85">POSTGRES</text>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">Supabase Cloud</h3>
-                                        <p class="poker-card-desc">Postgres Realtime &amp; Edge Auth.</p>
-                                        <button class="poker-inspect-btn" data-tech="supabase"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">Realtime RLS</p>
+                                        <button class="poker-inspect-btn" data-tech="supabase">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
@@ -1137,16 +1177,26 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">Q</span><span class="pip-suit" style="color: #61DAFB;">♦</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">UI // REACT 19</div>
-                                        <div class="poker-hero-art" style="color: #61DAFB;"><i class="fab fa-react poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <ellipse cx="28" cy="28" rx="24" ry="9" stroke="#61DAFB" stroke-width="1.1" opacity="0.7"/>
+                                                <ellipse cx="28" cy="28" rx="24" ry="9" stroke="#61DAFB" stroke-width="1.1" opacity="0.5" transform="rotate(60 28 28)"/>
+                                                <ellipse cx="28" cy="28" rx="24" ry="9" stroke="#61DAFB" stroke-width="1.1" opacity="0.5" transform="rotate(120 28 28)"/>
+                                                <circle cx="28" cy="28" r="3.5" fill="#61DAFB" opacity="0.9"/>
+                                                <circle cx="28" cy="19" r="1.5" fill="#61DAFB" opacity="0.6"/>
+                                                <circle cx="36" cy="33" r="1.5" fill="#61DAFB" opacity="0.6"/>
+                                                <circle cx="20" cy="33" r="1.5" fill="#61DAFB" opacity="0.6"/>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">React 19 &amp; TS</h3>
-                                        <p class="poker-card-desc">UI modular, HTML5, CSS3 &amp; JS.</p>
-                                        <button class="poker-inspect-btn" data-tech="react"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">100/100 Lighthouse</p>
+                                        <button class="poker-inspect-btn" data-tech="react">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card A4: Node.js & Vercel (Jota de Tréboles ♣) -->
+                        <!-- Card A4: Node.js & Vercel — SVG: distributed edge network -->
                         <div class="poker-card card-andres" data-index="3" data-player="andres" data-tech="nodejs" style="--poker-accent: #68A063;">
                             <div class="poker-card-inner">
                                 <div class="card-face card-back">
@@ -1159,16 +1209,32 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">J</span><span class="pip-suit">♣</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">SERVERLESS // NODE</div>
-                                        <div class="poker-hero-art" style="color: #68A063;"><i class="fab fa-node-js poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="28" cy="28" r="4"   stroke="#68A063" stroke-width="1.2" fill="rgba(104,160,99,0.15)"/>
+                                                <circle cx="10" cy="18" r="2.5" stroke="#68A063" stroke-width="1"   fill="rgba(104,160,99,0.1)"/>
+                                                <circle cx="46" cy="18" r="2.5" stroke="#68A063" stroke-width="1"   fill="rgba(104,160,99,0.1)"/>
+                                                <circle cx="10" cy="40" r="2.5" stroke="#68A063" stroke-width="1"   fill="rgba(104,160,99,0.1)"/>
+                                                <circle cx="46" cy="40" r="2.5" stroke="#68A063" stroke-width="1"   fill="rgba(104,160,99,0.1)"/>
+                                                <circle cx="28" cy="8"  r="2"   stroke="#68A063" stroke-width="0.9" fill="rgba(104,160,99,0.08)"/>
+                                                <circle cx="28" cy="48" r="2"   stroke="#68A063" stroke-width="0.9" fill="rgba(104,160,99,0.08)"/>
+                                                <line x1="28" y1="24" x2="12" y2="19" stroke="#68A063" stroke-width="0.8" opacity="0.6"/>
+                                                <line x1="28" y1="24" x2="44" y2="19" stroke="#68A063" stroke-width="0.8" opacity="0.6"/>
+                                                <line x1="28" y1="32" x2="12" y2="39" stroke="#68A063" stroke-width="0.8" opacity="0.6"/>
+                                                <line x1="28" y1="32" x2="44" y2="39" stroke="#68A063" stroke-width="0.8" opacity="0.6"/>
+                                                <line x1="28" y1="24" x2="28" y2="10" stroke="#68A063" stroke-width="0.8" opacity="0.5" stroke-dasharray="2 2"/>
+                                                <line x1="28" y1="32" x2="28" y2="46" stroke="#68A063" stroke-width="0.8" opacity="0.5" stroke-dasharray="2 2"/>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">Node.js &amp; Vercel</h3>
-                                        <p class="poker-card-desc">Microservicios &amp; Edge CDN.</p>
-                                        <button class="poker-inspect-btn" data-tech="nodejs"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">&lt;5ms Edge</p>
+                                        <button class="poker-inspect-btn" data-tech="nodejs">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card A5: Python 3.11 & Flask (As de Espadas ♠) -->
+                        <!-- Card A5: Python & Flask — SVG: pipeline stages -->
                         <div class="poker-card card-andres" data-index="4" data-player="andres" data-tech="python" style="--poker-accent: #3776AB;">
                             <div class="poker-card-inner">
                                 <div class="card-face card-back">
@@ -1181,16 +1247,32 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">A</span><span class="pip-suit">♠</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">CORE // PYTHON</div>
-                                        <div class="poker-hero-art" style="color: #3776AB;"><i class="fab fa-python poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="4"  y="23" width="10" height="10" rx="2" stroke="#3776AB" stroke-width="1.1" fill="rgba(55,118,171,0.1)"/>
+                                                <rect x="23" y="23" width="10" height="10" rx="2" stroke="#3776AB" stroke-width="1.1" fill="rgba(55,118,171,0.1)"/>
+                                                <rect x="42" y="23" width="10" height="10" rx="2" stroke="#3776AB" stroke-width="1.1" fill="rgba(55,118,171,0.1)"/>
+                                                <line x1="14" y1="28" x2="23" y2="28" stroke="#3776AB" stroke-width="1.2" opacity="0.9"/>
+                                                <polygon points="21,24.5 24,28 21,31.5" fill="#3776AB" opacity="0.9"/>
+                                                <line x1="33" y1="28" x2="42" y2="28" stroke="#3776AB" stroke-width="1.2" opacity="0.9"/>
+                                                <polygon points="40,24.5 43,28 40,31.5" fill="#3776AB" opacity="0.9"/>
+                                                <text x="9"  y="31" font-size="5"   fill="#3776AB" text-anchor="middle" font-family="monospace" opacity="0.9">IN</text>
+                                                <text x="28" y="31" font-size="4"   fill="#3776AB" text-anchor="middle" font-family="monospace" opacity="0.85">PY</text>
+                                                <text x="47" y="31" font-size="4"   fill="#3776AB" text-anchor="middle" font-family="monospace" opacity="0.9">OUT</text>
+                                                <line x1="4"  y1="38" x2="4"  y2="46" stroke="#3776AB" stroke-width="0.7" opacity="0.3"/>
+                                                <line x1="52" y1="38" x2="52" y2="46" stroke="#3776AB" stroke-width="0.7" opacity="0.3"/>
+                                                <line x1="4"  y1="46" x2="52" y2="46" stroke="#3776AB" stroke-width="0.7" opacity="0.3"/>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">Python &amp; Flask</h3>
-                                        <p class="poker-card-desc">Micro-APIs &amp; Cómputo Async.</p>
-                                        <button class="poker-inspect-btn" data-tech="python"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">Zero-GIL Workers</p>
+                                        <button class="poker-inspect-btn" data-tech="python">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card A6: C++, Docker & Git (Diez de Picas ♠) -->
+                        <!-- Card A6: C++, Docker & Git — SVG: container layer stack -->
                         <div class="poker-card card-andres" data-index="5" data-player="andres" data-tech="andres_infra" style="--poker-accent: #00599C;">
                             <div class="poker-card-inner">
                                 <div class="card-face card-back">
@@ -1203,17 +1285,28 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">10</span><span class="pip-suit">♠</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">INFRA // DOCKER &amp; C++</div>
-                                        <div class="poker-hero-art" style="color: #00599C;"><i class="fab fa-docker poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="10" y="40" width="36" height="7"  rx="2" stroke="#00599C" stroke-width="1.1" fill="rgba(0,89,156,0.15)"/>
+                                                <rect x="10" y="31" width="36" height="7"  rx="2" stroke="#00599C" stroke-width="1.1" fill="rgba(0,89,156,0.10)"/>
+                                                <rect x="10" y="22" width="36" height="7"  rx="2" stroke="#00599C" stroke-width="1.1" fill="rgba(0,89,156,0.08)"/>
+                                                <rect x="10" y="13" width="36" height="7"  rx="2" stroke="#00599C" stroke-width="0.9" fill="rgba(0,89,156,0.05)" opacity="0.7"/>
+                                                <text x="28" y="46"   font-size="4.5" fill="#00599C" text-anchor="middle" font-family="monospace" opacity="0.9">RUNTIME</text>
+                                                <text x="28" y="37"   font-size="4.5" fill="#00599C" text-anchor="middle" font-family="monospace" opacity="0.75">DOCKER</text>
+                                                <text x="28" y="28"   font-size="4.5" fill="#00599C" text-anchor="middle" font-family="monospace" opacity="0.6">C++ NATIVE</text>
+                                                <text x="28" y="19"   font-size="4"   fill="#00599C" text-anchor="middle" font-family="monospace" opacity="0.45">GIT CI/CD</text>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">C++, Docker &amp; Git</h3>
-                                        <p class="poker-card-desc">Contenedores &amp; Code CI/CD.</p>
-                                        <button class="poker-inspect-btn" data-tech="andres_infra"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">Multi-stage Builds</p>
+                                        <button class="poker-inspect-btn" data-tech="andres_infra">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- ===== MANO DE JOHAN (BOTTOM CARDS) ===== -->
-                        <!-- Card J1: YOLOv8 AI (Rey de Diamantes ♦) -->
+                        <!-- Card J1: YOLOv8 AI — SVG: detection grid + bounding box -->
                         <div class="poker-card card-johan" data-index="6" data-player="johan" data-tech="yolo" style="--poker-accent: #11d483;">
                             <div class="poker-card-inner">
                                 <div class="card-face card-back">
@@ -1226,16 +1319,36 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">K</span><span class="pip-suit" style="color: #11d483;">♦</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">AI // COMPUTER VISION</div>
-                                        <div class="poker-hero-art" style="color: #11d483;"><i class="fas fa-eye poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <line x1="19" y1="8"  x2="19" y2="48" stroke="#11d483" stroke-width="0.5" opacity="0.18"/>
+                                                <line x1="28" y1="8"  x2="28" y2="48" stroke="#11d483" stroke-width="0.5" opacity="0.18"/>
+                                                <line x1="37" y1="8"  x2="37" y2="48" stroke="#11d483" stroke-width="0.5" opacity="0.18"/>
+                                                <line x1="8"  y1="19" x2="48" y2="19" stroke="#11d483" stroke-width="0.5" opacity="0.18"/>
+                                                <line x1="8"  y1="28" x2="48" y2="28" stroke="#11d483" stroke-width="0.5" opacity="0.18"/>
+                                                <line x1="8"  y1="37" x2="48" y2="37" stroke="#11d483" stroke-width="0.5" opacity="0.18"/>
+                                                <rect x="16" y="15" width="24" height="26" rx="1" stroke="#11d483" stroke-width="1.4" fill="rgba(17,212,131,0.05)"/>
+                                                <line x1="16" y1="15" x2="21" y2="15" stroke="#11d483" stroke-width="2" stroke-linecap="round"/>
+                                                <line x1="16" y1="15" x2="16" y2="20" stroke="#11d483" stroke-width="2" stroke-linecap="round"/>
+                                                <line x1="40" y1="15" x2="35" y2="15" stroke="#11d483" stroke-width="2" stroke-linecap="round"/>
+                                                <line x1="40" y1="15" x2="40" y2="20" stroke="#11d483" stroke-width="2" stroke-linecap="round"/>
+                                                <line x1="16" y1="41" x2="21" y2="41" stroke="#11d483" stroke-width="2" stroke-linecap="round"/>
+                                                <line x1="16" y1="41" x2="16" y2="36" stroke="#11d483" stroke-width="2" stroke-linecap="round"/>
+                                                <line x1="40" y1="41" x2="35" y2="41" stroke="#11d483" stroke-width="2" stroke-linecap="round"/>
+                                                <line x1="40" y1="41" x2="40" y2="36" stroke="#11d483" stroke-width="2" stroke-linecap="round"/>
+                                                <rect x="16" y="8" width="20" height="5" rx="1" fill="#11d483" opacity="0.85"/>
+                                                <text x="26" y="12" font-size="3.5" fill="#000" text-anchor="middle" font-family="monospace" font-weight="bold">99.4% mAP</text>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">YOLOv8 AI</h3>
-                                        <p class="poker-card-desc">Detección local en vivo 60 FPS.</p>
-                                        <button class="poker-inspect-btn" data-tech="yolo"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">60 FPS Local</p>
+                                        <button class="poker-inspect-btn" data-tech="yolo">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card J2: Machine Learning (As de Tréboles ♣) -->
+                        <!-- Card J2: Machine Learning — SVG: 3-layer neural network -->
                         <div class="poker-card card-johan" data-index="7" data-player="johan" data-tech="ml" style="--poker-accent: #a855f7;">
                             <div class="poker-card-inner">
                                 <div class="card-face card-back">
@@ -1248,16 +1361,38 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">A</span><span class="pip-suit">♣</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">AI // NEURAL NETS</div>
-                                        <div class="poker-hero-art" style="color: #a855f7;"><i class="fas fa-brain poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="10" cy="16" r="3.5" stroke="#a855f7" stroke-width="1"   fill="rgba(168,85,247,0.12)"/>
+                                                <circle cx="10" cy="28" r="3.5" stroke="#a855f7" stroke-width="1"   fill="rgba(168,85,247,0.12)"/>
+                                                <circle cx="10" cy="40" r="3.5" stroke="#a855f7" stroke-width="1"   fill="rgba(168,85,247,0.12)"/>
+                                                <circle cx="28" cy="11" r="3.5" stroke="#a855f7" stroke-width="1.1" fill="rgba(168,85,247,0.15)"/>
+                                                <circle cx="28" cy="22" r="3.5" stroke="#a855f7" stroke-width="1.1" fill="rgba(168,85,247,0.15)"/>
+                                                <circle cx="28" cy="34" r="3.5" stroke="#a855f7" stroke-width="1.1" fill="rgba(168,85,247,0.15)"/>
+                                                <circle cx="28" cy="45" r="3.5" stroke="#a855f7" stroke-width="1.1" fill="rgba(168,85,247,0.15)"/>
+                                                <circle cx="46" cy="20" r="3.5" stroke="#a855f7" stroke-width="1.2" fill="rgba(168,85,247,0.2)"/>
+                                                <circle cx="46" cy="36" r="3.5" stroke="#a855f7" stroke-width="1.2" fill="rgba(168,85,247,0.2)"/>
+                                                <line x1="13" y1="16" x2="25" y2="11" stroke="#a855f7" stroke-width="0.5" opacity="0.35"/>
+                                                <line x1="13" y1="16" x2="25" y2="22" stroke="#a855f7" stroke-width="0.5" opacity="0.35"/>
+                                                <line x1="13" y1="28" x2="25" y2="22" stroke="#a855f7" stroke-width="0.6" opacity="0.4"/>
+                                                <line x1="13" y1="28" x2="25" y2="34" stroke="#a855f7" stroke-width="0.6" opacity="0.4"/>
+                                                <line x1="13" y1="40" x2="25" y2="34" stroke="#a855f7" stroke-width="0.5" opacity="0.35"/>
+                                                <line x1="13" y1="40" x2="25" y2="45" stroke="#a855f7" stroke-width="0.5" opacity="0.35"/>
+                                                <line x1="31" y1="11" x2="43" y2="20" stroke="#a855f7" stroke-width="0.6" opacity="0.45"/>
+                                                <line x1="31" y1="22" x2="43" y2="20" stroke="#a855f7" stroke-width="0.6" opacity="0.45"/>
+                                                <line x1="31" y1="34" x2="43" y2="36" stroke="#a855f7" stroke-width="0.6" opacity="0.45"/>
+                                                <line x1="31" y1="45" x2="43" y2="36" stroke="#a855f7" stroke-width="0.6" opacity="0.45"/>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">Machine Learning</h3>
-                                        <p class="poker-card-desc">Modelos neuronales profundos.</p>
-                                        <button class="poker-inspect-btn" data-tech="ml"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">PyTorch · Local AI</p>
+                                        <button class="poker-inspect-btn" data-tech="ml">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card J3: 3D Models & Three.js (Reina de Tréboles ♣) -->
+                        <!-- Card J3: Three.js — SVG: octahedron wireframe -->
                         <div class="poker-card card-johan" data-index="8" data-player="johan" data-tech="three" style="--poker-accent: #00ffff;">
                             <div class="poker-card-inner">
                                 <div class="card-face card-back">
@@ -1270,16 +1405,34 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">Q</span><span class="pip-suit">♣</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">3D // MODELS &amp; WEBGL</div>
-                                        <div class="poker-hero-art" style="color: #00ffff;"><i class="fas fa-cube poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <polygon points="28,6 50,28 28,50 6,28" stroke="#00ffff" stroke-width="1" fill="rgba(0,255,255,0.04)" opacity="0.8"/>
+                                                <polygon points="28,14 42,28 28,42 14,28" stroke="#00ffff" stroke-width="1.1" fill="rgba(0,255,255,0.07)" opacity="0.7"/>
+                                                <line x1="28" y1="6"  x2="28" y2="14" stroke="#00ffff" stroke-width="0.8" opacity="0.5"/>
+                                                <line x1="50" y1="28" x2="42" y2="28" stroke="#00ffff" stroke-width="0.8" opacity="0.5"/>
+                                                <line x1="28" y1="50" x2="28" y2="42" stroke="#00ffff" stroke-width="0.8" opacity="0.5"/>
+                                                <line x1="6"  y1="28" x2="14" y2="28" stroke="#00ffff" stroke-width="0.8" opacity="0.5"/>
+                                                <line x1="28" y1="14" x2="42" y2="28" stroke="#00ffff" stroke-width="0.6" opacity="0.4"/>
+                                                <line x1="42" y1="28" x2="28" y2="42" stroke="#00ffff" stroke-width="0.6" opacity="0.4"/>
+                                                <line x1="28" y1="42" x2="14" y2="28" stroke="#00ffff" stroke-width="0.6" opacity="0.4"/>
+                                                <line x1="14" y1="28" x2="28" y2="14" stroke="#00ffff" stroke-width="0.6" opacity="0.4"/>
+                                                <circle cx="28" cy="28" r="2.5" fill="#00ffff" opacity="0.7"/>
+                                                <circle cx="28" cy="6"  r="1.5" fill="#00ffff" opacity="0.6"/>
+                                                <circle cx="50" cy="28" r="1.5" fill="#00ffff" opacity="0.6"/>
+                                                <circle cx="28" cy="50" r="1.5" fill="#00ffff" opacity="0.6"/>
+                                                <circle cx="6"  cy="28" r="1.5" fill="#00ffff" opacity="0.6"/>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">3D Models &amp; Three</h3>
-                                        <p class="poker-card-desc">Renderizado 3D PBR &amp; GLSL.</p>
-                                        <button class="poker-inspect-btn" data-tech="three"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">120 FPS PBR</p>
+                                        <button class="poker-inspect-btn" data-tech="three">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card J4: PostgreSQL & Neon (Nueve de Diamantes ♦) -->
+                        <!-- Card J4: PostgreSQL & Neon — SVG: relational table join -->
                         <div class="poker-card card-johan" data-index="9" data-player="johan" data-tech="postgres" style="--poker-accent: #4169E1;">
                             <div class="poker-card-inner">
                                 <div class="card-face card-back">
@@ -1292,16 +1445,33 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">9</span><span class="pip-suit" style="color: #4169E1;">♦</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">DATABASE // POSTGRES</div>
-                                        <div class="poker-hero-art" style="color: #4169E1;"><i class="fas fa-database poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="4"  y="10" width="20" height="6"  rx="1.5" stroke="#4169E1" stroke-width="1.1" fill="rgba(65,105,225,0.2)"/>
+                                                <rect x="4"  y="16" width="20" height="5"  rx="0"   stroke="#4169E1" stroke-width="0.7" fill="rgba(65,105,225,0.06)"/>
+                                                <rect x="4"  y="21" width="20" height="5"  rx="0"   stroke="#4169E1" stroke-width="0.7" fill="rgba(65,105,225,0.04)"/>
+                                                <rect x="4"  y="26" width="20" height="5"  rx="0"   stroke="#4169E1" stroke-width="0.7" fill="rgba(65,105,225,0.04)"/>
+                                                <text x="14" y="15" font-size="4" fill="#4169E1" text-anchor="middle" font-family="monospace" font-weight="bold" opacity="0.9">users</text>
+                                                <rect x="32" y="22" width="20" height="6"  rx="1.5" stroke="#4169E1" stroke-width="1.1" fill="rgba(65,105,225,0.2)"/>
+                                                <rect x="32" y="28" width="20" height="5"  rx="0"   stroke="#4169E1" stroke-width="0.7" fill="rgba(65,105,225,0.06)"/>
+                                                <rect x="32" y="33" width="20" height="5"  rx="0"   stroke="#4169E1" stroke-width="0.7" fill="rgba(65,105,225,0.04)"/>
+                                                <rect x="32" y="38" width="20" height="5"  rx="0"   stroke="#4169E1" stroke-width="0.7" fill="rgba(65,105,225,0.04)"/>
+                                                <text x="42" y="27" font-size="4" fill="#4169E1" text-anchor="middle" font-family="monospace" font-weight="bold" opacity="0.9">orders</text>
+                                                <line x1="24" y1="21" x2="32" y2="25" stroke="#4169E1" stroke-width="1.2" opacity="0.7" stroke-dasharray="2 1"/>
+                                                <circle cx="24" cy="21" r="1.5" fill="#4169E1" opacity="0.8"/>
+                                                <circle cx="32" cy="25" r="1.5" fill="#4169E1" opacity="0.8"/>
+                                                <text x="28" y="50" font-size="4" fill="#4169E1" text-anchor="middle" font-family="monospace" opacity="0.7">ACID · JSONB</text>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">PostgreSQL &amp; Neon</h3>
-                                        <p class="poker-card-desc">Aislamiento ACID &amp; Serverless.</p>
-                                        <button class="poker-inspect-btn" data-tech="postgres"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">0.001ms Index</p>
+                                        <button class="poker-inspect-btn" data-tech="postgres">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card J5: Cloudflare Tunnels (Diez de Diamantes ♦) -->
+                        <!-- Card J5: Cloudflare Tunnels — SVG: zero-trust tunnel path -->
                         <div class="poker-card card-johan" data-index="10" data-player="johan" data-tech="cloudflare" style="--poker-accent: #F38020;">
                             <div class="poker-card-inner">
                                 <div class="card-face card-back">
@@ -1314,16 +1484,30 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">10</span><span class="pip-suit" style="color: #F38020;">♦</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">SECURITY // TUNNELS</div>
-                                        <div class="poker-hero-art" style="color: #F38020;"><i class="fas fa-shield-alt poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="3"  y="22" width="10" height="12" rx="2" stroke="#F38020" stroke-width="1.1" fill="rgba(243,128,32,0.1)"/>
+                                                <line x1="5"  y1="26" x2="11" y2="26" stroke="#F38020" stroke-width="0.7" opacity="0.6"/>
+                                                <line x1="5"  y1="29" x2="11" y2="29" stroke="#F38020" stroke-width="0.7" opacity="0.6"/>
+                                                <path d="M13 28 C21 28 33 20 41 28" stroke="#F38020" stroke-width="1.3" fill="none" opacity="0.6"/>
+                                                <path d="M13 28 C21 28 33 36 41 28" stroke="#F38020" stroke-width="1.3" fill="none" opacity="0.6"/>
+                                                <rect x="23" y="22" width="8" height="7" rx="1.5" stroke="#F38020" stroke-width="1" fill="rgba(243,128,32,0.15)"/>
+                                                <path d="M25 22 C25 18 29 18 29 22" stroke="#F38020" stroke-width="1" fill="none"/>
+                                                <circle cx="27" cy="26" r="1.2" fill="#F38020" opacity="0.9"/>
+                                                <ellipse cx="47" cy="27" rx="6" ry="4" stroke="#F38020" stroke-width="1" fill="rgba(243,128,32,0.1)"/>
+                                                <text x="28" y="47" font-size="3.8" fill="#F38020" text-anchor="middle" font-family="monospace" opacity="0.8">ZERO TRUST</text>
+                                                <text x="28" y="52" font-size="3.5" fill="#F38020" text-anchor="middle" font-family="monospace" opacity="0.6">NO OPEN PORTS</text>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">Cloudflare Tunnels</h3>
-                                        <p class="poker-card-desc">Túneles Zero Trust Anti-DDoS.</p>
-                                        <button class="poker-inspect-btn" data-tech="cloudflare"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">&lt;2ms · Anti-DDoS</p>
+                                        <button class="poker-inspect-btn" data-tech="cloudflare">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card J6: Python, C++, Docker & Git (Jota de Diamantes ♦) -->
+                        <!-- Card J6: Python, C++, Docker & Git — SVG: FFI bindings bridge -->
                         <div class="poker-card card-johan" data-index="11" data-player="johan" data-tech="johan_core" style="--poker-accent: #00599C;">
                             <div class="poker-card-inner">
                                 <div class="card-face card-back">
@@ -1336,15 +1520,30 @@
                                     <div class="poker-pip pip-br"><span class="pip-val">J</span><span class="pip-suit" style="color: #11d483;">♦</span></div>
                                     <div class="poker-card-content">
                                         <div class="poker-tech-badge">CORE // C++ &amp; DOCKER</div>
-                                        <div class="poker-hero-art" style="color: #11d483;"><i class="fas fa-code-branch poker-icon"></i></div>
+                                        <div class="poker-hero-art">
+                                            <svg class="card-svg-art" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="3"  y="20" width="14" height="16" rx="2" stroke="#11d483" stroke-width="1"   fill="rgba(17,212,131,0.08)"/>
+                                                <text x="10" y="28" font-size="4.5" fill="#11d483" text-anchor="middle" font-family="monospace" font-weight="bold" opacity="0.9">PY</text>
+                                                <text x="10" y="33" font-size="3.2" fill="#11d483" text-anchor="middle" font-family="monospace" opacity="0.6">3.11</text>
+                                                <rect x="39" y="20" width="14" height="16" rx="2" stroke="#11d483" stroke-width="1"   fill="rgba(17,212,131,0.08)"/>
+                                                <text x="46" y="28" font-size="4.5" fill="#11d483" text-anchor="middle" font-family="monospace" font-weight="bold" opacity="0.9">C++</text>
+                                                <text x="46" y="33" font-size="3.2" fill="#11d483" text-anchor="middle" font-family="monospace" opacity="0.6">17</text>
+                                                <rect x="17" y="25" width="22" height="6" rx="1.5" stroke="#11d483" stroke-width="1.1" fill="rgba(17,212,131,0.12)"/>
+                                                <text x="28" y="30" font-size="3.8" fill="#11d483" text-anchor="middle" font-family="monospace" opacity="0.95">FFI BRIDGE</text>
+                                                <rect x="14" y="40" width="28" height="7"  rx="2" stroke="#11d483" stroke-width="0.9" fill="rgba(17,212,131,0.07)"/>
+                                                <text x="28" y="45.5" font-size="4" fill="#11d483" text-anchor="middle" font-family="monospace" opacity="0.75">DOCKER · GIT</text>
+                                                <line x1="20" y1="36" x2="20" y2="40" stroke="#11d483" stroke-width="0.7" opacity="0.4"/>
+                                                <line x1="36" y1="36" x2="36" y2="40" stroke="#11d483" stroke-width="0.7" opacity="0.4"/>
+                                                <text x="28" y="13" font-size="3.8" fill="#11d483" text-anchor="middle" font-family="monospace" opacity="0.55">NATIVE BINDINGS</text>
+                                            </svg>
+                                        </div>
                                         <h3 class="poker-card-title">Python, C++ &amp; Dev</h3>
-                                        <p class="poker-card-desc">Bindings C++ nativo &amp; Git Flow.</p>
-                                        <button class="poker-inspect-btn" data-tech="johan_core"><i class="fas fa-search-plus"></i> INSPECT</button>
+                                        <p class="poker-card-stat">FFI · Native Speed</p>
+                                        <button class="poker-inspect-btn" data-tech="johan_core">INSPECT ↗</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <!-- ===== CARTA CENTRAL SLAM DE REMATE (THE WINNING RIVER CARD) ===== -->
                         <div class="poker-card master-vanta-card" id="master-vanta-card" data-index="12" data-tech="vanta_master" style="--poker-accent: #f0c030;">
                             <div class="poker-card-inner">

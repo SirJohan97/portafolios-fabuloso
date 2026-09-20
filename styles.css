@@ -1893,36 +1893,31 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     width: 100%;
     height: 100%;
     border-radius: 240px;
-    background: radial-gradient(ellipse at center, #0f2e21 0%, #061911 65%, #020b08 100%);
-    border: 14px solid #141d27;
-    box-shadow: inset 0 0 65px rgba(0, 0, 0, 0.95), 0 25px 80px rgba(0, 0, 0, 0.95), 0 0 45px rgba(17, 212, 131, 0.18);
+    background: radial-gradient(ellipse at center, #0c1118 0%, #07090e 60%, #040508 100%);
+    border: 2px solid rgba(17, 212, 131, 0.22);
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.98), 0 30px 90px rgba(0, 0, 0, 0.98), 0 0 60px rgba(17, 212, 131, 0.08);
     overflow: visible;
+}
+
+/* Blueprint SVG grid — fits inside the oval felt */
+.table-blueprint-grid {
+    position: absolute;
+    inset: 2px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: 238px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .table-border-inner {
     position: absolute;
     inset: 12px;
     border-radius: 245px;
-    border: 2px solid rgba(17, 212, 131, 0.35);
+    border: 1px solid rgba(17, 212, 131, 0.18);
     pointer-events: none;
-}
-.table-bet-ring {
-    position: absolute;
-    inset: 65px;
-    border-radius: 195px;
-    border: 1px dashed rgba(17, 212, 131, 0.18);
-    pointer-events: none;
-}
-.table-pot-indicator {
-    position: absolute;
-    top: 72px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: monospace;
-    font-size: 0.52rem;
-    letter-spacing: 2px;
-    color: rgba(240, 192, 48, 0.7);
-    pointer-events: none;
+    z-index: 1;
 }
 .table-watermark {
     position: absolute;
@@ -1930,15 +1925,15 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: var(--font-display);
-    font-size: clamp(0.75rem, 1.2vw, 0.92rem);
-    letter-spacing: 6px;
-    color: rgba(17, 212, 131, 0.12);
+    font-size: clamp(0.62rem, 1vw, 0.78rem);
+    letter-spacing: 8px;
+    color: rgba(17, 212, 131, 0.07);
     font-weight: 900;
     pointer-events: none;
-    text-shadow: 0 0 10px rgba(17, 212, 131, 0.08);
+    z-index: 1;
 }
 
-/* PLAYER SEATS — OUTSIDE FELT ON OUTER LEATHER RAIL (ZERO CARDS OVERLAP) */
+/* PLAYER SEATS — Engineering editorial stations */
 .player-seat {
     position: absolute;
     left: 50%;
@@ -1946,80 +1941,59 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     z-index: 30;
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    background: rgba(5, 10, 18, 0.95);
-    border: 1px solid rgba(17, 212, 131, 0.4);
-    padding: 0.25rem 0.8rem;
-    border-radius: 20px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.9);
+    background: rgba(4, 7, 12, 0.96);
+    border: 1px solid rgba(17, 212, 131, 0.28);
+    padding: 0.4rem 1.2rem;
+    border-radius: 4px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.95);
     will-change: transform, opacity;
 }
-/* Seats are positioned INSIDE the felt near the top/bottom curved edges
-   so they are always visible within the viewport */
-.seat-top    { top: 10px; }
-.seat-bottom { bottom: 10px; }
+.seat-top    { top: 14px; }
+.seat-bottom { bottom: 14px; }
 
-.seat-badge {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-}
-.seat-role {
-    font-family: monospace;
-    font-size: 0.5rem;
-    color: rgba(17, 212, 131, 0.85);
-    letter-spacing: 1px;
-}
-.seat-name {
-    font-family: var(--font-display);
-    font-size: 0.8rem;
-    font-weight: 900;
-    color: #ffffff;
-    letter-spacing: 1.5px;
-}
-
-/* CASINO CHIPS */
-.casino-chip {
-    position: relative;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
+/* EDITORIAL PLAYER STATION BADGE */
+.player-station-badge {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    z-index: 2;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.2);
+    gap: 0.15rem;
 }
-.casino-chip::before {
-    content: '';
-    position: absolute;
-    inset: 3px;
-    border-radius: 50%;
-    border: 2px dashed rgba(255,255,255,0.25);
-}
-.chip-andres {
-    background: radial-gradient(circle at 35% 35%, #c8960a, #8a6700);
-    border: 2px solid #f0c030;
-}
-.chip-johan {
-    background: radial-gradient(circle at 35% 35%, #0fd47e, #087548);
-    border: 2px solid #11d483;
-}
-.chip-label {
+.station-label {
     font-family: var(--font-display);
-    font-size: 0.4rem;
+    font-size: 0.72rem;
     font-weight: 900;
     color: #ffffff;
+    letter-spacing: 2.5px;
+    line-height: 1;
+}
+.station-role {
+    font-family: monospace;
+    font-size: 0.42rem;
+    color: rgba(17, 212, 131, 0.7);
+    letter-spacing: 1.5px;
+    line-height: 1;
+}
+.station-metrics {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.2rem;
+}
+.station-metric {
+    font-family: monospace;
+    font-size: 0.45rem;
+    color: rgba(255, 255, 255, 0.55);
     letter-spacing: 0.5px;
-    line-height: 1;
 }
-.chip-value {
-    font-family: var(--font-display);
-    font-size: 0.6rem;
-    font-weight: 900;
-    color: #ffffff;
-    line-height: 1;
+.station-metric em {
+    font-style: normal;
+    color: rgba(17, 212, 131, 0.9);
+    font-weight: bold;
+}
+.station-metric-divider {
+    width: 1px;
+    height: 0.6rem;
+    background: rgba(17, 212, 131, 0.3);
 }
 
 /* POKER FELT STAGE & CARDS */
@@ -2152,8 +2126,19 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     letter-spacing: 0.5px;
 }
 .poker-hero-art {
-    font-size: 1.5rem;
-    margin: 0.15rem 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.1rem 0;
+    flex-shrink: 0;
+}
+/* Bespoke inline SVG diagram art */
+.card-svg-art {
+    width: 50px;
+    height: 50px;
+    display: block;
+    overflow: visible;
 }
 .poker-card-title {
     font-family: var(--font-display);
@@ -2161,7 +2146,16 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     font-weight: 900;
     color: #ffffff;
     line-height: 1.1;
-    margin: 0.1rem 0;
+    margin: 0.05rem 0;
+}
+/* Benchmark stat line — replaces generic desc */
+.poker-card-stat {
+    font-family: monospace;
+    font-size: 0.5rem;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    text-align: center;
 }
 .poker-card-desc {
     font-size: 0.54rem;

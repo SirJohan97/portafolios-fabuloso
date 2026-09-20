@@ -2376,7 +2376,7 @@ function setupPokerDealer() {
                 }
             }
 
-            // â”€â”€â”€ Screen Shake â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // Screen Shake
             function triggerScreenShake() {
                 if (!tableFelt) return;
                 gsap.to(tableFelt, {
@@ -2386,60 +2386,57 @@ function setupPokerDealer() {
                 });
             }
 
-            // â”€â”€â”€ Card Positions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-            // â”€â”€â”€ Card Positions & Responsive Spreads â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-            const andresCards = Array.from(document.querySelectorAll('.card-andres'));
-            const johanCards  = Array.from(document.querySelectorAll('.card-johan'));
-            const masterCard  = document.getElementById('master-vanta-card');
+            // Card Queries & Responsive Spreads
+            const andresCards = Array.from(document.querySelectorAll(".card-andres"));
+            const johanCards  = Array.from(document.querySelectorAll(".card-johan"));
+            const masterCard  = document.getElementById("master-vanta-card");
 
             const isMobile = window.innerWidth < 768;
             const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
             const xSpread = isMobile ? (window.innerWidth < 480 ? 0.46 : 0.62) : (isTablet ? 0.82 : 1.0);
             const ySpread = isMobile ? (window.innerHeight < 700 ? 0.72 : 0.85) : 1.0;
-            const cardTargetScale = isMobile ? 0.68 : (isTablet ? 0.80 : 0.91);
+            const cardTargetScale   = isMobile ? 0.68 : (isTablet ? 0.80 : 0.91);
             const masterTargetScale = isMobile ? 0.80 : (isTablet ? 0.92 : 1.0);
 
-            // Final resting spots for each hand
+            // Resting spots — tightened ySpread clears editorial station badges
             const andresSpots = [
-                { x: -300 * xSpread, y: -138 * ySpread, rZ: -12 },
-                { x: -180 * xSpread, y: -145 * ySpread, rZ: -7  },
-                { x: -60  * xSpread, y: -148 * ySpread, rZ: -2  },
-                { x:  60  * xSpread, y: -148 * ySpread, rZ:  2  },
-                { x:  180 * xSpread, y: -145 * ySpread, rZ:  7  },
-                { x:  300 * xSpread, y: -138 * ySpread, rZ:  12 }
+                { x: -300 * xSpread, y: -108 * ySpread, rZ: -12 },
+                { x: -180 * xSpread, y: -113 * ySpread, rZ: -7  },
+                { x: -60  * xSpread, y: -115 * ySpread, rZ: -2  },
+                { x:  60  * xSpread, y: -115 * ySpread, rZ:  2  },
+                { x:  180 * xSpread, y: -113 * ySpread, rZ:  7  },
+                { x:  300 * xSpread, y: -108 * ySpread, rZ:  12 }
             ];
-            // Johan (bottom of table): mirror
             const johanSpots = [
-                { x: -300 * xSpread, y:  138 * ySpread, rZ: -12 },
-                { x: -180 * xSpread, y:  145 * ySpread, rZ: -7  },
-                { x: -60  * xSpread, y:  148 * ySpread, rZ: -2  },
-                { x:  60  * xSpread, y:  148 * ySpread, rZ:  2  },
-                { x:  180 * xSpread, y:  145 * ySpread, rZ:  7  },
-                { x:  300 * xSpread, y:  138 * ySpread, rZ:  12 }
+                { x: -300 * xSpread, y:  108 * ySpread, rZ: -12 },
+                { x: -180 * xSpread, y:  115 * ySpread, rZ: -7  },
+                { x: -60  * xSpread, y:  118 * ySpread, rZ: -2  },
+                { x:  60  * xSpread, y:  118 * ySpread, rZ:  2  },
+                { x:  180 * xSpread, y:  115 * ySpread, rZ:  7  },
+                { x:  300 * xSpread, y:  108 * ySpread, rZ:  12 }
             ];
 
-            // â”€â”€â”€ Pre-set ALL cards to dealer deck at center â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-            // Deck is slightly above center (dealer's side concept)
+            // Pre-set ALL cards to dealer deck at center
             const deckY = 0;
             andresCards.forEach((card) => {
                 gsap.set(card, { x: 0, y: deckY, scale: 0.18, opacity: 0, rotationZ: 0, zIndex: 2 });
-                const inner = card.querySelector('.poker-card-inner');
+                const inner = card.querySelector(".poker-card-inner");
                 if (inner) gsap.set(inner, { rotateY: 0 });
             });
             johanCards.forEach((card) => {
                 gsap.set(card, { x: 0, y: deckY, scale: 0.18, opacity: 0, rotationZ: 0, zIndex: 2 });
-                const inner = card.querySelector('.poker-card-inner');
+                const inner = card.querySelector(".poker-card-inner");
                 if (inner) gsap.set(inner, { rotateY: 0 });
             });
             if (masterCard) {
                 gsap.set(masterCard, { x: 0, y: 0, scale: 0.18, opacity: 0, rotationZ: 0, zIndex: 50 });
-                const inner = masterCard.querySelector('.poker-card-inner');
+                const inner = masterCard.querySelector(".poker-card-inner");
                 if (inner) gsap.set(inner, { rotateY: 0 });
             }
 
             // Seats
-            const seatA = document.getElementById('seat-andres');
-            const seatJ = document.getElementById('seat-johan');
+            const seatA = document.getElementById("seat-andres");
+            const seatJ = document.getElementById("seat-johan");
             if (seatA) gsap.set(seatA, { opacity: 0, y: -10 });
             if (seatJ) gsap.set(seatJ, { opacity: 0, y:  10 });
 
@@ -2536,21 +2533,21 @@ function setupPokerDealer() {
                 }, null, landAt + 0.01);
             });
 
-            // â”€â”€â”€ PHASE 3: The River Slam â€” VANTA Master Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ─── PHASE 3: The River Slam — VANTA Master Card ─────────────────────
             const riverStart = 0.30 + dealSequence.length * DEAL_SPACING + 0.40;
 
             if (masterCard) {
-                const inner = masterCard.querySelector('.poker-card-inner');
+                const inner = masterCard.querySelector(".poker-card-inner");
 
-                // Master card: ascends smoothly from deck to floating hero position
+                // Master card: ascends in 3D z-space (elevated center hover, no collision with seats)
                 tl.to(masterCard, {
-                    y: isMobile ? -160 : -240, scale: isMobile ? 1.15 : 1.55, opacity: 1,
+                    y: isMobile ? -15 : -25, scale: isMobile ? 1.15 : 1.35, opacity: 1,
                     duration: 0.50, ease: "power3.out"
                 }, riverStart);
 
-                // Hold in air with subtle floating drift (suspense beat)
+                // Hold in air with subtle floating drift in the center void (suspense beat)
                 tl.to(masterCard, {
-                    y: isMobile ? -170 : -255, scale: isMobile ? 1.20 : 1.60,
+                    y: isMobile ? -10 : -18, scale: isMobile ? 1.18 : 1.38,
                     duration: 0.35, ease: "sine.inOut"
                 }, riverStart + 0.50);
 
@@ -2581,6 +2578,7 @@ function setupPokerDealer() {
                     setTimeout(() => playTick(880, 0.15), 80);
                 }, null, riverStart + 1.31);
             }
+
 
             // â”€â”€â”€ Hover & Click Interactions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             cards.forEach((card) => {
