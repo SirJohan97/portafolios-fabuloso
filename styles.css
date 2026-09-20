@@ -215,25 +215,96 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   DYNAMIC CLEAN SCROLL MODE (AWWWARDS SOTY FOCUS)
-   Viewport automatically clears upon scrolling:
-   - Central Deck, Audio Pill & Project CTA slide up & dissolve.
+   APPLE DYNAMIC ISLAND INWARD COLLAPSE & BIRTH (AWWWARDS SOTY)
+   When scrolling down:
+   - Center Deck & Command Wing collapse INWARD towards the center axis.
    - Top-left brand collapses into a precision glowing circular badge.
+   When hovering over the top or returning to the top:
+   - The navigation bar is BORN FROM THE MIDDLE (blooms out elastically
+     from the center point with Apple liquid spring physics).
    ───────────────────────────────────────────────────────────── */
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-center-deck {
-    opacity: 0 !important;
-    transform: translateY(-28px) scale(0.92) !important;
-    filter: blur(8px) !important;
-    pointer-events: none !important;
+
+@keyframes dynamicIslandBirth {
+    0% {
+        transform: scale(0.08, 0.3);
+        opacity: 0;
+        filter: blur(14px);
+    }
+    58% {
+        transform: scale(1.055, 1.04);
+        opacity: 1;
+        filter: blur(0px);
+    }
+    78% {
+        transform: scale(0.985, 0.99);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1, 1);
+        opacity: 1;
+        filter: blur(0px);
+    }
 }
 
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-command-wing {
-    opacity: 0 !important;
-    transform: translateY(-28px) scale(0.92) !important;
-    filter: blur(8px) !important;
-    pointer-events: none !important;
+@keyframes dynamicIslandWingBirth {
+    0% {
+        transform: translateX(-100px) scale(0.15);
+        opacity: 0;
+        filter: blur(12px);
+    }
+    60% {
+        transform: translateX(10px) scale(1.04);
+        opacity: 1;
+        filter: blur(0px);
+    }
+    82% {
+        transform: translateX(-3px) scale(0.99);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+        filter: blur(0px);
+    }
 }
 
+/* 1. Collapsed State: Colapsa hacia adentro (inward scale & dissolution toward center) */
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean:not(.nav-peek) .nav-center-deck {
+    transform-origin: 50% 50% !important;
+    transform: scale(0.08, 0.3) !important;
+    opacity: 0 !important;
+    filter: blur(14px) !important;
+    pointer-events: none !important;
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.32s ease,
+                filter 0.38s ease !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean:not(.nav-peek) .nav-deck-capsule {
+    transform-origin: 50% 50% !important;
+    transform: scaleX(0.2) !important;
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean:not(.nav-peek) .nav-deck-list li {
+    opacity: 0 !important;
+    transform: scale(0.6) !important;
+    letter-spacing: -2px !important;
+    transition: opacity 0.22s ease, transform 0.3s ease, letter-spacing 0.3s ease !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean:not(.nav-peek) .nav-command-wing {
+    transform-origin: left center !important;
+    transform: translateX(-120px) scale(0.15) !important;
+    opacity: 0 !important;
+    filter: blur(12px) !important;
+    pointer-events: none !important;
+    transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.28s ease,
+                filter 0.35s ease !important;
+}
+
+/* 2. Top Left Brand Anchor: Compresses into minimal circular logo badge */
 .navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-anchor {
     padding: 0 !important;
     gap: 0 !important;
@@ -299,18 +370,33 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     pointer-events: none !important;
 }
 
-/* --- HUD Peek Mode on Top Screen Hover --- */
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-center-deck {
-    opacity: 1 !important;
-    transform: translateY(0) scale(1) !important;
-    filter: blur(0px) !important;
+/* 3. Birth State: Nace del medio como Dynamic Island (on top hover or return to top) */
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-center-deck,
+.navbar.vanta-navbar-tripartite.nav-island-birth .nav-center-deck {
+    transform-origin: 50% 50% !important;
+    animation: dynamicIslandBirth 0.52s cubic-bezier(0.34, 1.45, 0.64, 1) forwards !important;
     pointer-events: auto !important;
 }
 
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-command-wing {
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-deck-capsule,
+.navbar.vanta-navbar-tripartite.nav-island-birth .nav-deck-capsule {
+    transform-origin: 50% 50% !important;
+    transform: scaleX(1) !important;
+    transition: transform 0.5s cubic-bezier(0.34, 1.45, 0.64, 1) !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-deck-list li,
+.navbar.vanta-navbar-tripartite.nav-island-birth .nav-deck-list li {
     opacity: 1 !important;
-    transform: translateY(0) scale(1) !important;
-    filter: blur(0px) !important;
+    transform: scale(1) !important;
+    letter-spacing: normal !important;
+    transition: opacity 0.35s ease 0.1s, transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1) 0.08s !important;
+}
+
+.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-command-wing,
+.navbar.vanta-navbar-tripartite.nav-island-birth .nav-command-wing {
+    transform-origin: left center !important;
+    animation: dynamicIslandWingBirth 0.52s cubic-bezier(0.34, 1.4, 0.64, 1) forwards !important;
     pointer-events: auto !important;
 }
 

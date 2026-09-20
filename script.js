@@ -542,9 +542,15 @@ function initMainScript() {
             isScrolledClean = shouldBeScrolled;
             if (isScrolledClean) {
                 navbar.classList.add('nav-scrolled-clean', 'scrolled');
+                navbar.classList.remove('nav-island-birth');
                 document.body.classList.add('scrolled');
             } else {
                 navbar.classList.remove('nav-scrolled-clean', 'scrolled', 'nav-peek');
+                // Nace del medio como Dynamic Island al volver arriba
+                navbar.classList.add('nav-island-birth');
+                setTimeout(() => {
+                    navbar.classList.remove('nav-island-birth');
+                }, 600);
                 document.body.classList.remove('scrolled');
             }
         }
@@ -565,16 +571,16 @@ function initMainScript() {
         });
     }
 
-    // Smart HUD Peek: si el cursor se acerca al borde superior (< 48px), la barra reaparece sutilmente
+    // Dynamic Island Hover Peek: si el cursor se acerca al borde superior (< 65px), nace del medio
     let peekActive = false;
     window.addEventListener('mousemove', (e) => {
         if (!isScrolledClean || !navbar) return;
-        if (e.clientY <= 48) {
+        if (e.clientY <= 65) {
             if (!peekActive) {
                 peekActive = true;
                 navbar.classList.add('nav-peek');
             }
-        } else if (e.clientY > 90) {
+        } else if (e.clientY > 115) {
             if (peekActive) {
                 peekActive = false;
                 navbar.classList.remove('nav-peek');
@@ -583,8 +589,14 @@ function initMainScript() {
     }, { passive: true });
 
     if (navbar) {
-        navbar.addEventListener('mouseleave', () => {
-            if (isScrolledClean && peekActive) {
+        navbar.addEventListener('mouseenter', () => {
+            if (isScrolledClean && !peekActive) {
+                peekActive = true;
+                navbar.classList.add('nav-peek');
+            }
+        });
+        navbar.addEventListener('mouseleave', (e) => {
+            if (isScrolledClean && peekActive && e.clientY > 95) {
                 peekActive = false;
                 navbar.classList.remove('nav-peek');
             }
