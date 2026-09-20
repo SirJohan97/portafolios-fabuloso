@@ -3810,66 +3810,42 @@ function setupPokerDealer() {
                 });
 
                 // ============================================================
-                // ACTO I: BUFFER DE ASENTAMIENTO & VELO LÍQUIDO BÉZIER (0.00 a 0.15)
-                // Absorbe la inercia vertical y retrae el telón superior (mdebeauty.com)
+                // ACTO I: HUD & ESTABILIZACIÓN EN PABELLÓN 01 (0.00 a 0.06)
+                // Presentación directa y limpia del primer pabellón sin colisiones
                 // ============================================================
-                if (vlcEntrance) {
-                    tl.fromTo(vlcEntrance, 
-                        { yPercent: 0 }, 
-                        { yPercent: -100, duration: 0.15, ease: "power2.inOut" }, 
-                        0
-                    );
-                }
-
-                const entranceMorph = { cy: 100 };
-                tl.to(entranceMorph, {
-                    cy: 82,
-                    duration: 0.15,
-                    ease: "power2.out",
-                    onUpdate: () => {
-                        const cy = entranceMorph.cy.toFixed(1);
-                        if (vlcEntranceFill) {
-                            vlcEntranceFill.setAttribute('d', `M 0 0 L 100 0 L 100 82 Q 50 ${cy} 0 82 Z`);
-                        }
-                        if (vlcEntranceStroke) {
-                            vlcEntranceStroke.setAttribute('d', `M 0 82 Q 50 ${cy} 100 82`);
-                        }
-                    }
-                }, 0);
-
                 if (hudElement) {
                     tl.fromTo(hudElement, 
-                        { opacity: 0.4, y: -15 }, 
-                        { opacity: 1, y: 0, duration: 0.15, ease: "power2.out" }, 
+                        { opacity: 0.5, y: -10 }, 
+                        { opacity: 1, y: 0, duration: 0.06, ease: "power2.out" }, 
                         0
                     );
                 }
 
                 // ============================================================
-                // ACTO II: RECORRIDO PANORÁMICO DE LOS 3 PABELLONES (0.15 a 0.85)
+                // ACTO II: RECORRIDO PANORÁMICO DE LOS 3 PABELLONES (0.06 a 0.88)
                 // Desplazamiento simultáneo de los 4 planos espaciales
                 // ============================================================
-                tl.to(cardsTrack, { x: -totalDist, duration: 0.70, ease: "none" }, 0.15)
-                  .to(bgWatermark, { x: -watermarkDist, duration: 0.70, ease: "none" }, 0.15)
-                  .to(bgGrid, { x: -gridDist, duration: 0.70, ease: "none" }, 0.15)
-                  .to(telemetryRuler, { x: -rulerDist, duration: 0.70, ease: "none" }, 0.15);
+                tl.to(cardsTrack, { x: -totalDist, duration: 0.82, ease: "none" }, 0.06)
+                  .to(bgWatermark, { x: -watermarkDist, duration: 0.82, ease: "none" }, 0.06)
+                  .to(bgGrid, { x: -gridDist, duration: 0.82, ease: "none" }, 0.06)
+                  .to(telemetryRuler, { x: -rulerDist, duration: 0.82, ease: "none" }, 0.06);
 
                 // ============================================================
-                // ACTO III: BUFFER DE SALIDA & MEMBRANA LÍQUIDA HACIA CONTACTO (0.85 a 1.00)
+                // ACTO III: BUFFER DE SALIDA & MEMBRANA LÍQUIDA HACIA CONTACTO (0.88 a 1.00)
                 // Detiene el eje X y eleva la membrana líquida para empalmar con Contacto
                 // ============================================================
                 if (vlcExit) {
                     tl.fromTo(vlcExit, 
                         { yPercent: 100 }, 
-                        { yPercent: 0, duration: 0.15, ease: "power2.inOut" }, 
-                        0.85
+                        { yPercent: 0, duration: 0.12, ease: "power2.inOut" }, 
+                        0.88
                     );
                 }
 
                 const exitMorph = { cy: 0 };
                 tl.to(exitMorph, {
                     cy: 18,
-                    duration: 0.15,
+                    duration: 0.12,
                     ease: "power2.inOut",
                     onUpdate: () => {
                         const cy = exitMorph.cy.toFixed(1);
@@ -3880,7 +3856,7 @@ function setupPokerDealer() {
                             vlcExitStroke.setAttribute('d', `M 0 18 Q 50 ${cy} 100 18`);
                         }
                     }
-                }, 0.85);
+                }, 0.88);
 
                 govST = ScrollTrigger.create({
                     trigger: govSection,
@@ -3890,7 +3866,7 @@ function setupPokerDealer() {
                     scrub: 0.85,
                     animation: tl,
                     invalidateOnRefresh: true,
-                    anticipatePin: 1,
+                    anticipatePin: 0,
                     onEnter: () => {
                         document.body.classList.add('in-gov-scrolly');
                         if (window.setVantaTheme) {

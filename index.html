@@ -1378,6 +1378,23 @@
     <!-- ===== ACTO 04: FIELD REPORTS (STACKABLE SWIPE DECK) ===== -->
     <!-- ===== TESTIMONIOS: STACKABLE SWIPE DECK ===== -->
     <section class="testimonials-section" id="testimonials" aria-label="Testimonios y Reportes de Campo">
+        <!-- Divisor Orgánico Líquido de Entrada (mdebeauty.com) -->
+        <div class="vanta-fluid-divider vfd-top" id="testiEntranceWave" aria-hidden="true">
+            <svg viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
+                <path d="M0,15 C320,70 680,75 1020,25 C1220,-5 1360,35 1440,55 L1440,80 L0,80 Z" fill="#06080D" />
+                <path class="vfd-wave-stroke" d="M0,15 C320,70 680,75 1020,25 C1220,-5 1360,35 1440,55" stroke="url(#vfdTopStrokeGrad)" stroke-width="1.8" vector-effect="non-scaling-stroke" />
+                <defs>
+                    <linearGradient id="vfdTopStrokeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#11D483" stop-opacity="0.2" />
+                        <stop offset="25%" stop-color="#11D483" stop-opacity="0.8" />
+                        <stop offset="55%" stop-color="#00E5FF" stop-opacity="0.9" />
+                        <stop offset="85%" stop-color="#11D483" stop-opacity="0.7" />
+                        <stop offset="100%" stop-color="#11D483" stop-opacity="0.1" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+
         <div class="testi-ambient-glow" aria-hidden="true"></div>
         <div class="testimonials-deck-container">
             <div class="testi-header text-center">
@@ -1468,6 +1485,23 @@
                 <button class="testi-nav-btn next" id="testiNextBtn" aria-label="Tarjeta siguiente"><i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
+
+        <!-- Divisor Orgánico Líquido de Salida (mdebeauty.com) hacia Atelier -->
+        <div class="vanta-fluid-divider vfd-bottom" id="testiExitWave" aria-hidden="true">
+            <svg viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
+                <path d="M0,0 L1440,0 L1440,25 C1260,75 920,80 580,30 C380,0 180,55 0,65 Z" fill="#06080D" />
+                <path class="vfd-wave-stroke" d="M1440,25 C1260,75 920,80 580,30 C380,0 180,55 0,65" stroke="url(#vfdExitStrokeGrad)" stroke-width="1.8" vector-effect="non-scaling-stroke" />
+                <defs>
+                    <linearGradient id="vfdExitStrokeGrad" x1="100%" y1="0%" x2="0%" y2="0%">
+                        <stop offset="0%" stop-color="#11D483" stop-opacity="0.2" />
+                        <stop offset="30%" stop-color="#11D483" stop-opacity="0.8" />
+                        <stop offset="60%" stop-color="#00E5FF" stop-opacity="0.9" />
+                        <stop offset="90%" stop-color="#11D483" stop-opacity="0.6" />
+                        <stop offset="100%" stop-color="#11D483" stop-opacity="0.1" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
     </section>
 
     <!-- ===== ACTO 06: VANTA ATELIER — MODELOS DE DESPLIEGUE & BLINDAJE B2B ===== -->
@@ -1475,23 +1509,6 @@
         
         <!-- Sticky Pin Stage (100vh) -->
         <div class="gov-parallax-pin" id="govParallaxPin">
-
-            <!-- Velo Líquido Cinemático de Entrada (mdebeauty.com) -->
-            <div class="vanta-liquid-curtain vlc--entrance" id="vlcEntrance" aria-hidden="true">
-                <svg class="vlc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <defs>
-                        <filter id="vlcGlow" x="-20%" y="-20%" width="140%" height="140%">
-                            <feGaussianBlur stdDeviation="1.5" result="blur" />
-                            <feMerge>
-                                <feMergeNode in="blur" />
-                                <feMergeNode in="SourceGraphic" />
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <path id="vlcEntranceFill" d="M 0 0 L 100 0 L 100 82 Q 50 100 0 82 Z" fill="#07090E" />
-                    <path id="vlcEntranceStroke" d="M 0 82 Q 50 100 100 82" fill="none" stroke="#11D483" stroke-width="0.8" vector-effect="non-scaling-stroke" filter="url(#vlcGlow)" opacity="0.95" />
-                </svg>
-            </div>
 
             <!-- Capa 0: Fondo Profundo Tipográfico Monumental (Parallax Lento ~0.35x) -->
             <div class="gov-bg-watermark-layer" id="govWatermarkLayer" aria-hidden="true">

@@ -1113,8 +1113,6 @@
 }
 
 /* Permitir que la constelación 3D del fondo flote visiblemente detrás de las secciones */
-.testimonials-section,
-.contact-section,
 .team-section,
 .tech-stack,
 .bento-section {
@@ -2826,8 +2824,9 @@
 .team-section,
 .methodology-scroll-container,
 .pricing-section,
+.testimonials-section,
 .contact-section {
-    background: #07090E !important;
+    background: #06080D !important;
     position: relative;
     z-index: 10;
 }
@@ -5896,7 +5895,52 @@ body.in-gov-scrolly .hud-sidebar {
    ACTO 06: VANTA ATELIER — 3 PABELLONES CINEMÁTICOS & VELO LÍQUIDO (mdebeauty.com)
    ============================================================ */
 
-/* Velo Líquido Full-Viewport Cinemático (mdebeauty.com) */
+/* ====================================================================
+   DIVISORES ORGÁNICOS FLUIDOS ENTRE SECCIONES (Estilo mdebeauty.com)
+   Eliminan cortes rectangulares y suavizan el flujo visual entre actos
+   ==================================================================== */
+.vanta-fluid-divider {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.vfd-top {
+    top: -79px;
+    z-index: 15;
+}
+
+.vfd-bottom {
+    bottom: -79px;
+    z-index: 15;
+}
+
+.vanta-fluid-divider svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.vfd-wave-stroke {
+    filter: drop-shadow(0 0 8px rgba(17, 212, 131, 0.45));
+}
+
+@media (max-width: 768px) {
+    .vanta-fluid-divider {
+        height: 50px;
+    }
+    .vfd-top {
+        top: -49px;
+    }
+    .vfd-bottom {
+        bottom: -49px;
+    }
+}
+
+/* Velo Líquido de Salida hacia Contacto */
 .vanta-liquid-curtain {
     position: absolute;
     top: 0;
@@ -5911,7 +5955,7 @@ body.in-gov-scrolly .hud-sidebar {
 }
 
 .vlc--entrance {
-    transform: translateY(0%);
+    display: none !important;
 }
 
 .vlc--exit {

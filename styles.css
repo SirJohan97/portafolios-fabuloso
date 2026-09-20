@@ -7341,8 +7341,6 @@ body {
 .team-section,
 .methodology-scroll-container,
 .pricing-section,
-.testimonials-section,
-.contact-section,
 .footer-cinema {
     background: transparent !important;
     background-color: transparent !important;
@@ -10904,9 +10902,17 @@ body.scrolled .whatsapp-btn,
 /* 2. STACKABLE SWIPE DECK TESTIMONIALS */
 .testimonials-section {
     position: relative;
-    padding: 100px 5% 120px;
-    background: #06080D;
-    overflow: hidden;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 7rem 5% 7rem;
+    background: #06080D !important;
+    background-color: #06080D !important;
+    overflow: visible;
+    box-sizing: border-box;
 }
 .testi-ambient-glow {
     position: absolute;
