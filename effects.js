@@ -3723,9 +3723,10 @@ function setupPokerDealer() {
     initBioFace3D();
     
     /* ============================================================
-       ACTO 06.5: GOBERNANZA, SEGURIDAD & SLAS B2B (SCROLLYTELLING HORIZONTAL MULTI-PLANE PARALLAX)
+       ACTO 06: MODELOS DE DESPLIEGUE COMERCIAL & GOBERNANZA B2B
+       (SCROLLYTELLING HORIZONTAL PANORÁMICO 3-ACT TIMELINE + CÚPULA LÍQUIDA BÉZIER)
        ============================================================ */
-    (function initGovernanceHorizontalParallax() {
+    (function initSolutionsScrollytelling() {
         function setup() {
             if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
                 setTimeout(setup, 100);
@@ -3733,7 +3734,7 @@ function setupPokerDealer() {
             }
             gsap.registerPlugin(ScrollTrigger);
 
-            const govSection = document.getElementById('governance');
+            const govSection = document.getElementById('solutions') || document.getElementById('governance');
             if (!govSection) return;
 
             const cardsTrack = govSection.querySelector('#govCardsTrack');
@@ -3744,6 +3745,11 @@ function setupPokerDealer() {
             const progressBar = govSection.querySelector('#govProgressFill');
             const currentCounter = govSection.querySelector('#ghcCurrent');
             const panels = govSection.querySelectorAll('.gov-panel');
+            const vodEntranceFill = govSection.querySelector('#vodEntranceFill');
+            const vodEntranceStroke = govSection.querySelector('#vodEntranceStroke');
+            const vodExitFill = govSection.querySelector('#vodExitFill');
+            const vodExitStroke = govSection.querySelector('#vodExitStroke');
+            const hudElement = govSection.querySelector('.gov-hud-fixed');
 
             if (!cardsTrack) return;
 
@@ -3756,8 +3762,9 @@ function setupPokerDealer() {
                             const prog = cardsWrapper.scrollLeft / maxScroll;
                             if (progressBar) progressBar.style.width = `${Math.min(100, Math.max(0, prog * 100))}%`;
                             if (currentCounter) {
-                                const idx = Math.min(5, Math.max(1, Math.floor(prog * 5) + 1));
-                                currentCounter.textContent = `0${idx}`;
+                                const total = panels.length || 9;
+                                const idx = Math.min(total, Math.max(1, Math.floor(prog * total) + 1));
+                                currentCounter.textContent = (idx < 10 ? '0' : '') + idx;
                             }
                         }
                     }
@@ -3779,7 +3786,7 @@ function setupPokerDealer() {
                     return;
                 }
 
-                // Calculate exact translation needed so that the last card is fully visible with comfortable breathing room
+                // Calculate exact translation needed so that the 9th card is fully visible with comfortable breathing room
                 const trackWidth = cardsTrack.scrollWidth;
                 const viewWidth = window.innerWidth;
                 const totalDist = Math.max(0, trackWidth - viewWidth + (viewWidth * 0.08));
@@ -3790,53 +3797,109 @@ function setupPokerDealer() {
                 // Layer 1: Technical Laser Mesh (0.65x mid parallax speed)
                 const gridDist = totalDist * 0.65;
 
-                // Layer 3: Dynamic Metric Ruler (1.20x accelerated speed closer to camera)
-                const rulerDist = totalDist * 1.20;
+                // Layer 3: Dynamic Metric Ruler (1.25x accelerated speed closer to camera)
+                const rulerDist = totalDist * 1.25;
 
                 const tl = gsap.timeline({
                     defaults: { ease: "none" }
                 });
 
-                // Animate the 4 planes in unison across the full scroll distance
-                tl.to(cardsTrack, { x: -totalDist, duration: 1 }, 0)
-                  .to(bgWatermark, { x: -watermarkDist, duration: 1 }, 0)
-                  .to(bgGrid, { x: -gridDist, duration: 1 }, 0)
-                  .to(telemetryRuler, { x: -rulerDist, duration: 1 }, 0);
+                // ============================================================
+                // ACTO I: BUFFER DE ASENTAMIENTO & CÚPULA LÍQUIDA BÉZIER (0.00 a 0.14)
+                // Absorbe la inercia vertical de 90° y allana la membrana elástica (mdebeauty.com)
+                // ============================================================
+                const entranceMorph = { cy: 100 };
+                tl.to(entranceMorph, {
+                    cy: 0,
+                    duration: 0.14,
+                    ease: "power2.out",
+                    onUpdate: () => {
+                        const cy = entranceMorph.cy.toFixed(1);
+                        if (vodEntranceFill) {
+                            vodEntranceFill.setAttribute('d', `M 0 100 L 100 100 L 100 0 Q 50 ${cy} 0 0 Z`);
+                        }
+                        if (vodEntranceStroke) {
+                            vodEntranceStroke.setAttribute('d', `M 0 0 Q 50 ${cy} 100 0`);
+                        }
+                    }
+                }, 0);
 
-                // Subtle dynamic card depth and glow modulation across scroll
+                if (hudElement) {
+                    tl.fromTo(hudElement, 
+                        { opacity: 0.5, y: -15 }, 
+                        { opacity: 1, y: 0, duration: 0.14, ease: "power2.out" }, 
+                        0
+                    );
+                }
+
+                // ============================================================
+                // ACTO II: RECORRIDO HORIZONTAL PANORÁMICO (0.14 a 0.86)
+                // Desplazamiento simultáneo de los 4 planos espaciales (9 tarjetas)
+                // ============================================================
+                tl.to(cardsTrack, { x: -totalDist, duration: 0.72, ease: "none" }, 0.14)
+                  .to(bgWatermark, { x: -watermarkDist, duration: 0.72, ease: "none" }, 0.14)
+                  .to(bgGrid, { x: -gridDist, duration: 0.72, ease: "none" }, 0.14)
+                  .to(telemetryRuler, { x: -rulerDist, duration: 0.72, ease: "none" }, 0.14);
+
+                // Modulación de halo y borde según la tipología del panel
                 panels.forEach((panel, i) => {
-                    const progressPoint = i / Math.max(1, panels.length - 1);
+                    const normPoint = 0.14 + (i / Math.max(1, panels.length - 1)) * 0.72;
+                    let activeGlow = "rgba(16, 185, 129, 0.45)"; // Esmeralda default
+                    if (i < 3) activeGlow = "rgba(0, 229, 255, 0.45)"; // Cian Pymes
+                    else if (i === 3) activeGlow = "rgba(245, 158, 11, 0.45)"; // Ámbar Reglas VANTA
+                    else if (i === panels.length - 1) activeGlow = "rgba(255, 149, 0, 0.55)"; // Naranja RFP Escrow
+
                     tl.fromTo(panel,
                         { borderColor: "rgba(255, 255, 255, 0.08)" },
                         {
-                            borderColor: i === 0 ? "rgba(0, 229, 255, 0.35)" : (i === panels.length - 1 ? "rgba(255, 149, 0, 0.35)" : "rgba(16, 185, 129, 0.35)"),
-                            duration: 0.25,
+                            borderColor: activeGlow,
+                            duration: 0.15,
                             yoyo: true,
                             repeat: 1
                         },
-                        Math.max(0, progressPoint * 0.85)
+                        Math.max(0.14, normPoint - 0.05)
                     );
                 });
+
+                // ============================================================
+                // ACTO III: BUFFER DE SALIDA & ELEVACIÓN HACIA CONTACTO (0.86 a 1.00)
+                // Detiene el eje X y prepara la transición hacia el formulario
+                // ============================================================
+                const exitMorph = { cy: 0 };
+                tl.to(exitMorph, {
+                    cy: 45,
+                    duration: 0.14,
+                    ease: "power2.inOut",
+                    onUpdate: () => {
+                        const cy = exitMorph.cy.toFixed(1);
+                        if (vodExitFill) {
+                            vodExitFill.setAttribute('d', `M 0 100 L 100 100 L 100 ${cy} Q 50 0 0 ${cy} Z`);
+                        }
+                        if (vodExitStroke) {
+                            vodExitStroke.setAttribute('d', `M 0 ${cy} Q 50 0 100 ${cy}`);
+                        }
+                    }
+                }, 0.86);
 
                 govST = ScrollTrigger.create({
                     trigger: govSection,
                     pin: true,
                     start: "top top",
-                    end: () => `+=${Math.round(totalDist + 150)}`,
-                    scrub: 0.8,
+                    end: () => `+=${Math.round(totalDist * 1.35 + 450)}`,
+                    scrub: 0.85,
                     animation: tl,
                     invalidateOnRefresh: true,
                     anticipatePin: 1,
                     onEnter: () => {
                         document.body.classList.add('in-gov-scrolly');
                         if (window.setVantaTheme) {
-                            window.setVantaTheme({ id: 'solutions', num: '06', name: 'GOBERNANZA', primary: '#10b981', r: 16, g: 185, b: 129 });
+                            window.setVantaTheme({ id: 'solutions', num: '06', name: 'SOLUCIONES', primary: '#10b981', r: 16, g: 185, b: 129 });
                         }
                     },
                     onEnterBack: () => {
                         document.body.classList.add('in-gov-scrolly');
                         if (window.setVantaTheme) {
-                            window.setVantaTheme({ id: 'solutions', num: '06', name: 'GOBERNANZA', primary: '#10b981', r: 16, g: 185, b: 129 });
+                            window.setVantaTheme({ id: 'solutions', num: '06', name: 'SOLUCIONES', primary: '#10b981', r: 16, g: 185, b: 129 });
                         }
                     },
                     onLeave: () => {
@@ -3851,22 +3914,26 @@ function setupPokerDealer() {
                             progressBar.style.width = `${Math.min(100, Math.max(0, p * 100))}%`;
                         }
                         
+                        const totalPanels = panels.length || 9;
                         let currentIdx = 1;
-                        if (p < 0.20) currentIdx = 1;
-                        else if (p < 0.40) currentIdx = 2;
-                        else if (p < 0.60) currentIdx = 3;
-                        else if (p < 0.80) currentIdx = 4;
-                        else currentIdx = 5;
+                        if (p < 0.14) {
+                            currentIdx = 1;
+                        } else if (p >= 0.86) {
+                            currentIdx = totalPanels;
+                        } else {
+                            const pNorm = (p - 0.14) / 0.72;
+                            currentIdx = Math.min(totalPanels, Math.max(1, Math.floor(pNorm * totalPanels) + 1));
+                        }
 
                         if (currentCounter) {
-                            currentCounter.textContent = `0${currentIdx}`;
+                            currentCounter.textContent = (currentIdx < 10 ? '0' : '') + currentIdx;
                         }
 
                         if (currentIdx !== lastReportedIdx) {
                             lastReportedIdx = currentIdx;
                             if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.playChirp === 'function') {
-                                const pan = (currentIdx / 5) * 1.6 - 0.8;
-                                window.VANTA_AUDIO.playChirp(pan, 520 + currentIdx * 45);
+                                const pan = (currentIdx / totalPanels) * 1.6 - 0.8;
+                                window.VANTA_AUDIO.playChirp(pan, 500 + currentIdx * 35);
                             }
                         }
                     }
@@ -3874,6 +3941,66 @@ function setupPokerDealer() {
             }
 
             buildTimeline();
+
+            // Wire up Buttons to Pre-fill Contact Form & Smooth Scroll
+            const pymeButtons = govSection.querySelectorAll('.btn-gov-pyme, #govRfpBtn');
+            pymeButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const budgetTarget = btn.getAttribute('data-target-budget');
+                    const typeTarget = btn.getAttribute('data-target-type');
+                    
+                    // Preselect budget chip
+                    if (budgetTarget) {
+                        const budgetChips = document.querySelectorAll('#budgetChips .contact-chip-btn');
+                        budgetChips.forEach(chip => {
+                            const text = chip.getAttribute('data-budget') || chip.textContent;
+                            if (budgetTarget === '300-800' && text.includes('< $500')) {
+                                budgetChips.forEach(c => c.classList.remove('active'));
+                                chip.classList.add('active');
+                            } else if (budgetTarget === '800-2500' && text.includes('500 - $2,500')) {
+                                budgetChips.forEach(c => c.classList.remove('active'));
+                                chip.classList.add('active');
+                            } else if (budgetTarget === '2500+' && (text.includes('2,500 - $10,000') || text.includes('Enterprise'))) {
+                                budgetChips.forEach(c => c.classList.remove('active'));
+                                chip.classList.add('active');
+                            }
+                        });
+                    }
+
+                    // Preselect type chip
+                    if (typeTarget) {
+                        const typeChips = document.querySelectorAll('#projectTypeChips .contact-chip-btn');
+                        typeChips.forEach(chip => {
+                            const text = (chip.getAttribute('data-type') || chip.textContent).toLowerCase();
+                            if (typeTarget === 'web' && (text.includes('web') || text.includes('catálogo'))) {
+                                typeChips.forEach(c => c.classList.remove('active'));
+                                chip.classList.add('active');
+                            } else if (typeTarget === 'ecommerce' && (text.includes('menú') || text.includes('qr') || text.includes('kiosko'))) {
+                                typeChips.forEach(c => c.classList.remove('active'));
+                                chip.classList.add('active');
+                            } else if (typeTarget === 'custom' && (text.includes('erp') || text.includes('ia') || text.includes('automatización'))) {
+                                typeChips.forEach(c => c.classList.remove('active'));
+                                chip.classList.add('active');
+                            }
+                        });
+                    }
+
+                    // Smooth scroll to contact
+                    if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+                        window.lenis.scrollTo('#contact', { offset: -30, duration: 1.2 });
+                    } else {
+                        const contactEl = document.getElementById('contact');
+                        if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
+                    }
+
+                    // Focus contact input
+                    setTimeout(() => {
+                        const nameInput = document.getElementById('contactName');
+                        if (nameInput) nameInput.focus();
+                    }, 1200);
+                });
+            });
 
             // Debounced resize handler
             let resizeTimer = null;
@@ -3885,7 +4012,7 @@ function setupPokerDealer() {
                 }, 200);
             }, { passive: true });
 
-            console.log('[VANTA] Multi-Plane Governance Parallax Engine initialized');
+            console.log('[VANTA] Multi-Plane Solutions Scrollytelling Engine with 3-Act Buffer initialized');
         }
 
         if (document.readyState === 'loading') {

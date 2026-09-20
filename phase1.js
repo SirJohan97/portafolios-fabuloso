@@ -37,6 +37,13 @@
         window.__vantaLenis = lenis;
 
         // Lenis smooth scroll fully active without artificial lockouts
+        if (typeof ScrollTrigger !== 'undefined') {
+            lenis.on('scroll', ScrollTrigger.update);
+        } else {
+            document.addEventListener('DOMContentLoaded', () => {
+                if (typeof ScrollTrigger !== 'undefined') lenis.on('scroll', ScrollTrigger.update);
+            });
+        }
 
         console.log('[VANTA] Lenis smooth scroll OK');
     }
