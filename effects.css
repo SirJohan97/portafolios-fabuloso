@@ -4101,7 +4101,7 @@
 .cine-pipeline {
     position: relative;
     width: 100%;
-    height: 650vh;
+    height: 350vh;
     background: #030508;
     color: #fff;
     overflow: visible;
@@ -5175,7 +5175,7 @@
 }
 
 @media (max-width: 900px) {
-    .cine-pipeline { height: 700vh; }
+    .cine-pipeline { height: 380vh; }
     .cine-blueprint {
         display: flex;
         flex-direction: column;

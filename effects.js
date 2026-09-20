@@ -1193,10 +1193,12 @@ function initEffectsScript() {
                 const targetId = dot.getAttribute('data-target');
                 const target = document.getElementById(targetId);
                 if (target) {
+                    const offset = targetId === 'tech-matrix' ? Math.round(window.innerHeight * 0.85) : 0;
                     if (window.lenis) {
-                        window.lenis.scrollTo(target, { duration: 1.2 });
+                        window.lenis.scrollTo(target, { offset: offset, duration: 1.2 });
                     } else {
-                        target.scrollIntoView({ behavior: 'smooth' });
+                        const targetY = target.offsetTop + offset;
+                        window.scrollTo({ top: targetY, behavior: 'smooth' });
                     }
                 }
             });

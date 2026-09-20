@@ -3401,8 +3401,8 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                 // 5. Scrollytelling Transition (Aristide Benoist Luxury Flow)
                 const isMob = window.innerWidth <= 768;
                 const isTab = window.innerWidth <= 991;
-                const baseScale = isMob ? 0.42 : (isTab ? 0.70 : 0.98);
-                const defaultPosY = isMob ? 0.06 : (isTab ? -0.04 : -0.05);
+                const baseScale = isMob ? 0.38 : (isTab ? 0.70 : 0.98);
+                const defaultPosY = isMob ? 0.48 : (isTab ? -0.04 : -0.05);
 
                 if (isWarpActive && warpP > 0.005) {
                     logoGroup.position.y = defaultPosY - warpP * 1.8;
@@ -3527,8 +3527,9 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                 if (targetId === '#') return;
                 const target = document.querySelector(targetId);
                 if (target) {
+                    const offset = targetId === '#tech-matrix' ? Math.round(window.innerHeight * 0.85) : 0;
                     // duration: 1.2 segundos para una transición suave y elegante
-                    lenis.scrollTo(target, { offset: 0, duration: 1.2 });
+                    lenis.scrollTo(target, { offset: offset, duration: 1.2 });
                 }
             });
         });
