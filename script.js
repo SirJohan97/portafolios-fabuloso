@@ -2934,69 +2934,209 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         cursorPointLight.position.set(0, 0, 3.8);
         scene.add(cursorPointLight);
 
-        // 2. VANTA Obsidian-Emerald Monolith (Luxury Kinetic Diamond Sculpture)
-        // Noble icosahedral gemstone geometry with balanced mathematical proportions
-        const sculptureGeo = new THREE.IcosahedronGeometry(1.55, 0);
+        // ====================================================================
+        // 2. MONOLITO ESCULTURAL VANTA V — (AWWWARDS SOTY SIGNATURE MASTERPIECE)
+        // High-Precision Architectural Chevron forged in Obsidian, Titanium & Optical Emerald Crystal
+        // ====================================================================
 
-        // Deep Liquid Obsidian & Smoked Emerald Crystal Material
-        // Smooth velvety dark core ensures 100% pristine contrast for typography
-        // Razor-sharp specular reflectivity catches breathtaking emerald & diamond glints
-        const sculptureMat = new THREE.MeshPhysicalMaterial({
-            color: 0x020a06,             // Deep velvet obsidian-emerald black
-            emissive: 0x011a0e,          // Subtle internal quantum absorption
-            emissiveIntensity: 0.30,
-            roughness: 0.05,             // Diamond-grade mirror polish
-            metalness: 0.35,             // Mineral-metallic specular balance
-            clearcoat: 1.0,              // High-gloss optical lacquer
-            clearcoatRoughness: 0.03,
+        // A. Monolithic Architectural "V" Chevron Geometry
+        const vShape = new THREE.Shape();
+        // Exact muscular athletic proportions matching the VANTA brand insignia:
+        vShape.moveTo(0, -1.26);       // Outer bottom apex
+        vShape.lineTo(-1.38, 0.95);    // Outer left arm upward
+        vShape.lineTo(-0.76, 0.95);    // Top left chamfered horizontal cut
+        vShape.lineTo(0, -0.28);       // Inner notch apex
+        vShape.lineTo(0.76, 0.95);     // Top right chamfered horizontal cut
+        vShape.lineTo(1.38, 0.95);     // Outer right arm upward
+        vShape.closePath();
+
+        const vExtrudeSettings = {
+            depth: 0.38,
+            bevelEnabled: true,
+            bevelThickness: 0.08,
+            bevelSize: 0.065,
+            bevelSegments: 4
+        };
+        const vGeometry = new THREE.ExtrudeGeometry(vShape, vExtrudeSettings);
+        vGeometry.center(); // Center pivot perfectly at mass centroid
+
+        // Liquid Obsidian & High-Refractive Emerald Physical Material
+        // Smooth velvety dark mass preserves typography contrast,
+        // while micro-beveled laser edges catch brilliant emerald and diamond glints.
+        const vMonolithMat = new THREE.MeshPhysicalMaterial({
+            color: 0x020704,             // Deep liquid obsidian-emerald velvet
+            emissive: 0x021c10,          // Internal quantum luminescence
+            emissiveIntensity: 0.45,
+            roughness: 0.07,             // Diamond mirror polish
+            metalness: 0.58,             // Dark titanium luster
+            clearcoat: 1.0,              // Optical grade lacquer
+            clearcoatRoughness: 0.04,
             reflectivity: 0.98,
             ior: 1.74,                   // Emerald refractive index
             transparent: true,
-            opacity: 0.86,
-            flatShading: true            // Faceted mineral cuts with high-contrast chiaroscuro
+            opacity: 0.92,
+            flatShading: false
         });
-        const sculptureMesh = new THREE.Mesh(sculptureGeo, sculptureMat);
-        // Initial architectural isometric tilt
-        sculptureMesh.rotation.set(0.42, 0.35, 0.18);
+        const vMonolithMesh = new THREE.Mesh(vGeometry, vMonolithMat);
+        vMonolithMesh.rotation.set(0.38, 0.32, 0.12);
 
-        // Inner Core: Concentrated Luminous Quantum Heart (Pulsing Energy Inside the Dark Stone)
-        const innerSolidGeo = new THREE.OctahedronGeometry(0.55, 0);
-        const innerSolidMat = new THREE.MeshStandardMaterial({
+        // Alias for compatibility with entrance flash & scrolly animations
+        const sculptureMesh = vMonolithMesh;
+        const sculptureMat = vMonolithMat;
+
+        // B. Internal Fiber-Optic Energy Conduit (Laser Data Pulse Channel)
+        const conduitCurve = new THREE.CatmullRomCurve3([
+            new THREE.Vector3(-1.05, 0.90, 0.04),
+            new THREE.Vector3(0, -0.68, 0.04),
+            new THREE.Vector3(1.05, 0.90, 0.04)
+        ]);
+        const conduitGeo = new THREE.TubeGeometry(conduitCurve, 48, 0.038, 12, false);
+        const conduitMat = new THREE.MeshStandardMaterial({
             color: 0x059669,
-            emissive: 0x10b981,
-            emissiveIntensity: 2.2,
-            roughness: 0.1,
+            emissive: 0x11d483,
+            emissiveIntensity: 2.8,
+            roughness: 0.12,
+            metalness: 0.3,
             transparent: true,
-            opacity: 0.85
+            opacity: 0.95
         });
-        const innerSolidMesh = new THREE.Mesh(innerSolidGeo, innerSolidMat);
-        const innerCoreGroup = new THREE.Group();
-        innerCoreGroup.add(innerSolidMesh);
+        const conduitMesh = new THREE.Mesh(conduitGeo, conduitMat);
 
-        // Internal Quantum Core Glow Light (illuminates the obsidian crystal from within)
-        const innerCoreLight = new THREE.PointLight(0x10b981, 3.8, 8, 1.6);
-        innerCoreLight.position.set(0, 0, 0);
-
-        // 3. Precision Horology Horizon (Single Hairline Axis - Ultra Minimalist & Mature)
-        const orbitalGroup = new THREE.Group();
-        orbitalGroup.rotation.x = Math.PI / 2.32; // Elegant shallow horizon tilt
-        orbitalGroup.rotation.y = -Math.PI / 18;
-
-        // Hairline Precision Ring (Subtle watchmaker calibration axis, no childish dust)
-        const ring1Geo = new THREE.TorusGeometry(2.38, 0.0035, 16, 128);
-        const ring1Mat = new THREE.MeshBasicMaterial({
-            color: 0x34d399,
+        // Traveling Photon Packet (Quantum pulse streaming along the V conduit)
+        const photonGeo = new THREE.SphereGeometry(0.085, 16, 16);
+        const photonMat = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
             transparent: true,
-            opacity: 0.28,
-            blending: THREE.AdditiveBlending
+            opacity: 0.95
+        });
+        const photonMesh = new THREE.Mesh(photonGeo, photonMat);
+
+        const innerCoreGroup = new THREE.Group();
+        innerCoreGroup.add(conduitMesh);
+        innerCoreGroup.add(photonMesh);
+
+        // Internal Quantum Core Glow Light (illuminates the monolith from within)
+        const innerCoreLight = new THREE.PointLight(0x10b981, 4.2, 8.5, 1.6);
+        innerCoreLight.position.set(0, -0.25, 0.1);
+
+        // C. Outer Rhombic Prism Exoskeleton (Titanium & Crystalline Framework matching the preloader crest)
+        const rhombusGroup = new THREE.Group();
+        const rTop = new THREE.Vector3(0, 2.15, 0);
+        const rRight = new THREE.Vector3(2.05, 0, 0);
+        const rBottom = new THREE.Vector3(0, -2.15, 0);
+        const rLeft = new THREE.Vector3(-2.05, 0, 0);
+
+        // Rhombus perimeter struts
+        const createStrut = (p1, p2) => {
+            const distance = p1.distanceTo(p2);
+            const strutGeo = new THREE.CylinderGeometry(0.016, 0.016, distance, 8);
+            const strutMat = new THREE.MeshStandardMaterial({
+                color: 0x0c1e15,
+                metalness: 0.88,
+                roughness: 0.22,
+                emissive: 0x064e3b,
+                emissiveIntensity: 0.25
+            });
+            const strut = new THREE.Mesh(strutGeo, strutMat);
+            const mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+            strut.position.copy(mid);
+            const dir = new THREE.Vector3().subVectors(p2, p1).normalize();
+            strut.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+            return strut;
+        };
+
+        rhombusGroup.add(createStrut(rTop, rRight));
+        rhombusGroup.add(createStrut(rRight, rBottom));
+        rhombusGroup.add(createStrut(rBottom, rLeft));
+        rhombusGroup.add(createStrut(rLeft, rTop));
+
+        // Polar Antenna Notches (Signature vertical calibration lines at top & bottom of crest)
+        const notchTopGeo = new THREE.CylinderGeometry(0.018, 0.018, 0.45, 8);
+        const notchMat = new THREE.MeshStandardMaterial({
+            color: 0x11d483,
+            emissive: 0x11d483,
+            emissiveIntensity: 1.8,
+            roughness: 0.2
+        });
+        const notchTop = new THREE.Mesh(notchTopGeo, notchMat);
+        notchTop.position.set(0, 2.38, 0);
+        rhombusGroup.add(notchTop);
+
+        const notchBottom = new THREE.Mesh(notchTopGeo, notchMat);
+        notchBottom.position.set(0, -2.38, 0);
+        rhombusGroup.add(notchBottom);
+
+        // Corner Gem Beads on the Rhombus vertices
+        const gemGeo = new THREE.OctahedronGeometry(0.065, 0);
+        const gemMat = new THREE.MeshStandardMaterial({
+            color: 0x34d399,
+            emissive: 0x10b981,
+            emissiveIntensity: 2.0,
+            roughness: 0.1
+        });
+        [rTop, rRight, rBottom, rLeft].forEach(pos => {
+            const gem = new THREE.Mesh(gemGeo, gemMat);
+            gem.position.copy(pos);
+            rhombusGroup.add(gem);
+        });
+
+        // D. Swiss Horology Dual Gyroscope System (High-End Precision Instrument Rings)
+        const orbitalGroup = new THREE.Group();
+        orbitalGroup.rotation.x = Math.PI / 2.35; // Shallow horizon tilt
+        orbitalGroup.rotation.y = -Math.PI / 16;
+
+        // 1. Primary Equatorial Precision Ring (Satin Titanium with Cardinal Calibration Satellites)
+        const ring1Geo = new THREE.TorusGeometry(2.55, 0.009, 16, 128);
+        const ring1Mat = new THREE.MeshStandardMaterial({
+            color: 0x0d281e,
+            emissive: 0x11d483,
+            emissiveIntensity: 0.45,
+            metalness: 0.92,
+            roughness: 0.18,
+            transparent: true,
+            opacity: 0.65
         });
         const primaryRing = new THREE.Mesh(ring1Geo, ring1Mat);
         orbitalGroup.add(primaryRing);
 
+        // Cardinal Watchmaker Ticks orbiting along primary ring
+        const tickGeo = new THREE.BoxGeometry(0.02, 0.055, 0.02);
+        const tickMat = new THREE.MeshBasicMaterial({
+            color: 0x6ee7b7,
+            transparent: true,
+            opacity: 0.85
+        });
+        const numTicks = 12;
+        for (let i = 0; i < numTicks; i++) {
+            const angle = (i / numTicks) * Math.PI * 2;
+            const tick = new THREE.Mesh(tickGeo, tickMat);
+            tick.position.set(Math.cos(angle) * 2.55, Math.sin(angle) * 2.55, 0);
+            tick.rotation.z = angle;
+            orbitalGroup.add(tick);
+        }
+
+        // 2. Secondary Inclined Polar Gimbal Ring (Additive Emerald Hairline Axis)
+        const gimbalGroup = new THREE.Group();
+        gimbalGroup.rotation.x = Math.PI / 3.4;
+        gimbalGroup.rotation.z = Math.PI / 4.2;
+
+        const ring2Geo = new THREE.TorusGeometry(2.82, 0.0055, 16, 128);
+        const ring2Mat = new THREE.MeshBasicMaterial({
+            color: 0x34d399,
+            transparent: true,
+            opacity: 0.32,
+            blending: THREE.AdditiveBlending
+        });
+        const secondaryRing = new THREE.Mesh(ring2Geo, ring2Mat);
+        gimbalGroup.add(secondaryRing);
+
+        // Master Group Assembly
         const logoGroup = new THREE.Group();
-        logoGroup.add(sculptureMesh);
+        logoGroup.add(vMonolithMesh);
         logoGroup.add(innerCoreGroup);
+        logoGroup.add(rhombusGroup);
         logoGroup.add(orbitalGroup);
+        logoGroup.add(gimbalGroup);
         logoGroup.add(innerCoreLight);
 
         logoGroup.scale.setScalar(1.0);
@@ -3120,6 +3260,8 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             }
         }, { passive: true });
 
+        const shockwaves = [];
+
         function triggerShockwave(opts = {}) {
             const { amplitude = 7.5, speed = 12.0, width = 0.8, decay = 1.25 } = opts;
             shockwaves.push({ t0: clock.getElapsedTime(), amplitude, speed, width, decay });
@@ -3147,9 +3289,12 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             }
             
             // Destello flash blanco sutil en el material
-            if (typeof sculptureMat !== 'undefined') {
-                sculptureMat.emissive = new THREE.Color(0x11d483);
-                sculptureMat.emissiveIntensity = 0.4;
+            if (typeof vMonolithMat !== 'undefined') {
+                vMonolithMat.emissive = new THREE.Color(0x11d483);
+                vMonolithMat.emissiveIntensity = 1.2;
+            }
+            if (typeof conduitMat !== 'undefined') {
+                conduitMat.emissiveIntensity = 6.0;
             }
         };
 
@@ -3222,48 +3367,68 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                 cursorPointLight.position.x = mouseX * 5.5;
                 cursorPointLight.position.y = mouseY * 4.5;
 
-                // 1. Dynamic 3D Gaze Tracking & High-End Isometric Facet Rotation
-                const swayY = Math.sin(time * 0.24) * 0.04;
-                const swayX = Math.cos(time * 0.18) * 0.03;
-                sculptureMesh.rotation.y += (time * 0.12 + mouseX * 0.65 + swayY - sculptureMesh.rotation.y) * 0.04;
-                sculptureMesh.rotation.x += (0.42 + mouseY * 0.45 + swayX - sculptureMesh.rotation.x) * 0.04;
-                sculptureMesh.rotation.z = 0.18 + Math.sin(time * 0.15) * 0.03;
+                // 1. Dynamic 3D Gaze Tracking & High-End Isometric Facet Rotation for the V Monolith
+                const swayY = Math.sin(time * 0.22) * 0.04;
+                const swayX = Math.cos(time * 0.16) * 0.03;
+                vMonolithMesh.rotation.y += (time * 0.10 + mouseX * 0.65 + swayY - vMonolithMesh.rotation.y) * 0.045;
+                vMonolithMesh.rotation.x += (0.38 + mouseY * 0.42 + swayX - vMonolithMesh.rotation.x) * 0.045;
+                vMonolithMesh.rotation.z = 0.12 + Math.sin(time * 0.14) * 0.025;
 
-                // 2. Quantum Core: Counter-Rotation & Concentrated Pulse
-                innerCoreGroup.rotation.y -= 0.016;
-                innerCoreGroup.rotation.x += 0.010;
-                const pulseScale = 1.0 + Math.sin(time * 2.2) * 0.06;
-                innerCoreGroup.scale.setScalar(pulseScale);
-                innerCoreLight.intensity = 3.2 + Math.sin(time * 2.5) * 0.8;
+                // 2. Quantum Conduit: Photon pulse along the V spline + breathing luminescence
+                const pingPongT = Math.sin(time * 1.8) * 0.5 + 0.5;
+                const photonPos = conduitCurve.getPointAt(pingPongT);
+                photonMesh.position.copy(photonPos);
 
-                // 3. Precision Horology Horizon (Slow Gyroscope Axis)
-                orbitalGroup.rotation.z += 0.0025;
+                if (isHolding) {
+                    holdCharge = Math.min(1.0, holdCharge + 0.02);
+                } else {
+                    holdCharge = Math.max(0.0, holdCharge - 0.035);
+                }
 
-                // 4. Scrollytelling Transition (Aristide Benoist Luxury Flow)
+                const pulseLum = 2.4 + Math.sin(time * 2.8) * 0.7;
+                conduitMat.emissiveIntensity = isHolding ? (2.8 + holdCharge * 7.5) : pulseLum;
+                innerCoreLight.intensity = isHolding ? (4.2 + holdCharge * 10.0) : (3.6 + Math.sin(time * 2.8) * 0.9);
+
+                // 3. Rhombic Exoskeleton: Subtle lagged parallax
+                rhombusGroup.rotation.y += (time * 0.05 + mouseX * 0.35 - rhombusGroup.rotation.y) * 0.03;
+                rhombusGroup.rotation.x += (0.18 + mouseY * 0.25 - rhombusGroup.rotation.x) * 0.03;
+
+                // 4. Swiss Horology Gyroscope: Multi-axis differential spin with rotational inertia
+                const gyroSpeed = isHolding ? (0.015 + holdCharge * 0.04) : (0.0032 + clampedVelocity * 0.00025);
+                orbitalGroup.rotation.z += gyroSpeed;
+                gimbalGroup.rotation.z -= gyroSpeed * 0.72;
+
+                // 5. Scrollytelling Transition (Aristide Benoist Luxury Flow)
                 const isMob = window.innerWidth <= 768;
                 const isTab = window.innerWidth <= 991;
-                const baseScale = isMob ? 0.44 : (isTab ? 0.72 : 1.0);
-                const defaultPosY = isMob ? 0.08 : (isTab ? -0.04 : -0.05);
+                const baseScale = isMob ? 0.42 : (isTab ? 0.70 : 0.98);
+                const defaultPosY = isMob ? 0.06 : (isTab ? -0.04 : -0.05);
 
                 if (isWarpActive && warpP > 0.005) {
                     logoGroup.position.y = defaultPosY - warpP * 1.8;
-                    logoGroup.position.z = -warpP * 5.5;
+                    logoGroup.position.z = -warpP * 5.8;
                     logoGroup.scale.setScalar(baseScale * (1.0 - warpP * 0.4) * logoScaleObj.value);
                     const fade = Math.max(0.0, 1.0 - warpP * 0.85);
-                    sculptureMat.opacity = fade * 0.86;
-                    innerSolidMat.opacity = fade * 0.85;
-                    ring1Mat.opacity = fade * 0.28;
+                    vMonolithMat.opacity = fade * 0.92;
+                    conduitMat.opacity = fade * 0.95;
+                    photonMat.opacity = fade * 0.95;
+                    ring1Mat.opacity = fade * 0.65;
+                    ring2Mat.opacity = fade * 0.32;
                 } else {
                     logoGroup.position.set(0, defaultPosY, 0);
                     logoGroup.scale.setScalar(baseScale * logoScaleObj.value);
-                    sculptureMat.opacity = 0.86;
-                    innerSolidMat.opacity = 0.85;
-                    ring1Mat.opacity = 0.28;
+                    vMonolithMat.opacity = 0.92;
+                    conduitMat.opacity = 0.95;
+                    photonMat.opacity = 0.95;
+                    ring1Mat.opacity = 0.65;
+                    ring2Mat.opacity = 0.32;
                 }
             } else {
-                sculptureMat.opacity = 0.0;
-                innerSolidMat.opacity = 0.0;
+                vMonolithMat.opacity = 0.0;
+                conduitMat.opacity = 0.0;
+                photonMat.opacity = 0.0;
                 ring1Mat.opacity = 0.0;
+                ring2Mat.opacity = 0.0;
                 if (camera.position.z !== 7.5) {
                     camera.position.set(0, 0, 7.5);
                     camera.fov = 50;

@@ -4697,7 +4697,7 @@ body.custom-cursor-active * {
     height: 100vh;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.85;
+    opacity: 1;
     filter: none;
     background: transparent;
     transition: opacity 1s ease;
