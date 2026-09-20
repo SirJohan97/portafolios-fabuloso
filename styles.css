@@ -4079,139 +4079,669 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 /* =========================================
-   CONTACTO
+   ACTO 07: THE VANTA DEAL DESK (AWWWARDS CLOSING CONSOLE)
    ========================================= */
-.contact-section {
-    padding: 6rem 5%;
-    background: #111;
+.vanta-deal-stage {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 7rem 5% 6rem;
+    background: #030508;
+    color: #fff;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
-.contact-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 50px;
-    max-width: 960px;
+.deal-ambient-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: radial-gradient(ellipse 1000px 700px at 50% 25%, rgba(17, 212, 131, 0.09) 0%, rgba(3, 5, 8, 0) 70%);
+}
+
+.deal-grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.7;
+}
+
+/* ── Status Telemetry Badge & Header ── */
+.deal-header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.deal-telemetry-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    padding: 6px 16px;
+    border-radius: 100px;
+    background: rgba(17, 212, 131, 0.08);
+    border: 1px solid rgba(17, 212, 131, 0.25);
+    color: #11d483;
+    margin-bottom: 1.25rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.telemetry-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #11d483;
+    box-shadow: 0 0 10px #11d483;
+    animation: pulseLiveDot 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseLiveDot {
+    0%, 100% { transform: scale(1); opacity: 0.75; }
+    50%      { transform: scale(1.4); opacity: 1; }
+}
+
+.telemetry-sep {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.deal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 5.5vw, 4.4rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    color: #fff;
+    margin-bottom: 1rem;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+}
+
+.deal-subtitle {
+    font-family: var(--font-main);
+    font-size: clamp(0.95rem, 1.2vw, 1.12rem);
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ── The Master Console Container ── */
+.deal-desk-container {
+    position: relative;
+    z-index: 2;
     width: 100%;
-    margin-top: 3rem;
-    background: var(--dark-4);
-    border-radius: 20px;
-    padding: 50px;
-    border: 1px solid var(--border-subtle);
+    max-width: 1200px;
+}
+
+.deal-desk-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 2.8rem;
+    background: rgba(8, 11, 16, 0.82);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 28px;
+    padding: 2.5rem 2.8rem;
+    box-shadow: 0 35px 90px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     position: relative;
     overflow: hidden;
     transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-.contact-wrapper:hover {
-    border-color: rgba(var(--primary-rgb), 0.3);
-    box-shadow: 0 0 40px rgba(var(--primary-rgb), 0.1);
+.deal-desk-wrapper:hover {
+    border-color: rgba(17, 212, 131, 0.3);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.85), 0 0 50px rgba(17, 212, 131, 0.08);
 }
 
-.contact-wrapper::before {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 40%);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.contact-wrapper:hover::before {
-    opacity: 1;
-    animation: pulseContact 3s infinite alternate ease-in-out;
-}
-
-@keyframes pulseContact {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.1); }
-}
-
-.contact-info, .contact-form {
-    position: relative;
-    z-index: 1;
-}
-
-.contact-info h3 {
-    font-family: var(--font-display);
-    color: var(--light);
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 0.8rem;
-    line-height: 1.3;
-}
-
-.contact-info p {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-}
-
-.contact-details {
-    list-style: none;
+/* ── Columna Izquierda: Fundadores & Canales ── */
+.deal-founders-column {
     display: flex;
     flex-direction: column;
-    gap: 14px;
 }
 
-.contact-details li {
+.deal-column-tag {
     display: flex;
     align-items: center;
-    gap: 12px;
-    color: var(--text-dim);
-    font-size: 0.9rem;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: #11d483;
+    letter-spacing: 0.12em;
+    margin-bottom: 1rem;
 }
 
-.contact-details li i {
-    color: var(--primary);
-    width: 18px;
-    font-size: 1rem;
+.deal-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
 }
 
-.contact-form { display: flex; flex-direction: column; gap: 16px; }
-
-.form-group { display: flex; flex-direction: column; gap: 6px; }
-
-.form-group label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #ccc;
-    letter-spacing: 0.3px;
+.deal-description {
+    font-family: var(--font-main);
+    font-size: 0.90rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.55;
+    margin-bottom: 1.5rem;
 }
 
-.form-group input,
-.form-group textarea {
+/* Founder Cards */
+.deal-founder-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-bottom: 1.4rem;
+}
+
+.deal-founder-card {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 0.85rem 1.15rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.deal-founder-card:hover {
+    border-color: rgba(17, 212, 131, 0.4);
+    background: rgba(17, 212, 131, 0.04);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.dfc-avatar-wrap {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #0c1017;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    flex-shrink: 0;
+}
+
+.dfc-avatar-img {
     width: 100%;
-    padding: 13px 16px;
-    border-radius: var(--radius-sm);
-    border: 1px solid #2a2a2a;
-    background: #232323;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 13px;
+    display: block;
+}
+
+.dfc-online-badge {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #11d483;
+    border: 2px solid #080b10;
+    box-shadow: 0 0 8px #11d483;
+}
+
+.dfc-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.dfc-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.dfc-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.01em;
+}
+
+.dfc-role-pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: #11d483;
+    background: rgba(17, 212, 131, 0.12);
+    border: 1px solid rgba(17, 212, 131, 0.25);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.dfc-stack {
+    font-family: var(--font-main);
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.4;
+}
+
+.dfc-direct-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: #11d483;
+    text-decoration: none;
+    margin-top: 4px;
+    font-weight: 600;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.dfc-direct-wa:hover {
+    color: #18f69b;
+    transform: translateX(3px);
+}
+
+/* Guarantees Matrix */
+.deal-guarantees-matrix {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 1.4rem;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 1.8rem;
+}
+
+.dgm-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.dgm-item i {
+    color: #11d483;
+    font-size: 1rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.dgm-item strong {
+    display: block;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+    font-family: var(--font-main);
+}
+
+.dgm-item span {
+    display: block;
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 0.76rem;
+    line-height: 1.4;
+    font-family: var(--font-main);
+}
+
+/* Quick Email Chip */
+.deal-email-chip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px dashed rgba(255, 255, 255, 0.16);
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.deal-email-chip:hover {
+    background: rgba(17, 212, 131, 0.08);
+    border-color: rgba(17, 212, 131, 0.4);
+    color: #11d483;
+}
+
+.dec-badge {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+/* ── Columna Derecha: The Tactical Spec Builder ── */
+.deal-builder-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.deal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+}
+
+.deal-form-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.dfb-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.deal-field-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.dfb-hint {
+    font-family: var(--font-main);
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.42);
+}
+
+.deal-chips-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.deal-chip-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.75);
+    font-family: var(--font-main);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.deal-chip-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.deal-chip-btn.active {
+    background: rgba(17, 212, 131, 0.16);
+    border-color: #11d483;
+    color: #fff;
+    box-shadow: 0 0 16px rgba(17, 212, 131, 0.25);
+    transform: translateY(-1px);
+}
+
+.deal-chip-btn i {
+    color: #11d483;
+    font-size: 0.82rem;
+}
+
+/* Budget Chips Grid */
+.deal-chips-budget {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.deal-chips-budget .deal-chip-btn {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 9px 12px;
+    border-radius: 12px;
+    gap: 2px;
+}
+
+.dcb-tier {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+}
+
+.dcb-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.deal-chips-budget .deal-chip-btn.active .dcb-tier {
+    color: #11d483;
+}
+
+/* Inputs & Form Elements */
+.deal-inputs-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.deal-input-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.deal-input,
+.deal-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
     color: white;
     font-family: var(--font-main);
-    font-size: 0.95rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 0.92rem;
+    transition: all 0.25s ease;
     outline: none;
+    box-sizing: border-box;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-    border-color: rgba(39,174,96,0.5);
-    box-shadow: 0 0 0 3px rgba(39,174,96,0.08);
+.deal-input:focus,
+.deal-textarea:focus {
+    border-color: #11d483;
+    box-shadow: 0 0 0 3px rgba(17, 212, 131, 0.15);
+    background: rgba(0, 0, 0, 0.65);
 }
 
-.form-group textarea { resize: vertical; }
+.deal-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
 
-.contact-form .btn {
+/* ── Live Spec Transmission Receipt (Interactive HUD) ── */
+.deal-spec-receipt {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(17, 212, 131, 0.22);
+    border-radius: 14px;
+    padding: 1.1rem 1.4rem;
+    font-family: 'Space Mono', monospace;
+    box-shadow: inset 0 0 20px rgba(17, 212, 131, 0.03);
+}
+
+.dsr-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    font-size: 0.68rem;
+    color: #11d483;
+    letter-spacing: 0.06em;
+}
+
+.dsr-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #11d483;
+    box-shadow: 0 0 8px #11d483;
+    margin-right: 6px;
+}
+
+.dsr-ticket {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.dsr-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.74rem;
+}
+
+.dsr-line {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.dsr-k {
+    color: rgba(255, 255, 255, 0.45);
+    min-width: 108px;
+}
+
+.dsr-v {
+    color: #fff;
+    font-weight: 600;
+}
+
+.dsr-v.text-emerald {
+    color: #11d483;
+}
+
+/* Submit Primary Button */
+.deal-submit-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
     width: 100%;
-    cursor: none;
-    font-size: 1rem;
-    padding: 15px;
+    padding: 15px 32px;
+    background: #11D483;
+    color: #07090E !important;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    box-shadow: 0 12px 35px rgba(17, 212, 131, 0.35);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.deal-submit-btn:hover {
+    background: #18F69B;
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 16px 45px rgba(17, 212, 131, 0.55);
+    color: #000 !important;
+}
+
+.deal-submit-btn i {
+    font-size: 1.15rem;
+}
+
+.deal-disclaimer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-main);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.4;
+    margin: 0;
+}
+
+.deal-disclaimer i {
+    color: #11d483;
+}
+
+/* ── Responsive Adaptations ── */
+@media (max-width: 1024px) {
+    .deal-desk-wrapper {
+        grid-template-columns: 1fr;
+        gap: 2.8rem;
+        padding: 2.8rem 2rem;
+    }
+    .deal-chips-budget {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .vanta-deal-stage {
+        padding: 5rem 1.25rem 4rem;
+    }
+    .deal-desk-wrapper {
+        padding: 2rem 1.25rem;
+        border-radius: 20px;
+    }
+    .deal-inputs-row {
+        grid-template-columns: 1fr;
+    }
+    .deal-title {
+        font-size: clamp(2rem, 8vw, 2.6rem);
+    }
+    .deal-chips-grid {
+        gap: 6px;
+    }
+    .deal-chip-btn {
+        padding: 8px 12px;
+        font-size: 0.78rem;
+    }
+    .deal-chips-budget {
+        grid-template-columns: 1fr 1fr;
+    }
+    .deal-founder-card {
+        padding: 0.85rem 1rem;
+    }
+    .dfc-avatar-wrap {
+        width: 44px;
+        height: 44px;
+    }
 }
 
 /* =========================================

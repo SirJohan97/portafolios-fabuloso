@@ -2071,89 +2071,228 @@
         </div>
     </section>
 
-    <!-- ===== ACTO 07: CONTACTO & LANZAMIENTO ===== -->
-    <section id="contact" class="contact-section">
+    <!-- ===== ACTO 07: THE VANTA DEAL DESK // CONTACTO & DESPACHO DIRECTO ===== -->
+    <section id="contact" class="contact-section vanta-deal-stage" aria-label="Contacto e Ingeniería de Software VANTA">
+        <!-- Ambient Horizon Glow & Cyber Lines -->
+        <div class="deal-ambient-glow" aria-hidden="true"></div>
+        <div class="deal-grid-overlay" aria-hidden="true"></div>
 
-        <div class="contact-header text-center">
-            <span class="cap-eyebrow">// CONTACTO_DIRECTO // CARACAS &bull; REMOTO</span>
-            <h2 class="section-title"><span class="reveal-word">Hablemos</span> <span class="reveal-word">de</span> <span class="reveal-word">tu</span> <span class="reveal-word">Proyecto</span></h2>
-            <p class="section-subtitle">Diseñamos propuestas claras y personalizadas en menos de 24 horas.</p>
+        <!-- Monumental Section Header & Live Telemetry Bar -->
+        <div class="contact-header deal-header text-center">
+            <div class="deal-telemetry-badge">
+                <span class="telemetry-live-dot"></span>
+                <span class="telemetry-city">CCS [CARACAS]</span>
+                <span class="telemetry-sep">/</span>
+                <span class="telemetry-time" id="caracasClock">16:25:00</span>
+                <span class="telemetry-sep">•</span>
+                <span class="telemetry-status">INGENIEROS DISPONIBLES</span>
+            </div>
+
+            <h2 class="section-title deal-title">
+                <span class="reveal-word">Hablemos</span> <span class="reveal-word">de</span> <span class="reveal-word">tu</span> <span class="reveal-word">Proyecto.</span>
+            </h2>
+            <p class="section-subtitle deal-subtitle">
+                Sin intermediarios ni presupuestos a ciegas. Conecta directamente con los ingenieros fundadores y recibe una propuesta técnica formal en &lt; 24h.
+            </p>
         </div>
 
-        <div class="contact-reveal-container">
-            <div class="contact-wrapper" id="contactWrapper">
-                <div class="contact-info">
-                    <h3 class="contact-headline" id="contactHeadline">Construyamos software que haga crecer tu negocio.</h3>
-                    <p>Selecciona tus requerimientos y conecta directamente con los ingenieros fundadores de VANTA.</p>
-                    <ul class="contact-details">
-                        <li class="contact-detail-item"><i class="fab fa-whatsapp"></i> +58 412-712-1162 (Atención Directa WhatsApp)</li>
-                        <li class="contact-detail-item"><i class="fas fa-envelope"></i> proyectos@vanta-studio.com (Licitaciones &amp; B2B)</li>
-                        <li class="contact-detail-item"><i class="fas fa-bolt"></i> Respuesta técnica y propuesta en &lt; 24h</li>
-                        <li class="contact-detail-item"><i class="fas fa-shield-alt"></i> Facturación fiscal formal, RIF y acuerdos NDA</li>
-                    </ul>
-                    <div class="contact-cta-wa">
-                        <a href="https://wa.me/584127121162" class="wa-orbital-btn" target="_blank" rel="noopener noreferrer" id="directWaBtn">
-                            <span class="orbital-ring or-1"></span>
-                            <span class="orbital-ring or-2"></span>
-                            <span class="orbital-ring or-3"></span>
-                            <i class="fab fa-whatsapp"></i>
-                            <span>WhatsApp Directo</span>
-                        </a>
-                        <button type="button" class="btn-outline email-copy-btn" id="emailCopyBtn" title="Copiar correo oficial de VANTA" onclick="navigator.clipboard.writeText('proyectos@vanta-studio.com'); const t=document.getElementById('vanta-hud-toast'); if(t){ t.querySelector('#toastMsg').textContent='CORREO COPIADO: proyectos@vanta-studio.com'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }">
+        <!-- The VANTA Deal Desk Container -->
+        <div class="contact-reveal-container deal-desk-container">
+            <div class="deal-desk-wrapper" id="contactWrapper">
+                
+                <!-- Columna Izquierda: Fundadores & Canales Directos -->
+                <div class="deal-founders-column">
+                    <div class="deal-column-tag">
+                        <span class="dct-num">// 00</span>
+                        <span class="dct-label">CANALES DIRECTOS // FUNDADORES</span>
+                    </div>
+
+                    <h3 class="deal-headline">
+                        Ingeniería en código real, no promesas en diapositivas.
+                    </h3>
+                    <p class="deal-description">
+                        Habla directamente con quien diseñará la arquitectura de tu plataforma o programará la IA de tu sistema:
+                    </p>
+
+                    <!-- Founder Cards Grid -->
+                    <div class="deal-founder-cards">
+                        <!-- Card Andrés -->
+                        <div class="deal-founder-card">
+                            <div class="dfc-avatar-wrap">
+                                <img src="img/team/andres_robin.png" alt="Andrés Morales" class="dfc-avatar-img">
+                                <span class="dfc-online-badge" title="En línea para proyectos"></span>
+                            </div>
+                            <div class="dfc-content">
+                                <div class="dfc-name-row">
+                                    <span class="dfc-name">Andrés Morales</span>
+                                    <span class="dfc-role-pill">Cloud &amp; Backend</span>
+                                </div>
+                                <p class="dfc-stack">FastAPI • Supabase Postgres • ERP/SAP Pipelines</p>
+                                <a href="https://wa.me/584127121162?text=Hola%20Andr%C3%A9s,%20vengo%20del%20sitio%20de%20VANTA%20y%20quiero%20cotizar%20un%20proyecto" class="dfc-direct-wa" target="_blank" rel="noopener noreferrer">
+                                    <i class="fab fa-whatsapp"></i> Chat con Andrés
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Card Johan -->
+                        <div class="deal-founder-card">
+                            <div class="dfc-avatar-wrap">
+                                <img src="img/team/johan_gohan.png" alt="Johan Fernández" class="dfc-avatar-img">
+                                <span class="dfc-online-badge" title="En línea para proyectos"></span>
+                            </div>
+                            <div class="dfc-content">
+                                <div class="dfc-name-row">
+                                    <span class="dfc-name">Johan Fernández</span>
+                                    <span class="dfc-role-pill">AI Vision &amp; 3D</span>
+                                </div>
+                                <p class="dfc-stack">YOLOv8 Edge • WebGL Three.js • Apps Móviles</p>
+                                <a href="https://wa.me/584127121162?text=Hola%20Johan,%20vengo%20del%20sitio%20de%20VANTA%20y%20quiero%20cotizar%20un%20proyecto" class="dfc-direct-wa" target="_blank" rel="noopener noreferrer">
+                                    <i class="fab fa-whatsapp"></i> Chat con Johan
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enterprise Guarantees Matrix -->
+                    <div class="deal-guarantees-matrix">
+                        <div class="dgm-item">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <div>
+                                <strong>Facturación Fiscal Formal</strong>
+                                <span>RIF Jurídico, retenciones y contratos B2B.</span>
+                            </div>
+                        </div>
+                        <div class="dgm-item">
+                            <i class="fas fa-user-shield"></i>
+                            <div>
+                                <strong>Acuerdos de Confidencialidad</strong>
+                                <span>Firmamos NDAs previos a la revelación de datos.</span>
+                            </div>
+                        </div>
+                        <div class="dgm-item">
+                            <i class="fas fa-code-branch"></i>
+                            <div>
+                                <strong>Propiedad 100% del Código</strong>
+                                <span>Repositorio privado transferido a tu organización.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Official Email Copy Pill -->
+                    <div class="deal-quick-actions">
+                        <button type="button" class="deal-email-chip" id="emailCopyBtn" title="Copiar correo oficial de VANTA" onclick="navigator.clipboard.writeText('proyectos@vanta-studio.com'); const t=document.getElementById('vanta-hud-toast'); if(t){ t.querySelector('#toastMsg').textContent='CORREO COPIADO: proyectos@vanta-studio.com'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }">
                             <i class="fas fa-copy"></i>
-                            <span id="emailCopyText">proyectos@vanta-studio.com</span>
+                            <span>proyectos@vanta-studio.com</span>
+                            <span class="dec-badge">COPIAR</span>
                         </button>
                     </div>
                 </div>
 
-                <form id="formContactoWa" class="contact-form">
-                    <!-- Selector interactivo de tipo de proyecto -->
-                    <div class="form-group form-reveal">
-                        <label class="contact-field-label">// 01. TIPO DE PROYECTO</label>
-                        <div class="contact-chips-group" id="projectTypeChips">
-                            <button type="button" class="contact-chip-btn active" data-type="Sitio Web / Catálogo Negocio">Sitio Web / Catálogo</button>
-                            <button type="button" class="contact-chip-btn" data-type="Menú QR / Kiosko Local">Menú QR / Kiosko</button>
-                            <button type="button" class="contact-chip-btn" data-type="Web App / SaaS">Web App / SaaS</button>
-                            <button type="button" class="contact-chip-btn" data-type="ERP / Automatización B2B">ERP / Automatización B2B</button>
-                            <button type="button" class="contact-chip-btn" data-type="IA &amp; Machine Learning">IA &amp; Machine Learning</button>
+                <!-- Columna Derecha: The Tactical Spec Builder & Live Receipt -->
+                <div class="deal-builder-column">
+                    <form id="formContactoWa" class="deal-form">
+                        
+                        <!-- 01. Tipo de Proyecto -->
+                        <div class="deal-form-block">
+                            <div class="dfb-header">
+                                <label class="deal-field-label">// 01. ALCANCE &amp; ARQUITECTURA</label>
+                                <span class="dfb-hint">Selecciona una categoría</span>
+                            </div>
+                            <div class="deal-chips-grid" id="projectTypeChips">
+                                <button type="button" class="deal-chip-btn contact-chip-btn active" data-type="Sitio Web / Catálogo de Alta Conversión">
+                                    <i class="fas fa-store"></i>
+                                    <span>Sitio Web / Catálogo</span>
+                                </button>
+                                <button type="button" class="deal-chip-btn contact-chip-btn" data-type="Menú Digital QR &amp; Kiosko Local">
+                                    <i class="fas fa-qrcode"></i>
+                                    <span>Menú QR / Kiosko</span>
+                                </button>
+                                <button type="button" class="deal-chip-btn contact-chip-btn" data-type="Plataforma SaaS &amp; Web App React">
+                                    <i class="fas fa-cubes"></i>
+                                    <span>Web App / SaaS</span>
+                                </button>
+                                <button type="button" class="deal-chip-btn contact-chip-btn" data-type="ERP, Sincronización SAP &amp; Pipeline B2B">
+                                    <i class="fas fa-network-wired"></i>
+                                    <span>ERP / Pipelines SAP</span>
+                                </button>
+                                <button type="button" class="deal-chip-btn contact-chip-btn" data-type="IA, Visión Computacional &amp; IoT">
+                                    <i class="fas fa-brain"></i>
+                                    <span>IA &amp; Machine Learning</span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Selector interactivo de rango de inversión -->
-                    <div class="form-group form-reveal">
-                        <label class="contact-field-label">// 02. INVERSIÓN ESTIMADA</label>
-                        <div class="contact-chips-group" id="budgetChips">
-                            <button type="button" class="contact-chip-btn active" data-budget="Negocio Local (< $500)">Local (&lt; $500)</button>
-                            <button type="button" class="contact-chip-btn" data-budget="Pyme & E-Commerce ($500 - $2,500)">Pyme ($500 - $2.5k)</button>
-                            <button type="button" class="contact-chip-btn" data-budget="Corporativo / ERP ($2,500 - $10,000)">Corporativo ($2.5k - $10k)</button>
-                            <button type="button" class="contact-chip-btn" data-budget="Enterprise / RFP ($10,000 - $50,000+)">Enterprise / RFP ($10k - $50k+)</button>
+                        <!-- 02. Inversión Estimada -->
+                        <div class="deal-form-block">
+                            <div class="dfb-header">
+                                <label class="deal-field-label">// 02. INVERSIÓN ESTIMADA (PRESUPUESTO)</label>
+                                <span class="dfb-hint">Orientativo para dimensionar recursos</span>
+                            </div>
+                            <div class="deal-chips-grid deal-chips-budget" id="budgetChips">
+                                <button type="button" class="deal-chip-btn contact-chip-btn active" data-budget="Negocio Local (< $500)">
+                                    <span class="dcb-tier">Tier Local</span>
+                                    <span class="dcb-val">&lt; $500</span>
+                                </button>
+                                <button type="button" class="deal-chip-btn contact-chip-btn" data-budget="Pyme & E-Commerce ($500 - $2,500)">
+                                    <span class="dcb-tier">Tier Pyme</span>
+                                    <span class="dcb-val">$500 – $2.5k</span>
+                                </button>
+                                <button type="button" class="deal-chip-btn contact-chip-btn" data-budget="Corporativo / ERP ($2,500 - $10,000)">
+                                    <span class="dcb-tier">Corporativo</span>
+                                    <span class="dcb-val">$2.5k – $10k</span>
+                                </button>
+                                <button type="button" class="deal-chip-btn contact-chip-btn" data-budget="Enterprise / RFP ($10,000 - $50,000+)">
+                                    <span class="dcb-tier">Enterprise RFP</span>
+                                    <span class="dcb-val">$10k – $50k+</span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group form-reveal">
-                        <label for="waNombre" class="contact-field-label">// 03. NOMBRE O EMPRESA</label>
-                        <input type="text" id="waNombre" required placeholder="Ej. Don Carlos / Panadería La Espiga o Empresa C.A.">
-                    </div>
+                        <!-- 03. Identificación & Requerimientos -->
+                        <div class="deal-inputs-row">
+                            <div class="deal-input-wrap">
+                                <label for="waNombre" class="deal-field-label">// 03. NOMBRE O EMPRESA *</label>
+                                <input type="text" id="waNombre" class="deal-input" required placeholder="Ej. Carlos Mendoza / Distribuidora C.A.">
+                            </div>
+                            <div class="deal-input-wrap">
+                                <label for="waEmail" class="deal-field-label">// 04. CORREO ELECTRÓNICO *</label>
+                                <input type="email" id="waEmail" class="deal-input" required placeholder="contacto@tuempresa.com">
+                            </div>
+                        </div>
 
-                    <div class="form-group form-reveal">
-                        <label for="waEmail" class="contact-field-label">// 04. CORREO ELECTRÓNICO</label>
-                        <input type="email" id="waEmail" required placeholder="tu@empresa.com">
-                    </div>
+                        <div class="deal-input-wrap">
+                            <label for="waMensaje" class="deal-field-label">// 05. DETALLES DEL SISTEMA O REQUERIMIENTOS *</label>
+                            <textarea id="waMensaje" class="deal-textarea" rows="3" required placeholder="Describe qué necesitas: sincronización de inventario, catálogo en línea con WhatsApp, liveness facial o plataforma a medida..."></textarea>
+                        </div>
 
-                    <div class="form-group form-reveal">
-                        <label for="waMensaje" class="contact-field-label">// 05. DETALLES DEL SISTEMA O REQUERIMIENTOS RFP</label>
-                        <textarea id="waMensaje" rows="3" required placeholder="Cuéntanos qué necesitas: catálogo comercial, menú QR, sincronización ERP/SAP, pipeline de datos o licitación de software..."></textarea>
-                    </div>
+                        <!-- Live Spec Transmission Receipt (Interactive HUD) -->
+                        <div class="deal-spec-receipt" id="dealSpecReceipt">
+                            <div class="dsr-header">
+                                <span class="dsr-dot"></span>
+                                <span class="dsr-title">// ESPECIFICACIÓN DE TRANSMISIÓN GENERADA</span>
+                                <span class="dsr-ticket" id="receiptTicket">TICKET #VANTA-2026</span>
+                            </div>
+                            <div class="dsr-body">
+                                <div class="dsr-line"><span class="dsr-k">ALCANCE:</span> <span class="dsr-v" id="receiptType">Sitio Web / Catálogo de Alta Conversión</span></div>
+                                <div class="dsr-line"><span class="dsr-k">PRESUPUESTO:</span> <span class="dsr-v" id="receiptBudget">Negocio Local (&lt; $500)</span></div>
+                                <div class="dsr-line"><span class="dsr-k">SLA_RESPUESTA:</span> <span class="dsr-v text-emerald">&lt; 24 Horas Hábiles</span></div>
+                                <div class="dsr-line"><span class="dsr-k">NDA_ESTATUS:</span> <span class="dsr-v">Disponible bajo solicitud</span></div>
+                            </div>
+                        </div>
 
-                    <button type="submit" class="btn form-reveal btn-submit-wa" style="width: 100%;">
-                        <span>Solicitar Propuesta &amp; Cotización</span>
-                        <i class="fab fa-whatsapp"></i>
-                    </button>
+                        <!-- Submit Primary Button -->
+                        <button type="submit" class="deal-submit-btn magnetic-btn">
+                            <span class="dsb-glow"></span>
+                            <span class="dsb-text">Solicitar Propuesta &amp; Cotización</span>
+                            <i class="fab fa-whatsapp"></i>
+                        </button>
 
-                    <p class="contact-reassurance-note">
-                        <i class="fas fa-shield-alt"></i> <strong>Confidencialidad y Respaldo Garantizado:</strong> Asesoramos a pymes locales con total cercanía y atendemos licitaciones corporativas con acuerdos NDA y facturación fiscal formal.
-                    </p>
-                </form>
+                        <p class="deal-disclaimer">
+                            <i class="fas fa-shield-alt"></i> Canal directo cifrado. Asesoramos pymes locales con total cercanía y licitaciones B2B con acuerdos NDA y facturación fiscal formal.
+                        </p>
+                    </form>
+                </div>
+
             </div>
         </div>
     </section>

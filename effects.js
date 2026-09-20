@@ -4011,6 +4011,72 @@ function setupPokerDealer() {
             setup();
         }
     })();
+
+    /* ============================================================
+       ACTO 07: THE VANTA DEAL DESK SCROLLYTELLING & COLOSSAL FOOTER
+       ============================================================ */
+    (function initVantaDealDeskScrollytelling() {
+        function setup() {
+            const section = document.getElementById('contact');
+            const wrapper = document.getElementById('contactWrapper');
+            const header  = section ? section.querySelector('.deal-header') : null;
+            const badge   = section ? section.querySelector('.deal-telemetry-badge') : null;
+            const footer  = document.getElementById('footer-cinema');
+            const bigWord = footer ? footer.querySelector('.footer-big-word') : null;
+
+            if (!section || !wrapper || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+            // 1. Initial State for Deal Desk
+            if (badge) gsap.set(badge, { opacity: 0, y: -20 });
+            const revealWords = header ? header.querySelectorAll('.reveal-word') : [];
+            if (revealWords.length) gsap.set(revealWords, { yPercent: 110, opacity: 0 });
+            gsap.set(wrapper, { opacity: 0, y: 50, scale: 0.97 });
+
+            // 2. Entrance Timeline for Deal Desk
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 75%',
+                    end: 'top 25%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            if (badge) tl.to(badge, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
+            if (revealWords.length) {
+                tl.to(revealWords, {
+                    yPercent: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out'
+                }, '-=0.3');
+            }
+            tl.to(wrapper, {
+                opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out'
+            }, '-=0.4');
+
+            // 3. Colossal Footer Curtain Reveal
+            if (footer && bigWord) {
+                gsap.fromTo(bigWord, 
+                    { scale: 0.88, opacity: 0.4, letterSpacing: '-0.06em' },
+                    {
+                        scale: 1, opacity: 1, letterSpacing: '-0.02em',
+                        scrollTrigger: {
+                            trigger: footer,
+                            start: 'top 85%',
+                            end: 'bottom bottom',
+                            scrub: 1.0
+                        }
+                    }
+                );
+            }
+
+            console.log('[VANTA] Deal Desk & Colossal Footer Scrollytelling initialized');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setup);
+        } else {
+            setup();
+        }
+    })();
 }
 
 if (document.readyState === 'loading') {

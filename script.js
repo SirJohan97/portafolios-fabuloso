@@ -390,16 +390,64 @@ function initMainScript() {
         });
     }
 
-    // --- INTERACTIVIDAD DE CHIPS DE CONTACTO & WHATSAPP ENRIQUECIDO ---
+    // ─── ACTO 07: THE VANTA DEAL DESK // INTERACTIVIDAD, RELOJ CCS & RECEIPT ───
+    function initCaracasClock() {
+        const clockEl = document.getElementById('caracasClock');
+        if (!clockEl) return;
+        function updateTime() {
+            try {
+                const now = new Date();
+                const formatter = new Intl.DateTimeFormat('es-VE', {
+                    timeZone: 'America/Caracas',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                });
+                clockEl.textContent = formatter.format(now);
+            } catch (e) {
+                const now = new Date();
+                clockEl.textContent = now.toTimeString().substring(0, 8);
+            }
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+    }
+    initCaracasClock();
+
     const formContacto = document.getElementById('formContactoWa');
     const typeChips = document.querySelectorAll('#projectTypeChips .contact-chip-btn');
     const budgetChips = document.querySelectorAll('#budgetChips .contact-chip-btn');
+
+    function updateLiveReceipt() {
+        const activeTypeEl   = document.querySelector('#projectTypeChips .contact-chip-btn.active');
+        const activeBudgetEl = document.querySelector('#budgetChips .contact-chip-btn.active');
+        const receiptType    = document.getElementById('receiptType');
+        const receiptBudget  = document.getElementById('receiptBudget');
+        const receiptTicket  = document.getElementById('receiptTicket');
+        const nameInput      = document.getElementById('waNombre');
+
+        const tipo = activeTypeEl ? activeTypeEl.getAttribute('data-type') : 'Sitio Web / Catálogo de Alta Conversión';
+        const presupuesto = activeBudgetEl ? activeBudgetEl.getAttribute('data-budget') : 'Negocio Local (< $500)';
+
+        if (receiptType) receiptType.textContent = tipo;
+        if (receiptBudget) receiptBudget.textContent = presupuesto;
+
+        if (receiptTicket) {
+            const seed = (nameInput && nameInput.value.trim()) ? nameInput.value.trim().toUpperCase() : 'CORE';
+            let hash = 0;
+            for (let i = 0; i < seed.length; i++) hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+            const num = Math.abs(hash % 900) + 100;
+            receiptTicket.textContent = `TICKET #VANTA-2026-${num}`;
+        }
+    }
 
     function initChipsGroup(chips) {
         chips.forEach(chip => {
             chip.addEventListener('click', () => {
                 chips.forEach(c => c.classList.remove('active'));
                 chip.classList.add('active');
+                updateLiveReceipt();
                 if (window._vantaAudio && typeof window._vantaAudio.playClick === 'function') {
                     window._vantaAudio.playClick();
                 }
@@ -409,6 +457,12 @@ function initMainScript() {
 
     initChipsGroup(typeChips);
     initChipsGroup(budgetChips);
+    updateLiveReceipt();
+
+    const nameInput = document.getElementById('waNombre');
+    if (nameInput) {
+        nameInput.addEventListener('input', updateLiveReceipt);
+    }
 
     // Integración de botones "Cotizar Plan" de la sección Soluciones Comerciales
     document.querySelectorAll('.sc-cta-btn').forEach(btn => {
@@ -434,6 +488,8 @@ function initMainScript() {
                 });
             }
 
+            updateLiveReceipt();
+
             // Scroll suave a la sección de contacto
             const contactSection = document.getElementById('contact');
             if (contactSection) {
@@ -456,7 +512,7 @@ function initMainScript() {
     const govRfpBtn = document.getElementById('govRfpBtn');
     if (govRfpBtn) {
         govRfpBtn.addEventListener('click', () => {
-            const targetType = 'ERP / Automatización B2B';
+            const targetType = 'ERP, Sincronización SAP & Pipeline B2B';
             const targetBudget = 'Enterprise / RFP ($10,000 - $50,000+)';
 
             typeChips.forEach(c => {
@@ -472,6 +528,8 @@ function initMainScript() {
                     c.classList.add('active');
                 }
             });
+
+            updateLiveReceipt();
 
             const contactSection = document.getElementById('contact');
             if (contactSection) {
@@ -502,21 +560,32 @@ function initMainScript() {
 
             const activeTypeEl   = document.querySelector('#projectTypeChips .contact-chip-btn.active');
             const activeBudgetEl = document.querySelector('#budgetChips .contact-chip-btn.active');
-            const tipoProyecto   = activeTypeEl ? activeTypeEl.getAttribute('data-type') : 'Sitio Web / Catálogo Negocio';
+            const tipoProyecto   = activeTypeEl ? activeTypeEl.getAttribute('data-type') : 'Sitio Web / Catálogo de Alta Conversión';
             const presupuesto    = activeBudgetEl ? activeBudgetEl.getAttribute('data-budget') : 'Negocio Local (< $500)';
 
-            const nombre  = document.getElementById('waNombre').value.trim();
-            const email   = document.getElementById('waEmail').value.trim();
-            const mensaje = document.getElementById('waMensaje').value.trim();
+            const nombre  = (document.getElementById('waNombre') || {}).value.trim();
+            const email   = (document.getElementById('waEmail') || {}).value.trim();
+            const mensaje = (document.getElementById('waMensaje') || {}).value.trim();
 
             if (!nombre || !email || !mensaje) return;
 
-            const textoMensaje = `¡Hola Johan y Andrés! Vengo del sitio web de VANTA y deseo cotizar una propuesta formal para mi empresa / negocio:%0A%0A*Tipo de Proyecto:* ${encodeURIComponent(tipoProyecto)}%0A*Presupuesto Estimado:* ${encodeURIComponent(presupuesto)}%0A*Nombre / Empresa:* ${encodeURIComponent(nombre)}%0A*Correo Oficial:* ${encodeURIComponent(email)}%0A*Requerimientos / RFP:* ${encodeURIComponent(mensaje)}`;
-            const numeroWa     = "584127121162";
-            const urlWa        = `https://wa.me/${numeroWa}?text=${textoMensaje}`;
+            const ticketEl = document.getElementById('receiptTicket');
+            const ticket = ticketEl ? ticketEl.textContent : 'TICKET #VANTA-2026';
+
+            const textoMensaje = `🚀 *SOLICITUD DE INGENIERÍA // VANTA STUDIO*%0A` +
+                `📋 *${encodeURIComponent(ticket)}*%0A%0A` +
+                `👤 *Cliente / Empresa:* ${encodeURIComponent(nombre)}%0A` +
+                `📧 *Correo Oficial:* ${encodeURIComponent(email)}%0A` +
+                `🛠️ *Alcance & Arquitectura:* ${encodeURIComponent(tipoProyecto)}%0A` +
+                `💰 *Inversión Estimada:* ${encodeURIComponent(presupuesto)}%0A%0A` +
+                `📝 *Especificaciones / Requerimientos:*%0A${encodeURIComponent(mensaje)}%0A%0A` +
+                `--%0A_Atención Directa: Andrés Morales & Johan Fernández // VANTA Core_`;
+
+            const numeroWa = "584127121162";
+            const urlWa    = `https://wa.me/${numeroWa}?text=${textoMensaje}`;
 
             if (window.showHudToast) {
-                window.showHudToast('[TRANSMISIÓN ENVIADA // ENLACE A WHATSAPP ACTIVO]');
+                window.showHudToast('[CONEXIÓN SEGURA // DESPACHANDO TICKET A WHATSAPP]');
             }
 
             window.open(urlWa, '_blank', 'noopener,noreferrer');
