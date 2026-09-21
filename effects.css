@@ -3881,7 +3881,19 @@
 
 @media (max-width: 600px) {
     .keynote-sticky-viewport { padding-top: 4rem; }
-    .km-floating-phone { display: none !important; }
+    .km-floating-phone {
+        display: block !important;
+        width: 88px;
+        right: -8px;
+        bottom: -14px;
+        border-radius: 14px;
+        border-width: 1.5px;
+        transform: perspective(600px) rotateZ(-4deg) rotateY(6deg);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.9), 0 0 15px rgba(17, 212, 131, 0.25);
+        z-index: 15;
+    }
+    .km-phone-notch { width: 28px; height: 6px; }
+    .km-phone-badge { font-size: 0.4rem; padding: 1px 4px; bottom: 4px; }
     .km-metrics-grid {
         grid-template-columns: 1fr;
         gap: 0.4rem;
