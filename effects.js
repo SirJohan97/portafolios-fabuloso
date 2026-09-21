@@ -290,113 +290,6 @@ function initEffectsScript() {
 
 
     /* ============================================================
-       5. ELECTRIC CANVAS (Team Section)
-       ============================================================ */
-    const elCanvas = document.getElementById('electric-canvas');
-
-    if (elCanvas) {
-        const elCtx = elCanvas.getContext('2d');
-        const teamSection = document.querySelector('.team-section');
-        const bolts = [];
-
-        function resizeElCanvas() {
-            elCanvas.width  = teamSection.offsetWidth;
-            elCanvas.height = teamSection.offsetHeight;
-        }
-        resizeElCanvas();
-        window.addEventListener('resize', resizeElCanvas, { passive: true });
-
-        function drawBolt(ctx, x1, y1, x2, y2, roughness, depth) {
-            if (depth === 0) {
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                return;
-            }
-            const mx = (x1 + x2) / 2 + (Math.random() - 0.5) * roughness;
-            const my = (y1 + y2) / 2 + (Math.random() - 0.5) * roughness;
-            drawBolt(ctx, x1, y1, mx, my, roughness / 2, depth - 1);
-            drawBolt(ctx, mx, my, x2, y2, roughness / 2, depth - 1);
-            if (depth === 2 && Math.random() > 0.55) {
-                const branchX = mx + (Math.random() - 0.5) * roughness * 1.5;
-                const branchY = my + (Math.random() - 0.5) * roughness * 1.5;
-                drawBolt(ctx, mx, my, branchX, branchY, roughness / 3, depth - 1);
-            }
-        }
-
-        function spawnBolt() {
-            const w = elCanvas.width;
-            const h = elCanvas.height;
-            const x1 = Math.random() * w;
-            const y1 = Math.random() * h * 0.3;
-            const x2 = x1 + (Math.random() - 0.5) * 200;
-            const y2 = y1 + Math.random() * 180 + 60;
-
-            bolts.push({
-                x1, y1, x2, y2,
-                roughness: 30 + Math.random() * 40,
-                alpha: 0.8 + Math.random() * 0.2,
-                life: 0,
-                maxLife: 12 + Math.floor(Math.random() * 10),
-                width: 0.5 + Math.random() * 1,
-                hue: 155 + Math.floor(Math.random() * 20)
-            });
-        }
-
-        let elFrame = 0;
-        let electricActive = false;
-        let electricRafId = null;
-
-        function animateElectric() {
-            if (!electricActive) return;
-            elFrame++;
-            elCtx.clearRect(0, 0, elCanvas.width, elCanvas.height);
-
-            if (elFrame % 22 === 0) spawnBolt();
-            if (elFrame % 55 === 0) spawnBolt();
-
-            for (let i = bolts.length - 1; i >= 0; i--) {
-                const b = bolts[i];
-                b.life++;
-
-                let opacity = b.life < 4 ? b.alpha * (b.life / 4) : (b.life < b.maxLife - 4 ? b.alpha : b.alpha * ((b.maxLife - b.life) / 4));
-                if (opacity <= 0) { bolts.splice(i, 1); continue; }
-
-                elCtx.save();
-                elCtx.beginPath();
-                elCtx.strokeStyle = `hsla(${b.hue}, 100%, 60%, ${opacity})`;
-                elCtx.shadowColor = `hsla(${b.hue}, 100%, 60%, ${opacity * 0.8})`;
-                elCtx.shadowBlur = 8;
-                elCtx.lineWidth = b.width;
-                drawBolt(elCtx, b.x1, b.y1, b.x2, b.y2, b.roughness, 4);
-                elCtx.stroke();
-                elCtx.restore();
-
-                if (b.life >= b.maxLife) bolts.splice(i, 1);
-            }
-
-            electricRafId = requestAnimationFrame(animateElectric);
-        }
-
-        const teamVisObs = new IntersectionObserver((entries) => {
-            const isVisible = entries[0].isIntersecting;
-            if (isVisible) {
-                if (!electricActive) {
-                    electricActive = true;
-                    animateElectric();
-                }
-            } else {
-                electricActive = false;
-                if (electricRafId) {
-                    cancelAnimationFrame(electricRafId);
-                    electricRafId = null;
-                }
-            }
-        }, { threshold: 0.1 });
-        teamVisObs.observe(teamSection);
-    }
-
-
-    /* ============================================================
        6. TEXT SCRAMBLE ON HEADERS (Enhanced Hacker Style)
        ============================================================ */
     const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&?!<>[]{}|/\\^~';
@@ -472,76 +365,14 @@ function initEffectsScript() {
         }
 
         const portfolio = document.getElementById('portfolio');
-        const services = document.getElementById('services');
-
         if (portfolio && portfolio.parentNode) {
-            portfolio.parentNode.insertBefore(createMarquee(techItems, 'â€¢', false), portfolio.nextElementSibling);
-        }
-        if (services && services.parentNode) {
-            services.parentNode.insertBefore(createMarquee(values, 'â–¸', true), services.nextElementSibling);
+            portfolio.parentNode.insertBefore(createMarquee(techItems, '•', false), portfolio.nextElementSibling);
         }
     })();
 
 
     /* ============================================================
-       8. STATS NARRATIVE COUNTERS
-       ============================================================ */
-    (function initStatsCounters() {
-        const section = document.querySelector('.vanta-stats-section');
-        if (!section) return;
 
-        const headlineWrap = document.querySelector('.stats-headline-wrap');
-        const statCards = document.querySelectorAll('.stat-card');
-        const statStatement = document.querySelector('.stats-statement');
-
-        function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
-
-        function animateCounter(el) {
-            const target = parseInt(el.dataset.count, 10);
-            const suffix = el.dataset.suffix || '';
-            if (isNaN(target)) return;
-            const duration = 2000;
-            const startTime = performance.now();
-
-            function tick(now) {
-                const elapsed = now - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = easeOutExpo(progress);
-                const value = Math.floor(eased * target);
-                el.textContent = value + suffix;
-                if (progress < 1) {
-                    requestAnimationFrame(tick);
-                } else {
-                    el.textContent = target + suffix;
-                    el.classList.add('count-complete');
-                    setTimeout(() => el.classList.remove('count-complete'), 600);
-                }
-            }
-            requestAnimationFrame(tick);
-        }
-
-        const statsObs = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                if (headlineWrap) headlineWrap.classList.add('is-visible');
-                statCards.forEach(card => {
-                    const delay = parseInt(card.dataset.delay || 0, 10);
-                    setTimeout(() => {
-                        card.classList.add('is-visible');
-                        const numEl = card.querySelector('.stat-number');
-                        if (numEl && !numEl.dataset.animated) {
-                            numEl.dataset.animated = 'true';
-                            animateCounter(numEl);
-                        }
-                    }, delay);
-                });
-                if (statStatement) setTimeout(() => statStatement.classList.add('is-visible'), 800);
-                statsObs.unobserve(entry.target);
-            });
-        }, { threshold: 0.2 });
-
-        statsObs.observe(section);
-    })();
 
 
         /* ============================================================
@@ -608,160 +439,6 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       15. TEAM INTERACTIVE DIAGNOSTIC TERMINAL (VA-OS)
-       ============================================================ */
-    (function initTeamTerminal() {
-        const teamCards = document.querySelectorAll('.team-card');
-        const terminalBody = document.getElementById('vantaTermScreen') || document.getElementById('teamTerminalBody');
-        let terminalInterval = null;
-
-        const teamData = {
-            andres: [
-                "> INICIALIZANDO PERFIL: ANDRÃ‰S MORALES",
-                "> ROL: SYSTEMS ARCHITECT & BACKEND LEADER",
-                "> HABILIDADES DETECTADAS:",
-                "  - Python / FastAPI / Flask: 98%",
-                "  - PostgreSQL / ACID Transactions: 95%",
-                "  - Docker / AWS Deployments: 90%",
-                "> ESTADO DEL AGENTE:",
-                "  - Consumo de cafÃ©: CrÃ­tico (Reabastecer)",
-                "  - Horas de insomnio: 14h",
-                "  - Tolerancia a bugs: 0.02%",
-                "> DIAGNÃ“STICO: Listo para desplegar microservicios redundantes a las 3:00 AM."
-            ],
-            johan: [
-                "> INICIALIZANDO PERFIL: JOHAN FERNÃNDEZ",
-                "> ROL: UI/UX DESIGNER & FRONTEND ARCHITECT",
-                "> HABILIDADES DETECTADAS:",
-                "  - UI/UX & Figma Systematization: 99%",
-                "  - CSS Inmersivo (Awwwards Grade): 96%",
-                "  - Branding & Visual Storytelling: 94%",
-                "> ESTADO DEL AGENTE:",
-                "  - ObsesiÃ³n por alineaciÃ³n: MÃ¡xima (0.5px de margen)",
-                "  - Color favorito: #11D483",
-                "  - Figma open tabs: 47",
-                "> DIAGNÃ“STICO: Refinando micro-interacciones de scroll para provocar el efecto 'Wow'."
-            ],
-            pana: [
-                "> INICIALIZANDO PERFIL: PANA FRESCO",
-                "> ROL: DIRECTOR DE SERENIDAD Y SOPORTE EMOCIONAL",
-                "> HABILIDADES DETECTADAS:",
-                "  - Purr Controlling & Zen Flow: 100%",
-                "  - Sleeping on Keyboard: 97%",
-                "  - Bug Distraction: 92%",
-                "> ESTADO DEL AGENTE:",
-                "  - Nivel de estrÃ©s: 0%",
-                "  - PosiciÃ³n favorita: Encima del cargador de laptop caliente",
-                "  - Comida favorita: AtÃºn premium",
-                "> DIAGNÃ“STICO: Monitoreando vibraciones del sistema. Estatus: Todo bajo control."
-            ],
-            isaac: [
-                "> INICIALIZANDO PERFIL: ISAAC ORTIZ",
-                "> ROL: SECRETARIO GENERAL DE LA CAFETERÃA (COFFEE SUPPLY)",
-                "> HABILIDADES DETECTADAS:",
-                "  - Coffee Brewing (V60 / Espresso): 100%",
-                "  - Scrum Coffee Standups: 95%",
-                "  - Diplomacia Organizacional: 90%",
-                "> ESTADO DEL AGENTE:",
-                "  - MÃ©todo de desarrollo: 'TÃ³mese un tinto y piÃ©nselo bien'",
-                "  - Puntualidad*: Relativa al primer sorbo",
-                "  - Granos tostados: 12,450g en stock",
-                "> DIAGNÃ“STICO: Suministro de cafeÃ­na estable. El motor creativo sigue en marcha."
-            ]
-        };
-
-        function startTerminalDiagnostic(key) {
-            if (terminalInterval) clearInterval(terminalInterval);
-            if (!terminalBody) return;
-
-            const lines = teamData[key];
-            if (!lines) return;
-
-            terminalBody.innerHTML = '';
-            let lineIdx = 0;
-            let charIdx = 0;
-            let currentLineText = '';
-            
-            const terminalContainer = document.querySelector('.team-terminal-container');
-            if (terminalContainer) {
-                terminalContainer.classList.add('diagnostic-running');
-            }
-
-            let currentLineEl = document.createElement('div');
-            currentLineEl.className = 'terminal-line';
-            terminalBody.appendChild(currentLineEl);
-
-            terminalInterval = setInterval(() => {
-                if (lineIdx >= lines.length) {
-                    clearInterval(terminalInterval);
-                    terminalInterval = null;
-                    if (terminalContainer) {
-                        terminalContainer.classList.remove('diagnostic-running');
-                    }
-                    return;
-                }
-
-                const targetLineText = lines[lineIdx];
-                if (charIdx < targetLineText.length) {
-                    const char = targetLineText[charIdx];
-                    currentLineText += char;
-                    
-                    let coloredText = currentLineText;
-                    if (currentLineText.startsWith('>')) {
-                        coloredText = `<span class="term-prompt">&gt;</span> ${currentLineText.slice(1)}`;
-                    } else if (currentLineText.includes(':')) {
-                        const splitIdx = currentLineText.indexOf(':');
-                        const label = currentLineText.slice(0, splitIdx);
-                        const val = currentLineText.slice(splitIdx);
-                        coloredText = `<span class="term-highlight">${label}</span>${val}`;
-                    }
-                    
-                    currentLineEl.innerHTML = coloredText;
-                    charIdx++;
-                    
-                    // Auto-scroll a la Ãºltima lÃ­nea en terminal
-                    terminalBody.scrollTop = terminalBody.scrollHeight;
-                } else {
-                    lineIdx++;
-                    charIdx = 0;
-                    currentLineText = '';
-                    if (lineIdx < lines.length) {
-                        currentLineEl = document.createElement('div');
-                        currentLineEl.className = 'terminal-line';
-                        terminalBody.appendChild(currentLineEl);
-                    }
-                }
-            }, 10);
-        }
-
-        teamCards.forEach(card => {
-            const projectKey = card.getAttribute('data-project');
-            if (!projectKey || !teamData[projectKey]) return;
-
-            card.addEventListener('mouseenter', () => {
-                startTerminalDiagnostic(projectKey);
-                
-                const cursor = document.querySelector('.cursor');
-                if (cursor) {
-                    cursor.classList.add('diag-hover');
-                    const cursor2 = document.querySelector('.cursor2');
-                    if (cursor2) cursor2.style.opacity = '0';
-                }
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                const cursor = document.querySelector('.cursor');
-                if (cursor) {
-                    cursor.classList.remove('diag-hover');
-                    const cursor2 = document.querySelector('.cursor2');
-                    if (cursor2) cursor2.style.opacity = '1';
-                }
-            });
-        });
-    })();
-
-
-    /* ============================================================
        16. HUD INTERACTIVE BACKGROUND GRID
        ============================================================ */
     (function initHUDGridInteractive() {
@@ -805,57 +482,6 @@ function initEffectsScript() {
             }
         }, { passive: true });
     })();
-
-    /* ============================================================
-       14. BUS DE DATOS SVG (Scroll-Drawing Fiber Path â€” Pre-Sampled O(1))
-       ============================================================ */
-    (function initVantaFiberPath() {
-        const path = document.getElementById('vanta-fiber-path');
-        const pointer = document.getElementById('vanta-hud-pointer');
-        const svg = document.getElementById('vanta-fiber-svg');
-        if (!path || !pointer || !svg || typeof ScrollTrigger === 'undefined') return;
-
-        const pathLength = path.getTotalLength();
-        gsap.set(path, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
-
-        // Pre-muestrear 100 puntos en el inicio para evitar path.getPointAtLength() en scroll
-        const SAMPLE_COUNT = 100;
-        const precomputedPoints = [];
-        for (let i = 0; i <= SAMPLE_COUNT; i++) {
-            const pt = path.getPointAtLength((i / SAMPLE_COUNT) * pathLength);
-            precomputedPoints.push({ x: pt.x, y: pt.y });
-        }
-
-        let svgRect = svg.getBoundingClientRect();
-        window.addEventListener('resize', () => {
-            svgRect = svg.getBoundingClientRect();
-        }, { passive: true });
-
-        ScrollTrigger.create({
-            trigger: document.body,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 0.5,
-            onUpdate: (self) => {
-                const progress = self.progress;
-                gsap.set(path, { strokeDashoffset: pathLength * (1 - progress) });
-
-                const index = Math.min(SAMPLE_COUNT, Math.max(0, Math.round(progress * SAMPLE_COUNT)));
-                const point = precomputedPoints[index];
-                if (!point) return;
-
-                const globalX = svgRect.left + (point.x / 100) * svgRect.width;
-                const globalY = (window.scrollY || window.pageYOffset || 0) + svgRect.top + (point.y / 1000) * svgRect.height;
-
-                gsap.set(pointer, {
-                    x: globalX,
-                    y: globalY,
-                    opacity: progress > 0.005 && progress < 0.995 ? 1 : 0
-                });
-            }
-        });
-    })();
-
 
     /* ============================================================
        14. CONTACT SECTION CIRCLE-REVEAL & REVEAL CLASS
@@ -945,34 +571,6 @@ function initEffectsScript() {
         wakeUp();
     })();
 
-
-    /* ============================================================
-       16. FILM GRAIN CANVAS â€” VersiÃ³n ultraligera (tiny canvas + CSS scale)
-       ============================================================ */
-    (function initFilmGrain() {
-        const canvas = document.getElementById('film-grain-canvas');
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        const GRAIN_RES = 256;
-        canvas.width  = GRAIN_RES;
-        canvas.height = GRAIN_RES;
-        canvas.style.imageRendering = 'pixelated';
-
-        const imageData = ctx.createImageData(GRAIN_RES, GRAIN_RES);
-        const data = imageData.data;
-
-        // Generate static noise once
-        for (let i = 0; i < data.length; i += 4) {
-            const v = (Math.random() * 50 + 100) | 0;
-            data[i] = data[i+1] = data[i+2] = v;
-            data[i+3] = 255;
-        }
-        ctx.putImageData(imageData, 0, 0);
-
-        // Activamos la animaciÃ³n por CSS aÃ±adiendo la clase
-        canvas.parentElement.classList.add('grain-active');
-    })();
 
     /* ============================================================
        17. KINETIC SPLIT TEXT â€” Hero y headings
@@ -1319,114 +917,7 @@ function initEffectsScript() {
         }
     })();
 
-    /* ============================================================
-       21. BENTO GRID â€” IntersectionObserver Stagger Reveal
-       ============================================================ */
-    (function initBentoReveal() {
-        const cards = document.querySelectorAll('.bento-reveal');
-        if (!cards.length) return;
 
-        const obs = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const delay = parseInt(entry.target.dataset.delay || 0);
-                    setTimeout(() => {
-                        entry.target.classList.add('revealed');
-                    }, delay);
-                    obs.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.15 });
-
-        cards.forEach(card => obs.observe(card));
-    })();
-
-    /* ============================================================
-       22. PROJECT COUNTER FLIP â€” NÃºmero editorial en scroll horizontal
-       ============================================================ */
-    (function initProjectCounter() {
-        const portfolioSection = document.querySelector('.portfolio-scroll-container');
-        const cards = document.querySelectorAll('.horizontal-track .card');
-        if (!portfolioSection || !cards.length) return;
-
-        // Create the counter element
-        const counter = document.createElement('div');
-        counter.className = 'portfolio-counter-flip';
-        counter.innerHTML = `<div class="flip-num"><span class="current-n">01</span> / 0${cards.length}</div>`;
-        document.body.appendChild(counter);
-
-        const currentN = counter.querySelector('.current-n');
-
-        let portTop = 0;
-        let portH = 0;
-        function cachePort() {
-            let top = 0;
-            let obj = portfolioSection;
-            while (obj) {
-                top += obj.offsetTop;
-                obj = obj.offsetParent;
-            }
-            portTop = top;
-            portH = portfolioSection.offsetHeight;
-        }
-        cachePort();
-        window.addEventListener('resize', cachePort, { passive: true });
-
-        function getActiveCard() {
-            const scrollY = window.scrollY || window.pageYOffset || 0;
-            const maxScroll = portH - window.innerHeight;
-            if (maxScroll <= 0) return 0;
-            const progress = Math.max(0, Math.min(1, (scrollY - portTop) / maxScroll));
-            const index = Math.round(progress * (cards.length - 1));
-            return Math.max(0, Math.min(cards.length - 1, index));
-        }
-
-        let lastIndex = -1;
-        function updateCounterOnScroll() {
-            if (!counter.classList.contains('visible')) return;
-            const idx = getActiveCard();
-            if (idx !== lastIndex) {
-                lastIndex = idx;
-                const numStr = String(idx + 1).padStart(2, '0');
-
-                // Flip animation
-                currentN.style.transform = 'translateY(-100%)';
-                currentN.style.opacity = '0';
-                setTimeout(() => {
-                    currentN.textContent = numStr;
-                    currentN.style.transition = 'none';
-                    currentN.style.transform = 'translateY(100%)';
-                    currentN.style.opacity = '0';
-                    requestAnimationFrame(() => {
-                        currentN.style.transition = 'transform 0.35s cubic-bezier(0.22,1,0.36,1), opacity 0.35s';
-                        currentN.style.transform = 'translateY(0)';
-                        currentN.style.opacity = '1';
-                    });
-                }, 150);
-            }
-        }
-
-        // Show/hide counter based on portfolio section visibility
-        const sectionObs = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const isVisible = entry.isIntersecting;
-                counter.classList.toggle('visible', isVisible);
-                if (isVisible) {
-                    updateCounterOnScroll();
-                }
-            });
-        }, { threshold: 0.1 });
-        sectionObs.observe(portfolioSection);
-
-        // Bind scroll event to update counter
-        setTimeout(() => {
-            if (window.lenis) {
-                window.lenis.on('scroll', updateCounterOnScroll);
-            } else {
-                window.addEventListener('scroll', updateCounterOnScroll, { passive: true });
-            }
-        }, 500);
-    })();
 
     /* ============================================================
        10. HERO 3D MOUSE TILT EFFECT
@@ -1505,184 +996,6 @@ function initEffectsScript() {
         }
         startTiltLoop();
     })();
-
-    /* ============================================================
-       14. VANTA INTERACTIVE PRICING ENGINE & NUMBER ODOMETER
-       ============================================================ */
-    (function initVantaPricingEngine() {
-        const featuresList = document.getElementById('pricingFeaturesList');
-        const planTabsGroup = document.getElementById('planTabsGroup');
-        const cycleToggleBar = document.querySelector('.pricing-cycle-toggle-bar');
-        const offerBadge = document.getElementById('planOfferBadge');
-        const amountEl = document.getElementById('pricingAmount');
-        const currencyEl = document.getElementById('pricingCurrency');
-        const periodEl = document.getElementById('pricingPeriod');
-        const slashedPriceWrap = document.getElementById('slashedPriceWrap');
-        const slashedEl = document.getElementById('pricingSlashed');
-        const descText = document.getElementById('planDescriptionText');
-        const ctaBtn = document.getElementById('pricingCtaBtn');
-
-        if (!featuresList || !planTabsGroup) return;
-
-        // Matriz de Datos de los 3 Planes con Descuento EstratÃ©gico en el Plan BÃ¡sico
-        const PLANS_DATA = {
-            basico: {
-                name: "BÃ¡sico",
-                desc: "Ideal para despegar rÃ¡pido con una landing page de alto impacto.",
-                offerBadge: "ðŸ”¥ OFERTA ÃšNICA - 31% DESCUENTO",
-                monthly: { price: 199, original: 290, period: "USD" },
-                annual: { price: 159, original: 230, period: "USD / mes" },
-                ctaText: "Adquirir Plan BÃ¡sico",
-                waMsg: "Hola,%20quiero%20aprovechar%20la%20Oferta%20del%20Plan%20B%C3%A1sico",
-                features: [
-                    { name: "Landing page profesional de alta conversiÃ³n", included: true },
-                    { name: "DiseÃ±o responsive adaptado a mÃ³vil y web", included: true },
-                    { name: "Formulario directo de contacto a WhatsApp", included: true },
-                    { name: "Dominio y despliegue rÃ¡pido en la nube", included: true },
-                    { name: "Panel de administraciÃ³n CMS", included: false },
-                    { name: "Base de datos y API Backend", included: false },
-                    { name: "Integraciones de IA autÃ³nomas", included: false }
-                ]
-            },
-            pro: {
-                name: "Profesional",
-                desc: "SoluciÃ³n completa para negocios que requieren gestiÃ³n de datos y panel admin.",
-                offerBadge: "âš¡ PLAN MÃS POPULAR ENTRE STARTUPS",
-                monthly: { price: 499, original: 650, period: "USD" },
-                annual: { price: 399, original: 520, period: "USD / mes" },
-                ctaText: "Seleccionar Plan Profesional",
-                waMsg: "Hola,%20estoy%20interesado%20en%20el%20Plan%20Profesional",
-                features: [
-                    { name: "Web completa multi-pÃ¡gina con micro-animaciones", included: true },
-                    { name: "DiseÃ±o responsive adaptado a mÃ³vil y web", included: true },
-                    { name: "Formulario directo de contacto a WhatsApp", included: true },
-                    { name: "Dominio y despliegue rÃ¡pido en la nube", included: true },
-                    { name: "Panel de administraciÃ³n CMS completo", included: true },
-                    { name: "Base de datos escalable + API Backend", included: true },
-                    { name: "Integraciones de IA autÃ³nomas", included: false }
-                ]
-            },
-            enterprise: {
-                name: "Empresarial",
-                desc: "Infraestructura a medida de alta escala con integraciÃ³n de Inteligencia Artificial.",
-                offerBadge: "ðŸš€ INFRAESTRUCTURA DE Ã‰LITE A MEDIDA",
-                monthly: { price: "Custom", original: null, period: "" },
-                annual: { price: "Custom", original: null, period: "" },
-                ctaText: "Solicitar CotizaciÃ³n Personalizada",
-                waMsg: "Hola,%20necesito%20una%20cotizaci%C3%B3n%20para%20un%20proyecto%20Empresarial",
-                features: [
-                    { name: "Sistema a medida multi-mÃ³dulo completo", included: true },
-                    { name: "DiseÃ±o responsive adaptado a mÃ³vil y web", included: true },
-                    { name: "Formulario directo de contacto a WhatsApp", included: true },
-                    { name: "Dominio y despliegue rÃ¡pido en la nube", included: true },
-                    { name: "Panel de administraciÃ³n CMS completo", included: true },
-                    { name: "Base de datos escalable + API Backend", included: true },
-                    { name: "Integraciones de IA autÃ³nomas y Agentes", included: true }
-                ]
-            }
-        };
-
-        let activePlanKey = 'basico';
-        let activeCycleKey = 'monthly';
-
-        // AnimaciÃ³n suave de cambio numÃ©rico (Odometer / NumberFlow)
-        function animateValue(obj, start, end, duration) {
-            if (isNaN(start) || isNaN(end)) {
-                obj.textContent = end;
-                return;
-            }
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                const currentVal = Math.floor(progress * (end - start) + start);
-                obj.textContent = currentVal;
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
-            };
-            window.requestAnimationFrame(step);
-        }
-
-        function renderPricingUI() {
-            const plan = PLANS_DATA[activePlanKey];
-            const cycleData = plan[activeCycleKey];
-
-            // 1. Renderizar Features List
-            featuresList.innerHTML = plan.features.map(f => `
-                <li class="${f.included ? 'included' : 'excluded'}">
-                    <i class="fas ${f.included ? 'fa-check' : 'fa-times'}"></i>
-                    <span>${f.name}</span>
-                </li>
-            `).join('');
-
-            // 2. Badge & Descrip
-            offerBadge.textContent = plan.offerBadge;
-            descText.textContent = plan.desc;
-
-            // 3. Precios y animaciÃ³n de nÃºmeros
-            if (typeof cycleData.price === 'number') {
-                currencyEl.style.display = 'inline';
-                periodEl.textContent = cycleData.period;
-                
-                const currentVal = parseInt(amountEl.textContent) || 0;
-                animateValue(amountEl, currentVal, cycleData.price, 400);
-
-                if (cycleData.original) {
-                    slashedPriceWrap.style.display = 'flex';
-                    const currentSlashed = parseInt(slashedEl.textContent) || 0;
-                    animateValue(slashedEl, currentSlashed, cycleData.original, 400);
-                } else {
-                    slashedPriceWrap.style.display = 'none';
-                }
-            } else {
-                // Caso Empresarial (CotizaciÃ³n Custom)
-                currencyEl.style.display = 'none';
-                amountEl.textContent = "CotizaciÃ³n";
-                periodEl.textContent = "a medida";
-                slashedPriceWrap.style.display = 'none';
-            }
-
-            // 4. Actualizar CTA WhatsApp Button
-            ctaBtn.setAttribute('href', `https://wa.me/584127121162?text=${plan.waMsg}%20(${activeCycleKey === 'annual' ? 'Facturaci%C3%B3n%20Anual' : 'Facturaci%C3%B3n%20Mensual'})`);
-            const btnSpan = ctaBtn.querySelector('span');
-            if (btnSpan) btnSpan.textContent = plan.ctaText;
-        }
-
-        // Handlers para Tabs de Planes
-        planTabsGroup.querySelectorAll('.plan-tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                planTabsGroup.querySelectorAll('.plan-tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activePlanKey = btn.getAttribute('data-plan');
-                renderPricingUI();
-            });
-        });
-
-        // Handlers para Toggle de Ciclos
-        if (cycleToggleBar) {
-            cycleToggleBar.querySelectorAll('.cycle-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    cycleToggleBar.querySelectorAll('.cycle-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    activeCycleKey = btn.getAttribute('data-cycle');
-                    renderPricingUI();
-                });
-            });
-        }
-
-        // Feedback HUD al hacer click en adquirir plan
-        ctaBtn.addEventListener('click', () => {
-            if (window.showHudToast) {
-                const planName = activePlanKey === 'basico' ? 'PLAN BÃSICO' : (activePlanKey === 'pro' ? 'PLAN PROFESIONAL' : 'PLAN EMPRESARIAL');
-                window.showHudToast(`[COTIZACIÃ“N SELECCIONADA // ${planName}]`);
-            }
-        });
-
-        // Render Inicial
-        renderPricingUI();
-    })();
-
 
     /* ============================================================
        PHASE 1 PREMIUM â€” AUDIO UI ENGINE (Web Audio API)
@@ -1947,14 +1260,14 @@ function initEffectsScript() {
 
         // Project data map (from data-info)
         const DATA = {
-            sviva:       { tag: 'TESIS Â· IA Â· EDGE', title: 'SVIVA', desc: 'Sistema de Videovigilancia Inteligente. IA operando Ã­ntegramente en hardware local. DetecciÃ³n, rastreo y analÃ­ticas avanzadas sin internet ni nube.', img: 'img/sviva/svivalogo.png', stack: ['Python','OpenCV','YOLO','FastAPI','Edge Computing'] },
+            sviva:       { tag: 'TESIS Â· IA Â· EDGE', title: 'SVIVA', desc: 'Sistema de Videovigilancia Inteligente. IA operando Ã­ntegramente en hardware local. DetecciÃ³n, rastreo y analÃ­ticas avanzadas sin internet ni nube.', img: 'img/sviva/svivalogo.webp', stack: ['Python','OpenCV','YOLO','FastAPI','Edge Computing'] },
             svivaweb:    { tag: 'Vite Â· TypeScript Â· React', title: 'SVIVA Web', desc: 'Landing page de alta inmersiÃ³n diseÃ±ada para promocionar y distribuir el ejecutable de nuestra obra maestra de visiÃ³n artificial.', img: 'img/sviva/svivaindex.jpeg', stack: ['Vite','TypeScript','React','Three.js','GSAP'] },
-            kioskoazul:  { tag: 'Python Â· Flask Â· SQLite', title: 'Kiosko Azul', desc: 'MenÃº digital, reservaciones en tiempo real y pedidos con un completo dashboard administrativo de estadÃ­sticas de Ã³rdenes.', img: 'img/auracheck/auralogin.jpeg', stack: ['Python','Flask','SQLite','HTML','CSS','JavaScript'] },
-            iuta:        { tag: 'Python Â· Flask Â· PostgreSQL', title: 'Sistema Bibliotecario IUTA', desc: 'Herramienta robusta que moderniza el control bibliotecario del IUTA, transformando procesos manuales en un ecosistema digital eficiente.', img: 'img/cerdiv/cerdivweb.jpeg', stack: ['Python','Flask','PostgreSQL','Bootstrap'] },
-            aura:        { tag: 'FastAPI Â· BiometrÃ­a Â· Seguridad', title: 'Aura Check', desc: 'Panel de auditorÃ­a de seguridad biomÃ©trica que opera 100% en local â€” ningÃºn dato sensible abandona el dispositivo del usuario.', img: 'img/auracheck/auralogin.jpeg', stack: ['FastAPI','Python','BiometrÃ­a','LocalFirst'] },
-            cuerpo:      { tag: 'IA Â· FastAPI Â· Inmersivo', title: 'Â¿QuÃ© le pasa a mi cuerpo?', desc: 'Plataforma mÃ©dica impulsada por IA que responde consultas de anatomÃ­a con la voz de un doctor victoriano de 1885.', img: 'img/quelepasacuerpo/cuerpologin.jpeg', stack: ['FastAPI','Gemini AI','TTS','Python'] },
+            kioskoazul:  { tag: 'Python Â· Flask Â· SQLite', title: 'Kiosko Azul', desc: 'MenÃº digital, reservaciones en tiempo real y pedidos con un completo dashboard administrativo de estadÃ­sticas de Ã³rdenes.', img: 'img/auracheck/auralogin.webp', stack: ['Python','Flask','SQLite','HTML','CSS','JavaScript'] },
+            iuta:        { tag: 'Python Â· Flask Â· PostgreSQL', title: 'Sistema Bibliotecario IUTA', desc: 'Herramienta robusta que moderniza el control bibliotecario del IUTA, transformando procesos manuales en un ecosistema digital eficiente.', img: 'img/cerdiv/cerdivweb.webp', stack: ['Python','Flask','PostgreSQL','Bootstrap'] },
+            aura:        { tag: 'FastAPI Â· BiometrÃ­a Â· Seguridad', title: 'Aura Check', desc: 'Panel de auditorÃ­a de seguridad biomÃ©trica que opera 100% en local â€” ningÃºn dato sensible abandona el dispositivo del usuario.', img: 'img/auracheck/auralogin.webp', stack: ['FastAPI','Python','BiometrÃ­a','LocalFirst'] },
+            cuerpo:      { tag: 'IA Â· FastAPI Â· Inmersivo', title: 'Â¿QuÃ© le pasa a mi cuerpo?', desc: 'Plataforma mÃ©dica impulsada por IA que responde consultas de anatomÃ­a con la voz de un doctor victoriano de 1885.', img: 'img/quelepasacuerpo/cuerpologin.webp', stack: ['FastAPI','Gemini AI','TTS','Python'] },
             ventastrack: { tag: 'Node.js Â· TS Â· PostgreSQL', title: 'VentasTrack B2B', desc: 'Plataforma de ventas con roles y jerarquÃ­as, carrito de compras y mÃ³dulo de facturaciÃ³n, sincronizada a diario con bases de datos del cliente.', img: 'img/sviva/svivaconfig.jpeg', stack: ['Node.js','TypeScript','Vite','PostgreSQL'] },
-            inventario:  { tag: 'Sistema Â· Personalizable', title: 'Inventario Pro', desc: 'Software robusto y 100% personalizable. Optimiza tu control de stock con una interfaz intuitiva y reportes avanzados.', img: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg', stack: ['Python','FastAPI','React','PostgreSQL'] },
+            inventario:  { tag: 'Sistema Â· Personalizable', title: 'Inventario Pro', desc: 'Software robusto y 100% personalizable. Optimiza tu control de stock con una interfaz intuitiva y reportes avanzados.', img: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.webp', stack: ['Python','FastAPI','React','PostgreSQL'] },
         };
 
         function openProject(key, originCard) {
@@ -2001,16 +1314,6 @@ function initEffectsScript() {
 
         // (info-btn listener is managed exclusively in script.js to avoid duplicate WarpRunner collisions)
 
-        // Hook V-SIMULATOR navbar button to launch free 3D Warp Flight
-        const simBtn = document.getElementById('v-simulator-btn');
-        if (simBtn) {
-            simBtn.addEventListener('click', e => {
-                e.preventDefault();
-                if (window.WarpRunner && typeof window.WarpRunner.launch === 'function') {
-                    window.WarpRunner.launch('sviva', null);
-                }
-            });
-        }
 
         closeBtn.addEventListener('click', closeOverlay);
 
@@ -2024,162 +1327,6 @@ function initEffectsScript() {
     })();
 
     /* ============================================================
-       SCROLLYTELLING BACKGROUND CONTROLLER (WATER / SPARKLES / NEURAL)
-       ============================================================ */
-    (function initScrollytellingBgController() {
-        const waterCanvas = document.getElementById('water-canvas') || document.getElementById('waves-canvas');
-        const sparklesCanvas = document.getElementById('sparkles-canvas');
-        const neuralCanvas = document.getElementById('neural-canvas');
-
-        const techSection = document.getElementById('tech-matrix');
-        const contactSection = document.getElementById('contact');
-
-        if (!techSection && !contactSection) return;
-
-        const bgObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const targetId = entry.target.id;
-                const isVisible = entry.isIntersecting;
-
-                if (targetId === 'tech-matrix') {
-                    if (isVisible) {
-                        if (waterCanvas) waterCanvas.style.opacity = '0.12';
-                        if (sparklesCanvas) sparklesCanvas.style.opacity = '1.0';
-                    } else {
-                        if (sparklesCanvas) sparklesCanvas.style.opacity = '0.0';
-                        if (waterCanvas) waterCanvas.style.opacity = '1.0';
-                    }
-                }
-
-                if (targetId === 'contact') {
-                    if (isVisible) {
-                        if (waterCanvas) waterCanvas.style.opacity = '0.05';
-                        if (sparklesCanvas) sparklesCanvas.style.opacity = '0.0';
-                        if (neuralCanvas) neuralCanvas.style.opacity = '1.0';
-                    } else {
-                        if (neuralCanvas) neuralCanvas.style.opacity = '0.0';
-                        if (waterCanvas) waterCanvas.style.opacity = '1.0';
-                    }
-                }
-            });
-        }, { threshold: 0.15 });
-
-        if (techSection) bgObserver.observe(techSection);
-        if (contactSection) bgObserver.observe(contactSection);
-    })();
-
-    /* ============================================================
-       3D CYBER FELT CANVAS â€” Grid + VANTA Oval Ring (No shockwaves, pure background)
-       ============================================================ */
-    (function initPokerFeltCanvas() {
-        const canvas = document.getElementById('poker-felt-canvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-
-        function resize() {
-            const section = document.getElementById('tech-matrix');
-            if (section) {
-                canvas.width  = section.offsetWidth  || window.innerWidth;
-                canvas.height = section.offsetHeight || window.innerHeight;
-            } else {
-                canvas.width  = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-        }
-        resize();
-        window.addEventListener('resize', resize);
-
-        let time = 0;
-        let isFeltVisible = false;
-        let feltRafId = null;
-
-        function renderFelt() {
-            if (!isFeltVisible || document.hidden) {
-                feltRafId = null;
-                return;
-            }
-            const W = canvas.width;
-            const H = canvas.height;
-            ctx.clearRect(0, 0, W, H);
-            time += 0.012;
-
-            // Vanishing point: upper-center of the visible viewport
-            const cx = W * 0.5;
-            // The felt grid sits in the bottom 45% of the section height
-            const tableTop    = H * 0.55;
-            const tableBottom = H;
-
-            ctx.save();
-            ctx.strokeStyle = 'rgba(17, 212, 131, 0.06)';
-            ctx.lineWidth = 1;
-
-            // Vertical perspective lines
-            const cols = 20;
-            for (let i = -cols; i <= cols; i++) {
-                const bx = cx + i * (W / cols) * 0.5;
-                ctx.beginPath();
-                ctx.moveTo(cx + i * 3, tableTop);
-                ctx.lineTo(bx, tableBottom);
-                ctx.stroke();
-            }
-
-            // Horizontal lines (perspective-spaced)
-            const rows = 10;
-            for (let j = 0; j <= rows; j++) {
-                const t  = j / rows;
-                const py = tableTop + Math.pow(t, 1.6) * (tableBottom - tableTop);
-                ctx.beginPath();
-                ctx.moveTo(0, py);
-                ctx.lineTo(W, py);
-                ctx.stroke();
-            }
-            ctx.restore();
-
-            // VANTA Oval Table Contour (centered on the felt)
-            const ovalCX = cx;
-            const ovalCY = tableTop + (tableBottom - tableTop) * 0.28;
-            const ovalRX = Math.min(cx * 0.72, 500);
-            const ovalRY = ovalRX * 0.26;
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.ellipse(ovalCX, ovalCY, ovalRX, ovalRY, 0, 0, Math.PI * 2);
-            const glowAlpha = 0.28 + Math.sin(time) * 0.08;
-            ctx.strokeStyle = `rgba(17, 212, 131, ${glowAlpha})`;
-            ctx.lineWidth = 2;
-            ctx.shadowColor = '#11d483';
-            ctx.shadowBlur  = 12;
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.ellipse(ovalCX, ovalCY, ovalRX * 0.92, ovalRY * 0.92, 0, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(0, 255, 255, 0.09)';
-            ctx.lineWidth = 1;
-            ctx.shadowBlur = 0;
-            ctx.stroke();
-            ctx.restore();
-
-            feltRafId = requestAnimationFrame(renderFelt);
-        }
-
-        const pokerSec = document.getElementById('poker-dealer') || document.getElementById('tech-matrix');
-        if (pokerSec && 'IntersectionObserver' in window) {
-            new IntersectionObserver((entries) => {
-                isFeltVisible = entries[0].isIntersecting;
-                if (isFeltVisible && !feltRafId) {
-                    renderFelt();
-                } else if (!isFeltVisible && feltRafId) {
-                    cancelAnimationFrame(feltRafId);
-                    feltRafId = null;
-                }
-            }, { threshold: 0.05 }).observe(pokerSec);
-        } else {
-            isFeltVisible = true;
-            renderFelt();
-        }
-    })();
-
-                    /* ============================================================
        AWWWARDS CYBERPUNK POKER TECH DECK â€” Real Heads-Up Game Sequence
        Top Player: ANDRÃ‰S â™  (Full-Stack & Cloud)
        Bottom Player: JOHAN â™¦ (AI Vision & 3D Graphics)
@@ -2332,8 +1479,8 @@ function initEffectsScript() {
                 rank: "AS MAESTRO ♠♦", accent: "#f0c030", icon: "fas fa-crown",
                 desc: "Sinergia técnica de elite por Andrés Morales & Johan Fernández. La combinación perfecta de Full-Stack Cloud, IA y Gráficos 3D.",
                 projects: [
-                    { icon: "img/team/andres_robin.png", isAvatar: true, name: "Andrés Morales — Full-Stack & Cloud", desc: "FastAPI, Supabase, React, Node, Python, Flask, C++, Vercel, Docker, Git." },
-                    { icon: "img/team/johan_gohan.png", isAvatar: true, name: "Johan Fernández — AI Vision & 3D", desc: "YOLOv8, Machine Learning, 3D Models, Three.js, Postgres, Cloudflare Tunnels, Python, C++, Docker, Git." }
+                    { icon: "img/team/andres_robin.webp", isAvatar: true, name: "Andrés Morales — Full-Stack & Cloud", desc: "FastAPI, Supabase, React, Node, Python, Flask, C++, Vercel, Docker, Git." },
+                    { icon: "img/team/johan_gohan.webp", isAvatar: true, name: "Johan Fernández — AI Vision & 3D", desc: "YOLOv8, Machine Learning, 3D Models, Three.js, Postgres, Cloudflare Tunnels, Python, C++, Docker, Git." }
                 ],
                 metrics: [ { val: "360° Studio", lbl: "Cobertura Total" }, { val: "60 FPS", lbl: "Rendimiento Web" }, { val: "Local AI", lbl: "Inferencia Propia" }, { val: "Awwwards", lbl: "Nivel de Calidad" } ]
             }
@@ -3744,7 +2891,7 @@ function setupPokerDealer() {
             }
             gsap.registerPlugin(ScrollTrigger);
 
-            const govSection = document.getElementById('solutions') || document.getElementById('governance');
+            const govSection = document.getElementById('solutions');
             if (!govSection) return;
 
             const cardsTrack = govSection.querySelector('#govCardsTrack');
@@ -3986,7 +3133,7 @@ function setupPokerDealer() {
 
                     // Focus contact input
                     setTimeout(() => {
-                        const nameInput = document.getElementById('contactName');
+                        const nameInput = document.getElementById('waNombre');
                         if (nameInput) nameInput.focus();
                     }, 1200);
                 });

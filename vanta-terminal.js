@@ -405,6 +405,19 @@
             this.printLine(`7. <span class="success">VentasTrack</span> - Plataforma B2B & Facturación`, 'sub');
             this.printLine(`8. <span class="success">Inventario Pro</span> - Control de Stock & Analíticas`, 'sub');
         }
+
+        printStack() {
+            this.printLine(`════════════════════════════════════════════════════════`, 'sys');
+            this.printLine(`  <span class="highlight">VANTA CORE STACK & ARCHITECTURE</span>`, 'highlight');
+            this.printLine(`════════════════════════════════════════════════════════`, 'sys');
+            this.printLine(`  <span class="info">[BACKEND & DATA]</span>   FastAPI · Python 3.11 · PostgreSQL (ACID) · Neon`, 'sub');
+            this.printLine(`  <span class="info">[AI & VISION]</span>       YOLOv8 Edge · TensorRT · PyTorch · OpenCV`, 'sub');
+            this.printLine(`  <span class="info">[3D & CREATIVE]</span>     Three.js · Custom GLSL Shaders · Web Audio API`, 'sub');
+            this.printLine(`  <span class="info">[INFRASTRUCTURE]</span>   Docker · Cloudflare Zero-Trust · Vercel Edge`, 'sub');
+            this.printLine(`  <span class="info">[OFFLINE-FIRST]</span>    IndexedDB Sync · PWA · Multi-Currency BCV Engine`, 'sub');
+            this.printLine(`════════════════════════════════════════════════════════`, 'sys');
+            this.printLine(`  <span class="success">✔ Arquitectura de ingeniería validada en producción 2026</span>`, 'success');
+        }
     }
 
     // Initialize when DOM is ready

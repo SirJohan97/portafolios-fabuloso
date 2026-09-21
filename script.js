@@ -100,31 +100,7 @@ function initMainScript() {
         }, 16);
     }
 
-    const statsObserver = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const counters = entry.target.querySelectorAll('.stat-number');
-                counters.forEach(c => animateCounter(c));
-                obs.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.3 });
-
-    const statsSection = document.querySelector('.stats-section');
-    if (statsSection) statsObserver.observe(statsSection);
-
-    /* =========================================
-       4. EFECTO PARALLAX SUAVE EN EL HERO
-       ========================================= */
     let currentScrollY = 0;
-    const heroCenterLayout = document.querySelector('.hero-center-layout');
-    const heroBlueprintContainer = document.querySelector('.blueprint-container');
-    const hero = document.querySelector('.hero');
-    let heroH = hero ? hero.offsetHeight : window.innerHeight;
-
-    window.addEventListener('resize', () => {
-        if (hero) heroH = hero.offsetHeight;
-    }, { passive: true });
 
     /* =========================================
        5. CURSOR PERSONALIZADO Y VARIABLES GLOBALES (GPU ACCELERATED)
@@ -289,64 +265,10 @@ function initMainScript() {
                 if (cursor2) cursor2.style.opacity = '1';
             });
         });
- 
-        // Morph del cursor en expedientes del equipo (data-spec Awwwards)
-        document.querySelectorAll('.team-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                const specText = card.getAttribute('data-spec');
-                if (specText) {
-                    cursor.classList.remove('hovered');
-                    cursor.classList.remove('project-hover');
-                    cursor.setAttribute('data-spec-text', specText);
-                    cursor.classList.add('spec-active');
-                    if (cursor2) cursor2.style.opacity = '0';
-                }
-            });
-            card.addEventListener('mouseleave', () => {
-                cursor.classList.remove('spec-active');
-                cursor.removeAttribute('data-spec-text');
-                if (cursor2) cursor2.style.opacity = '1';
-            });
-        });
     } else {
         if (cursor) cursor.style.display = 'none';
         if (cursor2) cursor2.style.display = 'none';
     }
-
-    /* =========================================
-       6. EFECTO MÁQUINA DE ESCRIBIR
-       ========================================= */
-    const textElement = document.querySelector('.typing-text');
-    const words       = ["Arquitectura.", "Experiencias.", "Infraestructura.", "Tecnología.", "Tu Futuro."];
-    let wordIndex   = 0;
-    let charIndex   = 0;
-    let isDeleting  = false;
-
-    function typeEffect() {
-        if (!textElement) return;
-        const currentWord = words[wordIndex];
-
-        if (isDeleting) {
-            textElement.textContent = currentWord.substring(0, charIndex--);
-            if (charIndex < 0) {
-                isDeleting  = false;
-                wordIndex   = (wordIndex + 1) % words.length;
-                setTimeout(typeEffect, 500);
-                return;
-            }
-        } else {
-            textElement.textContent = currentWord.substring(0, charIndex++);
-            if (charIndex > currentWord.length) {
-                isDeleting = true;
-                setTimeout(typeEffect, 2200);
-                return;
-            }
-        }
-
-        setTimeout(typeEffect, isDeleting ? 80 : 140);
-    }
-
-    typeEffect();
 
     /* =========================================
        7. HUD TOAST & FORMULARIO A WHATSAPP
@@ -368,17 +290,14 @@ function initMainScript() {
 
     // Copiar Correo Directo
     const emailCopyBtn = document.getElementById('emailCopyBtn');
-    const emailCopyText = document.getElementById('emailCopyText');
     if (emailCopyBtn) {
         emailCopyBtn.addEventListener('click', () => {
-            const email = 'contacto@vanta.tech';
+            const email = 'proyectos@vanta-studio.com';
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(email).then(() => {
-                    if (emailCopyText) emailCopyText.textContent = '¡Copiado!';
                     emailCopyBtn.classList.add('btn-copied');
-                    window.showHudToast('[CORREO COPIADO // CONTACTO@VANTA.TECH]');
+                    window.showHudToast('[CORREO COPIADO // PROYECTOS@VANTA-STUDIO.COM]');
                     setTimeout(() => {
-                        if (emailCopyText) emailCopyText.textContent = 'Copiar Correo';
                         emailCopyBtn.classList.remove('btn-copied');
                     }, 2800);
                 }).catch(() => {
@@ -464,49 +383,7 @@ function initMainScript() {
         nameInput.addEventListener('input', updateLiveReceipt);
     }
 
-    // Integración de botones "Cotizar Plan" de la sección Soluciones Comerciales
-    document.querySelectorAll('.sc-cta-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetType = btn.getAttribute('data-type');
-            const targetBudget = btn.getAttribute('data-budget');
 
-            if (targetType) {
-                typeChips.forEach(c => {
-                    if (c.getAttribute('data-type') === targetType) {
-                        typeChips.forEach(x => x.classList.remove('active'));
-                        c.classList.add('active');
-                    }
-                });
-            }
-
-            if (targetBudget) {
-                budgetChips.forEach(c => {
-                    if (c.getAttribute('data-budget') === targetBudget) {
-                        budgetChips.forEach(x => x.classList.remove('active'));
-                        c.classList.add('active');
-                    }
-                });
-            }
-
-            updateLiveReceipt();
-
-            // Scroll suave a la sección de contacto
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-                if (window.lenis) {
-                    window.lenis.scrollTo(contactSection, { duration: 1.2 });
-                } else {
-                    contactSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-
-            // Enfoque inmediato al campo de nombre
-            setTimeout(() => {
-                const nameInput = document.getElementById('waNombre');
-                if (nameInput) nameInput.focus();
-            }, 600);
-        });
-    });
 
     // Conexión del botón de RFP Corporativo de la sección Gobernanza B2B
     const govRfpBtn = document.getElementById('govRfpBtn');
@@ -812,160 +689,13 @@ function initMainScript() {
     }
 
     /* =========================================
-       9. CANVAS NETWORK ANIMATION (NODOS)
+       9. CONSTELLATION PALETTE DEFINITION
        ========================================= */
-    const canvas = document.getElementById('canvas-network');
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-        
-        // Configuración de la Red (Ultra-optimizado para 60 FPS estables)
-        const isMob = window.innerWidth < 768;
-        const particleCount = isMob ? 24 : 40; // Nodos balanceados
-        const connectionDistance = isMob ? 90 : 110; // Distancia máxima para conectar nodos
-        const mouseConnectionDistance = 140; // Distancia de interacción con el mouse
-
-        // Live color object — mutated by window.setVantaTheme()
-        window.constellationColors = {
-            node:      'rgba(17, 212, 131, 0.9)',
-            line:      'rgba(17, 212, 131, 0.25)',
-            mouseLine: 'rgba(17, 212, 131, 0.6)',
-        };
-
-        let mouse = { x: null, y: null };
-
-        function resizeCanvas() {
-            // El canvas cubre solo el header#home
-            const heroSection = document.getElementById('home');
-            width = canvas.width = heroSection.offsetWidth;
-            height = canvas.height = heroSection.offsetHeight;
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 1.0;
-                this.vy = (Math.random() - 0.5) * 1.0;
-                this.radius = Math.random() * 2.0 + 1.0;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                // Rebotar en los bordes
-                if (this.x < 0 || this.x > width) this.vx = -this.vx;
-                if (this.y < 0 || this.y > height) this.vy = -this.vy;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = window.constellationColors.node;
-                ctx.fill();
-            }
-        }
-
-        function init() {
-            resizeCanvas();
-            particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        let networkRafId = null;
-        let isNetworkVisible = false; // starts false, observer sets it true when hero is in view
-
-        function startNetwork() {
-            if (networkRafId) return; // already running
-            networkRafId = requestAnimationFrame(animate);
-        }
-
-        function stopNetwork() {
-            if (networkRafId) {
-                cancelAnimationFrame(networkRafId);
-                networkRafId = null;
-            }
-        }
-
-        function animate() {
-            networkRafId = requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, width, height);
-
-            particles.forEach(p => { p.update(); p.draw(); });
-
-            // Batch all strokes in one pass to minimize state changes
-            ctx.lineWidth = 1;
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < connectionDistance) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = window.constellationColors.line;
-                        ctx.lineWidth = 1 - (dist / connectionDistance);
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-
-                if (mouse.x !== null && mouse.y !== null) {
-                    const dxm = particles[i].x - mouse.x;
-                    const dym = particles[i].y - mouse.y;
-                    const distMouse = Math.sqrt(dxm * dxm + dym * dym);
-                    if (distMouse < mouseConnectionDistance) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = window.constellationColors.mouseLine;
-                        ctx.lineWidth = 1.5 - (distMouse / mouseConnectionDistance);
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(mouse.x, mouse.y);
-                        ctx.stroke();
-                        particles[i].x -= dxm * 0.015;
-                        particles[i].y -= dym * 0.015;
-                    }
-                }
-            }
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-
-        const heroElement = document.getElementById('home');
-        if (heroElement) {
-            heroElement.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                mouse.x = e.clientX - rect.left;
-                mouse.y = e.clientY - rect.top;
-            });
-            heroElement.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
-
-            new IntersectionObserver((entries) => {
-                isNetworkVisible = entries[0].isIntersecting;
-                if (isNetworkVisible && !document.hidden) startNetwork();
-                else stopNetwork();
-            }, { threshold: 0.05 }).observe(heroElement);
-        }
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) stopNetwork();
-            else if (isNetworkVisible) startNetwork();
-        });
-
-        init();
-        // Don't call animate() directly — let the IntersectionObserver handle it
-        // Fallback: if hero is already visible on load (above the fold), start immediately
-        if (heroElement) {
-            const rect = heroElement.getBoundingClientRect();
-            if (rect.top < window.innerHeight) {
-                isNetworkVisible = true;
-                startNetwork();
-            }
-        }
-    }
+    window.constellationColors = {
+        node:      'rgba(17, 212, 131, 0.9)',
+        line:      'rgba(17, 212, 131, 0.25)',
+        mouseLine: 'rgba(17, 212, 131, 0.6)',
+    };
 
     /* =========================================
        10. CARD MENU INTERACTIVO & DATOS DE PROYECTOS
@@ -980,33 +710,33 @@ function initMainScript() {
             tech: ['Python 3.11', 'YOLOv8 Real-time', 'ByteTrack Tracker', 'OpenCV / TensorRT', 'FastAPI Async Engine', 'Telegram Bot API (Inline Buttons)', 'SQLite Analytics'],
             url: '#',
             screenshots: [
-                { src: 'img/sviva/svivalogo.jpeg', caption: 'Branding & Identidad SVIVA Tactical Core' },
-                { src: 'img/sviva/Dashboard.png', caption: 'Dashboard Central de Monitoreo & Cámaras' },
-                { src: 'img/sviva/Dashboard 2.png', caption: 'Consola Multi-Cámara en Tiempo Real' },
-                { src: 'img/sviva/Deteccion e IA.png', caption: 'Inferencia de Red Neuronal & Bounding Boxes YOLOv8' },
-                { src: 'img/sviva/Analitica.png', caption: 'Métricas Forenses y Gráficas de Tráfico Semanal' },
-                { src: 'img/sviva/Analitica 2.png', caption: 'Distribución de Eventos y Horarios de Mayor Detección' },
-                { src: 'img/sviva/Analitica 3.png', caption: 'Panel Estadístico Avanzado de Actividad Perimetral' },
-                { src: 'img/sviva/Grabaciones.png', caption: 'Búsqueda y Reproducción de Grabaciones Forenses' },
-                { src: 'img/sviva/Grabacion y disco.png', caption: 'Gestión de Almacenamiento Local y Cuotas de Disco' },
-                { src: 'img/sviva/Nueva Camara.png', caption: 'Asistente de Configuración de Stream IP / RTSP' },
-                { src: 'img/sviva/Red y Acceso Remoto.png', caption: 'Configuración de Red Local, Puertos y VPN Segura' },
-                { src: 'img/sviva/Gestion de Usuarios.png', caption: 'Control de Roles, Permisos y Operadores de Seguridad' },
-                { src: 'img/sviva/Mi perfil.png', caption: 'Ajustes de Cuenta de Operador y Preferencias de Alerta' },
-                { src: 'img/sviva/Login.png', caption: 'Acceso Seguro al Sistema con Autenticación Local' },
-                { src: 'img/sviva/Registro.png', caption: 'Registro de Dispositivos y Credenciales del Sistema' },
-                { src: 'img/sviva/Rendimiento.png', caption: 'Telemetría en Vivo de Carga CPU, GPU y VRAM' },
-                { src: 'img/sviva/Respaldo y Logs.png', caption: 'Auditoría Transaccional, Logs y Copias de Seguridad' },
-                { src: 'img/sviva/Seguridad.png', caption: 'Módulo de Políticas de Cifrado y Blindaje Operativo' },
-                { src: 'img/sviva/Politicas y Legalidad.png', caption: 'Términos de Privacidad y Cumplimiento Normativo' },
-                { src: 'img/sviva/Telegram y Notificaciones.png', caption: 'Configuración del Bot y Notificaciones Push' },
-                { src: 'img/sviva/deteccioncuchillo.jpeg', caption: 'Alerta Forense en Vivo — Detección Crítica de Arma Blanca (Knife 82%)' },
-                { src: 'img/sviva/deteccioncuchillo2.jpeg', caption: 'Alerta Táctica con Bounding Box — Detección de Amenaza Perimetral (Knife 85%)' },
-                { src: 'img/sviva/deteccionmultiple.jpeg', caption: 'Inferencia Multi-Objetivo en Directo — Detección Simultánea de Personas' },
-                { src: 'img/sviva/svivatelegram.jpeg', caption: 'Recepción de Captura Forense con Botones de Acción en Telegram' },
-                { src: 'img/sviva/WhatsApp Image 2026-09-16 at 10.21.08 AM.jpeg', caption: 'Modo Móvil Ultra-Responsive en Smartphone' },
-                { src: 'img/sviva/WhatsApp Image 2026-09-16 at 10.22.37 AM.jpeg', caption: 'Visualización Táctica Móvil — Telemetría en Teléfono' },
-                { src: 'img/sviva/hihi.jpeg', caption: 'Módulo Especial de Pruebas de Visión Artificial' }
+                { src: 'img/sviva/svivalogo.webp', caption: 'Branding & Identidad SVIVA Tactical Core' },
+                { src: 'img/sviva/Dashboard.webp', caption: 'Dashboard Central de Monitoreo & Cámaras' },
+                { src: 'img/sviva/Dashboard 2.webp', caption: 'Consola Multi-Cámara en Tiempo Real' },
+                { src: 'img/sviva/Deteccion e IA.webp', caption: 'Inferencia de Red Neuronal & Bounding Boxes YOLOv8' },
+                { src: 'img/sviva/Analitica.webp', caption: 'Métricas Forenses y Gráficas de Tráfico Semanal' },
+                { src: 'img/sviva/Analitica 2.webp', caption: 'Distribución de Eventos y Horarios de Mayor Detección' },
+                { src: 'img/sviva/Analitica 3.webp', caption: 'Panel Estadístico Avanzado de Actividad Perimetral' },
+                { src: 'img/sviva/Grabaciones.webp', caption: 'Búsqueda y Reproducción de Grabaciones Forenses' },
+                { src: 'img/sviva/Grabacion y disco.webp', caption: 'Gestión de Almacenamiento Local y Cuotas de Disco' },
+                { src: 'img/sviva/Nueva Camara.webp', caption: 'Asistente de Configuración de Stream IP / RTSP' },
+                { src: 'img/sviva/Red y Acceso Remoto.webp', caption: 'Configuración de Red Local, Puertos y VPN Segura' },
+                { src: 'img/sviva/Gestion de Usuarios.webp', caption: 'Control de Roles, Permisos y Operadores de Seguridad' },
+                { src: 'img/sviva/Mi perfil.webp', caption: 'Ajustes de Cuenta de Operador y Preferencias de Alerta' },
+                { src: 'img/sviva/Login.webp', caption: 'Acceso Seguro al Sistema con Autenticación Local' },
+                { src: 'img/sviva/Registro.webp', caption: 'Registro de Dispositivos y Credenciales del Sistema' },
+                { src: 'img/sviva/Rendimiento.webp', caption: 'Telemetría en Vivo de Carga CPU, GPU y VRAM' },
+                { src: 'img/sviva/Respaldo y Logs.webp', caption: 'Auditoría Transaccional, Logs y Copias de Seguridad' },
+                { src: 'img/sviva/Seguridad.webp', caption: 'Módulo de Políticas de Cifrado y Blindaje Operativo' },
+                { src: 'img/sviva/Politicas y Legalidad.webp', caption: 'Términos de Privacidad y Cumplimiento Normativo' },
+                { src: 'img/sviva/Telegram y Notificaciones.webp', caption: 'Configuración del Bot y Notificaciones Push' },
+                { src: 'img/sviva/deteccioncuchillo.webp', caption: 'Alerta Forense en Vivo — Detección Crítica de Arma Blanca (Knife 82%)' },
+                { src: 'img/sviva/deteccioncuchillo2.webp', caption: 'Alerta Táctica con Bounding Box — Detección de Amenaza Perimetral (Knife 85%)' },
+                { src: 'img/sviva/deteccionmultiple.webp', caption: 'Inferencia Multi-Objetivo en Directo — Detección Simultánea de Personas' },
+                { src: 'img/sviva/svivatelegram.webp', caption: 'Recepción de Captura Forense con Botones de Acción en Telegram' },
+                { src: 'img/sviva/WhatsApp Image 2026-09-16 at 10.21.08 AM.webp', caption: 'Modo Móvil Ultra-Responsive en Smartphone' },
+                { src: 'img/sviva/WhatsApp Image 2026-09-16 at 10.22.37 AM.webp', caption: 'Visualización Táctica Móvil — Telemetría en Teléfono' },
+                { src: 'img/sviva/hihi.webp', caption: 'Módulo Especial de Pruebas de Visión Artificial' }
             ],
             code: `# Algoritmo de Inferencia Táctica YOLOv8 + Despacho Interactivo Telegram
 import cv2
@@ -1042,23 +772,23 @@ class VisionPipeline:
             tech: ['FastAPI / Python', 'PostgreSQL', 'TypeScript / Vite', 'IndexedDB Offline Cache', 'SAP ERP Connector', 'Generador PDF Oficial', 'JWT Roles & Permissions'],
             url: '#contact',
             screenshots: [
-                { src: 'img/ventastrack/login-ventast.png', caption: 'Portal Principal de Acceso B2B Laboratorios Behrens' },
-                { src: 'img/ventastrack/loginresponsive.jpeg', caption: 'Login Optimizado para Smartphones de Fuerza de Ventas' },
-                { src: 'img/ventastrack/responsiveventastra.jpeg', caption: 'Dashboard Móvil para Visitadores Médicos en Ruta' },
-                { src: 'img/ventastrack/WhatsApp Image 2026-09-16 at 10.16.58 AM.jpeg', caption: 'Levantamiento Táctil de Cotizaciones en Teléfono' },
-                { src: 'img/ventastrack/WhatsApp Image 2026-09-16 at 10.16.59 AM.jpeg', caption: 'Catálogo de Productos y Listas de Precios por Droguería' },
-                { src: 'img/ventastrack/VentasTrack.png', caption: 'Cabecera e Identidad Oficial VentasTrack Behrens' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 155907.png', caption: 'Consola Desktop de Gestión Comercial & Pedidos' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160116.png', caption: 'Directorio de Clientes y Estado de Créditos ATC' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160308.png', caption: 'Selección y Filtro de Productos por Línea Farmacéutica' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160515.png', caption: 'Validación de Inventario Físico en Almacén Central' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160938.png', caption: 'Edición de Condiciones Comerciales y Descuentos Escalonados' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 161000.png', caption: 'Cálculo Oficial Multidivisa y Tasa BCV a 4 Decimales' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 161251.png', caption: 'Módulo de Exportación Directa a SAP ERP (ZB01)' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 161528.png', caption: 'Generación de Cotización Formal PDF con Membrete Behrens' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 162612.png', caption: 'Historial de Pedidos Aprobados y Estatus de Despacho' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 162741.png', caption: 'Reporte Consolidado de Ventas por Zona Geográfica' },
-                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 162956.png', caption: 'Panel de Auditoría y Trazabilidad de Operaciones Comerciales' }
+                { src: 'img/ventastrack/login-ventast.webp', caption: 'Portal Principal de Acceso B2B Laboratorios Behrens' },
+                { src: 'img/ventastrack/loginresponsive.webp', caption: 'Login Optimizado para Smartphones de Fuerza de Ventas' },
+                { src: 'img/ventastrack/responsiveventastra.webp', caption: 'Dashboard Móvil para Visitadores Médicos en Ruta' },
+                { src: 'img/ventastrack/WhatsApp Image 2026-09-16 at 10.16.58 AM.webp', caption: 'Levantamiento Táctil de Cotizaciones en Teléfono' },
+                { src: 'img/ventastrack/WhatsApp Image 2026-09-16 at 10.16.59 AM.webp', caption: 'Catálogo de Productos y Listas de Precios por Droguería' },
+                { src: 'img/ventastrack/VentasTrack.webp', caption: 'Cabecera e Identidad Oficial VentasTrack Behrens' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 155907.webp', caption: 'Consola Desktop de Gestión Comercial & Pedidos' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160116.webp', caption: 'Directorio de Clientes y Estado de Créditos ATC' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160308.webp', caption: 'Selección y Filtro de Productos por Línea Farmacéutica' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160515.webp', caption: 'Validación de Inventario Físico en Almacén Central' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 160938.webp', caption: 'Edición de Condiciones Comerciales y Descuentos Escalonados' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 161000.webp', caption: 'Cálculo Oficial Multidivisa y Tasa BCV a 4 Decimales' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 161251.webp', caption: 'Módulo de Exportación Directa a SAP ERP (ZB01)' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 161528.webp', caption: 'Generación de Cotización Formal PDF con Membrete Behrens' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 162612.webp', caption: 'Historial de Pedidos Aprobados y Estatus de Despacho' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 162741.webp', caption: 'Reporte Consolidado de Ventas por Zona Geográfica' },
+                { src: 'img/ventastrack/Captura de pantalla 2026-09-15 162956.webp', caption: 'Panel de Auditoría y Trazabilidad de Operaciones Comerciales' }
             ],
             code: `# Generación de Pedido Comercial SAP ERP (ZB01 / ZB21) con Tasa Oficial BCV
 from decimal import Decimal
@@ -1093,28 +823,28 @@ def exportar_a_sap_erp(cotizacion_id: int, tasa_bcv: Decimal):
             tech: ['Python 3', 'Flask Microframework', 'Async Queue System', 'SQLite / PostgreSQL', 'Mobile-First UX', 'Módulo Pago Móvil / Efectivo'],
             url: '#',
             screenshots: [
-                { src: 'img/kioskoazul/login-kiosko.png', caption: 'Acceso Administrativo y Punto de Venta' },
-                { src: 'img/kioskoazul/menu-kiosko.png', caption: 'Menú Digital Interactivo para Clientes' },
-                { src: 'img/kioskoazul/carrito-kiosko.png', caption: 'Carrito de Compras y Resumen de Orden' },
-                { src: 'img/kioskoazul/Captura de pantalla 2026-09-15 152419.png', caption: 'Tablero de Control POS y Pedidos en Preparación' },
-                { src: 'img/kioskoazul/admin.jpeg', caption: 'Panel Central de Administración de Local y Mesas' },
-                { src: 'img/kioskoazul/catal.jpeg', caption: 'Catálogo de Platillos, Bebidas y Precios en Carta' },
-                { src: 'img/kioskoazul/gestion.jpeg', caption: 'Gestión de Menú, Inventario de Ingredientes y Alérgenos' },
-                { src: 'img/kioskoazul/pedidos.jpeg', caption: 'Monitor de Comandas Activas y Cola FIFO de Cocina' },
-                { src: 'img/kioskoazul/pago.jpeg', caption: 'Pasarela de Cobro Multimoneda (Pago Móvil y Efectivo)' },
-                { src: 'img/kioskoazul/delivery.jpeg', caption: 'Módulo de Pedidos para Llevar y Despacho a Domicilio' },
-                { src: 'img/kioskoazul/reserv.jpeg', caption: 'Control de Reservaciones y Disponibilidad de Salones' },
-                { src: 'img/kioskoazul/analitics.jpeg', caption: 'Métricas de Ventas, Ticket Promedio y Platos Populares' },
-                { src: 'img/kioskoazul/seg.jpeg', caption: 'Configuración de Roles, Cajeros y Seguridad de Caja' },
-                { src: 'img/kioskoazul/nnjj.jpeg', caption: 'Resumen Operativo de Turno y Cuadre de Caja' },
-                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.13 PM.jpeg', caption: 'Experiencia Móvil en Smartphones (QR Mesa)' },
-                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.21 PM.jpeg', caption: 'Ficha Detallada de Platillos en Pantalla Móvil' },
-                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.29 PM.jpeg', caption: 'Gestión de Selección y Adicionales en Teléfono' },
-                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.37 PM.jpeg', caption: 'Confirmación y Pasarela Pago Móvil / Efectivo en Teléfono' },
-                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.47 PM.jpeg', caption: 'Terminal Táctil para Camareros en Tablet' },
-                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.50 PM.jpeg', caption: 'Vista de Comanda Rápida para Meseros' },
-                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.15.00 PM.jpeg', caption: 'Despacho de Cocina y Cuadre de Caja en Vivo' },
-                { src: 'img/kioskoazul/WhatsApp Image 2026-09-16 at 12.36.29 PM.jpeg', caption: 'Panel Móvil Completo de Control de Órdenes' }
+                { src: 'img/kioskoazul/login-kiosko.webp', caption: 'Acceso Administrativo y Punto de Venta' },
+                { src: 'img/kioskoazul/menu-kiosko.webp', caption: 'Menú Digital Interactivo para Clientes' },
+                { src: 'img/kioskoazul/carrito-kiosko.webp', caption: 'Carrito de Compras y Resumen de Orden' },
+                { src: 'img/kioskoazul/Captura de pantalla 2026-09-15 152419.webp', caption: 'Tablero de Control POS y Pedidos en Preparación' },
+                { src: 'img/kioskoazul/admin.webp', caption: 'Panel Central de Administración de Local y Mesas' },
+                { src: 'img/kioskoazul/catal.webp', caption: 'Catálogo de Platillos, Bebidas y Precios en Carta' },
+                { src: 'img/kioskoazul/gestion.webp', caption: 'Gestión de Menú, Inventario de Ingredientes y Alérgenos' },
+                { src: 'img/kioskoazul/pedidos.webp', caption: 'Monitor de Comandas Activas y Cola FIFO de Cocina' },
+                { src: 'img/kioskoazul/pago.webp', caption: 'Pasarela de Cobro Multimoneda (Pago Móvil y Efectivo)' },
+                { src: 'img/kioskoazul/delivery.webp', caption: 'Módulo de Pedidos para Llevar y Despacho a Domicilio' },
+                { src: 'img/kioskoazul/reserv.webp', caption: 'Control de Reservaciones y Disponibilidad de Salones' },
+                { src: 'img/kioskoazul/analitics.webp', caption: 'Métricas de Ventas, Ticket Promedio y Platos Populares' },
+                { src: 'img/kioskoazul/seg.webp', caption: 'Configuración de Roles, Cajeros y Seguridad de Caja' },
+                { src: 'img/kioskoazul/nnjj.webp', caption: 'Resumen Operativo de Turno y Cuadre de Caja' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.13 PM.webp', caption: 'Experiencia Móvil en Smartphones (QR Mesa)' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.21 PM.webp', caption: 'Ficha Detallada de Platillos en Pantalla Móvil' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.29 PM.webp', caption: 'Gestión de Selección y Adicionales en Teléfono' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.37 PM.webp', caption: 'Confirmación y Pasarela Pago Móvil / Efectivo en Teléfono' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.47 PM.webp', caption: 'Terminal Táctil para Camareros en Tablet' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.14.50 PM.webp', caption: 'Vista de Comanda Rápida para Meseros' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-15 at 3.15.00 PM.webp', caption: 'Despacho de Cocina y Cuadre de Caja en Vivo' },
+                { src: 'img/kioskoazul/WhatsApp Image 2026-09-16 at 12.36.29 PM.webp', caption: 'Panel Móvil Completo de Control de Órdenes' }
             ],
             code: `# Motor de Cola Asíncrona de Pedidos para Pruebas de Estrés
 import queue, threading, sqlite3
@@ -1146,9 +876,9 @@ threading.Thread(target=queue_worker, daemon=True).start()`
             tech: ['Python / Flask', 'PostgreSQL Neon', 'Vercel Serverless', 'Arquitectura Multi-Tenant', 'Catalogación Bibliotecológica', 'Búsqueda Asíncrona'],
             url: 'https://biblioteca-ashy-sigma.vercel.app',
             screenshots: [
-                { src: 'img/cerdiv/Captura de pantalla 2026-09-15 154435.png', caption: 'Portal Oficial CERDIV IUTA — Vista de las 5 Sedes' },
-                { src: 'img/cerdiv/cerdivweb.jpeg', caption: 'Catálogo de Libros y Motor de Búsqueda por Facetas' },
-                { src: 'img/cerdiv/cerdivsede.jpeg', caption: 'Selección de Sede y Disponibilidad de Ejemplares Físicos' }
+                { src: 'img/cerdiv/Captura de pantalla 2026-09-15 154435.webp', caption: 'Portal Oficial CERDIV IUTA — Vista de las 5 Sedes' },
+                { src: 'img/cerdiv/cerdivweb.webp', caption: 'Catálogo de Libros y Motor de Búsqueda por Facetas' },
+                { src: 'img/cerdiv/cerdivsede.webp', caption: 'Selección de Sede y Disponibilidad de Ejemplares Físicos' }
             ],
             code: `# Consulta de Disponibilidad Multi-Tenant en 5 Sedes
 from models import db, Libro, EjemplarSede
@@ -1175,12 +905,12 @@ def consultar_stock_multi_sede(cota: str):
             tech: ['Python / FastAPI', 'PostgreSQL', 'SQLite', 'Dashboards Analíticos', 'Lector Código de Barras', 'Control de Mermas'],
             url: '#contact',
             screenshots: [
-                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (8).jpeg', caption: 'Consola Principal de Inventario y Stock Global' },
-                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.jpeg', caption: 'Kardex Detallado por Producto y Registro de Lote' },
-                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (1).jpeg', caption: 'Módulo de Entradas y Recepción de Mercancía' },
-                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (2).jpeg', caption: 'Directorio de Proveedores y Órdenes de Compra' },
-                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (3).jpeg', caption: 'Alertas de Stock Crítico y Puntos de Reorden' },
-                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (6).jpeg', caption: 'Reportes y Métricas de Rotación de Inventario' }
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (8).webp', caption: 'Consola Principal de Inventario y Stock Global' },
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM.webp', caption: 'Kardex Detallado por Producto y Registro de Lote' },
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (1).webp', caption: 'Módulo de Entradas y Recepción de Mercancía' },
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (2).webp', caption: 'Directorio de Proveedores y Órdenes de Compra' },
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (3).webp', caption: 'Alertas de Stock Crítico y Puntos de Reorden' },
+                { src: 'img/inventario/WhatsApp Image 2026-04-16 at 3.24.24 PM (6).webp', caption: 'Reportes y Métricas de Rotación de Inventario' }
             ],
             code: `-- Cálculo Automático de Promedio Ponderado en Transacción ACID
 BEGIN;
@@ -1209,8 +939,8 @@ COMMIT;`
             youtubeId: 'RCy3nJT36fs',
             videoUrl: 'https://www.youtube.com/embed/RCy3nJT36fs',
             screenshots: [
-                { src: 'img/sviva/Dashboard.png', caption: 'Showcase del Sistema en la Web' },
-                { src: 'img/sviva/Analitica.png', caption: 'Vista Previa de Analítica Web' }
+                { src: 'img/sviva/Dashboard.webp', caption: 'Showcase del Sistema en la Web' },
+                { src: 'img/sviva/Analitica.webp', caption: 'Vista Previa de Analítica Web' }
             ],
             code: `// Descarga de Ejecutable e Interfaz React TS
 export const DownloadButton: React.FC = () => {
@@ -1230,8 +960,8 @@ export const DownloadButton: React.FC = () => {
             tech: ['FastAPI + Python 3.11', 'WebAuthn / Biometría', 'face-api.js', 'Web Audio API', 'jsPDF', 'Vercel Serverless', 'SlowAPI Rate Limiting'],
             url: 'https://aura-check-omega.vercel.app/',
             screenshots: [
-                { src: 'img/auracheck/aura.jpeg', caption: 'Dashboard Central de Auditoría de Seguridad' },
-                { src: 'img/auracheck/auralogin.jpeg', caption: 'Autenticación Biométrica y Verificación WebAuthn' }
+                { src: 'img/auracheck/aura.webp', caption: 'Dashboard Central de Auditoría de Seguridad' },
+                { src: 'img/auracheck/auralogin.webp', caption: 'Autenticación Biométrica y Verificación WebAuthn' }
             ],
             code: `// Verificación de Integridad Biométrica y Speed Test Local
 async function auditBiometrics() {
@@ -1259,8 +989,8 @@ async function auditBiometrics() {
             tech: ['Google Gemini 1.5/2.0', 'FastAPI + Python', 'BeautifulSoup4', 'Cloudinary API', 'Tailwind CSS', 'Wikipedia / MedlinePlus', 'Vercel Functions'],
             url: 'https://que-le-pasa-a-mi-cuerpo.vercel.app/',
             screenshots: [
-                { src: 'img/quelepasacuerpo/cuerpologin.jpeg', caption: 'Portada y Consulta del Doctor Victoriano' },
-                { src: 'img/quelepasacuerpo/cuerpopasa.jpeg', caption: 'Ficha Histórica y Diagnóstico Médico 1885' }
+                { src: 'img/quelepasacuerpo/cuerpologin.webp', caption: 'Portada y Consulta del Doctor Victoriano' },
+                { src: 'img/quelepasacuerpo/cuerpopasa.webp', caption: 'Ficha Histórica y Diagnóstico Médico 1885' }
             ],
             code: `# Motor Narrativo IA del Doctor Victoriano con Fallback
 import google.generativeai as genai
@@ -1274,34 +1004,6 @@ def consulta_medica_historica(pregunta: str):
     soup = BeautifulSoup(response.text, "html.parser")
     return soup.get_text()`
         },
-        panafresco: {
-            tag: 'React · Node.js · Express · Carrito Dinámico · Delivery',
-            title: 'Pana Fresco — E-commerce & Plataforma de Delivery',
-            description: 'Solución integral de comercio electrónico y gestión de pedidos diseñada para panadería, pastelería y despachos de gastronomía artesanal. Incluye catálogo interactivo con filtrado de productos por categoría, carrito de compras dinámico en tiempo real, cálculo automatizado de rutas y tarifas de delivery por zona, y módulo administrativo para la recepción y control de órdenes en cocina.',
-            metrics: ['🥖 E-COMMERCE LIVE', '⚡ CARRITO DINÁMICO', '🛵 CÁLCULO DE RUTAS', '📱 100% RESPONSIVE'],
-            pipeline: ['🛒 Carrito de Compras Dinámico', '→', '⚡ Express Async API', '→', '🛵 Cálculo Tarifa Delivery', '→', '👨‍🍳 Despacho & Confirmación'],
-            tech: ['React', 'Node.js', 'Express', 'Tailwind CSS', 'PostgreSQL / SQLite', 'APIs Transaccionales'],
-            url: '#contact',
-            screenshots: [
-                { src: 'img/pana-fresco.jpeg', caption: 'Plataforma Digital de Pedidos Pana Fresco' }
-            ],
-            code: `// API de Cálculo de Ruta y Tarifa de Delivery
-import express from 'express';
-const router = express.Router();
-
-router.post('/api/delivery/cotizar', (req, res) => {
-    const { zona_id, total_carrito } = req.body;
-    const tarifas = { "norte": 2.50, "sur": 3.00, "este": 2.00, "oeste": 3.50 };
-    const costo_envio = tarifas[zona_id] || 3.00;
-    const envio_gratis = total_carrito >= 30.00;
-    
-    res.json({
-        costo_envio: envio_gratis ? 0.00 : costo_envio,
-        envio_gratis: envio_gratis,
-        tiempo_estimado: "30 - 45 min"
-    });
-});`
-        },
         behban: {
             tag: 'Python · FastAPI · OpenCV · WebAuthn · Motor de Nómina · Exclusivo Behrens',
             title: 'BehBAN — Asistencia Biométrica y Nómina para Behrens',
@@ -1311,7 +1013,7 @@ router.post('/api/delivery/cotizar', (req, res) => {
             tech: ['Python / FastAPI', 'OpenCV & InsightFace', 'React / TypeScript', 'PostgreSQL', 'Algoritmos Anti-Spoofing', 'Integración SAP ERP'],
             url: '#contact',
             screenshots: [
-                { src: 'img/auracheck/aura.jpeg', caption: 'Kiosko de Reconocimiento Facial y Verificación de Vida' },
+                { src: 'img/auracheck/aura.webp', caption: 'Kiosko de Reconocimiento Facial y Verificación de Vida' },
                 { src: 'img/ventastrack/dashboard.png', caption: 'Consola Centralizada de Liquidación de Nómina y Turnos' }
             ],
             code: `# Pipeline Biométrico de Asistencia y Liveness Check para Behrens
@@ -1346,7 +1048,7 @@ def procesar_fichaje_facial(embedding_captura: np.ndarray, empleado_id: str, liv
             tech: ['Python / SciPy', 'Wi-Fi CSI Subcarrier Analysis', 'ESP32 / Commodity Routers', 'Filtros Kalman & Wavelet', 'Micro-Doppler Radar', 'Zero-Camera Privacy'],
             url: '#contact',
             screenshots: [
-                { src: 'img/sviva/Dashboard.png', caption: 'Radar de Perturbación RF y Conteo de Presencia Invisible' },
+                { src: 'img/sviva/Dashboard.webp', caption: 'Radar de Perturbación RF y Conteo de Presencia Invisible' },
                 { src: 'img/sviva/WhatsApp Image 2026-03-24 at 1.48.24 PM (1).jpeg', caption: 'Monitor de Ondas de Radiofrecuencia CSI Subcarriers' }
             ],
             code: `# Extracción y Filtrado de Ondas Wi-Fi CSI (Subcarrier Perturbation)
@@ -2296,659 +1998,9 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
     };
 
 
-            // ============================================================
-            //  FASE 2 #1: MESH GRADIENT BACKGROUND (Canvas 2D, 20fps)
-            // ============================================================
-            (function initMeshGradient() {
-                const canvas = document.getElementById('mesh-gradient-canvas');
-                if (!canvas) return;
-                const ctx = canvas.getContext('2d');
-                if (!ctx) return;
-                let W, H, rafId, lastTs = 0;
-                const THROTTLE = 100; // 10 FPS para el fondo difuminado (Cero impacto en GPU)
-                const blobs = [
-                    { x:0.2, y:0.15, r:0.55, sp:0.00018, ph:0 },
-                    { x:0.8, y:0.25, r:0.48, sp:0.00023, ph:1.3 },
-                    { x:0.5, y:0.72, r:0.52, sp:0.00015, ph:2.6 },
-                    { x:0.15,y:0.65, r:0.42, sp:0.00021, ph:3.9 },
-                    { x:0.85,y:0.6,  r:0.45, sp:0.00017, ph:5.2 },
-                ];
-                let colors = [[8,15,42],[4,42,22],[30,8,55],[8,38,18],[18,8,35]];
-                const PALETTES = {
-                    home:       [[8,12,40],[4,42,22],[28,8,55],[8,35,18],[18,8,32]],
-                    portfolio:  [[4,42,22],[8,8,12],[8,55,30],[4,30,14],[12,28,8]],
-                    bento:      [[8,35,18],[22,12,5],[8,8,12],[4,42,22],[8,25,8]],
-                    services:   [[8,18,50],[4,55,40],[28,8,10],[8,22,45],[5,12,35]],
-                    pricing:    [[8,32,18],[38,28,6],[8,8,12],[4,40,20],[18,22,5]],
-                    contact:    [[4,55,25],[4,4,4],[8,8,8],[8,45,22],[4,4,4]],
-                    philosophy: [[50,8,8],[35,18,4],[8,8,8],[28,12,4],[18,8,4]],
-                    stats:      [[4,42,22],[8,8,8],[22,50,22],[4,28,14],[8,8,8]],
-                };
-                let target = colors.map(c => [...c]);
-                function setPalette(id) {
-                    const key = PALETTES[id] ? id : 'home';
-                    target = PALETTES[key].map(c => [...c]);
-                }
-                document.querySelectorAll('section[id]').forEach(sec => {
-                    new IntersectionObserver(entries => {
-                        if (entries[0].isIntersecting) setPalette(sec.id);
-                    }, { threshold: 0.35 }).observe(sec);
-                });
-                function resize() {
-                    W = canvas.width  = Math.ceil(window.innerWidth / 4);
-                    H = canvas.height = Math.ceil(window.innerHeight / 4);
-                }
-                function draw(ts) {
-                    ctx.clearRect(0, 0, W, H);
-                    ctx.fillStyle = '#050508';
-                    ctx.fillRect(0, 0, W, H);
-                    blobs.forEach((b, i) => {
-                        colors[i] = colors[i].map((c, j) => c + (target[i][j] - c) * 0.05);
-                        const t  = ts * b.sp + b.ph;
-                        const bx = (b.x + Math.sin(t) * 0.18) * W;
-                        const by = (b.y + Math.cos(t * 1.3) * 0.12) * H;
-                        const br = b.r * Math.max(W, H);
-                        const [r, g, bl] = colors[i].map(Math.round);
-                        const grd = ctx.createRadialGradient(bx, by, 0, bx, by, br);
-                        grd.addColorStop(0, `rgba(${r},${g},${bl},0.5)`);
-                        grd.addColorStop(1, 'rgba(0,0,0,0)');
-                        ctx.fillStyle = grd;
-                        ctx.fillRect(0, 0, W, H);
-                    });
-                }
-                let timerId = null;
-                function startGradient() {
-                    if (timerId) return;
-                    timerId = setInterval(() => draw(performance.now()), THROTTLE);
-                }
-                function stopGradient() {
-                    if (timerId) { clearInterval(timerId); timerId = null; }
-                }
-                resize();
-                window.addEventListener('resize', resize, { passive: true });
-                document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) stopGradient();
-                    else startGradient();
-                });
-                startGradient();
-            })();
-
-
-            // ============================================================
-            //  FASE 2 #2: BENTO UNIVERSE (Three.js Orbiting System)
-            // ============================================================
-            (function initBentoUniverse() {
-                const canvas = document.getElementById('bento-universe-canvas');
-                if (!canvas || typeof THREE === 'undefined') return;
-                const wrap = document.getElementById('bento-universe-canvas-wrap');
-                if (!wrap) return;
-                let W = wrap.clientWidth || 600, H = wrap.clientHeight || 560;
-                const scene  = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 100);
-                camera.position.z = 7;
-                const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true });
-                renderer.setSize(W, H);
-                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.3));
-                const col = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
-                const COL = new THREE.Color(col);
-
-                // Sol central
-                const sunMat = new THREE.MeshBasicMaterial({ color: COL, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending });
-                const sun    = new THREE.Mesh(new THREE.SphereGeometry(0.38, 16, 16), sunMat);
-                const haloMat= new THREE.MeshBasicMaterial({ color: COL, transparent: true, opacity: 0.08, blending: THREE.AdditiveBlending, side: THREE.BackSide });
-                sun.add(new THREE.Mesh(new THREE.SphereGeometry(0.6, 16, 16), haloMat));
-                scene.add(sun);
-
-                // Anillos
-                const ORBITS = [
-                    { r: 1.6, speed: 0.55, incl: 0.25 },
-                    { r: 2.3, speed: 0.38, incl: -0.4 },
-                    { r: 3.0, speed: 0.28, incl: 0.6 },
-                ];
-                ORBITS.forEach(o => {
-                    const pts = new THREE.EllipseCurve(0, 0, o.r, o.r * 0.35, 0, Math.PI * 2, false, 0).getPoints(64);
-                    const ring = new THREE.LineLoop(
-                        new THREE.BufferGeometry().setFromPoints(pts),
-                        new THREE.LineBasicMaterial({ color: COL, transparent: true, opacity: 0.1, blending: THREE.AdditiveBlending })
-                    );
-                    ring.rotation.x = o.incl;
-                    scene.add(ring);
-                });
-
-                // Orbes
-                const ORB_DATA = [
-                    { oi: 0, angle: 0 }, { oi: 0, angle: Math.PI },
-                    { oi: 1, angle: 0.5 }, { oi: 1, angle: 0.5 + Math.PI },
-                    { oi: 2, angle: 1.2 }, { oi: 2, angle: 1.2 + Math.PI },
-                ];
-                const orbMeshes = ORB_DATA.map((od, i) => {
-                    const sz = 0.12 + (i % 3) * 0.04;
-                    const m  = new THREE.Mesh(
-                        new THREE.SphereGeometry(sz, 10, 10),
-                        new THREE.MeshBasicMaterial({ color: COL, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending })
-                    );
-                    m.add(new THREE.Mesh(
-                        new THREE.SphereGeometry(sz * 2.2, 8, 8),
-                        new THREE.MeshBasicMaterial({ color: COL, transparent: true, opacity: 0.05, blending: THREE.AdditiveBlending, side: THREE.BackSide })
-                    ));
-                    scene.add(m);
-                    return m;
-                });
-
-                // Lineas de conexion
-                const lineGeos = ORB_DATA.map(() => {
-                    const buf = new Float32Array(6);
-                    const geo = new THREE.BufferGeometry();
-                    geo.setAttribute('position', new THREE.BufferAttribute(buf, 3));
-                    scene.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ color: COL, transparent: true, opacity: 0.08, blending: THREE.AdditiveBlending })));
-                    return { geo, buf };
-                });
-
-                // Stars
-                const starPos = new Float32Array(300 * 3).map(() => (Math.random() - 0.5) * 14);
-                const starGeo = new THREE.BufferGeometry();
-                starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-                scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.018, transparent: true, opacity: 0.3 })));
-
-                const clock = new THREE.Clock();
-                let running = false, rafId = null, mx = 0, my = 0, tx = 0, ty = 0;
-                wrap.addEventListener('mousemove', e => {
-                    const r = wrap.getBoundingClientRect();
-                    tx = ((e.clientX - r.left) / r.width  - 0.5) * 0.5;
-                    ty = ((e.clientY - r.top)  / r.height - 0.5) * 0.5;
-                });
-                wrap.addEventListener('mouseleave', () => { tx = 0; ty = 0; });
-                const orbLabels = document.querySelectorAll('.orb-label');
-
-                function animate() {
-                    if (!running) return;
-                    rafId = requestAnimationFrame(animate);
-                    const t = clock.getElapsedTime();
-                    mx += (tx - mx) * 0.06; my += (ty - my) * 0.06;
-                    scene.rotation.y = mx * 0.5;
-                    scene.rotation.x = my * 0.3;
-                    sunMat.opacity  = 0.75 + Math.sin(t * 2.2) * 0.2;
-                    haloMat.opacity = 0.05 + Math.sin(t * 1.8) * 0.03;
-                    ORB_DATA.forEach((od, i) => {
-                        const orb   = ORBITS[od.oi];
-                        const angle = od.angle + t * orb.speed;
-                        const x = Math.cos(angle) * orb.r;
-                        const z = Math.sin(angle) * orb.r * 0.35;
-                        const y = Math.sin(angle * 0.7 + od.angle) * 0.3;
-                        orbMeshes[i].position.set(x, y * Math.cos(orb.incl) - z * Math.sin(orb.incl), y * Math.sin(orb.incl) + z * Math.cos(orb.incl));
-                        orbMeshes[i].material.opacity = 0.7 + Math.sin(t * 3 + i) * 0.25;
-                        const { buf } = lineGeos[i];
-                        buf[0]=0; buf[1]=0; buf[2]=0;
-                        buf[3]=orbMeshes[i].position.x; buf[4]=orbMeshes[i].position.y; buf[5]=orbMeshes[i].position.z;
-                        lineGeos[i].geo.getAttribute('position').needsUpdate = true;
-                        if (orbLabels[i]) {
-                            const tempProjVec = new THREE.Vector3();
-                            tempProjVec.copy(orbMeshes[i].position).project(camera);
-                            orbLabels[i].style.left = ((tempProjVec.x * 0.5 + 0.5) * W) + 'px';
-                            orbLabels[i].style.top  = ((-tempProjVec.y * 0.5 + 0.5) * H + 18) + 'px';
-                            orbLabels[i].classList.add('visible');
-                        }
-                    });
-                    renderer.render(scene, camera);
-                }
-
-                new IntersectionObserver(entries => {
-                    if (entries[0].isIntersecting) { running = true; animate(); }
-                    else { running = false; cancelAnimationFrame(rafId); orbLabels.forEach(l => l.classList.remove('visible')); }
-                }, { threshold: 0.1 }).observe(canvas);
-
-                // Counter animation
-                document.querySelectorAll('.bum').forEach(el => {
-                    const val = parseInt(el.dataset.val) || 0;
-                    const sfx = el.dataset.suffix || '';
-                    const lbl = el.dataset.label || '';
-                    el.innerHTML = `<span class="bum-val">0${sfx}</span><span class="bum-label">${lbl}</span>`;
-                    const numEl = el.querySelector('.bum-val');
-                    new IntersectionObserver(entries => {
-                        if (!entries[0].isIntersecting) return;
-                        let cur = 0;
-                        const step = Math.max(1, Math.floor(val / 40));
-                        const tick = setInterval(() => {
-                            cur = Math.min(cur + step, val);
-                            numEl.textContent = cur + sfx;
-                            if (cur >= val) clearInterval(tick);
-                        }, 30);
-                    }, { threshold: 0.5 }).observe(el);
-                });
-
-                window.addEventListener('resize', () => {
-                    W = wrap.clientWidth || 600; H = wrap.clientHeight || 560;
-                    camera.aspect = W / H; camera.updateProjectionMatrix();
-                    renderer.setSize(W, H);
-                }, { passive: true });
-            })();
-
-
-            // ============================================================
-            //  FASE 2 #3: PORTFOLIO CARD — CURSOR-REACTIVE WATER RIPPLE
-            //  Dynamic fluid wave that reacts in real-time to cursor speed & position
-            // ============================================================
-            (function initPortfolioRipple() {
-                if (window.matchMedia('(pointer: coarse)').matches) return;
-
-                const dispMap    = document.getElementById('water-disp');
-                const turbulence = document.getElementById('water-turbulence');
-                if (!dispMap || !turbulence) return;
-
-                let currentScale = 0;
-                let targetScale  = 0;
-                let activeImg    = null;
-                let animId       = null;
-                let t            = 0;
-
-                // Mouse tracking state for real-time cursor reactivity
-                let lastX    = 0, lastY = 0;
-                let mouseVel = 0;
-                let normX    = 0.5, normY = 0.5;
-
-                function renderRipple() {
-                    t += 0.015;
-
-                    // Mouse velocity decays naturally like fluid drag
-                    mouseVel *= 0.91;
-
-                    // Dynamic scale: base scale (10) + velocity impulse from mouse movement (up to +20)
-                    const activeTarget = targetScale > 0 ? (10 + Math.min(20, mouseVel * 1.3)) : 0;
-                    currentScale += (activeTarget - currentScale) * 0.1;
-
-                    if (currentScale > 0.1 && activeImg) {
-                        // Fluid wave pulse driven by cursor activity
-                        const wave = currentScale * (1 + Math.sin(t * 2.5) * 0.15);
-                        dispMap.setAttribute('scale', wave.toFixed(2));
-
-                        // Wave frequency dynamically follows normalized mouse position on the card
-                        const freqX = (0.009 + normX * 0.014 + Math.sin(t * 1.5) * 0.003).toFixed(4);
-                        const freqY = (0.013 + normY * 0.016 + Math.cos(t * 1.2) * 0.003).toFixed(4);
-                        turbulence.setAttribute('baseFrequency', `${freqX} ${freqY}`);
-
-                        animId = requestAnimationFrame(renderRipple);
-                    } else {
-                        dispMap.setAttribute('scale', '0');
-                        if (activeImg) {
-                            activeImg.style.filter = '';
-                            activeImg = null;
-                        }
-                        animId = null;
-                    }
-                }
-
-                document.querySelectorAll('.card').forEach(card => {
-                    const imgEl = card.querySelector('img');
-                    if (!imgEl) return;
-
-                    card.addEventListener('mouseenter', (e) => {
-                        if (activeImg && activeImg !== imgEl) {
-                            activeImg.style.filter = '';
-                        }
-                        activeImg = imgEl;
-                        activeImg.style.filter = 'url(#water-ripple-filter)';
-                        targetScale = 10;
-                        lastX = e.clientX;
-                        lastY = e.clientY;
-                        mouseVel = 6; // Splash impulse when cursor enters card
-                        if (!animId) animId = requestAnimationFrame(renderRipple);
-                    });
-
-                    card.addEventListener('mousemove', (e) => {
-                        const rect = card.getBoundingClientRect();
-                        normX = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-                        normY = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
-
-                        // Calculate cursor movement speed
-                        const dx = e.clientX - lastX;
-                        const dy = e.clientY - lastY;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        mouseVel = Math.max(mouseVel, dist);
-
-                        lastX = e.clientX;
-                        lastY = e.clientY;
-                    });
-
-                    card.addEventListener('mouseleave', () => {
-                        if (activeImg === imgEl) {
-                            targetScale = 0; // Smoothly fade out when cursor leaves
-                        }
-                    });
-                });
-            })();
-
-            // ============================================================
-            //  PHILOSOPHY ENGINE v2 — CANVAS CENTRALIZADO + OPTIMIZADO
-            //  Arquitectura: UN loop maestro, renderiza solo el canvas activo
-            //  Cap1: Caos Digital (Canvas2D, 60 particulas, throttled)
-            //  Cap2: Cristal Dodecaedro (Three.js, lazy-init)
-            //  Cap3: Red Neuronal (Three.js, lazy-init)
-            // ============================================================
-            (function initPhilosophyEngine() {
-
-                // ---- Estado central ----
-                let activeCanvas = 1;    // 1, 2, o 3
-                let sectionVisible = false;
-                let masterRafId = null;
-                let masterRunning = false;
-                const container = document.querySelector('.ph-col-right');
-
-                // ---- Exponer switchPhCanvas globalmente ----
-                window.switchPhCanvas = function(n) {
-                    if (activeCanvas === n) return;
-                    activeCanvas = n;
-                    document.querySelectorAll('.ph-chapter-canvas').forEach((c, i) => {
-                        c.classList.toggle('active', i + 1 === n);
-                    });
-                    // Resize el canvas que acaba de activarse
-                    if (n === 2 && crystal) crystal.resize();
-                    if (n === 3 && neural)  neural.resize();
-                };
-                window._phCanvasActive = 1;
-                const origSwitch = window.switchPhCanvas;
-                window.switchPhCanvas = function(n) {
-                    window._phCanvasActive = n;
-                    origSwitch(n);
-                };
-
-                // ---- CAP 01: CAOS DIGITAL (Canvas 2D) ----
-                const chaos = (function() {
-                    const cvs = document.getElementById('ph-canvas-1');
-                    if (!cvs) return null;
-                    const ctx = cvs.getContext('2d');
-                    const CHARS = '01xyzABC#@!%<>{}|*+-=?~'.split('');
-                    const RED = '#e74c3c', AMBER = '#e67e22', DIM = 'rgba(200,50,30,0.22)';
-                    let W = 1, H = 1, particles = null;
-                    const N = 60; // reduced for perf
-                    let lastDraw = 0;
-                    const THROTTLE = 33; // ~30fps cap for Canvas2D
-
-                    function resize() {
-                        if (!container) return;
-                        W = cvs.width  = container.clientWidth  || 350;
-                        H = cvs.height = container.clientHeight || 350;
-                    }
-
-                    function mkP() {
-                        return {
-                            x: Math.random() * W, y: Math.random() * H,
-                            ch: CHARS[Math.floor(Math.random() * CHARS.length)],
-                            sz: 8 + Math.random() * 10,
-                            vx: (Math.random() - 0.5) * 0.7,
-                            vy: (Math.random() - 0.5) * 0.7,
-                            al: 0.2 + Math.random() * 0.55,
-                            life: Math.random() * 180, maxLife: 140 + Math.random() * 160,
-                            col: Math.random() > 0.4 ? DIM : (Math.random() > 0.5 ? RED : AMBER)
-                        };
-                    }
-
-                    function draw(ts) {
-                        if (ts - lastDraw < THROTTLE) return; // throttle
-                        lastDraw = ts;
-                        ctx.fillStyle = 'rgba(5,5,5,0.2)';
-                        ctx.fillRect(0, 0, W, H);
-                        for (const p of particles) {
-                            p.life++;
-                            if (p.life > p.maxLife) { Object.assign(p, mkP()); p.x = Math.random()*W; p.y = Math.random()*H; }
-                            p.x += p.vx + Math.sin(p.life * 0.04) * 0.25;
-                            p.y += p.vy + Math.cos(p.life * 0.033) * 0.25;
-                            if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-                            if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
-                            const fade = Math.sin((p.life / p.maxLife) * Math.PI);
-                            ctx.globalAlpha = p.al * fade;
-                            ctx.fillStyle = (Math.random() < 0.006) ? '#ffffff' : p.col;
-                            ctx.font = p.sz + 'px monospace';
-                            ctx.fillText(p.ch, p.x, p.y);
-                        }
-                        ctx.globalAlpha = 1;
-                    }
-
-                    function init() {
-                        resize();
-                        if (!particles) particles = Array.from({ length: N }, mkP);
-                        window.addEventListener('resize', resize);
-                    }
-                    init();
-                    return { draw, resize };
-                })();
-
-                // ---- CAP 02: CRISTAL THREE.JS (lazy-init) ----
-                let crystal = null;
-                function initCrystal() {
-                    if (crystal || typeof THREE === 'undefined') return;
-                    const cvs = document.getElementById('ph-canvas-2');
-                    if (!cvs) return;
-                    const scene  = new THREE.Scene();
-                    const cam    = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-                    cam.position.z = 6.5;
-                    const rend = new THREE.WebGLRenderer({ canvas: cvs, antialias: false, alpha: true });
-                    rend.setPixelRatio(Math.min(window.devicePixelRatio, 1.3));
-
-                    const col = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
-                    const geo   = new THREE.DodecahedronGeometry(1.65, 0);
-                    const edges = new THREE.EdgesGeometry(geo);
-                    const mat   = new THREE.LineBasicMaterial({ color: new THREE.Color(col), transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
-                    const wire  = new THREE.LineSegments(edges, mat);
-                    const igeo  = new THREE.OctahedronGeometry(0.85, 0);
-                    const imat  = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending });
-                    const inner = new THREE.LineSegments(new THREE.EdgesGeometry(igeo), imat);
-                    const core  = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8),
-                        new THREE.MeshBasicMaterial({ color: new THREE.Color(col), transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending }));
-
-                    // Photons — 12 only for perf
-                    const PCOUNT = 12;
-                    const pGeo = new THREE.BufferGeometry();
-                    const pPos = new Float32Array(PCOUNT * 3);
-                    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-                    const pMat  = new THREE.PointsMaterial({ color: 0xffffff, size: 0.07, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false });
-                    const pPts  = new THREE.Points(pGeo, pMat);
-
-                    const eArr = edges.getAttribute('position').array;
-                    const eCnt = eArr.length / 6;
-                    const pData = Array.from({ length: PCOUNT }, () => {
-                        const ei = Math.floor(Math.random() * eCnt) * 6;
-                        return { ax: eArr[ei], ay: eArr[ei+1], az: eArr[ei+2], bx: eArr[ei+3], by: eArr[ei+4], bz: eArr[ei+5], t: Math.random(), sp: 0.009 + Math.random() * 0.011 };
-                    });
-
-                    const grp = new THREE.Group();
-                    grp.add(wire, inner, core, pPts);
-                    scene.add(grp);
-                    const clk = new THREE.Clock();
-                    let mx = 0, my = 0, tx = 0, ty = 0;
-                    if (container) {
-                        container.addEventListener('mousemove', e => {
-                            const r = container.getBoundingClientRect();
-                            tx = ((e.clientX - r.left) / r.width  - 0.5) * 0.55;
-                            ty = ((e.clientY - r.top)  / r.height - 0.5) * 0.55;
-                        });
-                        container.addEventListener('mouseleave', () => { tx = 0; ty = 0; });
-                    }
-
-                    function draw() {
-                        const t = clk.getElapsedTime();
-                        mx += (tx - mx) * 0.07; my += (ty - my) * 0.07;
-                        grp.rotation.y  = t * 0.11 + mx;
-                        grp.rotation.x  = t * 0.065 + my;
-                        inner.rotation.y = -t * 0.21;
-                        inner.rotation.z =  t * 0.13;
-                        core.material.opacity = 0.55 + Math.sin(t * 3.8) * 0.3;
-                        pData.forEach((p, i) => {
-                            p.t += p.sp;
-                            if (p.t > 1) { p.t = 0; const ei = Math.floor(Math.random() * eCnt) * 6; p.ax=eArr[ei];p.ay=eArr[ei+1];p.az=eArr[ei+2];p.bx=eArr[ei+3];p.by=eArr[ei+4];p.bz=eArr[ei+5]; }
-                            pPos[i*3]   = p.ax + (p.bx-p.ax)*p.t;
-                            pPos[i*3+1] = p.ay + (p.by-p.ay)*p.t;
-                            pPos[i*3+2] = p.az + (p.bz-p.az)*p.t;
-                        });
-                        pGeo.getAttribute('position').needsUpdate = true;
-                        rend.render(scene, cam);
-                    }
-
-                    function resize() {
-                        if (!container) return;
-                        const w = container.clientWidth || 350;
-                        const h = container.clientHeight || 350;
-                        cam.aspect = w / h;
-                        cam.updateProjectionMatrix();
-                        rend.setSize(w, h);
-                    }
-                    window.addEventListener('resize', resize);
-                    resize();
-                    crystal = { draw, resize };
-                }
-
-                // ---- CAP 03: RED NEURONAL THREE.JS (lazy-init) ----
-                let neural = null;
-                function initNeural() {
-                    if (neural || typeof THREE === 'undefined') return;
-                    const cvs = document.getElementById('ph-canvas-3');
-                    if (!cvs) return;
-                    const scene = new THREE.Scene();
-                    const cam   = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
-                    cam.position.z = 7;
-                    const rend = new THREE.WebGLRenderer({ canvas: cvs, antialias: false, alpha: true });
-                    rend.setPixelRatio(Math.min(window.devicePixelRatio, 1.3));
-
-                    const col = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#11d483';
-
-                    // Nodos — 22 para perf
-                    const NODES = 22;
-                    const nodePos = [], nodeMeshes = [];
-                    const nGrp = new THREE.Group();
-
-                    for (let i = 0; i < NODES; i++) {
-                        const theta = Math.acos(1 - 2*(i+0.5)/NODES);
-                        const phi   = Math.PI * (1 + Math.sqrt(5)) * i;
-                        const r = 2.2 + Math.random() * 0.7;
-                        const v = new THREE.Vector3(r*Math.sin(theta)*Math.cos(phi), r*Math.sin(theta)*Math.sin(phi), r*Math.cos(theta));
-                        nodePos.push(v);
-                        const m = new THREE.Mesh(
-                            new THREE.SphereGeometry(0.055 + Math.random() * 0.04, 6, 6),
-                            new THREE.MeshBasicMaterial({ color: new THREE.Color(col), transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending })
-                        );
-                        m.position.copy(v);
-                        nGrp.add(m);
-                        nodeMeshes.push(m);
-                    }
-
-                    // Axones
-                    const MAX_D = 2.5;
-                    const axonLines = [];
-                    nodePos.forEach((a, i) => nodePos.forEach((b, j) => { if (j > i && a.distanceTo(b) < MAX_D) axonLines.push([i,j]); }));
-                    const aCnt = axonLines.length;
-                    const aPosArr = new Float32Array(aCnt * 6);
-                    axonLines.forEach(([a,b],idx) => {
-                        aPosArr[idx*6]=nodePos[a].x;aPosArr[idx*6+1]=nodePos[a].y;aPosArr[idx*6+2]=nodePos[a].z;
-                        aPosArr[idx*6+3]=nodePos[b].x;aPosArr[idx*6+4]=nodePos[b].y;aPosArr[idx*6+5]=nodePos[b].z;
-                    });
-                    const aGeo = new THREE.BufferGeometry();
-                    aGeo.setAttribute('position', new THREE.BufferAttribute(aPosArr, 3));
-                    const aLines = new THREE.LineSegments(aGeo, new THREE.LineBasicMaterial({ color: new THREE.Color(col), transparent: true, opacity: 0.11, blending: THREE.AdditiveBlending }));
-                    nGrp.add(aLines);
-
-                    // Pulsos — 8 para perf
-                    const PULSES = 8;
-                    const pGeo = new THREE.BufferGeometry();
-                    const pPos = new Float32Array(PULSES * 3);
-                    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-                    const pPts = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.1, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false }));
-                    nGrp.add(pPts);
-                    const pData = Array.from({ length: PULSES }, () => ({ ai: Math.floor(Math.random()*aCnt), t: Math.random(), sp: 0.007+Math.random()*0.009 }));
-
-                    scene.add(nGrp);
-                    const clk = new THREE.Clock();
-
-                    function draw() {
-                        const t = clk.getElapsedTime();
-                        nGrp.rotation.y = t * 0.065;
-                        nGrp.rotation.x = Math.sin(t * 0.14) * 0.10;
-                        nodeMeshes.forEach((m, i) => {
-                            const s = 1 + 0.13 * Math.sin(t * 2.3 + i * 0.85);
-                            m.scale.setScalar(s);
-                            m.material.opacity = 0.7 + 0.25 * Math.sin(t * 2.1 + i * 0.9);
-                        });
-                        pData.forEach((p, pi) => {
-                            p.t += p.sp;
-                            if (p.t > 1) { p.t = 0; p.ai = Math.floor(Math.random() * aCnt); }
-                            const [ai, bi] = axonLines[p.ai];
-                            const tempPulseVec = new THREE.Vector3(); tempPulseVec.copy(nodePos[ai]).lerp(nodePos[bi], p.t); const np = tempPulseVec;
-                            pPos[pi*3]=np.x; pPos[pi*3+1]=np.y; pPos[pi*3+2]=np.z;
-                        });
-                        pGeo.getAttribute('position').needsUpdate = true;
-                        rend.render(scene, cam);
-                    }
-
-                    function resize() {
-                        if (!container) return;
-                        const w = container.clientWidth || 350;
-                        const h = container.clientHeight || 350;
-                        cam.aspect = w / h;
-                        cam.updateProjectionMatrix();
-                        rend.setSize(w, h);
-                    }
-                    window.addEventListener('resize', resize);
-                    resize();
-                    neural = { draw, resize };
-                }
-
-                // ---- MASTER LOOP — Solo renderiza el canvas activo ----
-                function masterLoop(ts) {
-                    if (!masterRunning) return;
-                    masterRafId = requestAnimationFrame(masterLoop);
-                    const ac = activeCanvas;
-
-                    if (ac === 1 && chaos) {
-                        chaos.draw(ts);
-                    } else if (ac === 2) {
-                        if (!crystal) initCrystal();
-                        if (crystal) crystal.draw();
-                    } else if (ac === 3) {
-                        if (!neural) initNeural();
-                        if (neural) neural.draw();
-                    }
-                }
-
-                function startMaster() {
-                    if (masterRunning) return;
-                    masterRunning = true;
-                    masterRafId = requestAnimationFrame(masterLoop);
-                }
-
-                function stopMaster() {
-                    masterRunning = false;
-                    if (masterRafId) { cancelAnimationFrame(masterRafId); masterRafId = null; }
-                }
-
-                // ---- Observer en el CONTENEDOR (no en los canvas individuales) ----
-                if (container) {
-                    const obs = new IntersectionObserver(entries => {
-                        sectionVisible = entries[0].isIntersecting;
-                        if (sectionVisible) startMaster();
-                        else stopMaster();
-                    }, { threshold: 0.01 });
-                    obs.observe(container);
-                }
-
-                document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) stopMaster();
-                    else if (sectionVisible) startMaster();
-                });
-
-                window.addEventListener('resize', () => {
-                    if (chaos) chaos.resize();
-                    if (crystal && activeCanvas === 2) crystal.resize();
-                    if (neural  && activeCanvas === 3) neural.resize();
-                });
-
-            })();
-
-
-
-
-
-
-
-
-
+            // Philosophy engine legacy stub for backward compatibility
+    window.switchPhCanvas = function() {};
+    window._phCanvasActive = 1;
 
     function init3DCore() {
         
@@ -2965,253 +2017,306 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.18;
         container.appendChild(renderer.domElement);
 
         // ====================================================================
-        // LUSION / ARISTIDE BENOIST LUXURY 3D CENTERPIECE
-        // Liquid Obsidian Glass Parametric Monolith with Real-time Specular Physics
+        // AWWWARDS SOTY MASTERPIECE: THE VANTA OBSIDIAN MONOLITH & QUANTUM CORE
+        // Procedural Studio IBL + Multi-Faceted Creased Blades + Optical Crystal
         // ====================================================================
 
-        // 1. Studio Lighting System (High-End Chiaroscuro Cinematic Lighting)
-        // Deep, moody ambient light to preserve velvety obsidian shadows
-        const ambientLight = new THREE.AmbientLight(0x020504, 0.35);
+        // --- 1. PROCEDURAL STUDIO ENVIRONMENT MAP (High-End IBL Specular Highlights) ---
+        function createStudioEnvironment(rendererInstance) {
+            const pmremGenerator = new THREE.PMREMGenerator(rendererInstance);
+            pmremGenerator.compileEquirectangularShader();
+
+            const c = document.createElement('canvas');
+            c.width = 1024;
+            c.height = 512;
+            const ctx = c.getContext('2d');
+
+            // Deep studio obsidian background with soft vertical vignette
+            const bgG = ctx.createLinearGradient(0, 0, 0, 512);
+            bgG.addColorStop(0, '#04070a');
+            bgG.addColorStop(0.5, '#020406');
+            bgG.addColorStop(1, '#010203');
+            ctx.fillStyle = bgG;
+            ctx.fillRect(0, 0, 1024, 512);
+
+            // Overhead Softbox (pure diffuse white with emerald falloff)
+            const topG = ctx.createLinearGradient(0, 0, 0, 160);
+            topG.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
+            topG.addColorStop(0.4, 'rgba(210, 245, 230, 0.6)');
+            topG.addColorStop(1, 'rgba(2, 4, 6, 0.0)');
+            ctx.fillStyle = topG;
+            ctx.fillRect(200, 0, 624, 160);
+
+            // Left Key Light (slanted architectural slit with crisp emerald laser ribbon)
+            ctx.save();
+            ctx.translate(220, 260);
+            ctx.rotate(-0.25);
+            const leftKey = ctx.createLinearGradient(-40, 0, 40, 0);
+            leftKey.addColorStop(0, 'rgba(0,0,0,0)');
+            leftKey.addColorStop(0.5, 'rgba(17, 212, 131, 0.95)');
+            leftKey.addColorStop(0.8, 'rgba(255, 255, 255, 0.9)');
+            leftKey.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = leftKey;
+            ctx.fillRect(-60, -180, 120, 360);
+            ctx.restore();
+
+            // Right Rim Light (razor-sharp white diamond specular highlight)
+            ctx.save();
+            ctx.translate(820, 240);
+            ctx.rotate(0.3);
+            const rightRim = ctx.createLinearGradient(-35, 0, 35, 0);
+            rightRim.addColorStop(0, 'rgba(0,0,0,0)');
+            rightRim.addColorStop(0.4, 'rgba(255, 255, 255, 0.95)');
+            rightRim.addColorStop(0.7, 'rgba(0, 229, 255, 0.7)');
+            rightRim.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = rightRim;
+            ctx.fillRect(-50, -180, 100, 360);
+            ctx.restore();
+
+            // Bottom ground bounce
+            const btmG = ctx.createLinearGradient(0, 400, 0, 512);
+            btmG.addColorStop(0, 'rgba(0,0,0,0)');
+            btmG.addColorStop(1, 'rgba(17, 212, 131, 0.25)');
+            ctx.fillStyle = btmG;
+            ctx.fillRect(0, 400, 1024, 112);
+
+            const tex = new THREE.CanvasTexture(c);
+            tex.mapping = THREE.EquirectangularReflectionMapping;
+            const envMap = pmremGenerator.fromEquirectangular(tex).texture;
+            pmremGenerator.dispose();
+            return envMap;
+        }
+
+        scene.environment = createStudioEnvironment(renderer);
+
+        // --- 2. STUDIO LIGHTING SYSTEM ---
+        const ambientLight = new THREE.AmbientLight(0x020704, 0.75);
         scene.add(ambientLight);
 
-        // Key Light: Pure Emerald Specular Glint (Angled from top-right)
-        const keyLight = new THREE.DirectionalLight(0x10b981, 4.2);
-        keyLight.position.set(5.0, 5.0, 4.5);
+        const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
+        keyLight.position.set(4.5, 5.5, 4.0);
         scene.add(keyLight);
 
-        // Rim Light: Diamond White Sharp Specular (from top-rear to carve brilliant crystalline silhouette)
-        const topLight = new THREE.DirectionalLight(0xffffff, 3.2);
+        const topLight = new THREE.DirectionalLight(0xffffff, 2.5);
         topLight.position.set(-2.0, 6.5, 3.0);
         scene.add(topLight);
 
-        // Fill Light: Deep Cyan-Emerald Edge Reflection (from bottom-left)
-        const fillLight = new THREE.DirectionalLight(0x059669, 1.8);
+        const fillLight = new THREE.DirectionalLight(0x059669, 2.2);
         fillLight.position.set(-5.0, -3.5, 2.0);
         scene.add(fillLight);
 
-        // Front Subtle Glimmer Light
-        const frontLight = new THREE.DirectionalLight(0x34d399, 1.0);
+        const frontLight = new THREE.DirectionalLight(0x34d399, 1.2);
         frontLight.position.set(0, 0, 6.0);
         scene.add(frontLight);
 
-        // Interactive Cursor Point Light (follows mouse with emerald specular radiance)
-        const cursorPointLight = new THREE.PointLight(0x10b981, 3.2, 12, 1.6);
-        cursorPointLight.position.set(0, 0, 3.8);
+        const cursorPointLight = new THREE.PointLight(0x11d483, 2.8, 12, 1.8);
+        cursorPointLight.position.set(0, 0, 4.0);
         scene.add(cursorPointLight);
 
-        // ====================================================================
-        // 2. MONOLITO ESCULTURAL VANTA V — (AWWWARDS SOTY SIGNATURE MASTERPIECE)
-        // High-Precision Architectural Chevron forged in Obsidian, Titanium & Optical Emerald Crystal
-        // ====================================================================
-
-        // A. Monolithic Architectural "V" Chevron Geometry
-        const vShape = new THREE.Shape();
-        // Exact muscular athletic proportions matching the VANTA brand insignia:
-        vShape.moveTo(0, -1.26);       // Outer bottom apex
-        vShape.lineTo(-1.38, 0.95);    // Outer left arm upward
-        vShape.lineTo(-0.76, 0.95);    // Top left chamfered horizontal cut
-        vShape.lineTo(0, -0.28);       // Inner notch apex
-        vShape.lineTo(0.76, 0.95);     // Top right chamfered horizontal cut
-        vShape.lineTo(1.38, 0.95);     // Outer right arm upward
-        vShape.closePath();
-
-        const vExtrudeSettings = {
-            depth: 0.38,
-            bevelEnabled: true,
-            bevelThickness: 0.08,
-            bevelSize: 0.065,
-            bevelSegments: 4
-        };
-        const vGeometry = new THREE.ExtrudeGeometry(vShape, vExtrudeSettings);
-        vGeometry.center(); // Center pivot perfectly at mass centroid
-
-        // Liquid Obsidian & High-Refractive Emerald Physical Material
-        // Smooth velvety dark mass preserves typography contrast,
-        // while micro-beveled laser edges catch brilliant emerald and diamond glints.
+        // --- 3. GEOMETRY: THE MONOLITHIC OBSIDIAN CHEVRON ---
         const vMonolithMat = new THREE.MeshPhysicalMaterial({
-            color: 0x020704,             // Deep liquid obsidian-emerald velvet
-            emissive: 0x021c10,          // Internal quantum luminescence
-            emissiveIntensity: 0.45,
-            roughness: 0.07,             // Diamond mirror polish
-            metalness: 0.58,             // Dark titanium luster
-            clearcoat: 1.0,              // Optical grade lacquer
+            color: 0x010403,
+            emissive: 0x02150b,
+            emissiveIntensity: 0.35,
+            roughness: 0.12,
+            metalness: 0.85,
+            clearcoat: 1.0,
             clearcoatRoughness: 0.04,
-            reflectivity: 0.98,
-            ior: 1.74,                   // Emerald refractive index
+            reflectivity: 1.0,
+            ior: 1.78,
             transparent: true,
-            opacity: 0.92,
-            flatShading: false
+            opacity: 0.95,
+            envMapIntensity: 2.8
         });
-        const vMonolithMesh = new THREE.Mesh(vGeometry, vMonolithMat);
-        vMonolithMesh.rotation.set(0.38, 0.32, 0.12);
-
-        // Alias for compatibility with entrance flash & scrolly animations
-        const sculptureMesh = vMonolithMesh;
         const sculptureMat = vMonolithMat;
 
-        // B. Internal Fiber-Optic Energy Conduit (Laser Data Pulse Channel)
-        const conduitCurve = new THREE.CatmullRomCurve3([
-            new THREE.Vector3(-1.05, 0.90, 0.04),
-            new THREE.Vector3(0, -0.68, 0.04),
-            new THREE.Vector3(1.05, 0.90, 0.04)
-        ]);
-        const conduitGeo = new THREE.TubeGeometry(conduitCurve, 48, 0.038, 12, false);
-        const conduitMat = new THREE.MeshStandardMaterial({
-            color: 0x059669,
-            emissive: 0x11d483,
-            emissiveIntensity: 2.8,
-            roughness: 0.12,
-            metalness: 0.3,
-            transparent: true,
-            opacity: 0.95
-        });
-        const conduitMesh = new THREE.Mesh(conduitGeo, conduitMat);
-
-        // Traveling Photon Packet (Quantum pulse streaming along the V conduit)
-        const photonGeo = new THREE.SphereGeometry(0.085, 16, 16);
-        const photonMat = new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            transparent: true,
-            opacity: 0.95
-        });
-        const photonMesh = new THREE.Mesh(photonGeo, photonMat);
-
-        const innerCoreGroup = new THREE.Group();
-        innerCoreGroup.add(conduitMesh);
-        innerCoreGroup.add(photonMesh);
-
-        // Internal Quantum Core Glow Light (illuminates the monolith from within)
-        const innerCoreLight = new THREE.PointLight(0x10b981, 4.2, 8.5, 1.6);
-        innerCoreLight.position.set(0, -0.25, 0.1);
-
-        // C. Outer Rhombic Prism Exoskeleton (Titanium & Crystalline Framework matching the preloader crest)
-        const rhombusGroup = new THREE.Group();
-        const rTop = new THREE.Vector3(0, 2.15, 0);
-        const rRight = new THREE.Vector3(2.05, 0, 0);
-        const rBottom = new THREE.Vector3(0, -2.15, 0);
-        const rLeft = new THREE.Vector3(-2.05, 0, 0);
-
-        // Rhombus perimeter struts
-        const createStrut = (p1, p2) => {
-            const distance = p1.distanceTo(p2);
-            const strutGeo = new THREE.CylinderGeometry(0.016, 0.016, distance, 8);
-            const strutMat = new THREE.MeshStandardMaterial({
-                color: 0x0c1e15,
-                metalness: 0.88,
-                roughness: 0.22,
-                emissive: 0x064e3b,
-                emissiveIntensity: 0.25
-            });
-            const strut = new THREE.Mesh(strutGeo, strutMat);
-            const mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
-            strut.position.copy(mid);
-            const dir = new THREE.Vector3().subVectors(p2, p1).normalize();
-            strut.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
-            return strut;
-        };
-
-        rhombusGroup.add(createStrut(rTop, rRight));
-        rhombusGroup.add(createStrut(rRight, rBottom));
-        rhombusGroup.add(createStrut(rBottom, rLeft));
-        rhombusGroup.add(createStrut(rLeft, rTop));
-
-        // Polar Antenna Notches (Signature vertical calibration lines at top & bottom of crest)
-        const notchTopGeo = new THREE.CylinderGeometry(0.018, 0.018, 0.45, 8);
-        const notchMat = new THREE.MeshStandardMaterial({
+        const edgeLineMat = new THREE.LineBasicMaterial({
             color: 0x11d483,
-            emissive: 0x11d483,
-            emissiveIntensity: 1.8,
-            roughness: 0.2
-        });
-        const notchTop = new THREE.Mesh(notchTopGeo, notchMat);
-        notchTop.position.set(0, 2.38, 0);
-        rhombusGroup.add(notchTop);
-
-        const notchBottom = new THREE.Mesh(notchTopGeo, notchMat);
-        notchBottom.position.set(0, -2.38, 0);
-        rhombusGroup.add(notchBottom);
-
-        // Corner Gem Beads on the Rhombus vertices
-        const gemGeo = new THREE.OctahedronGeometry(0.065, 0);
-        const gemMat = new THREE.MeshStandardMaterial({
-            color: 0x34d399,
-            emissive: 0x10b981,
-            emissiveIntensity: 2.0,
-            roughness: 0.1
-        });
-        [rTop, rRight, rBottom, rLeft].forEach(pos => {
-            const gem = new THREE.Mesh(gemGeo, gemMat);
-            gem.position.copy(pos);
-            rhombusGroup.add(gem);
-        });
-
-        // D. Swiss Horology Dual Gyroscope System (High-End Precision Instrument Rings)
-        const orbitalGroup = new THREE.Group();
-        orbitalGroup.rotation.x = Math.PI / 2.35; // Shallow horizon tilt
-        orbitalGroup.rotation.y = -Math.PI / 16;
-
-        // 1. Primary Equatorial Precision Ring (Satin Titanium with Cardinal Calibration Satellites)
-        const ring1Geo = new THREE.TorusGeometry(2.55, 0.009, 16, 128);
-        const ring1Mat = new THREE.MeshStandardMaterial({
-            color: 0x0d281e,
-            emissive: 0x11d483,
-            emissiveIntensity: 0.45,
-            metalness: 0.92,
-            roughness: 0.18,
             transparent: true,
-            opacity: 0.65
-        });
-        const primaryRing = new THREE.Mesh(ring1Geo, ring1Mat);
-        orbitalGroup.add(primaryRing);
-
-        // Cardinal Watchmaker Ticks orbiting along primary ring
-        const tickGeo = new THREE.BoxGeometry(0.02, 0.055, 0.02);
-        const tickMat = new THREE.MeshBasicMaterial({
-            color: 0x6ee7b7,
-            transparent: true,
-            opacity: 0.85
-        });
-        const numTicks = 12;
-        for (let i = 0; i < numTicks; i++) {
-            const angle = (i / numTicks) * Math.PI * 2;
-            const tick = new THREE.Mesh(tickGeo, tickMat);
-            tick.position.set(Math.cos(angle) * 2.55, Math.sin(angle) * 2.55, 0);
-            tick.rotation.z = angle;
-            orbitalGroup.add(tick);
-        }
-
-        // 2. Secondary Inclined Polar Gimbal Ring (Additive Emerald Hairline Axis)
-        const gimbalGroup = new THREE.Group();
-        gimbalGroup.rotation.x = Math.PI / 3.4;
-        gimbalGroup.rotation.z = Math.PI / 4.2;
-
-        const ring2Geo = new THREE.TorusGeometry(2.82, 0.0055, 16, 128);
-        const ring2Mat = new THREE.MeshBasicMaterial({
-            color: 0x34d399,
-            transparent: true,
-            opacity: 0.32,
+            opacity: 0.60,
             blending: THREE.AdditiveBlending
         });
-        const secondaryRing = new THREE.Mesh(ring2Geo, ring2Mat);
-        gimbalGroup.add(secondaryRing);
 
-        // Master Group Assembly
+        function createCreasedBlade(isLeft) {
+            const geom = new THREE.BufferGeometry();
+            const sign = isLeft ? -1 : 1;
+
+            const slices = [
+                { y: -1.35, w: 0.26, t: 0.28, x: 0.14 * sign },
+                { y: -0.60, w: 0.48, t: 0.42, x: 0.52 * sign },
+                { y: 0.35,  w: 0.68, t: 0.52, x: 1.05 * sign },
+                { y: 1.20,  w: 0.62, t: 0.44, x: 1.58 * sign },
+                { y: 1.80,  w: 0.52, t: 0.32, x: 1.98 * sign }
+            ];
+
+            const positions = [];
+
+            function pt(slice, type) {
+                const x0 = slice.x;
+                const y0 = slice.y;
+                const w = slice.w;
+                const t = slice.t;
+                if (type === 'F') return [x0, y0, t * 0.55];
+                if (type === 'B') return [x0, y0, -t * 0.55];
+                if (type === 'O') return [x0 + w * 0.68 * sign, y0, 0];
+                if (type === 'I') return [x0 - w * 0.32 * sign, y0, 0];
+            }
+
+            function addQuad(p1, p2, p3, p4) {
+                positions.push(...p1, ...p2, ...p3);
+                positions.push(...p1, ...p3, ...p4);
+            }
+
+            for (let i = 0; i < slices.length - 1; i++) {
+                const s0 = slices[i];
+                const s1 = slices[i + 1];
+
+                const f0 = pt(s0, 'F'), f1 = pt(s1, 'F');
+                const o0 = pt(s0, 'O'), o1 = pt(s1, 'O');
+                const b0 = pt(s0, 'B'), b1 = pt(s1, 'B');
+                const i0 = pt(s0, 'I'), i1 = pt(s1, 'I');
+
+                if (isLeft) {
+                    addQuad(f0, o0, o1, f1);
+                    addQuad(f0, f1, i1, i0);
+                    addQuad(b0, b1, o1, o0);
+                    addQuad(b0, i0, i1, b1);
+                } else {
+                    addQuad(f0, f1, o1, o0);
+                    addQuad(f0, i0, i1, f1);
+                    addQuad(b0, o0, o1, b1);
+                    addQuad(b0, b1, i1, i0);
+                }
+            }
+
+            // Bottom Apex Cap
+            const apex = slices[0];
+            const af = pt(apex, 'F'), ao = pt(apex, 'O'), ab = pt(apex, 'B'), ai = pt(apex, 'I');
+            if (isLeft) addQuad(af, ao, ab, ai);
+            else addQuad(af, ai, ab, ao);
+
+            // Top Wing Tip Cap
+            const tip = slices[slices.length - 1];
+            const tf = pt(tip, 'F'), to = pt(tip, 'O'), tb = pt(tip, 'B'), ti = pt(tip, 'I');
+            if (isLeft) addQuad(tf, ti, tb, to);
+            else addQuad(tf, to, tb, ti);
+
+            geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geom.computeVertexNormals();
+            return geom;
+        }
+
+        const leftGeo = createCreasedBlade(true);
+        const rightGeo = createCreasedBlade(false);
+
+        const leftBlade = new THREE.Mesh(leftGeo, vMonolithMat);
+        const rightBlade = new THREE.Mesh(rightGeo, vMonolithMat);
+
+        const leftEdges = new THREE.LineSegments(new THREE.EdgesGeometry(leftGeo, 28), edgeLineMat);
+        const rightEdges = new THREE.LineSegments(new THREE.EdgesGeometry(rightGeo, 28), edgeLineMat);
+        leftBlade.add(leftEdges);
+        rightBlade.add(rightEdges);
+
+        const bladesGroup = new THREE.Group();
+        bladesGroup.add(leftBlade);
+        bladesGroup.add(rightBlade);
+        const vMonolithMesh = bladesGroup;
+        const sculptureMesh = bladesGroup;
+
+        // --- 4. FLOATING OPTICAL QUANTUM SINGULARITY CORE ---
+        const coreGeo = new THREE.OctahedronGeometry(0.28, 0);
+        const coreMat = new THREE.MeshPhysicalMaterial({
+            color: 0x01150b,
+            emissive: 0x059669,
+            emissiveIntensity: 0.95,
+            roughness: 0.02,
+            metalness: 0.1,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.02,
+            ior: 2.4,
+            transparent: true,
+            opacity: 0.85,
+            envMapIntensity: 3.5
+        });
+        const conduitMat = coreMat;
+        const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+        coreMesh.position.set(0, 0.38, 0.05);
+
+        const photonMesh = coreMesh;
+        const innerCoreGroup = new THREE.Group();
+        innerCoreGroup.add(coreMesh);
+
+        const innerCoreLight = new THREE.PointLight(0x10b981, 2.5, 6.5, 1.8);
+        innerCoreLight.position.set(0, 0.38, 0.2);
+
+        // --- 5. HOROLOGY PRECISION HORIZON BEZEL ---
+        const ringGeo = new THREE.TorusGeometry(2.45, 0.0065, 16, 160);
+        const ringMat = new THREE.MeshStandardMaterial({
+            color: 0x0d2218,
+            emissive: 0x11d483,
+            emissiveIntensity: 0.35,
+            metalness: 0.95,
+            roughness: 0.15,
+            transparent: true,
+            opacity: 0.50
+        });
+        const ring1Mat = ringMat;
+        const ring2Mat = ringMat;
+
+        const horizonRing = new THREE.Mesh(ringGeo, ringMat);
+        horizonRing.position.set(0, -0.35, 0);
+        horizonRing.rotation.x = Math.PI / 2.32;
+        horizonRing.rotation.y = -Math.PI / 16;
+
+        const tickGeo = new THREE.BoxGeometry(0.012, 0.065, 0.012);
+        const tickMat = new THREE.MeshBasicMaterial({ color: 0x6ee7b7, transparent: true, opacity: 0.85 });
+        for (let i = 0; i < 4; i++) {
+            const angle = (i / 4) * Math.PI * 2;
+            const tick = new THREE.Mesh(tickGeo, tickMat);
+            tick.position.set(Math.cos(angle) * 2.45, Math.sin(angle) * 2.45, 0);
+            tick.rotation.z = angle;
+            horizonRing.add(tick);
+        }
+
+        const orbitalGroup = horizonRing;
+        const gimbalGroup = new THREE.Group(); // clean legacy stub
+        const rhombusGroup = new THREE.Group(); // clean legacy stub
+
+        // --- 6. AMBIENT QUANTUM DUST EMBERS ---
+        const emberGeo = new THREE.BufferGeometry();
+        const emberCount = 35;
+        const emberPos = new Float32Array(emberCount * 3);
+        for (let i = 0; i < emberCount; i++) {
+            emberPos[i * 3] = (Math.random() - 0.5) * 7.5;
+            emberPos[i * 3 + 1] = (Math.random() - 0.5) * 5.5;
+            emberPos[i * 3 + 2] = (Math.random() - 0.5) * 4.0;
+        }
+        emberGeo.setAttribute('position', new THREE.BufferAttribute(emberPos, 3));
+        const emberMat = new THREE.PointsMaterial({
+            color: 0x11d483,
+            size: 0.045,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        });
+        const embers = new THREE.Points(emberGeo, emberMat);
+
+        // Master Assembly
         const logoGroup = new THREE.Group();
-        logoGroup.add(vMonolithMesh);
+        logoGroup.add(bladesGroup);
         logoGroup.add(innerCoreGroup);
-        logoGroup.add(rhombusGroup);
-        logoGroup.add(orbitalGroup);
-        logoGroup.add(gimbalGroup);
         logoGroup.add(innerCoreLight);
-
+        logoGroup.add(horizonRing);
+        logoGroup.add(embers);
         logoGroup.scale.setScalar(1.0);
         scene.add(logoGroup);
 
-        // 3. Crear Terreno de Rejilla Vectorial (PlaneGeometry para el fondo)
         const terrainGeometry = new THREE.PlaneGeometry(45, 45, 28, 28);
         const terrainMaterial = new THREE.MeshBasicMaterial({
             color: 0x11d483,
@@ -3272,8 +2377,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         window.addEventListener('mousedown', (e) => {
             if (window.scrollY < window.innerHeight * 0.85 && !e.target.closest('a, button, input, textarea')) {
                 isHolding = true;
-                const hint = document.getElementById('hero-interaction-hint');
-                if (hint) hint.classList.add('charging');
+                
                 if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.startOvercharge === 'function') {
                     window.VANTA_AUDIO.startOvercharge();
                 }
@@ -3283,8 +2387,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         window.addEventListener('mouseup', () => {
             if (isHolding) {
                 isHolding = false;
-                const hint = document.getElementById('hero-interaction-hint');
-                if (hint) hint.classList.remove('charging');
+                
                 if (holdCharge > 0.28) {
                     triggerShockwave({ amplitude: 12.0 * holdCharge + 4.0, speed: 18.0, width: 1.2, decay: 1.1 });
                     if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.stopOvercharge === 'function') {
@@ -3302,8 +2405,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         window.addEventListener('touchstart', (e) => {
             if (window.scrollY < window.innerHeight * 0.85 && !e.target.closest('a, button, input, textarea')) {
                 isHolding = true;
-                const hint = document.getElementById('hero-interaction-hint');
-                if (hint) hint.classList.add('charging');
+                
                 if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.startOvercharge === 'function') {
                     window.VANTA_AUDIO.startOvercharge();
                 }
@@ -3313,8 +2415,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         window.addEventListener('touchend', () => {
             if (isHolding) {
                 isHolding = false;
-                const hint = document.getElementById('hero-interaction-hint');
-                if (hint) hint.classList.remove('charging');
+                
                 if (holdCharge > 0.28) {
                     triggerShockwave({ amplitude: 12.0 * holdCharge + 4.0, speed: 18.0, width: 1.2, decay: 1.1 });
                     if (window.VANTA_AUDIO && typeof window.VANTA_AUDIO.stopOvercharge === 'function') {
@@ -3436,17 +2537,16 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                 cursorPointLight.position.x = mouseX * 5.5;
                 cursorPointLight.position.y = mouseY * 4.5;
 
-                // 1. Dynamic 3D Gaze Tracking & High-End Isometric Facet Rotation for the V Monolith
+                // 1. Dynamic 3D Gaze Tracking & High-End Facet Rotation for the V Monolith
                 const swayY = Math.sin(time * 0.22) * 0.04;
                 const swayX = Math.cos(time * 0.16) * 0.03;
-                vMonolithMesh.rotation.y += (time * 0.10 + mouseX * 0.65 + swayY - vMonolithMesh.rotation.y) * 0.045;
-                vMonolithMesh.rotation.x += (0.38 + mouseY * 0.42 + swayX - vMonolithMesh.rotation.x) * 0.045;
-                vMonolithMesh.rotation.z = 0.12 + Math.sin(time * 0.14) * 0.025;
+                bladesGroup.rotation.y += (time * 0.08 + mouseX * 0.75 + swayY - bladesGroup.rotation.y) * 0.045;
+                bladesGroup.rotation.x += (0.18 + mouseY * 0.45 + swayX - bladesGroup.rotation.x) * 0.045;
+                bladesGroup.rotation.z = Math.sin(time * 0.14) * 0.02;
 
-                // 2. Quantum Conduit: Photon pulse along the V spline + breathing luminescence
-                const pingPongT = Math.sin(time * 1.8) * 0.5 + 0.5;
-                const photonPos = conduitCurve.getPointAt(pingPongT);
-                photonMesh.position.copy(photonPos);
+                // 2. Optical Quantum Singularity: Counter-rotation & breathing luminescence
+                coreMesh.rotation.y = -time * 0.32;
+                coreMesh.rotation.x = Math.sin(time * 0.5) * 0.22;
 
                 if (isHolding) {
                     holdCharge = Math.min(1.0, holdCharge + 0.02);
@@ -3454,43 +2554,41 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                     holdCharge = Math.max(0.0, holdCharge - 0.035);
                 }
 
-                const pulseLum = 2.4 + Math.sin(time * 2.8) * 0.7;
-                conduitMat.emissiveIntensity = isHolding ? (2.8 + holdCharge * 7.5) : pulseLum;
-                innerCoreLight.intensity = isHolding ? (4.2 + holdCharge * 10.0) : (3.6 + Math.sin(time * 2.8) * 0.9);
+                const pulseLum = 0.95 + Math.sin(time * 2.4) * 0.35;
+                coreMat.emissiveIntensity = isHolding ? (1.5 + holdCharge * 5.0) : pulseLum;
+                innerCoreLight.intensity = isHolding ? (3.5 + holdCharge * 8.0) : (2.5 + Math.sin(time * 2.4) * 0.6);
 
-                // 3. Rhombic Exoskeleton: Subtle lagged parallax
-                rhombusGroup.rotation.y += (time * 0.05 + mouseX * 0.35 - rhombusGroup.rotation.y) * 0.03;
-                rhombusGroup.rotation.x += (0.18 + mouseY * 0.25 - rhombusGroup.rotation.x) * 0.03;
+                // 3. Horology Precision Horizon: Precession spin
+                horizonRing.rotation.z += isHolding ? 0.015 : 0.0025;
 
-                // 4. Swiss Horology Gyroscope: Multi-axis differential spin with rotational inertia
-                const gyroSpeed = isHolding ? (0.015 + holdCharge * 0.04) : (0.0032 + clampedVelocity * 0.00025);
-                orbitalGroup.rotation.z += gyroSpeed;
-                gimbalGroup.rotation.z -= gyroSpeed * 0.72;
-
-                // 5. Scrollytelling Transition (Aristide Benoist Luxury Flow)
+                // 4. Scrollytelling Transition (Aristide Benoist Luxury Flow)
                 const isMob = window.innerWidth <= 768;
                 const isTab = window.innerWidth <= 991;
-                const baseScale = isMob ? 0.38 : (isTab ? 0.70 : 0.98);
-                const defaultPosY = isMob ? 0.48 : (isTab ? -0.04 : -0.05);
+                const baseScale = isMob ? 0.44 : (isTab ? 0.70 : 0.98);
+                const defaultPosY = isMob ? 0.62 : (isTab ? -0.04 : -0.05);
 
                 if (isWarpActive && warpP > 0.005) {
                     logoGroup.position.y = defaultPosY - warpP * 1.8;
                     logoGroup.position.z = -warpP * 5.8;
                     logoGroup.scale.setScalar(baseScale * (1.0 - warpP * 0.4) * logoScaleObj.value);
                     const fade = Math.max(0.0, 1.0 - warpP * 0.85);
-                    vMonolithMat.opacity = fade * 0.92;
-                    conduitMat.opacity = fade * 0.95;
-                    photonMat.opacity = fade * 0.95;
-                    ring1Mat.opacity = fade * 0.65;
-                    ring2Mat.opacity = fade * 0.32;
+                    vMonolithMat.opacity = fade * 0.95;
+                    coreMat.opacity = fade * 0.85;
+                    edgeLineMat.opacity = fade * 0.60;
+                    ringMat.opacity = fade * 0.50;
+                    emberMat.opacity = fade * 0.60;
+                    ring1Mat.opacity = fade * 0.50;
+                    ring2Mat.opacity = fade * 0.50;
                 } else {
                     logoGroup.position.set(0, defaultPosY, 0);
                     logoGroup.scale.setScalar(baseScale * logoScaleObj.value);
-                    vMonolithMat.opacity = 0.92;
-                    conduitMat.opacity = 0.95;
-                    photonMat.opacity = 0.95;
-                    ring1Mat.opacity = 0.65;
-                    ring2Mat.opacity = 0.32;
+                    vMonolithMat.opacity = 0.95;
+                    coreMat.opacity = 0.85;
+                    edgeLineMat.opacity = 0.60;
+                    ringMat.opacity = 0.50;
+                    emberMat.opacity = 0.60;
+                    ring1Mat.opacity = 0.50;
+                    ring2Mat.opacity = 0.50;
                 }
             } else {
                 vMonolithMat.opacity = 0.0;
@@ -3604,244 +2702,10 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         });
     }
 
-    /* =========================================================
-       13. SCROLL HORIZONTAL (PORTAFOLIO)
-       ========================================================= */
-    const portfolioContainer = document.querySelector('.portfolio-scroll-container');
-    const horizontalTrack    = document.querySelector('.horizontal-track');
-    
-    // Cache de dimensiones para evitar getBoundingClientRect en scroll (ya declaradas en scope global)
-
-    function cachePortfolioLayout() {
-        if (!portfolioContainer || !horizontalTrack) return;
-        // offsetTop nos da la posición acumulada desde el inicio de la página sin forzar reflow pesado
-        let top = 0;
-        let obj = portfolioContainer;
-        while (obj) {
-            top += obj.offsetTop;
-            obj = obj.offsetParent;
-        }
-        portfolioTop = top;
-        portfolioHeight = portfolioContainer.offsetHeight;
-        maxTranslate = horizontalTrack.scrollWidth - window.innerWidth;
-    }
-
-    function handleHorizontalScroll(scrollY) {
-        if (!portfolioContainer || !horizontalTrack || window.innerWidth <= 991) {
-            if (horizontalTrack) horizontalTrack.style.transform = 'none';
-            return;
-        }
-
-        const vpH = window.innerHeight;
-        // Viewport Culling: salir de inmediato si el scroll está fuera del rango del portafolio
-        if (scrollY < portfolioTop - vpH || scrollY > portfolioTop + portfolioHeight) {
-            return;
-        }
-
-        const startOffset = scrollY - portfolioTop;
-        const maxScroll = portfolioHeight - vpH;
-        
-        let progress = startOffset / maxScroll;
-        progress = Math.max(0, Math.min(1, progress));
-
-        const translateX = -progress * maxTranslate;
-        horizontalTrack.style.transform = `translate3d(${translateX}px, 0, 0)`;
-
-        // Parallax horizontal multicapa matemático (Cero getBoundingClientRect / Cero Reflow)
-        const cards = horizontalTrack.children;
-        const viewportW = window.innerWidth;
-        const totalCards = cards.length;
-        if (totalCards > 0) {
-            const cardWidth = (horizontalTrack.scrollWidth / totalCards);
-            for (let i = 0; i < totalCards; i++) {
-                const card = cards[i];
-                const cardCenterX = i * cardWidth + translateX + cardWidth / 2;
-                // Solo calcular si la tarjeta está cerca de la pantalla
-                if (cardCenterX > -cardWidth && cardCenterX < viewportW + cardWidth) {
-                    let offset = (cardCenterX - viewportW / 2) / (viewportW / 2);
-                    offset = Math.max(-1.5, Math.min(1.5, offset));
-                    card.style.setProperty('--card-parallax-bg', `${(offset * 30).toFixed(1)}px`);
-                    card.style.setProperty('--card-parallax-fg', `${(offset * -45).toFixed(1)}px`);
-                }
-            }
-        }
-    }
-
-    /* =========================================================
-       14. SCROLL INVERTIDO (SERVICIOS)
-       ========================================================= */
-    const servicesContainer = document.querySelector('.services-scroll-container');
-    const invertedTrack     = document.querySelector('.services-inverted-track');
-    const textItems         = document.querySelectorAll('.service-text-item');
-
-    let servicesTop = 0;
-    let servicesHeight = 0;
-
-    function cacheServicesLayout() {
-        if (!servicesContainer) return;
-        let top = 0;
-        let obj = servicesContainer;
-        while (obj) {
-            top += obj.offsetTop;
-            obj = obj.offsetParent;
-        }
-        servicesTop = top;
-        servicesHeight = servicesContainer.offsetHeight;
-    }
-
-    let lastServicesIndex = -1;
-    function handleInvertedScroll(scrollY) {
-        if (!servicesContainer || !invertedTrack || window.innerWidth <= 991) {
-            if (invertedTrack) invertedTrack.style.transform = 'none';
-            return;
-        }
-
-        const vpH = window.innerHeight;
-        // Viewport Culling
-        if (scrollY < servicesTop - vpH || scrollY > servicesTop + servicesHeight) {
-            return;
-        }
-
-        const startOffset = scrollY - servicesTop;
-        const maxScroll = servicesHeight - vpH;
-        
-        let progress = startOffset / maxScroll;
-        progress = Math.max(0, Math.min(1, progress));
-
-        const translateValue = -200 + (progress * 200);
-        invertedTrack.style.transform = `translate3d(0, ${translateValue}vh, 0)`;
-
-        let activeIndex = 0;
-        if (progress > 0.33 && progress <= 0.66) {
-            activeIndex = 1;
-        } else if (progress > 0.66) {
-            activeIndex = 2;
-        }
-
-        if (activeIndex !== lastServicesIndex) {
-            lastServicesIndex = activeIndex;
-            textItems.forEach((item, index) => {
-                if (index === activeIndex) {
-                    if (!item.classList.contains('active')) item.classList.add('active');
-                } else {
-                    if (item.classList.contains('active')) item.classList.remove('active');
-                }
-            });
-        }
-    }
-
-    /* =========================================================
-       14b. SCROLL LOCK METODOLOGÍA (PIPELINE & TERMINAL)
-       ========================================================= */
-    const methodologyContainer = document.querySelector('.methodology-scroll-container');
-    const pipelineProgress     = document.querySelector('.pipeline-progress-bar');
-    const methodSteps          = document.querySelectorAll('.methodology-left .method-step');
-    const consoleScreens       = document.querySelectorAll('.cyber-terminal .console-screen');
-
-    let methodologyTop = 0;
-    let methodologyHeight = 0;
-
-    function cacheMethodologyLayout() {
-        if (!methodologyContainer) return;
-        let top = 0;
-        let obj = methodologyContainer;
-        while (obj) {
-            top += obj.offsetTop;
-            obj = obj.offsetParent;
-        }
-        methodologyTop = top;
-        methodologyHeight = methodologyContainer.offsetHeight;
-    }
-
-    let lastMethodStep = -1;
-    function handleMethodologyScroll(scrollY) {
-        if (!methodologyContainer || window.innerWidth <= 991) {
-            methodSteps.forEach(step => step.classList.add('active'));
-            return;
-        }
-
-        const vpH = window.innerHeight;
-        // Viewport Culling
-        if (scrollY < methodologyTop - vpH || scrollY > methodologyTop + methodologyHeight) {
-            return;
-        }
-
-        const startOffset = scrollY - methodologyTop;
-        const maxScroll = methodologyHeight - vpH;
-        
-        let progress = startOffset / maxScroll;
-        progress = Math.max(0, Math.min(1, progress));
-
-        // Actualizar barra de progreso vertical
-        if (pipelineProgress) {
-            pipelineProgress.style.height = (progress * 100).toFixed(1) + '%';
-        }
-
-        // Determinar paso activo (4 pasos en total: dividimos por rangos de 0.25)
-        let activeStep = 1;
-        if (progress > 0.25 && progress <= 0.5) {
-            activeStep = 2;
-        } else if (progress > 0.5 && progress <= 0.75) {
-            activeStep = 3;
-        } else if (progress > 0.75) {
-            activeStep = 4;
-        }
-
-        if (activeStep !== lastMethodStep) {
-            lastMethodStep = activeStep;
-            // Activar la tarjeta de paso correspondiente
-            methodSteps.forEach(step => {
-                const stepNum = parseInt(step.getAttribute('data-step'), 10);
-                if (stepNum === activeStep) {
-                    step.classList.add('active');
-                } else {
-                    step.classList.remove('active');
-                }
-            });
-
-            // Activar la pantalla de la terminal correspondiente
-            consoleScreens.forEach(screen => {
-                const screenNum = parseInt(screen.getAttribute('data-console-step'), 10);
-                if (screenNum === activeStep) {
-                    screen.classList.add('active');
-                } else {
-                    screen.classList.remove('active');
-                }
-            });
-        }
-    }
-
-    // Calcular layouts iniciales y en cada resize
-    function updateLayoutCache() {
-        cachePortfolioLayout();
-        cacheServicesLayout();
-        cacheMethodologyLayout();
-    }
-    window.addEventListener('resize', updateLayoutCache, { passive: true });
-
     // Scroll listener unificado y súper optimizado
     function handleScrollUnified(scrollY) {
         currentScrollY = scrollY;
-        
-        // Parallax del Hero
-        if (scrollY < 800) {
-            if (heroCenterLayout) {
-                heroCenterLayout.style.transform = `translate3d(0, ${scrollY * 0.35}px, 0)`;
-                heroCenterLayout.style.opacity   = 1 - scrollY / 650;
-            }
-            if (heroBlueprintContainer) {
-                const factor = scrollY / (heroH || 800);
-                heroBlueprintContainer.style.transform = `translate3d(0, ${scrollY * 0.18}px, 0) scale(${1 - factor * 0.06})`;
-            }
-        }
-
-        // Actualizar navbar
         updateNavbar(scrollY);
-
-        // Scroll horizontal e invertido y metodología
-        handleHorizontalScroll(scrollY);
-        handleInvertedScroll(scrollY);
-        handleMethodologyScroll(scrollY);
     }
 
     if (lenis) {
@@ -3956,36 +2820,6 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         el.addEventListener('click', () => UISound.playClick());
     });
 
-    // ─── 🕒 STUDIO LIVE WORLD CLOCK (CARACAS GMT-4) ───
-    function initLiveWorldClock() {
-        const clockEl = document.getElementById('nav-live-clock');
-        if (!clockEl) return;
-
-        function updateClock() {
-            try {
-                const now = new Date();
-                const options = {
-                    timeZone: 'America/Caracas',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false
-                };
-                const timeStr = new Intl.DateTimeFormat('en-GB', options).format(now);
-                clockEl.textContent = `CCS ${timeStr} VET`;
-            } catch (e) {
-                const now = new Date();
-                const hh = String((now.getUTCHours() - 4 + 24) % 24).padStart(2, '0');
-                const mm = String(now.getUTCMinutes()).padStart(2, '0');
-                const ss = String(now.getUTCSeconds()).padStart(2, '0');
-                clockEl.textContent = `CCS ${hh}:${mm}:${ss} VET`;
-            }
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
-    }
-    initLiveWorldClock();
-
     // ─── 🌐 TECH BENTO GRID TILT ───
     function initTechBentoTilt() {
         const cards = document.querySelectorAll('.tech-bento-card.tilt-card');
@@ -4018,237 +2852,10 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         });
     }
 
-    // ─── ✨ COSMIC SPARKLES CANVAS (tecnologias.tsx) ───
-    function initSparklesCanvas() {
-        const canvas = document.getElementById('sparkles-canvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        let width = canvas.parentElement ? canvas.parentElement.clientWidth : window.innerWidth;
-        let height = canvas.parentElement ? canvas.parentElement.clientHeight : 600;
-        let particles = [];
-
-        function resize() {
-            if (!canvas.parentElement) return;
-            width = canvas.parentElement.clientWidth;
-            height = canvas.parentElement.clientHeight;
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = width * dpr;
-            canvas.height = height * dpr;
-            ctx.scale(dpr, dpr);
-            canvas.style.width = width + 'px';
-            canvas.style.height = height + 'px';
-        }
-
-        class Sparkle {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2.2 + 0.6;
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.opacity = Math.random() * 0.8 + 0.2;
-                this.opacitySpeed = (Math.random() * 0.02 + 0.005) * (Math.random() > 0.5 ? 1 : -1);
-                this.color = Math.random() > 0.35 ? '#ffffff' : '#11d483';
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.opacity += this.opacitySpeed;
-                if (this.opacity >= 1 || this.opacity <= 0.1) {
-                    this.opacitySpeed = -this.opacitySpeed;
-                }
-                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
-                    this.reset();
-                }
-            }
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = Math.max(0, Math.min(1, this.opacity));
-                ctx.fillStyle = this.color;
-                ctx.shadowColor = this.color;
-                ctx.shadowBlur = 8;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
-        }
-
-        function init() {
-            resize();
-            particles = [];
-            for (let i = 0; i < 60; i++) { // 250→60 partículas, invisible de cerca
-                particles.push(new Sparkle());
-            }
-        }
-
-        let sparklesRafId = null;
-        let sparklesVisible = false;
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            sparklesRafId = requestAnimationFrame(animate);
-        }
-
-        init();
-        window.addEventListener('resize', resize);
-
-        if (canvas.parentElement && 'IntersectionObserver' in window) {
-            new IntersectionObserver((entries) => {
-                sparklesVisible = entries[0].isIntersecting;
-                if (sparklesVisible && !sparklesRafId) {
-                    animate();
-                } else if (!sparklesVisible && sparklesRafId) {
-                    cancelAnimationFrame(sparklesRafId);
-                    sparklesRafId = null;
-                }
-            }, { threshold: 0.05 }).observe(canvas.parentElement);
-        } else {
-            animate(); // fallback
-        }
-    }
-
-    // ─── 🧠 NEURAL FLOW FIELD CANVAS (final.tsx) ───
-    function initNeuralCanvas() {
-        const canvas = document.getElementById('neural-canvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        let width = canvas.parentElement ? canvas.parentElement.clientWidth : window.innerWidth;
-        let height = canvas.parentElement ? canvas.parentElement.clientHeight : 600;
-        let particles = [];
-        let mouse = { x: -1000, y: -1000 };
-
-        function resize() {
-            if (!canvas.parentElement) return;
-            width = canvas.parentElement.clientWidth;
-            height = canvas.parentElement.clientHeight;
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = width * dpr;
-            canvas.height = height * dpr;
-            ctx.scale(dpr, dpr);
-            canvas.style.width = width + 'px';
-            canvas.style.height = height + 'px';
-        }
-
-        class NeuralParticle {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = 0;
-                this.vy = 0;
-                this.age = 0;
-                this.life = Math.random() * 200 + 100;
-            }
-            update() {
-                const angle = (Math.cos(this.x * 0.005) + Math.sin(this.y * 0.005)) * Math.PI;
-                this.vx += Math.cos(angle) * 0.2;
-                this.vy += Math.sin(angle) * 0.2;
-
-                const dx = mouse.x - this.x;
-                const dy = mouse.y - this.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 150) {
-                    const force = (150 - dist) / 150;
-                    this.vx -= dx * force * 0.05;
-                    this.vy -= dy * force * 0.05;
-                }
-
-                this.x += this.vx;
-                this.y += this.vy;
-                this.vx *= 0.95;
-                this.vy *= 0.95;
-
-                this.age++;
-                if (this.age > this.life) this.reset();
-
-                if (this.x < 0) this.x = width;
-                if (this.x > width) this.x = 0;
-                if (this.y < 0) this.y = height;
-                if (this.y > height) this.y = 0;
-            }
-            draw() {
-                const alpha = 1 - Math.abs((this.age / this.life) - 0.5) * 2;
-                ctx.fillStyle = '#11d483';
-                ctx.globalAlpha = Math.max(0, Math.min(1, alpha * 0.8));
-                ctx.fillRect(this.x, this.y, 1.8, 1.8);
-            }
-        }
-
-        function init() {
-            resize();
-            particles = [];
-            const count = window.innerWidth < 768 ? 60 : 120; // 300→120
-            for (let i = 0; i < count; i++) {
-                particles.push(new NeuralParticle());
-            }
-        }
-
-        let neuralRafId = null;
-        let isNeuralVisible = false;
-
-        function startNeural() {
-            if (neuralRafId) return;
-            neuralRafId = requestAnimationFrame(animate);
-        }
-        function stopNeural() {
-            if (neuralRafId) { cancelAnimationFrame(neuralRafId); neuralRafId = null; }
-        }
-
-        function animate() {
-            ctx.fillStyle = 'rgba(5, 8, 16, 0.15)';
-            ctx.fillRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            neuralRafId = requestAnimationFrame(animate);
-        }
-
-        init();
-
-        window.addEventListener('resize', () => { resize(); init(); });
-
-        const contactSec = document.getElementById('contact') || canvas.parentElement;
-        if (contactSec) {
-            contactSec.addEventListener('mousemove', (e) => {
-                const r = canvas.getBoundingClientRect();
-                mouse.x = e.clientX - r.left;
-                mouse.y = e.clientY - r.top;
-            });
-            contactSec.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
-
-            new IntersectionObserver((entries) => {
-                isNeuralVisible = entries[0].isIntersecting;
-                if (isNeuralVisible && !document.hidden) startNeural();
-                else stopNeural();
-            }, { threshold: 0.05 }).observe(contactSec);
-
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) stopNeural();
-                else if (isNeuralVisible) startNeural();
-            });
-        }
-    }
-
     // Lanzar al cargar
     setTimeout(() => {
-        updateLayoutCache();
-        const scrollY = window.scrollY || window.pageYOffset;
-        handleHorizontalScroll(scrollY);
-        handleInvertedScroll(scrollY);
-        handleMethodologyScroll(scrollY);
         init3DCore();
         initTechBentoTilt();
-        initSparklesCanvas();
-        initNeuralCanvas();
         
         // Activar textos iniciales en Hero
         document.querySelectorAll('.hero-content .reveal-text').forEach(el => {
