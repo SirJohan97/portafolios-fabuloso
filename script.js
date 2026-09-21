@@ -2245,6 +2245,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             envMapIntensity: 3.5
         });
         const conduitMat = coreMat;
+        const photonMat = coreMat;
         const coreMesh = new THREE.Mesh(coreGeo, coreMat);
         coreMesh.position.set(0, 0.38, 0.05);
 
@@ -2592,8 +2593,12 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                 }
             } else {
                 vMonolithMat.opacity = 0.0;
+                coreMat.opacity = 0.0;
                 conduitMat.opacity = 0.0;
                 photonMat.opacity = 0.0;
+                edgeLineMat.opacity = 0.0;
+                ringMat.opacity = 0.0;
+                emberMat.opacity = 0.0;
                 ring1Mat.opacity = 0.0;
                 ring2Mat.opacity = 0.0;
                 if (camera.position.z !== 7.5) {
