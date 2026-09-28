@@ -23,7 +23,6 @@
         const preloaderMeta = document.getElementById('preloader-meta');
         const targetLogo = document.getElementById('navbar-logo-target');
         const curvePath = document.getElementById('preloader-curve-path');
-        const navBrandStatus = document.querySelector('.nav-brand-status');
         const navCenterDeck = document.querySelector('.nav-center-deck');
         const navCommandWing = document.querySelector('.nav-command-wing');
 
@@ -43,7 +42,6 @@
         targetLogo.style.visibility = 'hidden';
 
         // Set initial states for navbar companion elements
-        if (navBrandStatus) gsap.set(navBrandStatus, { opacity: 0, x: -15, filter: 'blur(8px)' });
         if (navCenterDeck) gsap.set(navCenterDeck, { opacity: 0, y: -25, filter: 'blur(12px)' });
         if (navCommandWing) gsap.set(navCommandWing, { opacity: 0, x: 15, filter: 'blur(8px)' });
 
@@ -155,7 +153,7 @@
             });
 
             // Despliegue sincronizado de las alas de la Navbar
-            const navElements = [navBrandStatus, navCenterDeck, navCommandWing].filter(Boolean);
+            const navElements = [navCenterDeck, navCommandWing].filter(Boolean);
             if (navElements.length) {
                 gsap.to(navElements, {
                     opacity: 1,
