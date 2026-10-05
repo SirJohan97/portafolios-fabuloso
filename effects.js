@@ -1594,10 +1594,11 @@ function setupPokerDealer() {
                 scrollTrigger: {
                     trigger: section,
                     start: "top top",
-                    end: "+=185%",
+                    end: "+=175%",
                     pin: true,
                     scrub: 1.2,
-                    anticipatePin: 1
+                    anticipatePin: 1,
+                    refreshPriority: 5
                 }
             });
 
@@ -1726,9 +1727,6 @@ function setupPokerDealer() {
                     playTick(220, 0.35);
                     setTimeout(() => playTick(880, 0.15), 80);
                 }, null, riverStart + 1.31);
-
-                // Cinematic dwell hold to appreciate the winning slam and full table
-                tl.to({}, { duration: 0.8 }, riverStart + 1.85);
             }
 
 
@@ -1814,9 +1812,14 @@ function setupPokerDealer() {
                     }
                 });
             });
+
+            if (typeof ScrollTrigger !== 'undefined') {
+                ScrollTrigger.sort();
+                ScrollTrigger.refresh();
+            }
         }
 
-        setTimeout(setupPokerDealer, 200);
+        setTimeout(setupPokerDealer, 100);
     })();
 
     /* ============================================================
@@ -2977,64 +2980,42 @@ function setupPokerDealer() {
                 gsap.set(telemetryRuler, { x: 0 });
 
                 // ============================================================
-                // ACTO I: DWELL EN PABELLÓN 01 — DESPLIEGUE COMERCIAL PYMES (0.00s a 2.80s)
-                // Pavilion 1 stays completely centered and steady so the user can read pricing and models
+                // ACTO I: HUD & ESTABILIZACIÓN EN PABELLÓN 01 (0.00 a 0.06)
+                // Presentación directa y limpia del primer pabellón sin colisiones
                 // ============================================================
                 if (hudElement) {
                     tl.fromTo(hudElement, 
-                        { opacity: 0.6, y: -10 }, 
-                        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 
+                        { opacity: 0.5, y: -10 }, 
+                        { opacity: 1, y: 0, duration: 0.06, ease: "power2.out" }, 
                         0
                     );
                 }
-                tl.to({}, { duration: 2.4 }, 0.4);
 
                 // ============================================================
-                // ACTO II: GLIDE FLUIDO HACIA PABELLÓN 02 (2.80s a 4.40s)
-                // Desplazamiento cinemático de los 4 planos hacia el Manifiesto 3 Reglas de Oro
+                // ACTO II: RECORRIDO PANORÁMICO DE LOS 3 PABELLONES (0.06 a 0.88)
+                // Desplazamiento simultáneo continuo y fluido de los 4 planos espaciales
                 // ============================================================
-                tl.to(cardsTrack, { x: -viewWidth, duration: 1.6, ease: "power2.inOut" }, 2.80)
-                  .to(bgWatermark, { x: -watermarkDist * 0.5, duration: 1.6, ease: "power2.inOut" }, 2.80)
-                  .to(bgGrid, { x: -gridDist * 0.5, duration: 1.6, ease: "power2.inOut" }, 2.80)
-                  .to(telemetryRuler, { x: -rulerDist * 0.5, duration: 1.6, ease: "power2.inOut" }, 2.80);
+                tl.to(cardsTrack, { x: -totalDist, duration: 0.82, ease: "none" }, 0.06)
+                  .to(bgWatermark, { x: -watermarkDist, duration: 0.82, ease: "none" }, 0.06)
+                  .to(bgGrid, { x: -gridDist, duration: 0.82, ease: "none" }, 0.06)
+                  .to(telemetryRuler, { x: -rulerDist, duration: 0.82, ease: "none" }, 0.06);
 
                 // ============================================================
-                // ACTO III: DWELL EN PABELLÓN 02 — MANIFIESTO 3 REGLAS DE ORO (4.40s a 6.80s)
-                // Pavilion 2 stays completely centered and steady: 3 cards clearly legible
-                // ============================================================
-                tl.to({}, { duration: 2.4 }, 4.40);
-
-                // ============================================================
-                // ACTO IV: GLIDE FLUIDO HACIA PABELLÓN 03 (6.80s a 8.40s)
-                // Desplazamiento cinemático hacia Gobernanza & Blindaje B2B
-                // ============================================================
-                tl.to(cardsTrack, { x: -totalDist, duration: 1.6, ease: "power2.inOut" }, 6.80)
-                  .to(bgWatermark, { x: -watermarkDist, duration: 1.6, ease: "power2.inOut" }, 6.80)
-                  .to(bgGrid, { x: -gridDist, duration: 1.6, ease: "power2.inOut" }, 6.80)
-                  .to(telemetryRuler, { x: -rulerDist, duration: 1.6, ease: "power2.inOut" }, 6.80);
-
-                // ============================================================
-                // ACTO V: DWELL EN PABELLÓN 03 — GOBERNANZA & BLINDAJE B2B (8.40s a 9.40s)
-                // Pavilion 3 stays completely centered and steady: 4 quadrants clearly legible
-                // ============================================================
-                tl.to({}, { duration: 1.0 }, 8.40);
-
-                // ============================================================
-                // ACTO VI: BUFFER DE SALIDA & VELO LÍQUIDO HACIA CONTACTO (9.40s a 10.00s)
+                // ACTO III: BUFFER DE SALIDA & MEMBRANA LÍQUIDA HACIA CONTACTO (0.88 a 1.00)
                 // Detiene el eje X y eleva la membrana líquida para empalmar con Contacto
                 // ============================================================
                 if (vlcExit) {
                     tl.fromTo(vlcExit, 
                         { yPercent: 100 }, 
-                        { yPercent: 0, duration: 0.6, ease: "power2.inOut" }, 
-                        9.40
+                        { yPercent: 0, duration: 0.12, ease: "power2.inOut" }, 
+                        0.88
                     );
                 }
 
                 const exitMorph = { cy: 0 };
                 tl.to(exitMorph, {
                     cy: 18,
-                    duration: 0.6,
+                    duration: 0.12,
                     ease: "power2.inOut",
                     onUpdate: () => {
                         const cy = exitMorph.cy.toFixed(1);
@@ -3045,17 +3026,18 @@ function setupPokerDealer() {
                             vlcExitStroke.setAttribute('d', `M 0 18 Q 50 ${cy} 100 18`);
                         }
                     }
-                }, 9.40);
+                }, 0.88);
 
                 govST = ScrollTrigger.create({
                     trigger: govSection,
                     pin: true,
                     start: "top top",
-                    end: () => `+=${Math.round(totalDist * 1.5 + 500)}`,
+                    end: () => `+=${Math.round(totalDist * 1.4 + 400)}`,
                     scrub: 0.85,
                     animation: tl,
                     invalidateOnRefresh: true,
                     anticipatePin: 1,
+                    refreshPriority: 2,
                     onEnter: () => {
                         document.body.classList.add('in-gov-scrolly');
                         if (window.setVantaTheme) {
@@ -3081,9 +3063,9 @@ function setupPokerDealer() {
                         }
                         
                         let currentIdx = 1;
-                        if (p < 0.36) {
+                        if (p < 0.38) {
                             currentIdx = 1;
-                        } else if (p < 0.74) {
+                        } else if (p < 0.72) {
                             currentIdx = 2;
                         } else {
                             currentIdx = 3;
@@ -3262,6 +3244,13 @@ if (document.readyState === 'loading') {
 } else {
     initEffectsScript();
 }
+
+window.addEventListener('load', () => {
+    if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.sort();
+        ScrollTrigger.refresh();
+    }
+});
 
 
 
