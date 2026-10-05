@@ -2137,9 +2137,9 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         const sculptureMat = vMonolithMat;
 
         const edgeLineMat = new THREE.LineBasicMaterial({
-            color: 0x11d483,
+            color: 0x6ee7b7,
             transparent: true,
-            opacity: 0.60,
+            opacity: 0.22,
             blending: THREE.AdditiveBlending
         });
 
@@ -2230,19 +2230,19 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         const sculptureMesh = bladesGroup;
 
         // --- 4. FLOATING OPTICAL QUANTUM SINGULARITY CORE ---
-        const coreGeo = new THREE.OctahedronGeometry(0.28, 0);
+        const coreGeo = new THREE.OctahedronGeometry(0.24, 0);
         const coreMat = new THREE.MeshPhysicalMaterial({
-            color: 0x01150b,
-            emissive: 0x059669,
-            emissiveIntensity: 0.95,
-            roughness: 0.02,
-            metalness: 0.1,
+            color: 0x021a0e,
+            emissive: 0x10b981,
+            emissiveIntensity: 0.40,
+            roughness: 0.04,
+            metalness: 0.2,
             clearcoat: 1.0,
             clearcoatRoughness: 0.02,
             ior: 2.4,
             transparent: true,
             opacity: 0.85,
-            envMapIntensity: 3.5
+            envMapIntensity: 2.5
         });
         const conduitMat = coreMat;
         const photonMat = coreMat;
@@ -2253,19 +2253,19 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         const innerCoreGroup = new THREE.Group();
         innerCoreGroup.add(coreMesh);
 
-        const innerCoreLight = new THREE.PointLight(0x10b981, 2.5, 6.5, 1.8);
+        const innerCoreLight = new THREE.PointLight(0x10b981, 1.6, 5.5, 1.8);
         innerCoreLight.position.set(0, 0.38, 0.2);
 
         // --- 5. HOROLOGY PRECISION HORIZON BEZEL ---
-        const ringGeo = new THREE.TorusGeometry(2.45, 0.0065, 16, 160);
+        const ringGeo = new THREE.TorusGeometry(2.45, 0.0055, 16, 160);
         const ringMat = new THREE.MeshStandardMaterial({
-            color: 0x0d2218,
+            color: 0x07150f,
             emissive: 0x11d483,
-            emissiveIntensity: 0.35,
+            emissiveIntensity: 0.20,
             metalness: 0.95,
-            roughness: 0.15,
+            roughness: 0.20,
             transparent: true,
-            opacity: 0.50
+            opacity: 0.22
         });
         const ring1Mat = ringMat;
         const ring2Mat = ringMat;
@@ -2315,7 +2315,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         logoGroup.add(innerCoreLight);
         logoGroup.add(horizonRing);
         logoGroup.add(embers);
-        logoGroup.scale.setScalar(1.0);
+        logoGroup.scale.setScalar(0.90);
         scene.add(logoGroup);
 
         const terrainGeometry = new THREE.PlaneGeometry(45, 45, 28, 28);
@@ -2343,7 +2343,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         const updateLogoPosition = () => {
             logoGroup.position.x = 0;
             const isMob = window.innerWidth <= 768;
-            logoGroup.position.y = isMob ? -0.12 : (window.innerWidth <= 991 ? -0.08 : -0.1);
+            logoGroup.position.y = isMob ? -0.16 : (window.innerWidth <= 991 ? -0.12 : -0.15);
         };
         updateLogoPosition();
 
