@@ -3862,13 +3862,14 @@
     .kht-pills { overflow-x: auto; max-width: 70vw; }
     .kht-pill { padding: 4px 10px; font-size: 0.58rem; white-space: nowrap; }
     .km-giant-numeral { font-size: 26vw; top: 18%; -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.09); }
-    .km-details-strip { flex-direction: column; align-items: flex-start; gap: 1rem; margin-top: 0.8rem; }
+    .km-details-strip { flex-direction: column; align-items: flex-start; gap: 0.8rem; margin-top: 0.6rem; }
     .km-details-right { width: 100%; }
     .km-cta { width: 100%; justify-content: center; }
-    .km-screen { height: 210px; }
-    .kh-headline { font-size: 2.2rem; }
+    .km-screen { height: 185px; }
+    .kh-headline { font-size: clamp(1.8rem, 6.5vw, 2.4rem); line-height: 1.12; }
+    .kh-subtitle { font-size: 0.88rem; line-height: 1.45; }
     .km-floating-phone {
-        width: 110px;
+        width: 105px;
         right: -6px;
         bottom: -18px;
         border-radius: 18px;
@@ -3880,12 +3881,12 @@
 }
 
 @media (max-width: 600px) {
-    .keynote-sticky-viewport { padding-top: 4rem; }
+    .keynote-sticky-viewport { padding-top: 3.5rem; }
     .km-floating-phone {
         display: block !important;
-        width: 88px;
-        right: -8px;
-        bottom: -14px;
+        width: 82px;
+        right: -6px;
+        bottom: -12px;
         border-radius: 14px;
         border-width: 1.5px;
         transform: perspective(600px) rotateZ(-4deg) rotateY(6deg);
@@ -3895,8 +3896,28 @@
     .km-phone-notch { width: 28px; height: 6px; }
     .km-phone-badge { font-size: 0.4rem; padding: 1px 4px; bottom: 4px; }
     .km-metrics-grid {
-        grid-template-columns: 1fr;
-        gap: 0.4rem;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.35rem !important;
+    }
+    .km-metric-card {
+        padding: 5px 3px !important;
+        text-align: center !important;
+    }
+    .km-metric-val {
+        font-size: 0.8rem !important;
+        line-height: 1.1 !important;
+    }
+    .km-metric-lbl {
+        font-size: 0.42rem !important;
+        letter-spacing: 0.03em !important;
+    }
+    .km-details-strip {
+        margin-top: 0.45rem !important;
+        gap: 0.45rem !important;
+    }
+    .km-cta {
+        padding: 7px 14px !important;
+        font-size: 0.72rem !important;
     }
     .km-url-pill { display: none; }
 }
@@ -4102,6 +4123,41 @@
     .wa-row-stack { display: none; }
     .wa-title { font-size: 2.2rem; }
     .wa-cursor-preview { display: none; }
+}
+
+@media (max-width: 600px) {
+    .works-archive {
+        padding: 4.5rem 0 5rem !important;
+    }
+    .wa-inner {
+        padding: 0 1.1rem !important;
+    }
+    .wa-header {
+        margin-bottom: 2rem !important;
+    }
+    .wa-title {
+        font-size: clamp(2rem, 8vw, 2.4rem) !important;
+        margin-bottom: 1.2rem !important;
+    }
+    .wa-row {
+        grid-template-columns: 44px 1fr auto !important;
+        gap: 0 0.6rem !important;
+        padding: 1.1rem 0 !important;
+    }
+    .wa-year {
+        font-size: 0.72rem !important;
+    }
+    .wa-row-name {
+        font-size: 0.88rem !important;
+        line-height: 1.25 !important;
+    }
+    .wa-row-category {
+        font-size: 0.72rem !important;
+    }
+    .wa-row-cta {
+        font-size: 0.58rem !important;
+        padding: 5px 8px !important;
+    }
 }
 
 /* ============================================================
@@ -5281,6 +5337,29 @@
         min-height: 220px;
         height: 220px;
     }
+    .cine-intro {
+        padding: 0 1.25rem !important;
+    }
+    .cine-intro__title {
+        font-size: clamp(1.65rem, 7.8vw, 2.2rem) !important;
+        letter-spacing: -0.015em !important;
+        margin-bottom: 0.85rem !important;
+        word-break: normal !important;
+    }
+    .cine-intro__sub {
+        font-size: 0.95rem !important;
+        line-height: 1.45 !important;
+        padding: 0 0.5rem !important;
+    }
+    .cine-hud {
+        padding: 0 1rem !important;
+    }
+    .cine-hud__pills {
+        gap: 4px !important;
+    }
+    .cine-pill {
+        padding: 4px 8px !important;
+    }
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -6234,13 +6313,15 @@ body.in-gov-scrolly .hud-sidebar {
 
 .pav-headline {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(1.75rem, 2.4vw, 2.7rem);
+    font-size: clamp(1.4rem, 5.8vw, 2.5rem);
     font-weight: 800;
     color: #FFFFFF;
-    line-height: 1.12;
+    line-height: 1.15;
     letter-spacing: -0.03em;
     margin: 0 0 0.85rem;
-    word-break: break-word;
+    word-break: normal;
+    overflow-wrap: break-word;
+    hyphens: none;
 }
 
 .text-gradient-cyan {
@@ -6970,8 +7051,9 @@ body.in-gov-scrolly .hud-sidebar {
     }
 
     .gov-bg-watermark-layer,
-    .gov-telemetry-ruler {
-        display: none;
+    .gov-telemetry-ruler,
+    .gov-bg-grid-layer {
+        display: none !important;
     }
 }
 
