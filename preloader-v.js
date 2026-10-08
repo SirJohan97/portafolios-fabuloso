@@ -127,6 +127,9 @@
                     const blueprintEl = document.querySelector('.blueprint-container');
                     if (blueprintEl) blueprintEl.classList.remove('blueprint-paused');
                     if (window.play3DVEntranceAnimation) window.play3DVEntranceAnimation();
+                    if (typeof ScrollTrigger !== 'undefined') {
+                        ScrollTrigger.refresh();
+                    }
                 }
             });
 

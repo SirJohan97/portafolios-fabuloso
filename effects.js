@@ -1971,8 +1971,8 @@ function setupPokerDealer() {
 
                     // Differential Parallax scrub: Satellite moves faster than desktop
                     masterTl.fromTo(phone,
-                        { y: 22 },
-                        { y: -22, duration: 0.9, ease: 'none' },
+                        { y: 12 },
+                        { y: -12, duration: 0.9, ease: 'none' },
                         `${revealLabel}+=0.2`
                     );
                 }
@@ -2012,18 +2012,23 @@ function setupPokerDealer() {
                 }
             }
 
-            // Build all 4 chapters
+            // Build all 4 chapters with graceful exit on Chapter 4 before archive
             buildChapter(chapters[0], true, null, 'ch0_reveal', 'ch0_exit');
             if (chapters[1]) buildChapter(chapters[1], false, 'ch1_enter', 'ch1_reveal', 'ch1_exit');
             if (chapters[2]) buildChapter(chapters[2], false, 'ch2_enter', 'ch2_reveal', 'ch2_exit');
-            if (chapters[3]) buildChapter(chapters[3], false, 'ch3_enter', 'ch3_reveal', null); // Last chapter stays settled
+            if (chapters[3]) buildChapter(chapters[3], false, 'ch3_enter', 'ch3_reveal', 'ch3_exit');
 
-            // ── ScrollTrigger: silky scrub 1.2 + HUD Sidebar Sync ──
+            // ── ScrollTrigger: silky scrub (0.25 mobile / 1.2 desktop) + HUD Sync + GSAP Robust Pin ──
+            const viewport = container.querySelector('.keynote-sticky-viewport');
+            const isMobile = window.innerWidth < 900;
             const st = ScrollTrigger.create({
                 trigger: container,
+                pin: viewport,
+                pinSpacing: false,
                 start: 'top top',
                 end: 'bottom bottom',
-                scrub: 1.2,
+                scrub: isMobile ? 0.25 : 1.2,
+                anticipatePin: 1,
                 refreshPriority: 5,
                 animation: masterTl,
                 onEnter: () => {
@@ -2058,7 +2063,6 @@ function setupPokerDealer() {
             });
 
             // ── Physical 3D tilt & Specular Sheen (Basement / Lusion Engine) ──
-            const viewport = document.querySelector('.keynote-sticky-viewport');
             if (viewport) {
                 viewport.addEventListener('mousemove', (e) => {
                     const vw = window.innerWidth;
@@ -2487,12 +2491,17 @@ function setupPokerDealer() {
                 }
             });
 
-            // ─── ScrollTrigger ─────────────────────────────────────────
+            // ─── ScrollTrigger: GSAP Robust Pin Stage (0.25 mobile / 0.8 desktop) ──
+            const isMobile = window.innerWidth < 900;
             const st = ScrollTrigger.create({
                 trigger: section,
-                start: 'top 72px',
+                pin: stage,
+                pinSpacing: false,
+                start: 'top top',
                 end: 'bottom bottom',
-                scrub: 0.8,
+                scrub: isMobile ? 0.25 : 0.8,
+                anticipatePin: 1,
+                refreshPriority: 4,
                 animation: tl
             });
 

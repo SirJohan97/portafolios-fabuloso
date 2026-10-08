@@ -2676,13 +2676,14 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
         // Sincronización oficial GSAP Ticker + Lenis (Zero Jitter / 60 FPS unificado)
         if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.config({ ignoreMobileResize: true, autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load' });
             lenis.on('scroll', ScrollTrigger.update);
         }
         if (typeof gsap !== 'undefined') {
             gsap.ticker.add((time) => {
                 lenis.raf(time * 1000);
             });
-            gsap.ticker.lagSmoothing(0);
+            gsap.ticker.lagSmoothing(500, 33);
         } else {
             function raf(time) {
                 lenis.raf(time);
@@ -2707,7 +2708,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         });
     }
 
-    // Scroll listener unificado y súper optimizado
+    // Scroll listener unificado y súper optimizado (Lenis + Native Touch fallback)
     function handleScrollUnified(scrollY) {
         currentScrollY = scrollY;
         updateNavbar(scrollY);
@@ -2715,14 +2716,17 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
     if (lenis) {
         lenis.on('scroll', (e) => {
-            // Sincronizado directamente al RAF de Lenis
             handleScrollUnified(e.scroll);
         });
-    } else {
-        window.addEventListener('scroll', () => {
-            handleScrollUnified(window.scrollY || window.pageYOffset);
-        }, { passive: true });
     }
+    // Always attach passive window scroll listener to ensure mobile touch events trigger ScrollTrigger & UI
+    window.addEventListener('scroll', () => {
+        const sy = window.scrollY || window.pageYOffset;
+        handleScrollUnified(sy);
+        if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.update();
+        }
+    }, { passive: true });
 
     // Intersection Observer para textos revelables (Costo de rendimiento = 0)
     const revealObserver = new IntersectionObserver((entries, observer) => {
