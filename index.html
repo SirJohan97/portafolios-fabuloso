@@ -76,7 +76,7 @@
     </script>
 
     <!-- ESTILOS -->
-    <link rel="stylesheet" href="styles.css?v=20261008c">
+    <link rel="stylesheet" href="styles.css?v=20261008d">
     <link rel="stylesheet" href="effects.css?v=371">
     <link rel="stylesheet" href="liquid-glass.css?v=110">
     <link rel="stylesheet" href="vanta-terminal.css?v=110">
@@ -213,31 +213,111 @@
                 <i class="fas fa-arrow-right"></i>
             </a>
 
-            <div class="menu-toggle" aria-label="Abrir menú">
-                <i class="fas fa-bars"></i>
-            </div>
+            <button class="vanta-nav-trigger" id="vantaNavTrigger" aria-label="Navegación del Estudio" type="button">
+                <span class="vnt-label">INDEX</span>
+                <span class="vnt-icon" aria-hidden="true">
+                    <span class="vnt-line vnt-line-1"></span>
+                    <span class="vnt-line vnt-line-2"></span>
+                </span>
+            </button>
         </div>
     </nav>
 
-    <!-- ===== ACTO 01: HERO (LUXURY MINIMALIST EDITORIAL & ORGANIC SCULPTURE) ===== -->
+    <!-- ===== MOBILE NATIVE LUXURY ARCHITECTURAL DRAWER ===== -->
+    <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" aria-hidden="true">
+        <div class="md-mesh-bg">
+            <div class="md-orb md-orb-1"></div>
+            <div class="md-orb md-orb-2"></div>
+        </div>
+        <div class="mobile-drawer-inner">
+            <div class="md-header">
+                <div class="md-status-pill">
+                    <span class="md-status-dot"></span>
+                    <span class="md-status-text">VANTA // OPERACIONAL</span>
+                </div>
+                <button class="md-close-btn" id="mobileDrawerClose" aria-label="Cerrar navegación" type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <nav class="md-nav-links" id="mobileNavLinks">
+                <a href="#home" class="md-link" data-index="01">
+                    <span class="md-num">01</span>
+                    <span class="md-text">Inicio</span>
+                    <span class="md-sub">Retorno al núcleo</span>
+                </a>
+                <a href="#portfolio" class="md-link" data-index="02">
+                    <span class="md-num">02</span>
+                    <span class="md-text">Obras Flagship</span>
+                    <span class="md-sub">Sistemas en producción</span>
+                </a>
+                <a href="#pipeline" class="md-link" data-index="03">
+                    <span class="md-num">03</span>
+                    <span class="md-text">I+D Lab</span>
+                    <span class="md-sub">Inteligencia y Edge AI</span>
+                </a>
+                <a href="#tech-matrix" class="md-link" data-index="04">
+                    <span class="md-num">04</span>
+                    <span class="md-text">Arquitectura</span>
+                    <span class="md-sub">Stack e infraestructura</span>
+                </a>
+                <a href="#testimonials" class="md-link" data-index="05">
+                    <span class="md-num">05</span>
+                    <span class="md-text">Reportes</span>
+                    <span class="md-sub">Casos de éxito y métricas</span>
+                </a>
+            </nav>
+
+            <div class="md-footer">
+                <a href="#contact" class="md-cta-btn" id="mdCtaBtn">
+                    <span>Iniciar Proyecto</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <div class="md-telemetry-row">
+                    <div class="md-time-item">
+                        <span class="md-label">HORA LOCAL</span>
+                        <span class="md-val" id="mdLiveClock">--:--:--</span>
+                    </div>
+                    <div class="md-social-pills">
+                        <a href="https://wa.me/584127121162" target="_blank" rel="noopener noreferrer" class="md-soc-pill">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="https://github.com/SirJohan97" target="_blank" rel="noopener noreferrer" class="md-soc-pill">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ACTO 01: HERO (LUXURY EDITORIAL COMMAND CENTER) ===== -->
     <header id="home" class="hero hero--editorial">
         <div class="hero-editorial-container">
-            <!-- Authoritative Editorial Headline -->
+            <!-- Studio Telemetry Status Pill -->
+            <div class="hero-status-pill">
+                <span class="hsp-pulse"></span>
+                <span class="hsp-label">SYS_STATUS: OPERACIONAL</span>
+                <span class="hsp-sep">&bull;</span>
+                <span class="hsp-meta">LATENCIA: 12ms // Q4 2026</span>
+            </div>
+
+            <!-- Authoritative Architectural Headline -->
             <h1 class="hero-title-editorial">
-                <span class="hte-line"><span class="hte-word">SISTEMAS</span> <span class="hte-word">QUE</span></span>
-                <span class="hte-line hte-highlight"><span class="hte-italic">Perduran</span></span>
-                <span class="hte-line"><span class="hte-word">EN</span> <span class="hte-word">EL</span> <span class="hte-word">CAOS.</span></span>
+                <span class="hte-line"><span class="hte-word">ARQUITECTURAS</span></span>
+                <span class="hte-line"><span class="hte-word">DE SOFTWARE</span></span>
+                <span class="hte-line hte-subline"><span class="hte-accent">DE ALTO IMPACTO & IA</span></span>
             </h1>
 
-            <!-- Pure Editorial Manifesto Subtitle -->
+            <!-- Pure Editorial Manifesto Subtitle (Concise, Powerful, High Contrast) -->
             <p class="hero-description-editorial">
-                Diseñamos arquitecturas digitales de alto impacto, plataformas web de alta conversión y aplicaciones móviles de élite concebidas para operar y escalar sin caídas. Desde experiencias para negocios y startups, hasta ecosistemas empresariales de misión crítica.
+                Ingeniería de sistemas distribuidos, visión artificial en el edge y plataformas de alta concurrencia diseñadas para operar y escalar sin caídas.
             </p>
 
-            <!-- Minimalist Luxury Action Group: 2 Authoritative Primary Actions -->
+            <!-- Minimalist Luxury Action Group -->
             <div class="hero-actions-editorial">
                 <a href="#portfolio" class="btn-luxury-primary magnetic-btn">
-                    <span class="blp-text">Explorar Obras</span>
+                    <span class="blp-text">Explorar Obras Flagship</span>
                     <span class="blp-dot"></span>
                 </a>
                 <a href="#contact" class="btn-luxury-outline magnetic-btn">
@@ -2502,7 +2582,7 @@
     <script src="liquid-glass.js?v=120"></script>
     <script src="preloader-v.js?v=200"></script>
     <script src="hero-portal.js?v=201"></script>
-    <script src="script.js?v=20261008c"></script>
+    <script src="script.js?v=20261008d"></script>
     <script src="effects.js?v=2404"></script>
     <script src="testi-stack.js?v=20261008c"></script>
 </body>

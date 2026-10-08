@@ -13,29 +13,93 @@
 function initMainScript() {
 
     /* =========================================
-       1. MENÚ MÓVIL (HAMBURGUESA)
+       1. NAVEGACIÓN MÓVIL ESTILO APP NATIVA (LUXURY ARCHITECTURAL DRAWER)
        ========================================= */
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks   = document.querySelector('.nav-links');
-    const links      = document.querySelectorAll('.nav-links a');
+    const navTrigger     = document.getElementById('vantaNavTrigger');
+    const drawerOverlay  = document.getElementById('mobileDrawerOverlay');
+    const drawerClose    = document.getElementById('mobileDrawerClose');
+    const drawerLinks    = document.querySelectorAll('.md-link, #mdCtaBtn');
+    const liveClockEl    = document.getElementById('mdLiveClock');
 
-    if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            const icon = menuToggle.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-times');
+    function openMobileDrawer() {
+        if (!drawerOverlay) return;
+        drawerOverlay.classList.add('active');
+        drawerOverlay.setAttribute('aria-hidden', 'false');
+        if (navTrigger) navTrigger.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+        
+        if (typeof UISound !== 'undefined' && typeof UISound.playClick === 'function') {
+            try { UISound.playClick(); } catch (e) {}
+        }
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+            try { navigator.vibrate(12); } catch (e) {}
+        }
+
+        // Stagger entrance with GSAP if available
+        if (typeof gsap !== 'undefined') {
+            gsap.fromTo('.md-link', 
+                { opacity: 0, y: 22 }, 
+                { opacity: 1, y: 0, stagger: 0.05, duration: 0.38, ease: 'power3.out', overwrite: true }
+            );
+        }
+    }
+
+    function closeMobileDrawer() {
+        if (!drawerOverlay) return;
+        drawerOverlay.classList.remove('active');
+        drawerOverlay.setAttribute('aria-hidden', 'true');
+        if (navTrigger) navTrigger.classList.remove('is-active');
+        
+        // Restore scroll only if project modal is not open
+        const projectModal = document.getElementById('projectModalOverlay');
+        if (!projectModal || !projectModal.classList.contains('modal-open')) {
+            document.body.style.overflow = '';
+        }
+    }
+
+    if (navTrigger) {
+        navTrigger.addEventListener('click', () => {
+            if (drawerOverlay && drawerOverlay.classList.contains('active')) {
+                closeMobileDrawer();
+            } else {
+                openMobileDrawer();
+            }
         });
     }
 
-    links.forEach(link => {
+    if (drawerClose) {
+        drawerClose.addEventListener('click', closeMobileDrawer);
+    }
+
+    drawerLinks.forEach(link => {
         link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-            const icon = menuToggle.querySelector('i');
-            icon.classList.add('fa-bars');
-            icon.classList.remove('fa-times');
+            closeMobileDrawer();
+            if (typeof UISound !== 'undefined' && typeof UISound.playClick === 'function') {
+                try { UISound.playClick(); } catch (e) {}
+            }
         });
     });
+
+    // Close on backdrop tap
+    if (drawerOverlay) {
+        drawerOverlay.addEventListener('click', (e) => {
+            if (e.target === drawerOverlay || e.target.classList.contains('md-mesh-bg')) {
+                closeMobileDrawer();
+            }
+        });
+    }
+
+    // Live Studio Telemetry Clock (Caracas UTC-4)
+    function updateLiveStudioClock() {
+        if (!liveClockEl) return;
+        const now = new Date();
+        const hrs = String(now.getHours()).padStart(2, '0');
+        const mins = String(now.getMinutes()).padStart(2, '0');
+        const secs = String(now.getSeconds()).padStart(2, '0');
+        liveClockEl.textContent = `${hrs}:${mins}:${secs} VET`;
+    }
+    updateLiveStudioClock();
+    setInterval(updateLiveStudioClock, 1000);
 
     /* =========================================
        2. ANIMACIONES AL HACER SCROLL (.hidden)
@@ -1392,6 +1456,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         const canvasContainer = document.getElementById('modal-3d-canvas-container');
         const canvasHint = document.querySelector('.canvas-3d-hint');
         const galleryContainer = document.getElementById('modal-gallery-container');
+        const modalColLeft = document.querySelector('.modal-col-left');
 
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1400,6 +1465,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
                 const tab = btn.getAttribute('data-tab');
                 if (tab === 'wireframe') {
+                    if (modalColLeft) modalColLeft.classList.remove('gallery-mode');
                     if (canvasContainer) canvasContainer.classList.remove('tab-hidden');
                     if (canvasHint) canvasHint.classList.remove('tab-hidden');
                     if (galleryContainer) galleryContainer.classList.add('tab-hidden');
@@ -1417,6 +1483,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                         }
                     }
                 } else {
+                    if (modalColLeft) modalColLeft.classList.add('gallery-mode');
                     if (canvasContainer) canvasContainer.classList.add('tab-hidden');
                     if (canvasHint) canvasHint.classList.add('tab-hidden');
                     if (galleryContainer) galleryContainer.classList.remove('tab-hidden');
@@ -1426,7 +1493,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         });
     }
 
-        // ---- Automatic Modal Carousel Engine ----
+    // ---- Cinema Showcase Modal Carousel Engine ----
     let modalCarouselTimer = null;
     let currentSlideIndex = 0;
 
@@ -1446,7 +1513,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                 const isMobile = item.toLowerCase().includes('responsive') || item.toLowerCase().includes('whatsapp');
                 return {
                     src: item,
-                    caption: isMobile ? 'MODO MÓVIL // RESPONSIVE COMPACT' : `CAPTURA ${String(idx + 1).padStart(2, '0')} // ${projectTitle}`
+                    caption: isMobile ? 'MODO MÓVIL // RESPONSIVE COMPACT' : `PANTALLA ${String(idx + 1).padStart(2, '0')} // ${projectTitle}`
                 };
             }
             return item;
@@ -1457,14 +1524,30 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
         grid.innerHTML = `
             <div class="modal-carousel-root" id="modalCarouselRoot">
+                <!-- Top HUD: Minimalist Telemetry & Expand -->
+                <div class="mc-hud-top">
+                    <div class="mc-counter-pill">
+                        <span class="mc-current-num">01</span>
+                        <span class="mc-sep">/</span>
+                        <span class="mc-total-num">${String(total).padStart(2, '0')}</span>
+                    </div>
+                    <div class="mc-caption-badge" id="mcCaptionBadge" title="${items[0].caption || projectTitle}">
+                        <span class="mc-badge-dot"></span>
+                        <span class="mc-caption-text">${items[0].caption || projectTitle}</span>
+                    </div>
+                    <button class="mc-expand-action-btn" id="mcExpandBtn" title="Pantalla Completa" type="button" aria-label="Expandir">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+
+                <!-- Main Cinema Stage -->
                 <div class="mc-stage">
-                    <div class="mc-slide-viewport">
+                    <div class="mc-slide-viewport" id="mcSlideViewport">
                         ${items.map((it, i) => `
                             <div class="mc-slide ${i === 0 ? 'active' : ''}" data-index="${i}">
-                                <img src="${it.src}" alt="${it.caption || projectTitle}" loading="lazy">
+                                <img src="${it.src}" alt="${it.caption || projectTitle}" loading="${i < 2 ? 'eager' : 'lazy'}">
                                 <div class="mc-slide-overlay">
-                                    <span class="mc-slide-badge">${it.caption || `CAPTURA ${String(i + 1).padStart(2, '0')}`}</span>
-                                    <span class="mc-zoom-hint"><i class="fas fa-search-plus"></i> CLICK PARA EXPANDIR</span>
+                                    <span class="mc-zoom-hint"><i class="fas fa-search-plus"></i> TOCAR PARA EXPANDIR</span>
                                 </div>
                             </div>
                         `).join('')}
@@ -1482,27 +1565,11 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                     </div>
                 </div>
 
-                <div class="mc-footer">
-                    <div class="mc-counter">
-                        <span class="mc-current-num">01</span>
-                        <span class="mc-sep">/</span>
-                        <span class="mc-total-num">${String(total).padStart(2, '0')}</span>
-                    </div>
-                    <div class="mc-dots">
-                        ${items.map((_, i) => `
-                            <button class="mc-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="Diapositiva ${i + 1}"></button>
-                        `).join('')}
-                    </div>
-                    <div class="mc-status-pill">
-                        <span class="mc-pulse-dot"></span>
-                        <span class="mc-status-label">AUTO-SLIDE</span>
-                    </div>
-                </div>
-
-                <div class="mc-thumbnails">
+                <!-- Bottom Filmstrip Thumbnails Track -->
+                <div class="mc-thumbnails" id="mcThumbnailsTrack">
                     ${items.map((it, i) => `
-                        <button class="mc-thumb ${i === 0 ? 'active' : ''}" data-index="${i}" type="button">
-                            <img src="${it.src}" alt="Miniatura ${i + 1}">
+                        <button class="mc-thumb ${i === 0 ? 'active' : ''}" data-index="${i}" type="button" aria-label="Miniatura ${i + 1}">
+                            <img src="${it.src}" alt="Miniatura ${i + 1}" loading="lazy">
                         </button>
                     `).join('')}
                 </div>
@@ -1511,17 +1578,18 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
         const root = document.getElementById('modalCarouselRoot');
         const slides = root.querySelectorAll('.mc-slide');
-        const dots = root.querySelectorAll('.mc-dot');
         const thumbs = root.querySelectorAll('.mc-thumb');
         const prevBtn = root.querySelector('.mc-prev');
         const nextBtn = root.querySelector('.mc-next');
         const currentNum = root.querySelector('.mc-current-num');
+        const captionText = root.querySelector('.mc-caption-text');
+        const expandBtn = root.querySelector('#mcExpandBtn');
         const progressBar = document.getElementById('mcProgressBar');
+        const viewport = root.querySelector('#mcSlideViewport');
 
         function showSlide(idx) {
             currentSlideIndex = (idx + total) % total;
             slides.forEach((sl, i) => sl.classList.toggle('active', i === currentSlideIndex));
-            dots.forEach((dt, i) => dt.classList.toggle('active', i === currentSlideIndex));
             thumbs.forEach((th, i) => {
                 th.classList.toggle('active', i === currentSlideIndex);
                 if (i === currentSlideIndex) {
@@ -1529,6 +1597,11 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                 }
             });
             if (currentNum) currentNum.textContent = String(currentSlideIndex + 1).padStart(2, '0');
+            if (captionText && items[currentSlideIndex]) {
+                captionText.textContent = items[currentSlideIndex].caption || projectTitle;
+                const badge = root.querySelector('#mcCaptionBadge');
+                if (badge) badge.title = items[currentSlideIndex].caption || projectTitle;
+            }
             resetProgressBar();
         }
 
@@ -1537,7 +1610,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             progressBar.style.transition = 'none';
             progressBar.style.width = '0%';
             void progressBar.offsetWidth;
-            progressBar.style.transition = 'width 3500ms linear';
+            progressBar.style.transition = 'width 3800ms linear';
             progressBar.style.width = '100%';
         }
 
@@ -1546,7 +1619,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             resetProgressBar();
             modalCarouselTimer = setInterval(() => {
                 showSlide(currentSlideIndex + 1);
-            }, 3500);
+            }, 3800);
         }
 
         function stopAutoSlide() {
@@ -1576,14 +1649,6 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             startAutoSlide();
         });
 
-        dots.forEach(d => {
-            d.addEventListener('click', (e) => {
-                e.stopPropagation();
-                showSlide(parseInt(d.dataset.index, 10));
-                startAutoSlide();
-            });
-        });
-
         thumbs.forEach(t => {
             t.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -1591,6 +1656,44 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                 startAutoSlide();
             });
         });
+
+        // Touch Swipe gestures for natural mobile flicking
+        if (viewport) {
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let touchEndX = 0;
+            let isSwiping = false;
+
+            viewport.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                    touchEndX = touchStartX;
+                    isSwiping = true;
+                    stopAutoSlide();
+                }
+            }, { passive: true });
+
+            viewport.addEventListener('touchmove', (e) => {
+                if (!isSwiping || e.touches.length !== 1) return;
+                touchEndX = e.touches[0].clientX;
+            }, { passive: true });
+
+            viewport.addEventListener('touchend', (e) => {
+                if (!isSwiping) return;
+                isSwiping = false;
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = (e.changedTouches[0] ? e.changedTouches[0].clientY : touchStartY) - touchStartY;
+                if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                    if (deltaX < 0) {
+                        showSlide(currentSlideIndex + 1);
+                    } else {
+                        showSlide(currentSlideIndex - 1);
+                    }
+                }
+                startAutoSlide();
+            }, { passive: true });
+        }
 
         root.addEventListener('mouseenter', stopAutoSlide);
         root.addEventListener('mouseleave', startAutoSlide);
@@ -1604,9 +1707,17 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
             });
         });
 
+        expandBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const activeSlide = slides[currentSlideIndex];
+            const img = activeSlide ? activeSlide.querySelector('img') : null;
+            if (img && typeof openFullscreen === 'function') {
+                openFullscreen(img.src);
+            }
+        });
+
         startAutoSlide();
     }
-
     function stopModalCarousel() {
         if (modalCarouselTimer) {
             clearInterval(modalCarouselTimer);
@@ -1657,6 +1768,8 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         }
 
         // Activar pestaña de Capturas Reales / Video por defecto
+        const modalColLeft = document.querySelector('.modal-col-left');
+        if (modalColLeft) modalColLeft.classList.add('gallery-mode');
         const defaultTabBtn = document.querySelector('.modal-tab-btn[data-tab="screenshots"]');
         if (defaultTabBtn) {
             document.querySelectorAll('.modal-tab-btn').forEach(b => b.classList.remove('active'));
@@ -1751,6 +1864,8 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
     function closeModal() {
         stopModalCarousel();
+        const modalColLeft = document.querySelector('.modal-col-left');
+        if (modalColLeft) modalColLeft.classList.remove('gallery-mode');
         // Detener de inmediato cualquier video de YouTube activo
         const grid = document.getElementById('modalGalleryGrid');
         if (grid) grid.innerHTML = '';

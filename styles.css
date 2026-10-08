@@ -726,6 +726,329 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     color: #11d483;
 }
 
+/* ============================================================
+   ARCHITECTURAL NATIVE MOBILE DOCK & LUXURY DRAWER
+   ============================================================ */
+.vanta-nav-trigger {
+    display: none;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 100px;
+    background: rgba(8, 12, 18, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1025;
+}
+
+.vanta-nav-trigger:hover,
+.vanta-nav-trigger:active {
+    background: rgba(14, 20, 30, 0.95);
+    border-color: rgba(17, 212, 131, 0.45);
+    box-shadow: 0 0 20px rgba(17, 212, 131, 0.3);
+}
+
+.vnt-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.70rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #FFFFFF;
+}
+
+.vnt-icon {
+    width: 16px;
+    height: 11px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.vnt-line {
+    height: 2px;
+    background: #11D483;
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vnt-line-1 {
+    width: 16px;
+}
+
+.vnt-line-2 {
+    width: 10px;
+}
+
+.vanta-nav-trigger.is-active .vnt-line-1 {
+    transform: translateY(4.5px) rotate(45deg);
+    width: 16px;
+}
+
+.vanta-nav-trigger.is-active .vnt-line-2 {
+    transform: translateY(-4.5px) rotate(-45deg);
+    width: 16px;
+}
+
+/* Fullscreen Native Mesh Blur Drawer */
+.mobile-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
+    background: rgba(3, 5, 8, 0.94);
+    backdrop-filter: blur(40px) saturate(190%);
+    -webkit-backdrop-filter: blur(40px) saturate(190%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mobile-drawer-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.md-mesh-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.md-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+}
+
+.md-orb-1 {
+    top: 5%;
+    right: -15%;
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle, rgba(17, 212, 131, 0.20) 0%, transparent 70%);
+}
+
+.md-orb-2 {
+    bottom: 10%;
+    left: -15%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(0, 240, 255, 0.14) 0%, transparent 70%);
+}
+
+.mobile-drawer-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.md-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4rem 1.4rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.md-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: #11D483;
+    letter-spacing: 0.1em;
+    background: rgba(17, 212, 131, 0.08);
+    border: 1px solid rgba(17, 212, 131, 0.22);
+    padding: 4px 10px;
+    border-radius: 100px;
+}
+
+.md-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #11D483;
+    box-shadow: 0 0 8px #11D483;
+    animation: hspPulse 1.8s infinite;
+}
+
+.md-close-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #FFFFFF;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.22s ease;
+}
+
+.md-close-btn:hover {
+    background: #11D483;
+    color: #030508;
+    border-color: #11D483;
+    transform: rotate(90deg);
+}
+
+.md-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 2rem 1.4rem 1.5rem;
+}
+
+.md-link {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-decoration: none;
+    padding: 0.65rem 0.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+    border-radius: 6px;
+}
+
+.md-link:active {
+    transform: translateX(8px);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.md-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: #11D483;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+}
+
+.md-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.md-sub {
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-family: var(--font-main);
+}
+
+.md-footer {
+    padding: 1.4rem;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.md-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    padding: 14px 20px;
+    background: #11D483;
+    color: #030508;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 0 25px rgba(17, 212, 131, 0.4);
+    transition: all 0.22s ease;
+    box-sizing: border-box;
+}
+
+.md-cta-btn:active {
+    transform: scale(0.98);
+}
+
+.md-telemetry-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+}
+
+.md-time-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.md-time-item .md-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.12em;
+}
+
+.md-time-item .md-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.74rem;
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+.md-social-pills {
+    display: flex;
+    gap: 8px;
+}
+
+.md-soc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px 11px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.md-soc-pill:hover,
+.md-soc-pill:active {
+    color: #11D483;
+    border-color: rgba(17, 212, 131, 0.35);
+}
+
+
 /* ─────────────────────────────────────────────────────────────
    RESPONSIVE BREAKPOINTS: MOBILE & TABLETS
    ───────────────────────────────────────────────────────────── */
@@ -776,13 +1099,13 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     }
 
     .menu-toggle {
+        display: none !important;
+    }
+    .vanta-nav-trigger {
         display: inline-flex !important;
-        width: 38px !important;
-        height: 38px !important;
-        font-size: 1rem !important;
-        z-index: 1010 !important;
-        position: relative !important;
-        cursor: pointer !important;
+    }
+    .nav-audio-pill {
+        display: none !important;
     }
 
     .nav-center-deck {
@@ -6172,7 +6495,7 @@ body {
         overflow: visible !important;
     }
 
-    /* Left Column: Compact 3D & Gallery Viewport (240px) */
+    /* Left Column: Adaptive 3D & Showcase Viewport */
     .modal-col-left {
         width: 100% !important;
         height: 240px !important;
@@ -6184,6 +6507,13 @@ body {
         border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
         background: #020305 !important;
         overflow: hidden !important;
+        transition: height 0.35s cubic-bezier(0.16, 1, 0.3, 1), min-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .modal-col-left.gallery-mode {
+        height: 440px !important;
+        min-height: 440px !important;
+        max-height: 440px !important;
     }
 
     #modal-3d-canvas-container {
@@ -6253,14 +6583,16 @@ body {
         font-size: 0.7rem !important;
     }
 
-    /* Screenshots gallery inside 240px container */
+    /* Screenshots gallery inside adaptive container */
     #modal-gallery-container {
-        top: 48px !important;
-        padding: 0.4rem 0.8rem !important;
+        top: 50px !important;
+        padding: 0.4rem 0.65rem 0.65rem !important;
+        height: calc(100% - 50px) !important;
     }
     .mc-stage {
-        min-height: 140px !important;
-        border-radius: 8px !important;
+        min-height: 260px !important;
+        flex: 1 !important;
+        border-radius: 10px !important;
     }
     .modal-video-frame {
         border-radius: 8px !important;
@@ -6453,22 +6785,116 @@ body:has(.project-modal-overlay.modal-open) .whatsapp-float {
     flex-direction: column;
     width: 100%;
     height: 100%;
-    gap: 0.75rem;
+    gap: 0.65rem;
 }
 
+/* Top Telemetry & Expand HUD */
+.mc-hud-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 2px;
+    flex-shrink: 0;
+}
+
+.mc-counter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: #11D483;
+    background: rgba(17, 212, 131, 0.08);
+    border: 1px solid rgba(17, 212, 131, 0.25);
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.08em;
+}
+
+.mc-counter-pill .mc-current-num {
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.mc-sep {
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0 2px;
+}
+
+.mc-total-num {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.mc-caption-badge {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mc-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #11D483;
+    box-shadow: 0 0 6px #11D483;
+    flex-shrink: 0;
+}
+
+.mc-caption-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mc-expand-action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.mc-expand-action-btn:hover {
+    background: #11D483;
+    color: #030508;
+    border-color: #11D483;
+    box-shadow: 0 0 12px rgba(17, 212, 131, 0.4);
+}
+
+/* Cinema Stage */
 .mc-stage {
     position: relative;
     width: 100%;
     flex: 1;
     min-height: 260px;
-    background: #06090e;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #040609;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.85);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.9);
 }
 
 .mc-slide-viewport {
@@ -6476,20 +6902,21 @@ body:has(.project-modal-overlay.modal-open) .whatsapp-float {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    touch-action: pan-y pinch-zoom;
 }
 
 .mc-slide {
     position: absolute;
     inset: 0;
     opacity: 0;
-    transform: scale(0.97);
+    transform: scale(0.98);
     pointer-events: none;
-    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: zoom-in;
-    padding: 1rem;
+    padding: 0.75rem;
 }
 
 .mc-slide.active {
@@ -6500,16 +6927,18 @@ body:has(.project-modal-overlay.modal-open) .whatsapp-float {
 }
 
 .mc-slide img {
-    max-width: 96%;
-    max-height: 94%;
+    max-width: 98%;
+    max-height: 96%;
+    width: auto;
+    height: auto;
     object-fit: contain;
     border-radius: 8px;
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
-    transition: transform 0.4s ease;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.95);
+    transition: transform 0.35s ease;
 }
 
 .mc-slide:hover img {
-    transform: scale(1.02);
+    transform: scale(1.015);
 }
 
 .mc-slide-overlay {
@@ -6517,35 +6946,27 @@ body:has(.project-modal-overlay.modal-open) .whatsapp-float {
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 1.5rem 1.2rem 0.8rem;
-    background: linear-gradient(to top, rgba(3, 5, 8, 0.92) 0%, rgba(3, 5, 8, 0.4) 60%, transparent 100%);
+    padding: 1rem 1rem 0.5rem;
+    background: linear-gradient(to top, rgba(3, 5, 8, 0.85) 0%, transparent 100%);
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: flex-end;
     pointer-events: none;
     z-index: 3;
 }
 
-.mc-slide-badge {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    color: #11D483;
-    background: rgba(17, 212, 131, 0.1);
-    border: 1px solid rgba(17, 212, 131, 0.25);
-    padding: 4px 10px;
-    border-radius: 4px;
-    text-transform: uppercase;
-}
-
 .mc-zoom-hint {
     font-family: 'Space Mono', monospace;
-    font-size: 0.60rem;
+    font-size: 0.58rem;
     letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.6);
     display: flex;
     align-items: center;
     gap: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Nav arrows */
@@ -6556,8 +6977,8 @@ body:has(.project-modal-overlay.modal-open) .whatsapp-float {
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    background: rgba(8, 12, 20, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(8, 12, 20, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #FFFFFF;
     display: flex;
     align-items: center;
@@ -6577,8 +6998,8 @@ body:has(.project-modal-overlay.modal-open) .whatsapp-float {
     transform: translateY(-50%) scale(1.1);
 }
 
-.mc-prev { left: 14px; }
-.mc-next { right: 14px; }
+.mc-prev { left: 12px; }
+.mc-next { right: 12px; }
 
 /* Top Progress bar */
 .mc-progress-track {
@@ -6598,104 +7019,37 @@ body:has(.project-modal-overlay.modal-open) .whatsapp-float {
     box-shadow: 0 0 8px #11D483;
 }
 
-/* Footer info */
-.mc-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.2rem 0.4rem;
-    flex-shrink: 0;
-}
-
-.mc-counter {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.85);
-}
-
-.mc-sep {
-    color: rgba(255, 255, 255, 0.3);
-    margin: 0 4px;
-}
-
-.mc-total-num {
-    color: rgba(255, 255, 255, 0.45);
-}
-
-.mc-dots {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.mc-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    cursor: pointer !important;
-    padding: 0;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.mc-dot.active {
-    width: 22px;
-    border-radius: 6px;
-    background: #11D483;
-    box-shadow: 0 0 8px rgba(17, 212, 131, 0.5);
-}
-
-.mc-status-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
-    color: #11D483;
-    background: rgba(17, 212, 131, 0.08);
-    border: 1px solid rgba(17, 212, 131, 0.2);
-    padding: 3px 8px;
-    border-radius: 100px;
-}
-
-.mc-pulse-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #11D483;
-    box-shadow: 0 0 6px #11D483;
-    animation: hmb-pulse 1.8s infinite;
-}
-
-/* Filmstrip Thumbnails */
+/* Horizontal Filmstrip Thumbnails Track */
 .mc-thumbnails {
     display: flex;
     gap: 8px;
     overflow-x: auto;
-    padding: 4px 2px 4px;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(17, 212, 131, 0.3) transparent;
+    overflow-y: hidden;
+    padding: 3px 1px 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
     flex-shrink: 0;
+    height: 48px;
 }
 
-.mc-thumbnails::-webkit-scrollbar { height: 4px; }
-.mc-thumbnails::-webkit-scrollbar-thumb { background: rgba(17, 212, 131, 0.3); border-radius: 2px; }
+.mc-thumbnails::-webkit-scrollbar {
+    display: none;
+}
 
 .mc-thumb {
-    width: 60px;
+    width: 64px;
     height: 42px;
     flex-shrink: 0;
-    background: #080c14;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #060910;
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 6px;
     overflow: hidden;
     padding: 0;
     cursor: pointer !important;
     opacity: 0.45;
-    transition: all 0.25s ease;
+    transition: all 0.22s ease;
+    scroll-snap-align: center;
 }
 
 .mc-thumb img {
@@ -6708,8 +7062,8 @@ body:has(.project-modal-overlay.modal-open) .whatsapp-float {
 .mc-thumb.active {
     opacity: 1;
     border-color: #11D483;
-    box-shadow: 0 0 12px rgba(17, 212, 131, 0.35);
-    transform: scale(1.04);
+    box-shadow: 0 0 12px rgba(17, 212, 131, 0.45);
+    transform: scale(1.05);
 }
 
 .mc-thumb:hover {
@@ -9213,12 +9567,83 @@ html.lenis body {
 }
 
 /* 3. Authoritative Editorial Headline (Syne + Instrument Serif) */
+
+/* ============================================================
+   HERO STATUS PILL & ARCHITECTURAL TYPOGRAPHY
+   ============================================================ */
+.hero-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: #11D483;
+    background: rgba(17, 212, 131, 0.06);
+    border: 1px solid rgba(17, 212, 131, 0.22);
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.08em;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    pointer-events: auto;
+    transition: all 0.3s ease;
+}
+
+.hero-status-pill:hover {
+    background: rgba(17, 212, 131, 0.1);
+    border-color: rgba(17, 212, 131, 0.45);
+    box-shadow: 0 0 20px rgba(17, 212, 131, 0.22);
+}
+
+.hsp-pulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #11D483;
+    box-shadow: 0 0 8px #11D483;
+    animation: hspPulse 1.8s infinite;
+}
+
+@keyframes hspPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+.hsp-label {
+    font-weight: 700;
+}
+
+.hsp-sep {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.hsp-meta {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.hte-subline {
+    margin-top: 0.16em;
+    font-size: clamp(1.15rem, 3.1vw, 3.1rem) !important;
+    letter-spacing: 0.04em !important;
+}
+
+.hte-accent {
+    display: inline-block;
+    background: linear-gradient(180deg, #11D483 0%, #00F0FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 22px rgba(17, 212, 131, 0.35));
+    font-weight: 900 !important;
+    letter-spacing: 0.02em !important;
+}
+
 .hero-title-editorial {
     font-family: 'Syne', sans-serif !important;
     font-weight: 800 !important;
-    font-size: clamp(2.8rem, 6.2vw, 6.4rem) !important;
-    line-height: 0.98 !important;
-    letter-spacing: -0.032em !important;
+    font-size: clamp(2.3rem, 5.2vw, 5.2rem) !important;
+    line-height: 1.06 !important;
+    letter-spacing: -0.025em !important;
     color: #FFFFFF !important;
     text-transform: uppercase;
     display: flex;
@@ -9267,11 +9692,11 @@ html.lenis body {
 
 /* 4. Editorial Manifesto Subtitle */
 .hero-description-editorial {
-    max-width: 620px;
+    max-width: 600px;
     font-family: var(--font-main);
-    font-size: clamp(0.92rem, 1.05vw, 1.05rem);
-    line-height: 1.72;
-    color: rgba(255, 255, 255, 0.68);
+    font-size: clamp(0.96rem, 1.15vw, 1.12rem);
+    line-height: 1.68;
+    color: rgba(255, 255, 255, 0.85);
     margin: 0 auto 2.4rem;
     pointer-events: auto;
     font-weight: 400;
@@ -9458,8 +9883,8 @@ body.scrolled .whatsapp-btn,
         padding: 6.5rem 1.5rem 3.5rem;
     }
     .hero-title-editorial {
-        font-size: clamp(2.4rem, 7.5vw, 4.8rem) !important;
-        line-height: 0.95 !important;
+        font-size: clamp(2.2rem, 7.2vw, 4.5rem) !important;
+        line-height: 1.08 !important;
     }
 }
 
@@ -9468,19 +9893,21 @@ body.scrolled .whatsapp-btn,
         padding: 4.8rem 1.25rem 1.8rem;
     }
     .hero-title-editorial {
-        font-size: clamp(1.45rem, 7.4vw, 2.7rem) !important;
-        line-height: 0.95 !important;
-        letter-spacing: -0.03em !important;
+        font-size: clamp(1.65rem, 7.6vw, 2.75rem) !important;
+        line-height: 1.08 !important;
+        letter-spacing: -0.02em !important;
     }
-    .hero-eyebrow-tag {
-        font-size: 0.58rem !important;
+    .hero-status-pill {
+        font-size: 0.60rem !important;
         padding: 4px 12px !important;
-        letter-spacing: 0.14em !important;
+        margin-bottom: 1.2rem !important;
     }
     .hero-description-editorial {
-        font-size: 0.88rem;
-        line-height: 1.55;
-        margin-bottom: 1.5rem;
+        font-size: 0.92rem !important;
+        line-height: 1.62 !important;
+        color: rgba(255, 255, 255, 0.82) !important;
+        margin-bottom: 1.6rem !important;
+        max-width: 94% !important;
     }
     .hero-actions-editorial {
         width: 100%;
