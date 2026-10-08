@@ -1106,9 +1106,10 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         const width = container.clientWidth || window.innerWidth * 0.55;
         const height = container.clientHeight || window.innerHeight;
 
+        const isMobile = window.innerWidth <= 900;
         modal3DScene = new THREE.Scene();
         modal3DCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-        modal3DCamera.position.z = 6.2;
+        modal3DCamera.position.z = isMobile ? (window.innerWidth <= 600 ? 8.2 : 7.4) : 6.2;
 
         modal3DRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         modal3DRenderer.setSize(width, height);
@@ -1222,50 +1223,67 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
         modal3DScene.add(ambientLight);
 
-        // Interacción rotación 3D con cursor (Inercial / Drag)
+        // Interacción rotación 3D táctil y cursor (Inercial / Drag)
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
         let targetRotation = { x: 0.2, y: 0.5 };
         let currentRotation = { x: 0.2, y: 0.5 };
 
-        const onMouseDown = (e) => {
-            isDragging = true;
-            previousMousePosition = { x: e.clientX, y: e.clientY };
+        const getPoint = (e) => {
+            if (e.touches && e.touches.length > 0) {
+                return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }
+            return { x: e.clientX, y: e.clientY };
         };
 
-        const onMouseMove = (e) => {
+        const onPointerDown = (e) => {
+            isDragging = true;
+            const p = getPoint(e);
+            previousMousePosition = { x: p.x, y: p.y };
+        };
+
+        const onPointerMove = (e) => {
             if (!isDragging) return;
-            const deltaX = e.clientX - previousMousePosition.x;
-            const deltaY = e.clientY - previousMousePosition.y;
+            const p = getPoint(e);
+            const deltaX = p.x - previousMousePosition.x;
+            const deltaY = p.y - previousMousePosition.y;
 
             targetRotation.y += deltaX * 0.0075;
             targetRotation.x += deltaY * 0.0075;
 
-            previousMousePosition = { x: e.clientX, y: e.clientY };
+            previousMousePosition = { x: p.x, y: p.y };
         };
 
-        const onMouseUp = () => {
+        const onPointerUp = () => {
             isDragging = false;
         };
 
-        container.addEventListener('mousedown', onMouseDown);
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mouseup', onMouseUp);
+        container.addEventListener('mousedown', onPointerDown);
+        window.addEventListener('mousemove', onPointerMove);
+        window.addEventListener('mouseup', onPointerUp);
+
+        container.addEventListener('touchstart', onPointerDown, { passive: true });
+        window.addEventListener('touchmove', onPointerMove, { passive: true });
+        window.addEventListener('touchend', onPointerUp);
 
         const onResize = () => {
             if (!container || !modal3DRenderer || !modal3DCamera) return;
             const w = container.clientWidth;
             const h = container.clientHeight;
-            modal3DCamera.aspect = w / h;
-            modal3DCamera.updateProjectionMatrix();
-            modal3DRenderer.setSize(w, h);
+            if (w > 0 && h > 0) {
+                modal3DCamera.aspect = w / h;
+                const mob = window.innerWidth <= 900;
+                modal3DCamera.position.z = mob ? (window.innerWidth <= 600 ? 8.2 : 7.4) : 6.2;
+                modal3DCamera.updateProjectionMatrix();
+                modal3DRenderer.setSize(w, h);
+            }
         };
         window.addEventListener('resize', onResize);
 
         modal3DListeners = {
-            mousedown: onMouseDown,
-            mousemove: onMouseMove,
-            mouseup: onMouseUp,
+            pointerDown: onPointerDown,
+            pointerMove: onPointerMove,
+            pointerUp: onPointerUp,
             resize: onResize,
             container: container
         };
@@ -1307,10 +1325,13 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         }
         if (modal3DListeners) {
             if (modal3DListeners.container) {
-                modal3DListeners.container.removeEventListener('mousedown', modal3DListeners.mousedown);
+                modal3DListeners.container.removeEventListener('mousedown', modal3DListeners.pointerDown);
+                modal3DListeners.container.removeEventListener('touchstart', modal3DListeners.pointerDown);
             }
-            window.removeEventListener('mousemove', modal3DListeners.mousemove);
-            window.removeEventListener('mouseup', modal3DListeners.mouseup);
+            window.removeEventListener('mousemove', modal3DListeners.pointerMove);
+            window.removeEventListener('touchmove', modal3DListeners.pointerMove);
+            window.removeEventListener('mouseup', modal3DListeners.pointerUp);
+            window.removeEventListener('touchend', modal3DListeners.pointerUp);
             window.removeEventListener('resize', modal3DListeners.resize);
             modal3DListeners = null;
         }
@@ -1389,6 +1410,8 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
                         const h = canvasContainer.clientHeight;
                         if (w > 0 && h > 0) {
                             modal3DCamera.aspect = w / h;
+                            const isMob = window.innerWidth <= 900;
+                            modal3DCamera.position.z = isMob ? (window.innerWidth <= 600 ? 8.2 : 7.4) : 6.2;
                             modal3DCamera.updateProjectionMatrix();
                             modal3DRenderer.setSize(w, h);
                         }
@@ -1700,6 +1723,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         }
 
         modalOverlay.classList.add('modal-open');
+        document.body.classList.add('modal-active-dossier');
         document.body.style.overflow = 'hidden';
 
         // Inicializar canvas 3D con delay por si el usuario pasa a la pestaña 3D
@@ -1732,6 +1756,7 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         if (grid) grid.innerHTML = '';
 
         modalOverlay.classList.remove('modal-open');
+        document.body.classList.remove('modal-active-dossier');
         document.body.style.overflow = '';
         
         const container = document.getElementById('modal-3d-canvas-container');
@@ -1764,13 +1789,28 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
     });
 
 
+    const triggerProjectTransition = (key, event) => {
+        if (!key) return;
+        if (window.VantaTransition && typeof window.VantaTransition.launch === 'function') {
+            window.VantaTransition.launch(key, event, (projKey) => {
+                openModal(projKey);
+            });
+        } else if (window.WarpRunner && typeof window.WarpRunner.launch === 'function') {
+            window.WarpRunner.launch(key, event, (projKey) => {
+                openModal(projKey);
+            });
+        } else {
+            openModal(key);
+        }
+    };
+
     // Attach clicks to R&D Pipeline cards (.rd-card)
     document.querySelectorAll('.rd-card[data-info], .rd-showcase-card[data-info]').forEach(card => {
         card.addEventListener('click', (e) => {
             // Evitar duplicar si se hizo clic directo en el botón info-btn
             if (e.target.closest('.info-btn')) return;
             const key = card.getAttribute('data-info');
-            if (key) openModal(key);
+            if (key) triggerProjectTransition(key, e);
         });
     });
 
@@ -1870,33 +1910,21 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
         initRFWavesAnimation();
     }
 
-    // Attach clicks to Works Archive rows (.wa-row) and any .info-btn
+    // Attach clicks to Works Archive rows (.wa-row)
     document.querySelectorAll('.wa-row[data-info]').forEach(row => {
         row.addEventListener('click', (e) => {
             const key = row.getAttribute('data-info');
-            if (key) openModal(key);
+            if (key) triggerProjectTransition(key, e);
         });
     });
 
-    // Info button → 3D Warp Tunnel Flight Experience
+    // Info button → Awwwards Organic Origin Transition
     document.querySelectorAll('.info-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             e.preventDefault();
             const key = btn.getAttribute('data-info');
-            const card = btn.closest('.card');
-            
-            if (window.WarpRunner && typeof window.WarpRunner.launch === 'function') {
-                window.WarpRunner.launch(key, (projKey) => {
-                    if (typeof window.openProjectModal === 'function') {
-                        window.openProjectModal(projKey);
-                    } else {
-                        openModal(projKey);
-                    }
-                });
-            } else {
-                openModal(key);
-            }
+            if (key) triggerProjectTransition(key, e);
         });
     });
 

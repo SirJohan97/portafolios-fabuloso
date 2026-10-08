@@ -22,11 +22,14 @@
 
         let isAnimating = false;
         let isDragging = false;
+        let isTouchMode = false;
+        let gestureLocked = null; // null | 'horizontal' | 'vertical'
         let startX = 0;
         let startY = 0;
         let currentX = 0;
         let currentY = 0;
         let activeCard = null;
+        let activePointerId = null;
 
         function updateStackPositions(animate = true) {
             cards.forEach((card, i) => {
@@ -116,52 +119,113 @@
             });
         }
 
-        // Pointer event handlers for the top card
+        // Pointer event handlers with mobile vertical scroll discrimination
         stage.addEventListener('pointerdown', (e) => {
             if (isAnimating) return;
             activeCard = cards[0];
             if (!activeCard) return;
 
-            isDragging = true;
+            activePointerId = e.pointerId;
+            isTouchMode = (e.pointerType === 'touch' || window.innerWidth <= 900);
+            gestureLocked = null;
             startX = e.clientX;
             startY = e.clientY;
             currentX = 0;
             currentY = 0;
 
-            activeCard.style.transition = 'none';
-            activeCard.style.cursor = 'grabbing';
-            try { activeCard.setPointerCapture(e.pointerId); } catch(err) {}
+            if (!isTouchMode) {
+                // PC / Mouse: drag inmediato 2D
+                isDragging = true;
+                activeCard.style.transition = 'none';
+                activeCard.style.cursor = 'grabbing';
+                try { activeCard.setPointerCapture(e.pointerId); } catch(err) {}
+            } else {
+                // Móvil / Touch: NO capturar pointer todavía.
+                // Permitir que el navegador mida la dirección para scroll vertical natural.
+                isDragging = false;
+            }
         });
 
         stage.addEventListener('pointermove', (e) => {
-            if (!isDragging || !activeCard) return;
+            if (!activeCard) return;
 
-            currentX = e.clientX - startX;
-            currentY = e.clientY - startY;
+            if (!isTouchMode) {
+                // Modo PC: Reacciona con libertad a movimientos en X e Y
+                if (!isDragging) return;
+                currentX = e.clientX - startX;
+                currentY = e.clientY - startY;
 
-            const rotate = currentX * 0.06; // tilt proportional to drag
-            activeCard.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) rotate(${rotate}deg)`;
+                const rotate = currentX * 0.06; // tilt proportional to drag
+                activeCard.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) rotate(${rotate}deg)`;
+                return;
+            }
+
+            // Modo Móvil táctil:
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+
+            if (!gestureLocked) {
+                const distance = Math.hypot(deltaX, deltaY);
+                if (distance < 8) return; // Umbral de 8px antes de clasificar el gesto
+
+                if (Math.abs(deltaY) >= Math.abs(deltaX)) {
+                    // Intención vertical: el usuario quiere hacer scroll en la página
+                    gestureLocked = 'vertical';
+                    isDragging = false;
+                    activeCard = null;
+                    activePointerId = null;
+                    return; // Dejar que el scroll del navegador fluya sin bloquear
+                } else {
+                    // Intención horizontal: el usuario quiere deslizar la tarjeta
+                    gestureLocked = 'horizontal';
+                    isDragging = true;
+                    activeCard.style.transition = 'none';
+                    try { activeCard.setPointerCapture(e.pointerId); } catch(err) {}
+                }
+            }
+
+            if (gestureLocked === 'horizontal' && isDragging) {
+                // Solo reacciona a movimientos laterales en móvil
+                currentX = deltaX;
+                currentY = 0; // Y se mantiene rígidamente en 0
+                const rotate = currentX * 0.05;
+                activeCard.style.transform = `translate3d(${currentX}px, 0, 0) rotate(${rotate}deg)`;
+            }
         });
 
         function endDrag(e) {
-            if (!isDragging || !activeCard) return;
-            isDragging = false;
-            activeCard.style.cursor = 'grab';
-
-            if (e && e.pointerId && activeCard.releasePointerCapture) {
-                try { activeCard.releasePointerCapture(e.pointerId); } catch (err) {}
+            if (!activeCard) {
+                isDragging = false;
+                gestureLocked = null;
+                activePointerId = null;
+                return;
             }
 
-            // If dragged past threshold, throw!
-            if (Math.abs(currentX) > 90) {
+            const card = activeCard;
+            const wasDragging = isDragging;
+            const pointerId = activePointerId || (e ? e.pointerId : null);
+
+            isDragging = false;
+            gestureLocked = null;
+            activeCard = null;
+            activePointerId = null;
+
+            card.style.cursor = 'grab';
+            if (pointerId && card.releasePointerCapture) {
+                try { card.releasePointerCapture(pointerId); } catch (err) {}
+            }
+
+            if (!wasDragging) return;
+
+            // Umbral de disparo: 70px en táctil móvil, 90px en PC
+            const threshold = isTouchMode ? 70 : 90;
+            if (Math.abs(currentX) > threshold) {
                 throwCard(currentX > 0 ? 1 : -1);
             } else {
-                // Elastic snap back
-                activeCard.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                activeCard.style.transform = 'translate3d(0, 0, 0) scale(1) rotate(0deg)';
+                // Snap elástico de retorno
+                card.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                card.style.transform = 'translate3d(0, 0, 0) scale(1) rotate(0deg)';
             }
-
-            activeCard = null;
         }
 
         stage.addEventListener('pointerup', endDrag);
