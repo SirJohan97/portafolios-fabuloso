@@ -1791,17 +1791,10 @@ def detectar_presencia_csi(csi_matrix: np.ndarray, frec_corte=0.35):
 
     const triggerProjectTransition = (key, event) => {
         if (!key) return;
-        if (window.VantaTransition && typeof window.VantaTransition.launch === 'function') {
-            window.VantaTransition.launch(key, event, (projKey) => {
-                openModal(projKey);
-            });
-        } else if (window.WarpRunner && typeof window.WarpRunner.launch === 'function') {
-            window.WarpRunner.launch(key, event, (projKey) => {
-                openModal(projKey);
-            });
-        } else {
-            openModal(key);
+        if (typeof UISound !== 'undefined' && typeof UISound.playClick === 'function') {
+            try { UISound.playClick(); } catch (err) {}
         }
+        openModal(key);
     };
 
     // Attach clicks to R&D Pipeline cards (.rd-card)
