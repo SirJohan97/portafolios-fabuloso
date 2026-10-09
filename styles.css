@@ -12915,7 +12915,7 @@ body.scrolled .whatsapp-btn,
 
     /* ── CINE PIPELINE STAGE — Mobile sticky fix ── */
     .cine-stage {
-        padding: 4.5rem 1rem 1rem !important;
+        padding: 0 !important;
         box-sizing: border-box !important;
     }
 
@@ -12932,12 +12932,16 @@ body.scrolled .whatsapp-btn,
     }
 
     .cine-bp-panel {
-        padding: 1rem !important;
+        padding: 0.2rem 0 !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
     }
 
     .cine-bp-visual {
-        height: 180px !important;
-        min-height: 180px !important;
+        height: 175px !important;
+        min-height: 175px !important;
     }
 
     /* ── NAVBAR — Ensure hamburger is reachable ── */
