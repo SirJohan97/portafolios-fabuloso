@@ -1414,15 +1414,25 @@ function initEffectsScript() {
                 ],
                 metrics: [ { val: "Dockerized", lbl: "Aislamiento Total" }, { val: "C++ Native", lbl: "Cómputo Nativo" }, { val: "Git CI/CD", lbl: "Control Versiones" }, { val: "Multi-Cloud", lbl: "Compatibilidad" } ]
             },
-            yolo: {
-                badge: "COMPUTER VISION", title: "YOLOv8 AI Vision",
-                rank: "REY DE DIAMANTES ♦", accent: "#11d483", icon: "fas fa-eye",
-                desc: "Redes convolucionales YOLOv8 para segmentación y detección de objetos en tiempo real 100% locales.",
+            node_ts: {
+                badge: "RUNTIME & ARCHITECTURE", title: "Node.js & TypeScript",
+                rank: "REY DE DIAMANTES ♦", accent: "#3178C6", icon: "fab fa-node-js",
+                desc: "Arquitecturas backend asíncronas no bloqueantes con Node.js y tipado estricto con TypeScript para sistemas de misión crítica.",
                 projects: [
-                    { icon: "fas fa-video", name: "Control de Calidad Industrial", desc: "Inspección automatizada con 99.4% de precisión." },
-                    { icon: "fas fa-camera", name: "Tracking Multicámara", desc: "32 objetos simultáneos sin latencia en la nube." }
+                    { icon: "fas fa-server", name: "Servicios Backend de Alta Concurrencia", desc: "APIs REST y WebSockets con tipado estricto y cero excepciones no controladas." },
+                    { icon: "fas fa-shield-alt", name: "Arquitectura Hexagonal & DDD", desc: "Patrones de diseño desacoplados y mantenimiento a largo plazo." }
                 ],
-                metrics: [ { val: "99.4%", lbl: "Precisión mAP" }, { val: "60 FPS", lbl: "Inferencia Local" }, { val: "TensorRT", lbl: "Aceleración GPU" }, { val: "0 Cloud", lbl: "Privacidad Total" } ]
+                metrics: [ { val: "Node.js 22", lbl: "Runtime LTS" }, { val: "Strict TS", lbl: "Type Safety" }, { val: "< 5ms", lbl: "Event Loop" }, { val: "100%", lbl: "Tipado Estricto" } ]
+            },
+            yolo: {
+                badge: "RUNTIME & ARCHITECTURE", title: "Node.js & TypeScript",
+                rank: "REY DE DIAMANTES ♦", accent: "#3178C6", icon: "fab fa-node-js",
+                desc: "Arquitecturas backend asíncronas no bloqueantes con Node.js y tipado estricto con TypeScript para sistemas de misión crítica.",
+                projects: [
+                    { icon: "fas fa-server", name: "Servicios Backend de Alta Concurrencia", desc: "APIs REST y WebSockets con tipado estricto y cero excepciones no controladas." },
+                    { icon: "fas fa-shield-alt", name: "Arquitectura Hexagonal & DDD", desc: "Patrones de diseño desacoplados y mantenimiento a largo plazo." }
+                ],
+                metrics: [ { val: "Node.js 22", lbl: "Runtime LTS" }, { val: "Strict TS", lbl: "Type Safety" }, { val: "< 5ms", lbl: "Event Loop" }, { val: "100%", lbl: "Tipado Estricto" } ]
             },
             ml: {
                 badge: "ARTIFICIAL INTELLIGENCE", title: "Machine Learning & Neural Nets",
@@ -1455,14 +1465,14 @@ function initEffectsScript() {
                 metrics: [ { val: "100%", lbl: "Garantía ACID" }, { val: "0.001ms", lbl: "Index Lookup" }, { val: "Neon Cloud", lbl: "Serverless Mesh" }, { val: "JSONB", lbl: "Document Hybrid" } ]
             },
             cloudflare: {
-                badge: "CYBER SECURITY", title: "Cloudflare Tunnels",
+                badge: "SECURITY & EDGE", title: "Cloudflare Tunnels & Vercel",
                 rank: "DIEZ DE DIAMANTES ♦", accent: "#F38020", icon: "fas fa-shield-alt",
-                desc: "Enrutamiento privado de redes Zero Trust, túneles cifrados de punto a punto y protección anti-DDoS.",
+                desc: "Despliegues perimetrales de ultra baja latencia con Vercel Edge combinados con túneles privados Zero Trust de Cloudflare sin exponer puertos públicos.",
                 projects: [
-                    { icon: "fas fa-user-shield", name: "Arquitectura Zero Trust", desc: "Acceso seguro a servidores locales sin puertos abiertos." },
-                    { icon: "fas fa-network-wired", name: "Cloudflare Edge Tunnels", desc: "Tráfico encriptado de alta velocidad." }
+                    { icon: "fas fa-user-shield", name: "Arquitectura Zero Trust", desc: "Acceso seguro a servidores e infraestructuras locales sin puertos abiertos." },
+                    { icon: "fas fa-bolt", name: "Vercel Edge & Cloudflare Mesh", desc: "Distribución global perimetral con routing encriptado de ultra baja latencia." }
                 ],
-                metrics: [ { val: "Zero Trust", lbl: "Sin Puertos Abiertos" }, { val: "Anti-DDoS", lbl: "Protección Edge" }, { val: "100% SSL", lbl: "Cifrado Total" }, { val: "< 2ms", lbl: "Latencia Túnel" } ]
+                metrics: [ { val: "Zero Trust", lbl: "Sin Puertos Abiertos" }, { val: "Vercel Edge", lbl: "Despliegue Global" }, { val: "100% SSL", lbl: "Cifrado Total" }, { val: "< 2ms", lbl: "Latencia Edge" } ]
             },
             johan_core: {
                 badge: "CORE ENGINE", title: "Python, C++, Docker & Git",
@@ -1480,7 +1490,7 @@ function initEffectsScript() {
                 desc: "Sinergia técnica de elite por Andrés Morales & Johan Fernández. La combinación perfecta de Full-Stack Cloud, IA y Gráficos 3D.",
                 projects: [
                     { icon: "img/team/andres_robin.webp", isAvatar: true, name: "Andrés Morales — Full-Stack & Cloud", desc: "FastAPI, Supabase, React, Node, Python, Flask, C++, Vercel, Docker, Git." },
-                    { icon: "img/team/johan_gohan.webp", isAvatar: true, name: "Johan Fernández — AI Vision & 3D", desc: "YOLOv8, Machine Learning, 3D Models, Three.js, Postgres, Cloudflare Tunnels, Python, C++, Docker, Git." }
+                    { icon: "img/team/johan_gohan.webp", isAvatar: true, name: "Johan Fernández — Full-Stack & 3D", desc: "Node.js & TypeScript, Machine Learning, 3D Models, Three.js, Postgres, Cloudflare Tunnels & Vercel, Python, C++, Docker, Git." }
                 ],
                 metrics: [ { val: "360° Studio", lbl: "Cobertura Total" }, { val: "60 FPS", lbl: "Rendimiento Web" }, { val: "Local AI", lbl: "Inferencia Propia" }, { val: "Awwwards", lbl: "Nivel de Calidad" } ]
             }
