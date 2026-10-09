@@ -1487,10 +1487,10 @@ function initEffectsScript() {
             vanta_master: {
                 badge: "THE WINNING HAND", title: "CRITERIO",
                 rank: "AS MAESTRO ♠♦", accent: "#f0c030", icon: "fas fa-crown",
-                desc: "Sinergia técnica de elite por Andrés Morales & Johan Fernández. La combinación perfecta de Full-Stack Cloud, IA y Gráficos 3D.",
+                desc: "Sinergia de ingeniería de software por Andrés Morales & Johan Fernández. Frontend de élite, arquitecturas backend de alta concurrencia, bases de datos e integraciones SAP ERP.",
                 projects: [
-                    { icon: "img/team/andres_robin.webp", isAvatar: true, name: "Andrés Morales — Full-Stack & Cloud", desc: "FastAPI, Supabase, React, Node, Python, Flask, C++, Vercel, Docker, Git." },
-                    { icon: "img/team/johan_gohan.webp", isAvatar: true, name: "Johan Fernández — Full-Stack & 3D", desc: "Node.js & TypeScript, Machine Learning, 3D Models, Three.js, Postgres, Cloudflare Tunnels & Vercel, Python, C++, Docker, Git." }
+                    { icon: "img/team/andres_robin.webp", isAvatar: true, name: "Andrés Morales — Backend & Databases (Full-Stack)", desc: "FastAPI, PostgreSQL, Supabase, Python, Microservicios Cloud, Docker, Git." },
+                    { icon: "img/team/johan_gohan.webp", isAvatar: true, name: "Johan Fernández — Lead Frontend & Full-Stack", desc: "Frontend de Élite, UI/UX Awwwards, Node.js & TypeScript, Integraciones SAP ERP, WebGL Three.js, Cloudflare & Vercel." }
                 ],
                 metrics: [ { val: "360° Studio", lbl: "Cobertura Total" }, { val: "60 FPS", lbl: "Rendimiento Web" }, { val: "Local AI", lbl: "Inferencia Propia" }, { val: "Awwwards", lbl: "Nivel de Calidad" } ]
             }
