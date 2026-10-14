@@ -154,8 +154,8 @@
     </div>
 
     <!-- ===== NAVBAR: AUTHENTIC APPLE DYNAMIC ISLAND ===== -->
-    <nav class="navbar vanta-island-navbar" id="vanta-navbar">
-        <div class="vanta-dynamic-island" id="vantaDynamicIsland">
+    <nav class="navbar vanta-island-navbar vanta-navbar-tripartite" id="vanta-navbar">
+        <div class="vanta-dynamic-island" id="vantaDynamicIsland" data-island-state="hero">
             <!-- 1. Brand Anchor (Receptor del FLIP morph) -->
             <div class="nav-brand-anchor">
                 <a href="#home" class="logo nav-brand-link" id="navbar-logo-target" aria-label="VANTA">
@@ -178,15 +178,15 @@
                                       filter="url(#vNavGlow)"/>
                         </svg>
                     </span>
-                    <span class="logo-text">VANTA</span>
+                    <span class="logo-text island-full-only">VANTA</span>
                 </a>
             </div>
 
             <!-- Apple Dynamic Island Hairline Separator -->
-            <div class="island-hairline-sep island-sep-1" aria-hidden="true"></div>
+            <div class="island-hairline-sep island-sep-1 island-full-only" aria-hidden="true"></div>
 
             <!-- 2. Center Floating Index Deck (Dynamic Liquid Spring Links) -->
-            <div class="nav-center-deck">
+            <div class="nav-center-deck island-full-only">
                 <div class="nav-deck-capsule">
                     <ul class="nav-links nav-deck-list" id="navDeckList">
                         <div class="nav-indicator-capsule"></div>
@@ -199,17 +199,25 @@
                 </div>
             </div>
 
-            <!-- Apple Dynamic Telemetry Badge (Mobile: shows current live section in real time) -->
-            <div class="island-mobile-telemetry" id="islandMobileTelemetry">
-                <span class="imt-dot"></span>
-                <span class="imt-text" id="islandMobileSection">INICIO</span>
+            <!-- 3. COMPACT SCROLLED TELEMETRY CHIP (Visible ONLY when island is compressed on scroll) -->
+            <div class="island-telemetry-scrolled" id="islandTelemetryScrolled" aria-hidden="true">
+                <div class="its-separator"></div>
+                <div class="its-badge">
+                    <span class="its-pulse-dot"></span>
+                    <span class="its-label" id="islandActiveSectionLabel">INICIO</span>
+                </div>
+                <div class="its-micro-eq" id="islandMicroEq" title="Audio Procedural">
+                    <span class="m-bar m-1"></span>
+                    <span class="m-bar m-2"></span>
+                    <span class="m-bar m-3"></span>
+                </div>
             </div>
 
             <!-- Apple Dynamic Island Hairline Separator -->
-            <div class="island-hairline-sep island-sep-2" aria-hidden="true"></div>
+            <div class="island-hairline-sep island-sep-2 island-full-only" aria-hidden="true"></div>
 
-            <!-- 3. Right Command Wing (Hardware Audio + CTA + Mobile Trigger) -->
-            <div class="nav-command-wing">
+            <!-- 4. Right Command Wing (Hardware Audio + CTA + Mobile Trigger) -->
+            <div class="nav-command-wing island-full-only">
                 <button id="audio-toggle-btn" class="audio-toggle-btn nav-audio-pill" aria-label="Activar sonido inmersivo" title="Audio Procedural">
                     <span class="audio-eq-bars" aria-hidden="true">
                         <span class="eq-bar bar-1"></span>

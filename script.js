@@ -556,13 +556,19 @@ function initMainScript() {
     }
 
     /* =========================================
-       8. APPLE DYNAMIC ISLAND FLUID SPRING CONTROLLER
-       Authentic Apple Liquid Morphing & Live Telemetry
+       8. MASTER APPLE DYNAMIC ISLAND CONTROLLER
+       Apple HIG 3-State Machine & Fluid Spring Physics
+       - State 1: HERO RESTING (At top of page, full ~780px deck)
+       - State 2: COMPACT PILL (Scrolled, unobtrusive ~204px pill with live telemetry & micro-EQ)
+       - State 3: EXPANDED BLOOM (Fluid spring expansion via hover, tap, or rapid scroll-up intent)
        ========================================= */
     const navbar = document.getElementById('vanta-navbar') || document.querySelector('.navbar');
     const dynamicIsland = document.getElementById('vantaDynamicIsland');
-    const navbarLogoTarget = document.getElementById('navbar-logo-target');
+    const islandActiveSectionLabel = document.getElementById('islandActiveSectionLabel');
     const islandMobileSection = document.getElementById('islandMobileSection');
+    const islandMicroEq = document.getElementById('islandMicroEq');
+    const islandAudioBtn = document.getElementById('audio-toggle-btn');
+    const navbarLogoTarget = document.getElementById('navbar-logo-target');
     const navLinks = document.querySelectorAll('.nav-deck-list li a');
 
     const islandSections = [
@@ -575,27 +581,72 @@ function initMainScript() {
     ];
 
     let currentActiveSectionId = 'home';
-    let isNavbarScrolled = false;
+    let isIslandCompact = false;
+    let isIslandHovered = false;
+    let hoverCollapseTimeout = null;
+    let scrollIntentTimer = null;
+    let prevScrollY = window.scrollY || 0;
 
+    // Apply Apple Island State Machine
+    function applyDynamicIslandState(state) {
+        if (!dynamicIsland) return;
+
+        if (state === 'hero') {
+            dynamicIsland.classList.remove('is-compact', 'is-hover-expanded');
+            dynamicIsland.setAttribute('data-island-state', 'hero');
+            if (navbar) navbar.classList.remove('scrolled');
+            document.body.classList.remove('scrolled');
+            isIslandCompact = false;
+        } else if (state === 'compact') {
+            dynamicIsland.classList.add('is-compact');
+            dynamicIsland.classList.remove('is-hover-expanded');
+            dynamicIsland.setAttribute('data-island-state', 'compact');
+            if (navbar) navbar.classList.add('scrolled');
+            document.body.classList.add('scrolled');
+            isIslandCompact = true;
+        } else if (state === 'expanded') {
+            if (!isIslandCompact) return; // Ya está expandido en modo hero
+            dynamicIsland.classList.add('is-hover-expanded');
+            dynamicIsland.setAttribute('data-island-state', 'expanded');
+        }
+    }
+
+    // Dynamic Island Scroll & ScrollSpy Controller
     function updateNavbar(scrollY) {
-        if (!navbar) return;
+        if (!navbar || !dynamicIsland) return;
 
-        // 1. Apple Dynamic Island Liquid Morphing on Scroll
-        const shouldBeScrolled = scrollY > 40;
-        if (shouldBeScrolled !== isNavbarScrolled) {
-            isNavbarScrolled = shouldBeScrolled;
-            if (isNavbarScrolled) {
-                navbar.classList.add('scrolled');
-                if (dynamicIsland) dynamicIsland.classList.add('scrolled');
-                document.body.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-                if (dynamicIsland) dynamicIsland.classList.remove('scrolled');
-                document.body.classList.remove('scrolled');
+        const deltaY = scrollY - prevScrollY;
+
+        // 1. Estado Base: Hero vs Compact Pill (Apple Presentation Modes)
+        if (scrollY <= 70) {
+            if (isIslandCompact) {
+                applyDynamicIslandState('hero');
+            }
+        } else {
+            if (!isIslandCompact) {
+                applyDynamicIslandState('compact');
+            } else if (!isIslandHovered) {
+                // 2. Scroll-Up Intent Detection (Apple Pro-Motion Gesture)
+                // Si el usuario hace scroll hacia arriba con intención franca (delta negativo rápido)
+                if (deltaY < -18 && scrollY > 200) {
+                    applyDynamicIslandState('expanded');
+                    if (scrollIntentTimer) clearTimeout(scrollIntentTimer);
+                    scrollIntentTimer = setTimeout(() => {
+                        if (isIslandCompact && !isIslandHovered) {
+                            applyDynamicIslandState('compact');
+                        }
+                    }, 2200);
+                } else if (deltaY > 12 && dynamicIsland.classList.contains('is-hover-expanded')) {
+                    // Scroll down cancela expansión y regresa a píldora discreta
+                    if (scrollIntentTimer) clearTimeout(scrollIntentTimer);
+                    applyDynamicIslandState('compact');
+                }
             }
         }
 
-        // 2. Real-time ScrollSpy: Detect active section
+        prevScrollY = scrollY;
+
+        // 3. Real-Time Telemetry: Cálculo preciso de sección activa (sin bugs de offsetParent)
         const scrollOffset = scrollY + 280;
         let activeSec = islandSections[0];
 
@@ -603,7 +654,7 @@ function initMainScript() {
             const el = document.getElementById(islandSections[i].id);
             if (el) {
                 const rect = el.getBoundingClientRect();
-                const docTop = rect.top + scrollY;
+                const docTop = rect.top + window.scrollY;
                 if (scrollOffset >= docTop) {
                     activeSec = islandSections[i];
                     break;
@@ -630,17 +681,90 @@ function initMainScript() {
                 window.moveIslandIndicator(matchedLink);
             }
 
-            // Morph mobile telemetry chip with subtle Apple crossfade
-            if (islandMobileSection && islandMobileSection.textContent !== activeSec.label) {
-                islandMobileSection.style.opacity = '0';
-                islandMobileSection.style.transform = 'translateY(-2px)';
+            // Morph live telemetry chip with Apple crossfade
+            const targetLabel = islandActiveSectionLabel || islandMobileSection;
+            if (targetLabel && targetLabel.textContent !== activeSec.label) {
+                targetLabel.style.opacity = '0';
+                targetLabel.style.transform = 'translateY(-2px)';
                 setTimeout(() => {
-                    islandMobileSection.textContent = activeSec.label;
-                    islandMobileSection.style.opacity = '1';
-                    islandMobileSection.style.transform = 'translateY(0)';
-                }, 140);
+                    targetLabel.textContent = activeSec.label;
+                    targetLabel.style.opacity = '1';
+                    targetLabel.style.transform = 'translateY(0)';
+                }, 130);
+            }
+            if (islandMobileSection && islandMobileSection !== targetLabel && islandMobileSection.textContent !== activeSec.label) {
+                islandMobileSection.textContent = activeSec.label;
             }
         }
+    }
+
+    // 4. Desktop Hover Blooming (Apple Liquid Spring Expansion on Intent)
+    if (dynamicIsland) {
+        dynamicIsland.addEventListener('mouseenter', () => {
+            isIslandHovered = true;
+            if (hoverCollapseTimeout) clearTimeout(hoverCollapseTimeout);
+            if (scrollIntentTimer) clearTimeout(scrollIntentTimer);
+            if (isIslandCompact) {
+                applyDynamicIslandState('expanded');
+                if (typeof UISound !== 'undefined' && typeof UISound.playHover === 'function') {
+                    try { UISound.playHover(); } catch (e) {}
+                }
+            }
+        });
+
+        dynamicIsland.addEventListener('mouseleave', () => {
+            isIslandHovered = false;
+            if (isIslandCompact && dynamicIsland.classList.contains('is-hover-expanded')) {
+                // 200ms debounce: evita colapso errático al mover el cursor en los bordes
+                hoverCollapseTimeout = setTimeout(() => {
+                    if (!isIslandHovered && isIslandCompact) {
+                        applyDynamicIslandState('compact');
+                    }
+                }, 200);
+            }
+        });
+
+        // 5. Tap / Click Interactions
+        dynamicIsland.addEventListener('click', (e) => {
+            // Si hace click en el micro-EQ
+            if (e.target.closest('#islandMicroEq')) {
+                e.stopPropagation();
+                if (islandAudioBtn) {
+                    islandAudioBtn.click();
+                }
+                return;
+            }
+
+            // Si está en estado compacto (píldora discreta)
+            if (isIslandCompact && !dynamicIsland.classList.contains('is-hover-expanded')) {
+                // En móvil: abrir el drawer de navegación nativo
+                if (window.innerWidth <= 991) {
+                    if (typeof openMobileDrawer === 'function') {
+                        openMobileDrawer();
+                    }
+                } else {
+                    // En desktop: expandir la isla de inmediato
+                    applyDynamicIslandState('expanded');
+                }
+            }
+        });
+    }
+
+    // 6. Micro-EQ Sync con el estado de audio procedural
+    function syncIslandMicroEq() {
+        if (!islandMicroEq) return;
+        const isAudioActive = (islandAudioBtn && (islandAudioBtn.classList.contains('audio-active') || islandAudioBtn.classList.contains('active'))) || !!window.vantaAudioPlaying;
+        if (isAudioActive) {
+            islandMicroEq.classList.add('playing');
+        } else {
+            islandMicroEq.classList.remove('playing');
+        }
+    }
+
+    if (islandAudioBtn) {
+        islandAudioBtn.addEventListener('click', () => {
+            setTimeout(syncIslandMicroEq, 60);
+        });
     }
 
     // Smooth click handler for all dynamic island links
