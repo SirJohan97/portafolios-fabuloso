@@ -186,9 +186,10 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 /* ====================================================================
-   TRIPARTITE ARCHITECTURAL DOCK NAVBAR (AWWWARDS SOTY STANDARD)
-   Split Frame: Brand Anchor (Left) • Index Deck (Center) • Command Wing (Right)
+   APPLE DYNAMIC ISLAND (AWWWARDS SOTD / APPLE DESIGN AWARD STANDARD)
+   Unified Master Floating Capsule: Brand • Fluid Indicator Links • Audio & CTA
    ==================================================================== */
+.navbar.vanta-island-navbar,
 .navbar.vanta-navbar-tripartite {
     position: fixed !important;
     top: 0 !important;
@@ -198,9 +199,9 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     max-width: 100% !important;
     transform: none !important;
     margin: 0 !important;
-    padding: clamp(0.9rem, 1.8vw, 1.35rem) clamp(1.2rem, 3.2vw, 3.5rem) !important;
+    padding: 16px 24px !important;
     display: flex !important;
-    justify-content: space-between !important;
+    justify-content: center !important;
     align-items: center !important;
     background: transparent !important;
     border: none !important;
@@ -209,283 +210,130 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     -webkit-backdrop-filter: none !important;
     pointer-events: none !important;
     z-index: 1000 !important;
-    transition: padding 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition: padding 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
+.navbar.vanta-island-navbar.scrolled,
 .navbar.vanta-navbar-tripartite.scrolled {
-    padding-top: clamp(0.65rem, 1.2vw, 0.95rem) !important;
-    padding-bottom: clamp(0.65rem, 1.2vw, 0.95rem) !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
 }
 
-/* --- Interactive Children pointer-events --- */
-.vanta-navbar-tripartite .nav-brand-anchor,
-.vanta-navbar-tripartite .nav-center-deck,
-.vanta-navbar-tripartite .nav-command-wing {
+/* Master Obsidian Glass Dynamic Island Floating Pill */
+.vanta-dynamic-island {
     pointer-events: auto !important;
-}
-
-/* ─────────────────────────────────────────────────────────────
-   APPLE DYNAMIC ISLAND INWARD COLLAPSE & BIRTH (AWWWARDS SOTY)
-   Engineered with hardware-accelerated GSAP Fluid Spring physics.
-   - When scrolling down: Center Deck & Command Wing collapse INWARD towards center.
-   - When hovering top or returning to top: Born organically from the middle.
-   - Top-left brand collapses into a precision glowing circular badge.
-   ───────────────────────────────────────────────────────────── */
-
-/* 1. Inactive / Collapsed Pointer-Events */
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean:not(.nav-peek) .nav-center-deck,
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean:not(.nav-peek) .nav-command-wing {
-    pointer-events: none !important;
-}
-
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-center-deck,
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-command-wing {
-    pointer-events: auto !important;
-}
-
-/* 2. Top Left Brand Anchor: Compresses into minimal circular logo badge */
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-anchor {
-    padding: 0 !important;
-    gap: 0 !important;
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    max-width: 44px !important;
-    border-radius: 50% !important;
-    justify-content: center !important;
+    display: inline-flex !important;
     align-items: center !important;
-    background: rgba(6, 10, 16, 0.88) !important;
-    backdrop-filter: blur(24px) saturate(190%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
-    border: 1px solid rgba(17, 212, 131, 0.42) !important;
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75), 0 0 20px rgba(17, 212, 131, 0.25) !important;
-    cursor: pointer !important;
+    background: rgba(8, 12, 18, 0.80);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.65), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.16), 
+                0 0 0 1px rgba(0, 0, 0, 0.5);
+    padding: 4px 6px 4px 10px;
+    gap: 0.35rem;
+    height: 48px;
+    position: relative;
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, box-shadow, background, height, padding;
 }
 
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-anchor:hover {
-    border-color: rgba(17, 212, 131, 0.85) !important;
-    box-shadow: 0 12px 38px rgba(0, 0, 0, 0.85), 0 0 30px rgba(17, 212, 131, 0.5) !important;
-    transform: scale(1.08) translateY(-1px) !important;
+.vanta-dynamic-island.scrolled {
+    height: 44px;
+    padding: 3px 5px 3px 8px;
+    background: rgba(5, 8, 14, 0.92);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 
+                0 0 24px rgba(17, 212, 131, 0.16), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-link {
-    gap: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    justify-content: center !important;
+/* Hairline Separators between modules */
+.island-hairline-sep {
+    width: 1px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 0 0.35rem;
+    flex-shrink: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-link .logo-icon {
-    width: 26px !important;
-    height: 26px !important;
-    min-width: 26px !important;
-    margin: 0 !important;
-    opacity: 1 !important;
-}
-
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-link .logo-icon svg {
-    width: 26px !important;
-    height: 26px !important;
-    min-width: 26px !important;
-    filter: drop-shadow(0 0 8px rgba(17, 212, 131, 0.85)) !important;
-}
-
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-link .logo-text {
-    max-width: 0 !important;
-    opacity: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    letter-spacing: -6px !important;
-    transform: scale(0.6) !important;
-    pointer-events: none !important;
-}
-
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean .nav-brand-status {
-    max-width: 0 !important;
-    opacity: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border-left: 0px solid transparent !important;
-    pointer-events: none !important;
-}
-
-/* 3. Hover Peek Expansion for Brand Anchor */
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-brand-anchor {
-    padding: 0.38rem 1.15rem 0.38rem 0.55rem !important;
-    gap: 0.65rem !important;
-    width: auto !important;
-    height: auto !important;
-    min-width: auto !important;
-    max-width: 220px !important;
-    border-radius: 999px !important;
-    justify-content: flex-start !important;
-}
-
-.navbar.vanta-navbar-tripartite.nav-scrolled-clean.nav-peek .nav-brand-link .logo-text {
-    max-width: 140px !important;
-    opacity: 1 !important;
-    letter-spacing: 0.08em !important;
-    transform: scale(1) !important;
-}
-
-/* ─────────────────────────────────────────────────────────────
-   1. WING LEFT: BRAND ANCHOR
-   ───────────────────────────────────────────────────────────── */
+/* 1. Left Wing: Brand Anchor */
 .nav-brand-anchor {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.65rem;
-    padding: 0.38rem 1.15rem 0.38rem 0.55rem;
-    background: rgba(8, 12, 18, 0.68);
-    backdrop-filter: blur(24px) saturate(190%);
-    -webkit-backdrop-filter: blur(24px) saturate(190%);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 999px;
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                min-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                padding 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                gap 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                border-radius 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.3s ease,
-                background 0.3s ease,
-                box-shadow 0.35s ease,
-                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform, opacity, width, padding;
-}
-
-.nav-brand-anchor:hover {
-    border-color: rgba(17, 212, 131, 0.35);
-    background: rgba(8, 12, 18, 0.82);
-    transform: translateY(-1px);
+    padding: 0 4px 0 2px;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-radius: 0 !important;
+    transition: transform 0.25s ease;
 }
 
 .nav-brand-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.55rem;
     text-decoration: none;
     color: #FFFFFF;
-    transition: gap 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-brand-link .logo-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
-    min-width: 30px;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
     opacity: 1;
     overflow: visible;
-    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-brand-link .logo-icon svg {
-    width: 30px;
-    height: 30px;
-    min-width: 30px;
-    filter: drop-shadow(0 0 10px rgba(17, 212, 131, 0.65));
-    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    filter: drop-shadow(0 0 8px rgba(17, 212, 131, 0.65));
+    transition: filter 0.3s ease;
+}
+
+.nav-brand-link:hover .logo-icon svg {
+    filter: drop-shadow(0 0 14px rgba(17, 212, 131, 0.95));
 }
 
 .nav-brand-link .logo-text {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: 1.05rem;
+    font-size: 0.98rem;
     letter-spacing: 0.08em;
     color: #FFFFFF;
     display: inline-block;
-    max-width: 140px;
     white-space: nowrap;
-    overflow: hidden;
-    opacity: 1;
-    transform-origin: left center;
-    transition: max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.3s ease,
-                letter-spacing 0.35s ease,
-                margin 0.35s ease,
-                transform 0.35s ease;
-    will-change: max-width, opacity, letter-spacing;
+    transition: opacity 0.3s ease;
 }
 
-.nav-brand-status {
+/* 2. Center Wing: Dynamic Index Deck & Sliding Indicator */
+.nav-center-deck {
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    padding-left: 0.75rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.12);
-    max-width: 160px;
-    white-space: nowrap;
-    overflow: hidden;
-    opacity: 1;
-    transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.25s ease,
-                padding 0.35s ease,
-                border-color 0.25s ease;
-    will-change: max-width, opacity, padding;
-}
-
-.nav-brand-status .nbs-pulse {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #11d483;
-    box-shadow: 0 0 10px #11d483;
-    animation: beaconPulse 2s ease-in-out infinite;
-}
-
-@keyframes beaconPulse {
-    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px #11d483; }
-    50% { opacity: 0.4; transform: scale(0.75); box-shadow: 0 0 2px #11d483; }
-}
-
-.nav-brand-status .nbs-meta {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.55);
-    text-transform: uppercase;
-}
-
-/* ─────────────────────────────────────────────────────────────
-   2. CENTER MODULE: FLOATING INDEX DECK
-   ───────────────────────────────────────────────────────────── */
-.nav-center-deck {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    will-change: transform, opacity, filter;
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.35s ease,
-                filter 0.35s ease;
+    position: relative;
 }
 
 .nav-deck-capsule {
     position: relative;
     display: inline-flex;
     align-items: center;
-    padding: 0.32rem 0.5rem;
-    background: rgba(8, 12, 18, 0.68);
-    backdrop-filter: blur(28px) saturate(190%);
-    -webkit-backdrop-filter: blur(28px) saturate(190%);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 999px;
-    box-shadow: 0 12px 38px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.07);
-    transition: all 0.3s ease;
-}
-
-.nav-deck-capsule:hover {
-    border-color: rgba(255, 255, 255, 0.16);
-    background: rgba(8, 12, 18, 0.82);
 }
 
 .nav-deck-list {
     display: flex !important;
     align-items: center !important;
-    gap: 0.3rem !important;
+    gap: 0.15rem !important;
     list-style: none !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -501,69 +349,46 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 .nav-deck-list li a {
     display: inline-flex !important;
     align-items: center !important;
-    gap: 0.4rem !important;
-    padding: 0.42rem 0.95rem !important;
-    border-radius: 999px !important;
+    padding: 0.34rem 0.82rem !important;
+    border-radius: 9999px !important;
     text-decoration: none !important;
     font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-size: 0.82rem !important;
+    font-size: 0.8rem !important;
     font-weight: 500 !important;
     color: rgba(255, 255, 255, 0.65) !important;
     letter-spacing: 0.01em !important;
-    transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease !important;
+    transition: color 0.22s ease, font-weight 0.22s ease !important;
     position: relative !important;
     z-index: 2 !important;
+    white-space: nowrap !important;
 }
 
 .nav-deck-list li a::after {
     display: none !important;
 }
 
-.nav-deck-list li a .ndl-idx {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.64rem;
-    font-weight: 700;
-    color: rgba(17, 212, 131, 0.65);
-    letter-spacing: 0.02em;
-    transition: color 0.25s ease;
-}
-
-.nav-deck-list li a .ndl-name {
-    transition: color 0.25s ease;
-}
-
-.nav-deck-list li a:hover {
-    color: #FFFFFF !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-}
-
-.nav-deck-list li a:hover .ndl-idx {
-    color: #11D483 !important;
-}
-
+.nav-deck-list li a:hover,
 .nav-deck-list li a.active {
     color: #FFFFFF !important;
+    font-weight: 600 !important;
 }
 
-.nav-deck-list li a.active .ndl-idx {
-    color: #11D483 !important;
-}
-
-/* Sliding Indicator Capsule inside nav-deck-list */
+/* Liquid Spring Indicator Capsule */
 .nav-deck-list .nav-indicator-capsule {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
-    background: rgba(17, 212, 131, 0.12);
-    border: 1px solid rgba(17, 212, 131, 0.28);
-    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    border-radius: 9999px;
     z-index: 1;
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-                width 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-                opacity 0.2s ease;
+    transition: transform 0.38s cubic-bezier(0.2, 0.9, 0.3, 1.2),
+                width 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.2),
+                opacity 0.25s ease;
     will-change: transform, width, opacity;
 }
 
@@ -571,41 +396,70 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     opacity: 1;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   3. WING RIGHT: COMMAND WING (AUDIO & CTA)
-   ───────────────────────────────────────────────────────────── */
-.nav-command-wing {
-    display: flex;
+/* Dynamic Island Mobile Telemetry Badge (Active on mobile) */
+.island-mobile-telemetry {
+    display: none;
     align-items: center;
-    gap: 0.75rem;
-    will-change: transform, opacity, filter;
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.35s ease,
-                filter 0.35s ease;
+    gap: 7px;
+    padding: 3px 10px;
+    background: rgba(17, 212, 131, 0.08);
+    border: 1px solid rgba(17, 212, 131, 0.22);
+    border-radius: 9999px;
+}
+
+.island-mobile-telemetry .imt-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #11D483;
+    box-shadow: 0 0 8px #11D483;
+    animation: imtPulse 2s infinite ease-in-out;
+}
+
+.island-mobile-telemetry .imt-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+@keyframes imtPulse {
+    0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px #11D483; }
+    50% { transform: scale(0.75); opacity: 0.45; box-shadow: 0 0 3px #11D483; }
+}
+
+/* 3. Right Wing: Command Actions */
+.nav-command-wing {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0 2px 0 0;
 }
 
 /* Audio Procedural Pill */
 .nav-audio-pill {
     display: inline-flex;
     align-items: center;
-    gap: 0.65rem;
-    padding: 0.5rem 1.05rem;
-    background: rgba(8, 12, 18, 0.68);
-    backdrop-filter: blur(24px) saturate(190%);
-    -webkit-backdrop-filter: blur(24px) saturate(190%);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 999px;
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.75);
+    gap: 0.5rem;
+    padding: 0.38rem 0.8rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 9999px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    color: rgba(255, 255, 255, 0.72);
     cursor: pointer;
     text-decoration: none;
     outline: none;
-    transition: border-color 0.3s ease, background 0.3s ease, transform 0.25s ease;
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
 
 .nav-audio-pill:hover {
     border-color: rgba(17, 212, 131, 0.35);
-    background: rgba(8, 12, 18, 0.85);
+    background: rgba(255, 255, 255, 0.08);
     color: #FFFFFF;
     transform: translateY(-1px);
 }
@@ -1053,15 +907,30 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
    RESPONSIVE BREAKPOINTS: MOBILE & TABLETS
    ───────────────────────────────────────────────────────────── */
 @media (max-width: 991px) {
+    .navbar.vanta-island-navbar,
     .navbar.vanta-navbar-tripartite {
-        padding: 0.75rem 1.15rem !important;
+        padding: 10px 14px !important;
         display: flex !important;
-        justify-content: space-between !important;
+        justify-content: center !important;
         align-items: center !important;
     }
 
+    .vanta-dynamic-island {
+        width: calc(100% - 16px) !important;
+        max-width: 440px !important;
+        justify-content: space-between !important;
+        padding: 4px 6px 4px 10px !important;
+        height: 46px !important;
+        gap: 0 !important;
+    }
+
+    .vanta-dynamic-island.scrolled {
+        height: 44px !important;
+        background: rgba(5, 8, 14, 0.94) !important;
+    }
+
     .nav-brand-anchor {
-        padding: 0.35rem 0.85rem 0.35rem 0.55rem !important;
+        padding: 0 !important;
     }
 
     .nav-brand-link .logo-icon svg {
@@ -1071,23 +940,31 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     }
 
     .nav-brand-link .logo-text {
-        font-size: 0.95rem !important;
+        font-size: 0.92rem !important;
     }
 
-    .nav-brand-status {
+    .island-hairline-sep {
         display: none !important;
+    }
+
+    .nav-center-deck {
+        display: none !important;
+    }
+
+    .island-mobile-telemetry {
+        display: inline-flex !important;
     }
 
     .nav-command-wing {
         display: flex !important;
         align-items: center !important;
-        gap: 0.55rem !important;
+        gap: 0 !important;
         z-index: 1020 !important;
         position: relative !important;
     }
 
     .nav-audio-pill {
-        padding: 0.45rem 0.75rem !important;
+        display: none !important;
     }
 
     .nav-command-wing .audio-status-label {
@@ -1101,83 +978,21 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
     .menu-toggle {
         display: none !important;
     }
+
     .vanta-nav-trigger {
         display: inline-flex !important;
-    }
-    .nav-audio-pill {
-        display: none !important;
-    }
-
-    .nav-center-deck {
-        display: contents !important;
-    }
-
-    .nav-deck-capsule {
-        display: contents !important;
-    }
-
-    .nav-deck-list .nav-indicator-capsule {
-        display: none !important;
-    }
-
-    .nav-deck-list {
-        position: fixed !important;
-        top: 0 !important;
-        right: 0 !important;
-        left: auto !important;
-        width: min(320px, 85vw) !important;
-        height: 100vh !important;
-        background: rgba(6, 9, 14, 0.98) !important;
-        backdrop-filter: blur(32px) saturate(200%) !important;
-        -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
-        border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        justify-content: center !important;
-        padding: 3rem 2rem !important;
-        gap: 1.5rem !important;
-        z-index: 1005 !important;
-        box-shadow: -20px 0 60px rgba(0, 0, 0, 0.9) !important;
-        transform: translateX(105%) !important;
-        opacity: 0 !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.4s !important;
-    }
-
-    .nav-deck-list:not(.active) {
-        display: none !important;
-    }
-
-    .nav-deck-list.active {
-        display: flex !important;
-        transform: translateX(0%) !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-    }
-
-    .nav-deck-list li {
-        width: 100% !important;
-    }
-
-    .nav-deck-list li a {
-        width: 100% !important;
-        font-size: 1.1rem !important;
-        padding: 0.75rem 1.1rem !important;
-        border-radius: 8px !important;
-        justify-content: flex-start !important;
-    }
-
-    .nav-deck-list li a .ndl-idx {
-        font-size: 0.82rem !important;
+        height: 34px !important;
+        padding: 0 12px !important;
+        border-radius: 9999px !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.16) !important;
     }
 }
 
 /* =========================================
    BARRA DE NAVEGACIÓN
    ========================================= */
-.navbar {
+.navbar:not(.vanta-island-navbar):not(.vanta-navbar-tripartite) {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1193,7 +1008,7 @@ nav, header, section, footer, .whatsapp-btn, .cursor, .cursor2 {
 }
 
 /* Fondo sólido una vez el usuario hizo scroll */
-.navbar.scrolled {
+.navbar.scrolled:not(.vanta-island-navbar):not(.vanta-navbar-tripartite) {
     background: var(--dark-overlay);
     border-bottom-color: var(--border-subtle);
     box-shadow: none;

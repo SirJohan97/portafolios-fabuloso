@@ -177,33 +177,55 @@ function initMainScript() {
     let portfolioHeight = 0;
     let maxTranslate = 0;
 
-    // Indicador deslizante (cápsula) de la barra de navegación
+    // Indicador deslizante (cápsula) de la barra de navegación (Apple Liquid Spring Indicator)
     function initNavbarIndicator() {
         const navLinksContainer = document.querySelector('.nav-links');
         const links = document.querySelectorAll('.nav-links a');
         const indicator = document.querySelector('.nav-indicator-capsule');
         if (!indicator || !navLinksContainer) return;
 
-        function moveIndicator(link) {
+        function moveIndicator(link, immediate = false) {
+            if (!link || link.offsetParent === null) return;
             const rect = link.getBoundingClientRect();
             const parentRect = navLinksContainer.getBoundingClientRect();
             const left = rect.left - parentRect.left;
             const width = rect.width;
             
-            indicator.style.transform = `translate3d(${left}px, 0, 0)`;
-            indicator.style.width = `${width}px`;
-            indicator.classList.add('active');
+            if (width > 0) {
+                if (immediate) {
+                    indicator.style.transition = 'none';
+                    indicator.style.transform = `translate3d(${left}px, 0, 0)`;
+                    indicator.style.width = `${width}px`;
+                    indicator.classList.add('active');
+                    indicator.offsetHeight; // trigger reflow
+                    indicator.style.transition = '';
+                } else {
+                    indicator.style.transform = `translate3d(${left}px, 0, 0)`;
+                    indicator.style.width = `${width}px`;
+                    indicator.classList.add('active');
+                }
+            }
         }
 
-        function hideIndicator() {
-            indicator.classList.remove('active');
+        function returnToActive() {
+            const activeLink = navLinksContainer.querySelector('a.active') || links[0];
+            if (activeLink) {
+                moveIndicator(activeLink);
+            }
         }
 
         links.forEach(link => {
             link.addEventListener('mouseenter', () => moveIndicator(link));
         });
 
-        navLinksContainer.addEventListener('mouseleave', hideIndicator);
+        navLinksContainer.addEventListener('mouseleave', returnToActive);
+
+        window.moveIslandIndicator = moveIndicator;
+        window.returnIslandIndicator = returnToActive;
+
+        requestAnimationFrame(() => {
+            setTimeout(returnToActive, 100);
+        });
     }
     initNavbarIndicator();
  
@@ -535,219 +557,121 @@ function initMainScript() {
 
     /* =========================================
        8. APPLE DYNAMIC ISLAND FLUID SPRING CONTROLLER
-       Authentic Apple Liquid Spring & Inward Collapse
+       Authentic Apple Liquid Morphing & Live Telemetry
        ========================================= */
     const navbar = document.getElementById('vanta-navbar') || document.querySelector('.navbar');
+    const dynamicIsland = document.getElementById('vantaDynamicIsland');
     const navbarLogoTarget = document.getElementById('navbar-logo-target');
-    const navCenterDeck = document.querySelector('.nav-center-deck');
-    const navDeckCapsule = document.querySelector('.nav-deck-capsule');
-    const navDeckItems = document.querySelectorAll('.nav-deck-list li');
-    const navCommandWing = document.querySelector('.nav-command-wing');
+    const islandMobileSection = document.getElementById('islandMobileSection');
+    const navLinks = document.querySelectorAll('.nav-deck-list li a');
 
-    let isScrolledClean = false;
-    let isIslandExpanded = true;
+    const islandSections = [
+        { id: 'home',         label: 'INICIO' },
+        { id: 'portfolio',    label: 'OBRAS' },
+        { id: 'pipeline',     label: 'I+D LAB' },
+        { id: 'tech-matrix',  label: 'ARQUITECTURA' },
+        { id: 'testimonials', label: 'REPORTES' },
+        { id: 'contact',      label: 'CONTACTO' }
+    ];
 
-    function animateDynamicIsland(expand, immediate = false) {
-        if (!navbar || !navCenterDeck || !navCommandWing) return;
-
-        isIslandExpanded = expand;
-
-        if (expand) {
-            navbar.classList.add('nav-peek');
-            navbar.classList.remove('nav-island-hidden');
-
-            if (!window.gsap) {
-                navCenterDeck.style.opacity = '1';
-                navCenterDeck.style.transform = 'scale(1)';
-                navCommandWing.style.opacity = '1';
-                navCommandWing.style.transform = 'translate(0, 0) scale(1)';
-                return;
-            }
-
-            if (immediate) {
-                gsap.set([navCenterDeck, navDeckCapsule, navCommandWing], { clearProps: 'transform,opacity,filter' });
-                if (navDeckItems.length) gsap.set(navDeckItems, { clearProps: 'opacity,transform' });
-                return;
-            }
-
-            gsap.killTweensOf([navCenterDeck, navDeckCapsule, navCommandWing, navDeckItems]);
-
-            // 1. Center Deck Capsule: Bloomea desde el centro exacto con resorte Apple líquido
-            gsap.fromTo(navCenterDeck,
-                { scale: 0.12, opacity: 0, filter: 'blur(10px)', transformOrigin: '50% 50%' },
-                {
-                    scale: 1,
-                    opacity: 1,
-                    filter: 'blur(0px)',
-                    duration: 0.54,
-                    ease: "back.out(1.55)", // Resorte orgánico Apple con rebote natural
-                    overwrite: "auto"
-                }
-            );
-
-            gsap.fromTo(navDeckCapsule,
-                { scaleX: 0.35, transformOrigin: '50% 50%' },
-                {
-                    scaleX: 1,
-                    duration: 0.48,
-                    ease: "back.out(1.4)",
-                    overwrite: "auto"
-                }
-            );
-
-            // 2. Links de navegación: Cascada fluida que no distorsiona las letras
-            if (navDeckItems.length) {
-                gsap.fromTo(navDeckItems,
-                    { opacity: 0, y: 6, scale: 0.94 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        scale: 1,
-                        duration: 0.32,
-                        delay: 0.12,
-                        stagger: 0.028,
-                        ease: "power2.out",
-                        overwrite: "auto"
-                    }
-                );
-            }
-
-            // 3. Command Wing: Nace desde el centro y se proyecta suavemente a la derecha
-            gsap.fromTo(navCommandWing,
-                { x: -75, scale: 0.25, opacity: 0, filter: 'blur(6px)', transformOrigin: 'left center' },
-                {
-                    x: 0,
-                    scale: 1,
-                    opacity: 1,
-                    filter: 'blur(0px)',
-                    duration: 0.52,
-                    delay: 0.06,
-                    ease: "back.out(1.35)",
-                    overwrite: "auto"
-                }
-            );
-
-        } else {
-            navbar.classList.remove('nav-peek');
-            navbar.classList.add('nav-island-hidden');
-
-            if (!window.gsap) {
-                navCenterDeck.style.opacity = '0';
-                navCenterDeck.style.transform = 'scale(0.12)';
-                navCommandWing.style.opacity = '0';
-                return;
-            }
-
-            gsap.killTweensOf([navCenterDeck, navDeckCapsule, navCommandWing, navDeckItems]);
-
-            // 1. Enlaces: Fade out rápido antes de que la cápsula se encoja (evita letras aplastadas)
-            if (navDeckItems.length) {
-                gsap.to(navDeckItems, {
-                    opacity: 0,
-                    duration: 0.15,
-                    ease: "power2.in",
-                    overwrite: "auto"
-                });
-            }
-
-            // 2. Center Deck: Se absorbe elásticamente hacia su propio centro
-            gsap.to(navCenterDeck, {
-                scale: 0.12,
-                opacity: 0,
-                filter: 'blur(10px)',
-                duration: 0.38,
-                ease: "power3.inOut",
-                transformOrigin: '50% 50%',
-                overwrite: "auto"
-            });
-
-            gsap.to(navDeckCapsule, {
-                scaleX: 0.25,
-                duration: 0.36,
-                ease: "power3.inOut",
-                transformOrigin: '50% 50%',
-                overwrite: "auto"
-            });
-
-            // 3. Command Wing: Colapsa hacia adentro
-            gsap.to(navCommandWing, {
-                x: -75,
-                scale: 0.2,
-                opacity: 0,
-                filter: 'blur(8px)',
-                duration: 0.3,
-                ease: "power3.in",
-                transformOrigin: 'left center',
-                overwrite: "auto"
-            });
-        }
-    }
+    let currentActiveSectionId = 'home';
+    let isNavbarScrolled = false;
 
     function updateNavbar(scrollY) {
         if (!navbar) return;
 
-        // Umbral de scroll para activar modo limpio (55px)
-        const shouldBeScrolled = scrollY > 55;
-
-        if (shouldBeScrolled !== isScrolledClean) {
-            isScrolledClean = shouldBeScrolled;
-            if (isScrolledClean) {
-                navbar.classList.add('nav-scrolled-clean', 'scrolled');
+        // 1. Apple Dynamic Island Liquid Morphing on Scroll
+        const shouldBeScrolled = scrollY > 40;
+        if (shouldBeScrolled !== isNavbarScrolled) {
+            isNavbarScrolled = shouldBeScrolled;
+            if (isNavbarScrolled) {
+                navbar.classList.add('scrolled');
+                if (dynamicIsland) dynamicIsland.classList.add('scrolled');
                 document.body.classList.add('scrolled');
-                // Colapso elástico hacia adentro
-                animateDynamicIsland(false);
             } else {
-                navbar.classList.remove('nav-scrolled-clean', 'scrolled');
+                navbar.classList.remove('scrolled');
+                if (dynamicIsland) dynamicIsland.classList.remove('scrolled');
                 document.body.classList.remove('scrolled');
-                // Nace del medio como Dynamic Island al volver arriba
-                animateDynamicIsland(true);
+            }
+        }
+
+        // 2. Real-time ScrollSpy: Detect active section
+        const scrollOffset = scrollY + 280;
+        let activeSec = islandSections[0];
+
+        for (let i = islandSections.length - 1; i >= 0; i--) {
+            const el = document.getElementById(islandSections[i].id);
+            if (el) {
+                const rect = el.getBoundingClientRect();
+                const docTop = rect.top + scrollY;
+                if (scrollOffset >= docTop) {
+                    activeSec = islandSections[i];
+                    break;
+                }
+            }
+        }
+
+        if (activeSec.id !== currentActiveSectionId) {
+            currentActiveSectionId = activeSec.id;
+
+            // Highlight desktop nav link
+            let matchedLink = null;
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === '#' + activeSec.id) {
+                    link.classList.add('active');
+                    matchedLink = link;
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            if (matchedLink && typeof window.moveIslandIndicator === 'function') {
+                window.moveIslandIndicator(matchedLink);
+            }
+
+            // Morph mobile telemetry chip with subtle Apple crossfade
+            if (islandMobileSection && islandMobileSection.textContent !== activeSec.label) {
+                islandMobileSection.style.opacity = '0';
+                islandMobileSection.style.transform = 'translateY(-2px)';
+                setTimeout(() => {
+                    islandMobileSection.textContent = activeSec.label;
+                    islandMobileSection.style.opacity = '1';
+                    islandMobileSection.style.transform = 'translateY(0)';
+                }, 140);
             }
         }
     }
 
-    // Logo click: retorno ultra-fluido al inicio
+    // Smooth click handler for all dynamic island links
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const targetId = link.getAttribute('href');
+            if (targetId && targetId.startsWith('#')) {
+                const targetEl = document.querySelector(targetId);
+                if (targetEl) {
+                    e.preventDefault();
+                    if (window.lenis) {
+                        window.lenis.scrollTo(targetEl, { offset: -70, duration: 1.1 });
+                    } else {
+                        targetEl.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            }
+        });
+    });
+
+    // Logo click: retorno ultra-fluido al inicio con física Apple
     if (navbarLogoTarget) {
         navbarLogoTarget.addEventListener('click', (e) => {
             const href = navbarLogoTarget.getAttribute('href');
             if (href === '#home' || href === '#') {
                 e.preventDefault();
                 if (window.lenis) {
-                    window.lenis.scrollTo(0, { duration: 1.1, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+                    window.lenis.scrollTo(0, { duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
                 } else {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
-            }
-        });
-    }
-
-    // Dynamic Island Hover Peek: nace del medio si el cursor se acerca al borde superior (< 65px)
-    let peekActive = false;
-    window.addEventListener('mousemove', (e) => {
-        if (!isScrolledClean || !navbar) return;
-        if (e.clientY <= 65) {
-            if (!peekActive) {
-                peekActive = true;
-                animateDynamicIsland(true);
-            }
-        } else if (e.clientY > 115) {
-            if (peekActive) {
-                peekActive = false;
-                animateDynamicIsland(false);
-            }
-        }
-    }, { passive: true });
-
-    if (navbar) {
-        navbar.addEventListener('mouseenter', () => {
-            if (isScrolledClean && !peekActive) {
-                peekActive = true;
-                animateDynamicIsland(true);
-            }
-        });
-        navbar.addEventListener('mouseleave', (e) => {
-            if (isScrolledClean && peekActive && e.clientY > 95) {
-                peekActive = false;
-                animateDynamicIsland(false);
             }
         });
     }
